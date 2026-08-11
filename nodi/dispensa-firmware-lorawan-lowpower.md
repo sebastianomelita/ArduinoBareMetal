@@ -17,9 +17,10 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 11. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
 12. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
 13. [Watchdog hardware](#watchdog-hardware)
-14. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
-15. [Modalità debug e produzione](#modalità-debug-e-produzione)
-16. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
+14. [ADR e politica di gestione dei parametri runtime](#adr-e-politica-di-gestione-dei-parametri-runtime)
+15. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
+16. [Modalità debug e produzione](#modalità-debug-e-produzione)
+17. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
 
 ---
 
@@ -730,6 +731,141 @@ Se vedi `Reset reason: 7`, sai che il ciclo precedente è stato interrotto forza
 
 ---
 
+## ADR e politica di gestione dei parametri runtime
+
+L'**Adaptive Data Rate** (ADR) è un meccanismo standard LoRaWAN in cui il Network Server ottimizza automaticamente i parametri radio del device — spreading factor e potenza TX — in base alla qualità del link. Un device che sta vicino al gateway con buona ricezione viene fatto scendere a SF7, riducendo l'airtime di ~8 volte rispetto a SF9. Un device in condizioni difficili viene fatto salire fino a SF12 per garantire la ricezione.
+
+Il vantaggio energetico è concreto: SF7 significa airtime di ~60 ms per un payload di 32 byte, contro i ~250 ms di SF9. Su una batteria alimentata a lungo termine, questo si traduce in centinaia di trasmissioni in più a parità di energia.
+
+### Come funziona ADR concretamente
+
+Ogni uplink di un device ADR-enabled porta con sé un bit `ADRCtrl` nel MAC header che dice al NS "ottimizzami tu". Il NS raccoglie statistiche sul link (SNR, RSSI degli ultimi ~20 uplink) e quando ha abbastanza dati manda un MAC command `LinkADRReq` al device via downlink, indicando il nuovo SF e la nuova potenza TX. Il device applica i nuovi parametri e conferma con `LinkADRAns` nel prossimo uplink.
+
+Esiste anche un meccanismo di safety: se il device fa 32 uplink senza ricevere alcun downlink (nemmeno un `LinkADRAns` di conferma), setta il bit `ADRACKReq` sul prossimo per chiedere al NS di rispondere. Se non arriva risposta entro altri 32 uplink, il device sale di uno step in SF autonomamente, ripetendo il ciclo. Questo previene situazioni in cui il device abbia SF troppo basso e il gateway non lo senta più.
+
+### ADR con OTAA vs ADR con ABP
+
+**Con OTAA**, ADR funziona nativamente. Il device fa join, il NS conosce lo stato iniziale, i parametri ADR negoziati vengono mantenuti attraverso i deep sleep grazie alla persistenza del session buffer (che include lo stato ADR). Un reboot completo del device è raro e ricrea la sessione via join.
+
+**Con ABP**, ADR è problematico:
+
+- Al primo boot, il device parte con parametri fissi (SF9 nel nostro caso)
+- Il NS negozia ADR, il device scende a SF7
+- **Al reboot** (power-off della batteria), il device dimentica lo stato ADR: riparte da SF9
+- Il NS che aveva memoria dell'ultimo stato ADR (SF7) si trova in **desync** con il device
+- Serve un ciclo di rinegoziazione durante il quale ci possono essere pacchetti persi
+
+Il nostro firmware **disabilita completamente ADR in modalità ABP**, indipendentemente dalle configurazioni. Il log al boot lo dice esplicitamente:
+
+```
+ADR ignorato: modo ABP non supporta ADR affidabilmente
+```
+
+Solo con `USE_OTAA=1` ADR viene effettivamente attivato.
+
+### La politica di gestione dei parametri modificabili
+
+Arrivati a questo punto della dispensa, il firmware ha diversi parametri configurabili sia via `#define` (compile-time) sia via NVS (runtime, modificabile via downlink):
+
+- Intervallo TX (`TX_INTERVAL_PRESET` / `set_tx_interval`)
+- Spreading factor (`LORAWAN_SF` / `set_lorawan_sf`)
+- Potenza TX (14 dBm hardcoded / `set_tx_power`)
+- Timeout GPS (`GPS_FIX_TIMEOUT_COLD_S` / `set_gps_timeout`)
+- Soglie batteria (`VBAT_EMERGENCY_MV`, `VBAT_RECOVERY_MV` / `set_batt_thresholds`)
+- ADR (`ENABLE_ADR` / `set_adr_enabled`)
+
+Questa dualità potrebbe sembrare una duplicazione (perché avere sia il define sia la NVS?), ma è un pattern deliberato con una logica precisa:
+
+**Il `#define` è il default di fabbrica**. È il valore che il firmware userà al **primo boot**, quando la NVS è vuota, e quello a cui si torna con un `clear_nvs`. Se un giorno riflashi il firmware su un device nuovo, cambiare i `#define` è il modo per personalizzare i valori iniziali senza dover mandare downlink post-flash.
+
+**La NVS è il valore corrente**. È quello effettivamente usato dal codice, modificabile a runtime tramite downlink. Sopravvive a reboot, deep sleep, e persino a un reflash del firmware (i valori NVS non si toccano quando riflashi il codice).
+
+**La variabile `cfg*` in RAM è l'accesso operativo**. Il codice usa `cfgTxIntervalPreset`, `cfgLoRaWANSF`, `cfgAdr` ecc., mai direttamente i `#define` (che diventano solo default) né la NVS (che viene letta una sola volta al boot).
+
+Il flusso al boot è:
+
+```
+loadRuntimeConfig() chiamata all'inizio del setup()
+    │
+    ├── Inizializza cfg* con i valori di default dei #define
+    │
+    ├── Apre NVS in read-only
+    │   │
+    │   ├── Per ogni chiave presente in NVS → sovrascrive cfg*
+    │   │   Per ogni chiave assente         → mantiene il default #define
+    │
+    ├── Chiude NVS
+    │
+    └── Sanity check: valori impossibili → torna al default
+```
+
+E il flusso quando arriva un downlink di configurazione:
+
+```
+handleDownlinkPort20() riceve set_tx_interval=3
+    │
+    ├── Valida il valore (0-5)
+    │
+    ├── Salva in NVS con chiave "tx_int"
+    │
+    └── Aggiorna cfgTxIntervalPreset in RAM
+        → prossimo ciclo usa il nuovo valore
+```
+
+### Un esempio concreto di ciclo di vita di un parametro
+
+Prendiamo l'ADR come esempio, perché è quello appena introdotto:
+
+**Momento 1**: sviluppatore imposta `#define ENABLE_ADR 1` e compila. Firmware flashato su un device nuovo.
+
+**Momento 2**: primo boot. NVS vuota. `loadRuntimeConfig()` inizializza `cfgAdr = true` dal default `ENABLE_ADR`. `initLoRaWAN()` chiama `node.setADR(true)` (perché siamo in OTAA con cfgAdr=true).
+
+**Momento 3**: il device gira per giorni con ADR attivo. Il NS lo porta a SF7. Tutto ok.
+
+**Momento 4**: operatore vuole fare un test forzando manualmente SF12 per misurare portata. Manda `set_adr_enabled=0`. Il firmware salva `0` in NVS chiave `"adr"` e aggiorna `cfgAdr = false`. Log:
+```
+[DOWNLINK] SET_ADR_ENABLED: disabilitato
+           applicato al prossimo initLoRaWAN (reboot o wake)
+```
+
+**Momento 5**: al prossimo wake, `loadRuntimeConfig()` legge NVS chiave `"adr"` (presente, vale 0) → `cfgAdr = false`. `initLoRaWAN()` chiama `node.setADR(false)`. Ora ADR è spento.
+
+**Momento 6**: operatore manda `set_lorawan_sf=12`. Il firmware salva SF12 in NVS e aggiorna `cfgLoRaWANSF = 12`. Nessun warning ADR (che è spento). Al prossimo wake, il device trasmette a SF12.
+
+**Momento 7**: test finito, operatore riabilita ADR con `set_adr_enabled=1`. Al prossimo wake, `cfgAdr = true`, ADR riattivato, il NS ricomincia a ottimizzare.
+
+**Momento 8**: eventualmente lo sviluppatore vuole ripristinare tutto ai default di fabbrica: manda `clear_nvs`. NVS cancellata, al prossimo boot `loadRuntimeConfig()` non trova nessuna chiave → tutti i `cfg*` tornano ai valori dei `#define`.
+
+### L'interazione tra set_lorawan_sf e ADR
+
+Il conflitto è che ADR sovrascrive continuamente l'SF. Se ADR è attivo e mandi un `set_lorawan_sf=12`:
+
+- Il valore viene salvato in NVS (`cfgLoRaWANSF = 12`)
+- Ma ADR nel giro di pochi cicli manda un `LinkADRReq` per riportare l'SF ottimale
+- L'SF che avevi impostato viene sovrascritto
+
+Il firmware non impedisce l'operazione (non c'è motivo tecnico per bloccarla), ma emette un **warning nel log**:
+
+```
+[DOWNLINK] SET_LORAWAN_SF: SF12
+[DOWNLINK] WARNING: ADR attivo, sovrascrivera' l'SF
+           usa set_adr_enabled=0 prima, se vuoi forzare SF manuale
+```
+
+Chi vuole forzare SF manuale deve prima disabilitare ADR con `set_adr_enabled=0`, poi impostare l'SF desiderato.
+
+### Riepilogo: quando usare cosa
+
+**Se stai preparando il firmware per uno scenario nuovo** (nuovo tipo di deployment, nuovo caso d'uso): modifica i `#define` prima di compilare. Questi diventeranno i default di fabbrica per tutti i device flashati con quel firmware.
+
+**Se stai gestendo device già in campo**: usa i downlink FPort 20. Puoi cambiare i parametri di runtime da remoto senza dover riflashare.
+
+**Se un device si comporta in modo strano** e sospetti che la NVS sia corrotta: manda `clear_nvs` per tornare ai default `#define`. Il device rigenera la sessione LoRaWAN e riparte pulito.
+
+---
+
+
+
 ## Downlink handler e comandi remoti
 
 Il firmware espone la possibilità di ricevere **comandi remoti** dal Network Server tramite downlink LoRaWAN. Il device resta in **classe A** — significa che i comandi vengono ricevuti solo nelle due brevi finestre RX che si aprono dopo ogni uplink. La latenza massima di un comando è quindi l'intervallo tra due TX (~60 secondi con la configurazione di default).
@@ -841,6 +977,7 @@ Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di es
 | `SET_TX_POWER` | 0x13 | 1 byte (2-14) | Cambia potenza TX in dBm |
 | `SET_GPS_TIMEOUT` | 0x14 | 2 byte LE (10-300) | Cambia timeout attesa fix GPS in secondi |
 | `SET_BATT_THRESH` | 0x15 | 4 byte (2×uint16 LE) | Cambia soglie batteria emergency + recovery |
+| `SET_ADR_ENABLED` | 0x16 | 1 byte (0 o 1) | Abilita/disabilita ADR (solo effettivo in OTAA) |
 
 Ogni comando include **validazione dei range** sia lato codec (prima di trasmettere) sia lato firmware (prima di salvare in NVS): valori fuori dai limiti vengono ignorati e loggati. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
 
@@ -939,6 +1076,20 @@ mosquitto_pub -h <IP-ChirpStack> \
   -m '{"fPort":20,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
 ```
 
+**Disabilita ADR** (configurazione, FPort 20, utile per forzare SF manuale):
+```bash
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":20,"object":{"cmd":"set_adr_enabled","value":0}}'
+```
+
+**Riabilita ADR**:
+```bash
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":20,"object":{"cmd":"set_adr_enabled","value":1}}'
+```
+
 Nel repository c'è anche uno **script bash `test_downlinks.sh`** che avvolge tutti questi comandi in un'interfaccia sintetica:
 
 ```bash
@@ -1002,6 +1153,7 @@ Il firmware espone alcuni flag di configurazione in cima al file per switchare t
 #define ENABLE_BATTERY_PROTECTION  1   // 1 = emergency sleep se vbat sotto soglia
 #define ENABLE_DOWNLINK_HANDLER    1   // 1 = interpreta i downlink come comandi
 #define ENABLE_WATCHDOG            1   // 1 = wdt hardware, 0 durante debug con breakpoint
+#define ENABLE_ADR                 1   // default fabbrica ADR (attivo solo in OTAA)
 #define USE_OTAA                   0   // 1 = OTAA, 0 = ABP (attuale)
 ```
 
@@ -1099,19 +1251,18 @@ Il firmware, per essere solo un end-device LoRaWAN "banale", incorpora concetti 
 - **Basso consumo con deep sleep** e gestione dell'alimentazione periferica
 - **Sensori con protocolli diversi** (I²C sincrono per SCD41, UART asincrono per GPS)
 - **Payload binario compatto versionato** con schema forward-compatible
-- **Stack LoRaWAN** con classe A, ABP, banda EU868
+- **Stack LoRaWAN** con classe A, banda EU868, ABP e OTAA selezionabili via `#define`
 - **Uso didattico di FPort** come discriminatore di tipo di messaggio
 - **Persistenza multilivello** (RTC memory + NVS con write batching)
 - **Downlink handler con configurazione runtime modificabile** da remoto
 - **Protezione batteria** software da under-discharge
 - **Watchdog hardware** per recupero automatico da blocchi imprevisti
+- **ADR** (Adaptive Data Rate) attivo in OTAA per ottimizzazione automatica di SF/potenza
 - **Modalità debug/produzione** switchabili
 - **Diagnostica strutturata** con logging e sketch dedicati
 
 Alcune cose che non si sono fatte ma che varrebbe la pena aggiungere in un progetto reale:
 
-- **OTAA invece di ABP**: elimina il problema del FCnt e semplifica il rollout. Il `#define USE_OTAA` è già predisposto
-- **ADR (Adaptive Data Rate)** gestito dal server: attualmente il device usa sempre SF9 fisso; ADR permetterebbe di scendere a SF7 quando il gateway è vicino, risparmiando airtime
 - **Persistenza dell'ultima posizione GPS in NVS** invece che solo in RTC memory: sopravvivrebbe anche a power-off (scelta didattica: non implementata perché la posizione stale può essere fuorviante se il device viene spostato mentre spento)
 - **Node-RED come traduttore MQTT** per rispettare la convenzione `<ambiente>/comandi/` e `<ambiente>/config/` sul broker centrale, mappandoli al topic canonico ChirpStack
 
