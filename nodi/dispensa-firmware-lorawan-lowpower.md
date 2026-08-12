@@ -941,6 +941,31 @@ L'**Adaptive Data Rate** (ADR) è un meccanismo standard LoRaWAN in cui il Netwo
 
 Il vantaggio energetico è concreto: SF7 significa airtime di ~60 ms per un payload di 32 byte, contro i ~250 ms di SF9. Su una batteria alimentata a lungo termine, questo si traduce in centinaia di trasmissioni in più a parità di energia.
 
+### DR vs SF: il glossario nascosto di LoRaWAN
+
+Sia ADR sia molti tool ChirpStack ragionano in **Data Rate (DR)**, non in Spreading Factor (SF). I due concetti sono correlati ma non sinonimi: il DR è un identificatore numerico definito **per regione** dalla specifica LoRaWAN, che incapsula insieme SF, bandwidth (BW) e coding rate. Serve una tabella di conversione per orientarsi.
+
+Per la banda **EU868** (quella che usiamo), la tabella è:
+
+| DR | Spreading Factor | Bandwidth | Bitrate | Airtime 32 byte | Sensibilità |
+|----|------------------|-----------|---------|-----------------|-------------|
+| DR0 | SF12 | 125 kHz | ~250 bps | ~1500 ms | −137 dBm |
+| DR1 | SF11 | 125 kHz | ~440 bps | ~740 ms | −135 dBm |
+| DR2 | SF10 | 125 kHz | ~980 bps | ~370 ms | −133 dBm |
+| DR3 | **SF9** | 125 kHz | ~1760 bps | ~185 ms | −130 dBm |
+| DR4 | SF8 | 125 kHz | ~3125 bps | ~100 ms | −127 dBm |
+| DR5 | SF7 | 125 kHz | ~5470 bps | ~60 ms | −124 dBm |
+| DR6 | SF7 | 250 kHz | ~11000 bps | ~30 ms | −121 dBm |
+| DR7 | FSK | — | 50 kbps | — | — |
+
+**DR3 (SF9)** è il default del nostro firmware (`#define LORAWAN_SF 9`). Con ADR attivo, il NS tipicamente porta il device a **DR5 (SF7)** se il link lo permette, che è il DR più efficiente per LoRa in EU868 (DR6 con BW 250 kHz è raramente supportato dai gateway commerciali; DR7 è FSK, non LoRa).
+
+Osservazioni utili leggendo la tabella:
+
+- **Ogni step di DR** raddoppia (o quasi) il bitrate, dimezzando l'airtime. Passare da DR3 a DR5 significa airtime da 185 ms a 60 ms.
+- **La sensibilità** peggiora salendo di DR: il NS accetta un DR alto solo se il link è buono a sufficienza (SNR margin > 0).
+- **La finestra RX2** in EU868 usa fisso **DR0** (SF12) su 869.525 MHz per massimizzare la probabilità di ricezione anche in condizioni di link degradate. Per questo la RX2 è più "lenta" della RX1.
+
 ### Come funziona ADR concretamente
 
 Ogni uplink di un device ADR-enabled porta con sé un bit `ADRCtrl` nel MAC header che dice al NS "ottimizzami tu". Il NS raccoglie statistiche sul link (SNR, RSSI degli ultimi ~20 uplink) e quando ha abbastanza dati manda un MAC command `LinkADRReq` al device via downlink, indicando il nuovo SF e la nuova potenza TX. Il device applica i nuovi parametri e conferma con `LinkADRAns` nel prossimo uplink.
