@@ -402,7 +402,7 @@ Questo dice a RadioLib "attiva la sessione in modalità 1.0", usando la stessa `
 
 **`activateABP()` restituisce codici non-error**. La funzione ritorna `RADIOLIB_LORAWAN_NEW_SESSION` (=2) o `RADIOLIB_LORAWAN_SESSION_RESTORED` (=1), che **non sono errori** ma status. Il codice tratta i valori positivi come "OK" e prosegue.
 
-**`sendReceive` in classe A**. Il metodo `node.sendReceive(buf, len, LORAWAN_FPORT)` esegue la sequenza completa della LoRaWAN classe A:
+**`sendReceive` in classe A**. Il metodo `node.sendReceive()` esegue la sequenza completa della LoRaWAN classe A:
 
 1. Trasmette il pacchetto su `LORAWAN_FPORT` (= 1 nel nostro caso)
 2. Apre finestra RX1 (dopo 1 secondo, sulla stessa frequenza del TX ma con DR diverso)
@@ -411,6 +411,40 @@ Questo dice a RadioLib "attiva la sessione in modalità 1.0", usando la stessa `
 5. Ritorna con codice che indica se il downlink è arrivato in RX1 (=1), RX2 (=2), o nessun downlink (=0)
 
 Non si può fare TX senza aprire le due finestre RX: è specifica del protocollo LoRaWAN classe A. Il consumo delle finestre RX è ~10-15 mA per pochi secondi.
+
+**La firma estesa di `sendReceive` per gestire il downlink**. Nel firmware usiamo la versione che riceve **direttamente** il payload di downlink come parametro:
+
+```cpp
+uint8_t          dlBuf[64];
+size_t           dlLen = sizeof(dlBuf);
+LoRaWANEvent_t   dlEvent;
+
+int16_t state = node.sendReceive(
+    (uint8_t*)buf, len, LORAWAN_FPORT,   // uplink: payload, length, fPort
+    dlBuf, &dlLen, false,                // downlink: buffer, size (in/out), isConfirmed
+    NULL, &dlEvent                       // eventi opzionali (uplink/downlink)
+);
+```
+
+I parametri chiave:
+- **`dlBuf` e `dlLen`**: buffer allocato dal chiamante dove RadioLib scrive il downlink ricevuto. In ingresso `dlLen` è la capacità del buffer, in uscita è la lunghezza effettiva ricevuta.
+- **`isConfirmed = false`**: non richiediamo ACK dal NS (aumenterebbe il traffico e il duty cycle usato).
+- **`dlEvent`**: struct `LoRaWANEvent_t` popolata con i metadati del downlink ricevuto — in particolare **`dlEvent.fPort`** contiene il FPort del downlink, necessario per instradare correttamente al dispatcher (FPort 10 = comandi ordinari, FPort 20 = configurazione).
+
+Se il downlink handler è disabilitato (`ENABLE_DOWNLINK_HANDLER = 0`) usiamo la versione minimale che ignora il downlink:
+
+```cpp
+int16_t state = node.sendReceive((uint8_t*)buf, len, LORAWAN_FPORT);
+```
+
+**Attenzione — un errore comune migrando da RadioLib 6.x**: nelle versioni precedenti esisteva un metodo separato tipo `node.getDownlinkData(buf, &len, &port)` da chiamare **dopo** `sendReceive()` per estrarre il payload ricevuto. In RadioLib 7.x **questo metodo è stato rimosso**: il downlink si ottiene esclusivamente tramite i parametri di `sendReceive()`. Se il compilatore ti segnala:
+
+```
+error: 'class LoRaWANNode' has no member named 'getDownlinkData';
+       did you mean 'getDownlinkClassC'?
+```
+
+la soluzione è passare a `sendReceive()` con la firma estesa (buffer + `LoRaWANEvent_t*`) come mostrato sopra. Il suggerimento del compilatore verso `getDownlinkClassC` è fuorviante: quel metodo esiste ma è per la classe C (device sempre in ascolto), non per la classe A.
 
 ---
 
@@ -788,6 +822,41 @@ Il ciclo di vita è:
 5. **Prima del deep sleep** si rimuove il task dal watchdog (altrimenti il sleep verrebbe interpretato come blocco)
 
 Il reset causato dal watchdog è visibile nel log di boot successivo tramite `esp_reset_reason()`, permettendo di rilevare che c'è stato un problema.
+
+### Un gotcha: il watchdog è già inizializzato al boot
+
+Nelle versioni recenti di **arduino-esp32 (3.x)**, il framework auto-inizializza il Task WDT durante lo startup, con un timeout di default di **5 secondi**. Questo comportamento non era presente nelle versioni 2.x e crea una trappola sottile per chi migra codice più vecchio.
+
+Il problema: chiamare `esp_task_wdt_init()` sopra un WDT già inizializzato **non aggiorna** la configurazione. La funzione ritorna un errore silenzioso (`ESP_ERR_INVALID_STATE`), e il timeout resta 5 secondi. Il codice sembra funzionare perché la chiamata non fallisce visibilmente, ma appena il ciclo attivo supera i 5s (per esempio durante il fix GPS cold start), il chip resetta con:
+
+```
+E (14248) task_wdt: Task watchdog got triggered.
+The following tasks/users did not reset the watchdog in time:
+ - loopTask (CPU 1)
+Tasks currently running:
+ CPU 0: IDLE0
+ CPU 1: loopTask
+```
+
+Il numero tra parentesi (`14248` nell'esempio) è il tempo in ms dal boot: notare che è molto minore del `WDT_TIMEOUT_S` scelto, e questo è il sintomo tipico del problema.
+
+**La soluzione** è rimuovere esplicitamente la configurazione preesistente con `esp_task_wdt_deinit()` prima di applicare la nostra:
+
+```cpp
+esp_task_wdt_deinit();   // rimuovi il wdt di default a 5s
+esp_task_wdt_config_t wdtCfg = {
+    .timeout_ms = WDT_TIMEOUT_S * 1000,
+    .idle_core_mask = (1 << 0),
+    .trigger_panic = true
+};
+esp_task_wdt_init(&wdtCfg);
+esp_task_wdt_add(NULL);
+esp_task_wdt_reset();    // reset iniziale per partire pulito
+```
+
+Il campo `idle_core_mask = (1 << 0)` mantiene la sorveglianza del task idle di CPU0 (come faceva il default del framework). Con `0` si perde questo controllo, con potenziale interferenza.
+
+Se un giorno vedi il watchdog scattare **molto prima** del tuo timeout impostato, la prima cosa da verificare è che ci sia il `deinit()` a inizio setup.
 
 ### La scelta del timeout
 
