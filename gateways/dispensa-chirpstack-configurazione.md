@@ -32,6 +32,10 @@ Complementa la [dispensa firmware](dispensa-firmware-lorawan-lowpower.md): quell
 - **Gateway Bridge**: fa da traduttore tra il protocollo dei gateway (Semtech UDP Packet Forwarder o BasicStation) e il formato interno di ChirpStack.
 - **UI web**: interfaccia di amministrazione per configurare tenant, application, device profile, device.
 
+<p align="center">
+  <img src="img/chirpstack_architecture0.svg" alt="Architettura ChirpStack: componenti e loro relazioni" width="1000">
+</p>
+
 Nella configurazione più semplice — che è quella di questo progetto — tutti e quattro i componenti girano sullo **stesso Raspberry Pi** che fa anche da gateway (grazie al concentratore SX130x). L'immagine **ChirpStack Gateway OS Full** include:
 
 - Il concentratore radio (packet forwarder)
