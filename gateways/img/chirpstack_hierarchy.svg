@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 520" font-family="Arial, sans-serif">
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="dashedArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0080a0"/>
+    </marker>
+  </defs>
+
+  <!-- Titolo -->
+  <text x="350" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">
+    Gerarchia oggetti ChirpStack v4
+  </text>
+
+  <!-- Tenant -->
+  <rect x="250" y="60" width="200" height="60" rx="8" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="350" y="88" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b5e20">Tenant</text>
+  <text x="350" y="108" text-anchor="middle" font-size="11" fill="#33691e">separazione multi-utente</text>
+
+  <!-- Freccia Tenant -> Application -->
+  <line x1="350" y1="120" x2="350" y2="165" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Application -->
+  <rect x="230" y="170" width="240" height="70" rx="8" fill="#bbdefb" stroke="#1565c0" stroke-width="2"/>
+  <text x="350" y="198" text-anchor="middle" font-size="16" font-weight="bold" fill="#0d47a1">Application</text>
+  <text x="350" y="218" text-anchor="middle" font-size="11" fill="#1565c0">raggruppamento logico</text>
+  <text x="350" y="232" text-anchor="middle" font-size="11" fill="#1565c0">di device (con codec condiviso)</text>
+
+  <!-- Linee di ramificazione verso Device Profile e Device -->
+  <line x1="350" y1="240" x2="350" y2="270" stroke="#555" stroke-width="2"/>
+  <line x1="180" y1="270" x2="520" y2="270" stroke="#555" stroke-width="2"/>
+  <line x1="180" y1="270" x2="180" y2="300" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="520" y1="270" x2="520" y2="300" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Device Profile -->
+  <rect x="60" y="305" width="240" height="90" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="2"/>
+  <text x="180" y="333" text-anchor="middle" font-size="15" font-weight="bold" fill="#f57f17">Device Profile</text>
+  <text x="180" y="353" text-anchor="middle" font-size="11" fill="#795548">template di configurazione</text>
+  <text x="180" y="368" text-anchor="middle" font-size="11" fill="#795548">(regione, LoRaWAN ver., ABP/OTAA,</text>
+  <text x="180" y="382" text-anchor="middle" font-size="11" fill="#795548">codec, ADR, ...)</text>
+
+  <!-- Device -->
+  <rect x="400" y="305" width="240" height="90" rx="8" fill="#f8bbd0" stroke="#c2185b" stroke-width="2"/>
+  <text x="520" y="333" text-anchor="middle" font-size="15" font-weight="bold" fill="#880e4f">Device</text>
+  <text x="520" y="353" text-anchor="middle" font-size="11" fill="#4a148c">dispositivo fisico</text>
+  <text x="520" y="368" text-anchor="middle" font-size="11" fill="#4a148c">(DevEUI + chiavi crittografiche +</text>
+  <text x="520" y="382" text-anchor="middle" font-size="11" fill="#4a148c">riferimento a un profilo)</text>
+
+  <!-- Riferimento Device -> Device Profile (freccia tratteggiata) -->
+  <path d="M 400 350 Q 350 350 300 350" fill="none" stroke="#0080a0" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#dashedArrow)"/>
+  <text x="350" y="342" text-anchor="middle" font-size="10" fill="#0080a0" font-style="italic">usa</text>
+
+  <!-- Esempi concreti sotto -->
+  <text x="350" y="435" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">Esempio concreto del progetto</text>
+
+  <text x="180" y="460" text-anchor="middle" font-size="11" fill="#666">abp-eu868-scd41</text>
+  <text x="180" y="475" text-anchor="middle" font-size="11" fill="#666">otaa-eu868-scd41</text>
+  <text x="180" y="490" text-anchor="middle" font-size="10" fill="#999" font-style="italic">(due profili possibili)</text>
+
+  <text x="520" y="460" text-anchor="middle" font-size="11" fill="#666">heltec-serra-01</text>
+  <text x="520" y="475" text-anchor="middle" font-size="11" fill="#666">heltec-serra-02</text>
+  <text x="520" y="490" text-anchor="middle" font-size="10" fill="#999" font-style="italic">(molti device fisici)</text>
+
+  <text x="350" y="200" fill="#0d47a1" font-size="10" opacity="0"/>
+
+</svg>
