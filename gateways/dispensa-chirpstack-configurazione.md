@@ -206,7 +206,7 @@ Compila:
 - **Expected uplink interval (secs)**: `120` — usa il valore che ti serve, serve al NS per rilevare device offline
 
 Nella tab **Join (OTAA / ABP)**:
-- **Device supports OTAA**: **NO** ← questo è il switch che indica ABP
+- **Device supports OTAA**: **NO** ← questo è lo switch che indica ABP
 
 Nella tab **Class-B** e **Class-C**: lascia tutto come default (non usiamo classi B/C).
 
