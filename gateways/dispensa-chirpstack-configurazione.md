@@ -225,6 +225,10 @@ Salva. Vedrai comparire l'application nell'elenco. Clicca su di essa per aprirla
 
 Dentro l'application, vai su **Devices → Add device**.
 
+<p align="center">
+  <img src="img/chirpstack_hierarchy.svg" alt="Gerarchia oggetti ChirpStack v4" width="600">
+</p>
+
 Compila:
 
 - **Name**: `heltec-serra-01` (identificativo umano)
