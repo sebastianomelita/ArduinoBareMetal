@@ -33,7 +33,7 @@ Complementa la [dispensa firmware](dispensa-firmware-lorawan-lowpower.md): quell
 - **UI web**: interfaccia di amministrazione per configurare tenant, application, device profile, device.
 
 <p align="center">
-  <img src="img/chirpstack_architecture0.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="600">
+  <img src="img/chirpstack_architecture0.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
 </p>
 
 Nella configurazione più semplice — che è quella di questo progetto — tutti e quattro i componenti girano sullo **stesso Raspberry Pi** che fa anche da gateway (grazie al concentratore SX130x). L'immagine **ChirpStack Gateway OS Full** include:
