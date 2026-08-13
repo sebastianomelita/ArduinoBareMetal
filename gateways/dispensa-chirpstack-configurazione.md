@@ -322,6 +322,10 @@ Salva.
 
 Nel device appena creato, vai sulla tab **OTAA keys**.
 
+<p align="center">
+  <img src="img/chirpstack_ui_otaa_keys.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
+</p>
+
 - **Application key (AppKey)**: 32 caratteri hex, esempio:
   ```
   00112233445566778899aabbccddeeff
