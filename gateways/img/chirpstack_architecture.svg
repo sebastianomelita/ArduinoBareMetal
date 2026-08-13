@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="355" fill="none" viewBox="0 0 1083 275">
+  <defs>
+    <pattern id="dots" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="7" cy="7" r="1" fill="#dde0e4"/>
+    </pattern>
+    <clipPath id="clip0">
+      <path fill="#fff" d="M0 0h1083v275H0z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip0)">
+    <path fill="#fff" d="M0 0h1083v275H0z"/>
+    <rect width="1083" height="275" fill="url(#dots)"/>
+    <g transform="translate(13,33)">
+
+    <!-- Gap=65px everywhere
+         B1  Device:      x=6,   w=110, right=116
+         B1b Gateway:     x=181, w=110, right=291
+         B2  ChirpStack:  x=356, w=110, right=466
+         B3  Integration: x=531, w=130, right=661
+         B4  DataConv:    x=726, w=130, right=856
+         B5  ThingsBoard: x=921, w=130, right=1051
+         Canvas: 1067
+    -->
+
+    <!-- ThingsBoard Deployment: x=515, width=552 -->
+    <rect x="515" y="-11" width="552" height="192" rx="12" fill="none" stroke="#00695c" stroke-width="0.75" stroke-dasharray="6,4"/>
+    <rect x="535" y="-18" width="178" height="14" fill="#fff"/>
+    <text x="626" y="-11" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#00695c" font-weight="600" dominant-baseline="central" textLength="174" lengthAdjust="spacing">ThingsBoard Deployment</text>
+
+    <!-- ══ BLOCK 1: LoRaWAN Device  x=6 w=110 right=116 ══ -->
+    <rect x="6" y="59" width="110" height="52" rx="10" fill="#fff" stroke="#6a1b9a" stroke-width="1.5"/>
+    <g transform="translate(11.3,64.3) scale(0.69)" fill="#6a1b9a">
+      <rect x="14" y="14" width="32" height="32" rx="2" fill="#6a1b9a"/>
+      <rect x="19" y="19" width="22" height="22" rx="1" fill="#fff"/>
+      <rect x="20" y="8" width="4" height="7" rx="1"/>
+      <rect x="28" y="8" width="4" height="7" rx="1"/>
+      <rect x="36" y="8" width="4" height="7" rx="1"/>
+      <rect x="20" y="45" width="4" height="7" rx="1"/>
+      <rect x="28" y="45" width="4" height="7" rx="1"/>
+      <rect x="36" y="45" width="4" height="7" rx="1"/>
+      <rect x="8" y="20" width="7" height="4" rx="1"/>
+      <rect x="8" y="28" width="7" height="4" rx="1"/>
+      <rect x="8" y="36" width="7" height="4" rx="1"/>
+      <rect x="45" y="20" width="7" height="4" rx="1"/>
+      <rect x="45" y="28" width="7" height="4" rx="1"/>
+      <rect x="45" y="36" width="7" height="4" rx="1"/>
+    </g>
+    <text x="82" y="79" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="middle">LoRaWAN</text>
+    <text x="82" y="91" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="middle">Device</text>
+
+    <!-- Gap 1a: 116→181, center=148 -->
+    <line x1="116" y1="78" x2="173" y2="78" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="173,74 181,78 173,82" fill="#1565c0"/>
+    <text x="148" y="61" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">LoRaWAN</text>
+    <text x="148" y="70" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">uplink</text>
+    <line x1="181" y1="92" x2="124" y2="92" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="124,88 116,92 124,96" fill="#f53d7d"/>
+    <text x="148" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">LoRaWAN</text>
+    <text x="148" y="117" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">downlink</text>
+
+    <!-- ══ BLOCK 1b: LoRaWAN Gateway  x=181 w=110 right=291 ══ -->
+    <rect x="181" y="59" width="110" height="52" rx="10" fill="#fff" stroke="#6a1b9a" stroke-width="1.5"/>
+    <g transform="translate(190,53)" fill="none" stroke="#6a1b9a" stroke-width="1.5" stroke-linecap="round">
+      <line x1="13" y1="38" x2="13" y2="22"/>
+      <path d="M 6,30 a9,9 0 0,1 14,0" fill="none"/>
+      <path d="M 2,24 a15,15 0 0,1 22,0" fill="none"/>
+      <rect x="8" y="38" width="10" height="4" rx="1" fill="#6a1b9a" stroke="none"/>
+      <circle cx="13" cy="22" r="2" fill="#6a1b9a" stroke="none"/>
+    </g>
+    <text x="248" y="79" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="middle">LoRaWAN</text>
+    <text x="248" y="91" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="middle">Gateway</text>
+
+    <!-- Gap 1b: 291→356, center=323 -->
+    <line x1="291" y1="78" x2="348" y2="78" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="348,74 356,78 348,82" fill="#1565c0"/>
+    <text x="323" y="61" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">UDP /</text>
+    <text x="323" y="70" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">BasicStation</text>
+    <line x1="356" y1="92" x2="299" y2="92" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="299,88 291,92 299,96" fill="#f53d7d"/>
+    <text x="323" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">UDP /</text>
+    <text x="323" y="117" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">BasicStation</text>
+
+    <!-- ══ BLOCK 2: ChirpStack Network Server  x=356 w=110 right=466 ══ -->
+    <rect x="356" y="30" width="110" height="110" rx="10" fill="#fff" stroke="#00695c" stroke-width="1.5"/>
+    <text x="411" y="43" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="hanging">ChirpStack</text>
+    <text x="411" y="57" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#17181c" font-weight="600" dominant-baseline="hanging">Network Server</text>
+    <g fill="none" stroke="#00695c" stroke-width="1.3" stroke-linecap="round">
+      <rect x="384" y="80" width="54" height="12" rx="3" fill="#f0f1f3" stroke="#00695c"/>
+      <circle cx="392" cy="86" r="2.5" fill="#00695c" stroke="none"/>
+      <line x1="398" y1="84" x2="430" y2="84" stroke="#c1c3c8" stroke-width="1"/>
+      <line x1="398" y1="88" x2="422" y2="88" stroke="#c1c3c8" stroke-width="1"/>
+      <rect x="384" y="96" width="54" height="12" rx="3" fill="#f0f1f3" stroke="#00695c"/>
+      <circle cx="392" cy="102" r="2.5" fill="#00695c" stroke="none"/>
+      <line x1="398" y1="100" x2="430" y2="100" stroke="#c1c3c8" stroke-width="1"/>
+      <line x1="398" y1="104" x2="422" y2="104" stroke="#c1c3c8" stroke-width="1"/>
+      <rect x="384" y="112" width="54" height="12" rx="3" fill="#f0f1f3" stroke="#00695c"/>
+      <circle cx="392" cy="118" r="2.5" fill="#c1c3c8" stroke="none"/>
+      <line x1="398" y1="116" x2="430" y2="116" stroke="#c1c3c8" stroke-width="1"/>
+      <line x1="398" y1="120" x2="422" y2="120" stroke="#c1c3c8" stroke-width="1"/>
+    </g>
+
+    <!-- Gap 2: 466→531, center=498 -->
+    <line x1="466" y1="78" x2="523" y2="78" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="523,74 531,78 523,82" fill="#1565c0"/>
+    <text x="498" y="61" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">HTTP / MQTT</text>
+    <text x="498" y="70" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">uplink event</text>
+    <line x1="531" y1="92" x2="474" y2="92" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="474,88 466,92 474,96" fill="#f53d7d"/>
+    <text x="498" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">HTTP / MQTT</text>
+    <text x="498" y="117" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">downlink</text>
+
+    <!-- ══ BLOCK 3: ChirpStack Integration  x=531 w=130 right=661 ══ -->
+    <rect x="531" y="20" width="130" height="130" rx="10" fill="#fff" stroke="#00695c" stroke-width="1.5"/>
+    <text x="596" y="33" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#17181c" font-weight="600" dominant-baseline="hanging">ChirpStack</text>
+    <text x="596" y="49" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#17181c" font-weight="600" dominant-baseline="hanging">Integration</text>
+    <!-- Puzzle icon: cx=596, tx=357.5201+(596-312)=641.5201 -->
+    <g transform="matrix(-0.169870,0,0,-0.166552,641.5201,141.5578)" fill="#00695c">
+      <path d="m 465.3,145.05 h -43.5 c -17.7,0 -21.8,-14.7 -12.6,-25.3 15.2,-17.2 7.1,-43 -20.2,-44.5 -27.3,1 -35.4,27.3 -20.2,44 9.1,10.1 5.1,25.3 -12.6,25.3 h -42.5 c -12.6,0 -23.3,10.1 -23.3,23.3 v 55.1 h -1 -78.4 v -21.8 c 0,-2 -2.5,-3 -4.6,-1.5 l -51.1,42 c -1.5,1.5 -1.5,4 0,5.6 l 51.1,42 c 2,1.5 4.6,0 4.6,-2 v -21.8 h 78.2 1 v 55.6 c 0,12.6 10.1,23.3 23.3,23.3 H 356 c 17.7,0 21.8,14.7 12.6,24.8 -15.2,17.2 -7.1,43 20.2,44 27.3,-1 35.4,-27.3 20.2,-44 -9.1,-10.1 -5.1,-24.8 12.6,-24.8 h 43 c 13.2,0 23.8,-10.6 23.8,-23.8 v -43.6 c -0.5,-17.2 -15.2,-21.2 -25.3,-12.1 -17.2,15.2 -43.5,7.1 -44.5,-20.2 1,-27.3 27.3,-35.4 44.5,-20.2 10.1,9.1 24.8,5.1 25.3,-12.1 v -44 c 0.1,-12.7 -10,-23.3 -23.1,-23.3 z"/>
+      <path d="m 244.7,145.45 h -43.5 c -17.7,0 -21.8,-15.2 -12.6,-25.3 15.2,-17.2 7.1,-43.5 -20.2,-44.5 -27.3,1 -35.4,26.8 -20.2,44 9.1,10.1 5.1,25.3 -12.6,25.3 H 93.1 c -13.2,0 -23.3,10.6 -23.3,23.3 v 43.5 c 0,17.7 -15.2,21.8 -25.3,12.6 -17.2,-15.2 -43.5,-7.1 -44.5,20.2 1,27.3 27.3,35.4 44,20.2 10.1,-9.1 25.3,-5.1 25.3,12.6 v 43 c 0,13.2 10.6,23.3 23.3,23.3 h 42.5 c 17.7,0 21.8,14.7 12.6,24.8 -15.2,16.7 -7.1,43 20.2,44 27.3,-1 35.4,-26.8 20.2,-44 -9.1,-10.1 -5.1,-24.8 12.6,-24.8 h 43 c 13.2,0 23.8,-10.6 23.8,-23.8 v -32.7 h -34.4 c -0.5,13.7 -11.7,24.8 -25.3,24.8 -6.1,0 -11.6,-2 -16.2,-5.6 l -51.1,-42 c -6.1,-5.1 -9.6,-12.1 -9.6,-20.2 0,-8.1 3.5,-15.2 9.6,-20.2 l 51.6,-42 c 4.6,-3.5 10.1,-5.6 16.2,-5.6 13.7,0 24.8,11.1 25.3,24.8 H 268 v -32.4 c 0,-13.2 -10.6,-23.3 -23.3,-23.3 z"/>
+    </g>
+
+    <!-- Gap 3: 661→726, center=693 -->
+    <line x1="661" y1="78" x2="718" y2="78" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="718,74 726,78 718,82" fill="#1565c0"/>
+    <text x="693" y="65" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">uplink payload</text>
+    <line x1="726" y1="92" x2="669" y2="92" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="669,88 661,92 669,96" fill="#f53d7d"/>
+    <text x="693" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">encoded payload</text>
+
+    <!-- ══ BLOCK 4: Data Converters  x=726 w=130 right=856 ══ -->
+    <rect x="726" y="20" width="130" height="130" rx="10" fill="#fff" stroke="#00695c" stroke-width="1.5"/>
+    <text x="791" y="33" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#17181c" font-weight="600" dominant-baseline="hanging">Data Converters</text>
+    <g transform="matrix(0.217828,0,0,0.213574,736.2844,53.1842)" fill="#00695c">
+      <path d="m 373.23,68.177 -61.8,-41.6 c -3.4,-2.3 -7.9,0.1 -7.9,4.2 v 22.5 h -153.6 c -10.6,0 -19.1,8.6 -19.1,19.1 v 106.5 c 0,2.3 2.6,3.7 4.5,2.4 l 30,-20.2 c 2.3,-1.5 3.7,-4.1 3.7,-6.9 v -62.7 h 134.4 v 22.5 c 0,4.1 4.5,6.5 7.9,4.2 l 61.8,-41.6 c 3.1,-2 3.1,-6.4 0.1,-8.4 z"/>
+      <path d="m 354.13,117.98 -30,20.2 c -2.3,1.5 -3.7,4.1 -3.7,6.9 v 62.6 h -134.5 v -22.5 c 0,-4.1 -4.5,-6.5 -7.9,-4.2 l -61.8,41.6 c -3,2 -3,6.4 0,8.4 l 61.8,41.6 c 3.4,2.3 7.9,-0.1 7.9,-4.2 v -22.5 h 153.5 c 10.6,0.1 19.2,-8.5 19.2,-19.1 v -106.4 c 0,-2.3 -2.6,-3.7 -4.5,-2.4 z"/>
+    </g>
+    <rect x="735" y="122" width="48" height="15" rx="7.5" fill="#e6f4f1"/>
+    <text x="759" y="129" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#00695c" font-weight="700" dominant-baseline="central">Uplink</text>
+    <rect x="790" y="122" width="58" height="15" rx="7.5" fill="#fde8ef"/>
+    <text x="819" y="129" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" fill="#8a0f3a" font-weight="700" dominant-baseline="central">Downlink</text>
+
+    <!-- Gap 4: 856→921, center=888 -->
+    <line x1="856" y1="78" x2="913" y2="78" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="913,74 921,78 913,82" fill="#1565c0"/>
+    <text x="888" y="61" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">telemetry /</text>
+    <text x="888" y="70" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">attributes</text>
+    <line x1="921" y1="92" x2="864" y2="92" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="864,88 856,92 864,96" fill="#f53d7d"/>
+    <text x="888" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7.5" fill="#888d99">RPC / attribute</text>
+
+    <!-- ══ BLOCK 5: ThingsBoard Core Service  x=921 w=130 right=1051 ══ -->
+    <rect x="921" y="5" width="130" height="160" rx="10" fill="#fff" stroke="#00695c" stroke-width="1.5"/>
+    <text x="986" y="18" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#17181c" font-weight="600" dominant-baseline="hanging">ThingsBoard</text>
+    <text x="986" y="32" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#17181c" font-weight="600" dominant-baseline="hanging">Core Services</text>
+
+    <g transform="translate(232,5)">
+      <!-- Storage -->
+      <rect x="701" y="50" width="106" height="26" rx="5" fill="#f0f1f3" stroke="#c1c3c8" stroke-width=".8"/>
+      <g fill="#00695c" transform="translate(45,-6.5)">
+        <ellipse cx="669" cy="65" rx="7" ry="2.5" fill="#00695c"/>
+        <rect x="662" y="65" width="14" height="9" fill="#00695c"/>
+        <ellipse cx="669" cy="74" rx="7" ry="2.5" fill="#00695c"/>
+        <ellipse cx="669" cy="65" rx="7" ry="2.5" fill="#e6f4f1" opacity=".5"/>
+      </g>
+      <text x="744" y="63" text-anchor="start" font-family="system-ui,sans-serif" font-size="8.5" fill="#37474f" font-weight="600" dominant-baseline="central">Storage</text>
+      <!-- Dashboards -->
+      <rect x="701" y="82" width="106" height="26" rx="5" fill="#f0f1f3" stroke="#c1c3c8" stroke-width=".8"/>
+      <g fill="#00695c" transform="translate(47.5,-5.5)">
+        <rect x="661" y="99" width="2.5" height="7" rx=".5"/>
+        <rect x="665" y="95" width="2.5" height="11" rx=".5"/>
+        <rect x="669" y="97" width="2.5" height="9" rx=".5"/>
+        <path d="M674,104 a6,6 0 0,1 12,0" fill="none" stroke="#00695c" stroke-width="1.3"/>
+        <line x1="680" y1="104" x2="677" y2="99" stroke="#00695c" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="680" cy="104" r="1" fill="#00695c"/>
+      </g>
+      <text x="744" y="95" text-anchor="start" font-family="system-ui,sans-serif" font-size="8.5" fill="#37474f" font-weight="600" dominant-baseline="central">Dashboards</text>
+      <!-- more services indicator (…) -->
+      <circle cx="749" cy="115" r="1.4" fill="#9aa0a6"/>
+      <circle cx="754" cy="115" r="1.4" fill="#9aa0a6"/>
+      <circle cx="759" cy="115" r="1.4" fill="#9aa0a6"/>
+      <!-- Rule Engine -->
+      <rect x="701" y="122" width="106" height="26" rx="5" fill="#f0f1f3" stroke="#c1c3c8" stroke-width=".8"/>
+      <g fill="#00695c" transform="translate(49,0)">
+        <circle cx="665" cy="135" r="4" fill="none" stroke="#00695c" stroke-width="1.3"/>
+        <circle cx="665" cy="135" r="1.5" fill="#00695c"/>
+        <rect x="664" y="129.5" width="2" height="2" rx=".4"/>
+        <rect x="664" y="138.5" width="2" height="2" rx=".4"/>
+        <rect x="659" y="134" width="2" height="2" rx=".4"/>
+        <rect x="669" y="134" width="2" height="2" rx=".4"/>
+        <circle cx="672" cy="129" r="2.5" fill="none" stroke="#00695c" stroke-width="1"/>
+        <circle cx="672" cy="129" r="1" fill="#00695c"/>
+        <line x1="678" y1="128" x2="678" y2="142" stroke="#00695c" stroke-width="1.2"/>
+        <polygon points="683,128 681,134 683.5,134 681,141 687,133 684.5,133 687,128" fill="#00695c"/>
+      </g>
+      <text x="744" y="135" text-anchor="start" font-family="system-ui,sans-serif" font-size="8.5" fill="#37474f" font-weight="600" dominant-baseline="central">Rule Engine</text>
+    </g>
+
+    <!-- ══ LEGEND ══ -->
+    <line x1="4" y1="200" x2="42" y2="200" stroke="#1565c0" stroke-width="1.5"/>
+    <polygon points="34,196 42,200 34,204" fill="#1565c0"/>
+    <text x="56" y="204" font-family="system-ui,sans-serif" font-size="11" fill="#555962">Uplink — device data to ThingsBoard</text>
+    <line x1="4" y1="222" x2="42" y2="222" stroke="#f53d7d" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="12,218 4,222 12,226" fill="#f53d7d"/>
+    <text x="56" y="226" font-family="system-ui,sans-serif" font-size="11" fill="#555962">Downlink — commands to device</text>
+
+    </g>
+  </g>
+</svg>
