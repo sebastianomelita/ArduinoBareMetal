@@ -294,6 +294,10 @@ Se il device non compare mai in LoRaWAN frames, controlla:
 
 Simile al passo 1 di ABP, ma nella tab **Join (OTAA / ABP)**:
 
+<p align="center">
+  <img src="img/otaa-device-profile.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
+</p>
+
 - **Device supports OTAA**: **SI** ← questo è il switch
 
 Puoi anche duplicare il Device Profile ABP esistente e cambiare solo questo flag. La UI ChirpStack ha un pulsante "Duplicate" utile per questo.
