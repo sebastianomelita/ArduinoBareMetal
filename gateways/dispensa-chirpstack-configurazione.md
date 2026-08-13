@@ -107,7 +107,7 @@ Più device che condividono la stessa configurazione tecnica usano lo **stesso**
 - Uno stato di sessione LoRaWAN (attivo/inattivo, FCntUp corrente, ecc.)
 
 <p align="center">
-  <img src="img/chirpstack_hierarchy.svg" alt="Gerarchia oggetti ChirpStack v4" width="500">
+  <img src="img/chirpstack_hierarchy.svg" alt="Gerarchia oggetti ChirpStack v4" width="600">
 </p>
 
 *Figura 2: la gerarchia Tenant → Application → Device Profile / Device in ChirpStack v4. Il Device Profile è un template condiviso da più device.*
