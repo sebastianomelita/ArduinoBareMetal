@@ -225,9 +225,6 @@ Salva. Vedrai comparire l'application nell'elenco. Clicca su di essa per aprirla
 
 Dentro l'application, vai su **Devices → Add device**.
 
-<p align="center">
-  <img src="img/chirpstack_ui_abp_activation.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
-</p>
 
 Compila:
 
@@ -243,6 +240,10 @@ Salva. Il device è ora registrato ma **non ha ancora una sessione attiva** — 
 ### Passo 4: attiva la sessione ABP
 
 Nel device appena creato, vai sulla tab **Activation**.
+
+<p align="center">
+  <img src="img/chirpstack_ui_abp_activation.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
+</p>
 
 Compila:
 
