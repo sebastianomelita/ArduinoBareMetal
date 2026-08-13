@@ -42,7 +42,7 @@ Nella configurazione più semplice — che è quella di questo progetto — tutt
 - Mosquitto MQTT broker (per la comunicazione tra i vari componenti)
 
 <p align="center">
-  <img src="img/chirpstack_architecture.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
+  <img src="img/chirpstack_architecture.svg" alt="Architettura ChirpStack: componenti e loro relazioni" width="1000">
 </p>
 
 *Figura 1: architettura ChirpStack tipica. Il device parla via radio col gateway; il gateway forwarda i pacchetti UDP al Gateway Bridge; questo li normalizza e li passa al Network Server via MQTT; il NS valida, decifra, deduplica e li passa all'Application Server; l'AS applica il codec e pubblica gli eventi applicativi su MQTT (o via HTTP), a cui possono sottoscriversi dashboard, script, database.*
