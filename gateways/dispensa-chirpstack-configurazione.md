@@ -54,7 +54,7 @@ Nella configurazione più semplice — che è quella di questo progetto — tutt
 Il pattern MQTT interno tra i componenti è fondamentale da capire perché è **lo stesso** meccanismo che poi si usa per accedere ai dati applicativi dall'esterno. Un uplink del device arriva sul topic `application/<uuid>/device/<eui>/event/up` e da lì può essere consumato da qualsiasi client MQTT.
 
 <p align="center">
-  <img src="img/chirpstack_architecture1.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="800">
+  <img src="img/chirpstack_architecture1.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
 </p>
 ---
 
