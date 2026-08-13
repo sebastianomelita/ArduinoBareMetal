@@ -226,7 +226,7 @@ Salva. Vedrai comparire l'application nell'elenco. Clicca su di essa per aprirla
 Dentro l'application, vai su **Devices → Add device**.
 
 <p align="center">
-  <img src="img/chirpstack_ui_abp_activation.png" alt="Gerarchia oggetti ChirpStack v4" width="600">
+  <img src="img/chirpstack_ui_abp_activation.png" alt="Gerarchia oggetti ChirpStack v4" width="800">
 </p>
 
 Compila:
