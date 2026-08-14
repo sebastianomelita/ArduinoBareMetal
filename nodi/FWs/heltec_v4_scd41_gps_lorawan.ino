@@ -1,9 +1,23 @@
 /**
- * Heltec WiFi LoRa 32 V4 - SCD41 + L76K GPS - LoRaWAN ABP con deep sleep
+ * Heltec WiFi LoRa 32 V4 - SCD41 + L76K GPS - LoRaWAN OTAA con deep sleep
  * =====================================================================
  *
  * Payload: schema 0x42 (SCD41 + L76K + batteria), 32 byte totali.
  * Formato coerente col decoder JavaScript delle dashboard multi/single.
+ *
+ * Attivazione: OTAA di default (USE_OTAA=1). Il codice supporta anche ABP
+ * (USE_OTAA=0), ma OTAA e' la modalita' testata e consigliata.
+ *
+ * Strategia di persistenza LoRaWAN (importante per capire il resto del file):
+ *   - SESSIONE (contiene il FCnt): vive SOLO in RTC memory. Sopravvive ai
+ *     deep sleep (che sono la norma) ma non ai power-off. Non viene mai
+ *     scritta in NVS -> zero usura flash in esercizio normale.
+ *   - NONCES OTAA (DevNonce/JoinNonce): persistiti in NVS. Sopravvivono ai
+ *     power-off, cosi' un rejoin non riusa un DevNonce (che il NS
+ *     rifiuterebbe come replay).
+ *   - Conseguenza: a un power-off/reflash la sessione si perde e il device
+ *     rifa' un join OTAA (una volta, ~7s), operazione sicura proprio grazie
+ *     ai nonces persistiti. Nessun rischio di FCnt che "torna indietro".
  *
  * Hardware:
  *   - Heltec WiFi LoRa 32 V4 (ESP32-S3R2 + SX1262, senza OLED)
@@ -29,7 +43,8 @@
  *   Flash Size: 8MB
  *   Partition Scheme: 8M with spiffs
  *
- * Credenziali ABP: sostituire con quelle registrate sul Network Server.
+ * Credenziali: sostituire AppKey (OTAA) o DevAddr/NwkSKey/AppSKey (ABP)
+ * con quelle registrate sul Network Server (ChirpStack).
  */
 
 #include <RadioLib.h>
@@ -48,14 +63,23 @@
 // =============================================================
 
 // ---- Intervallo di trasmissione ----
-// 0 = 10s, 1 = 20s, 2 = 1min, 3 = 5min, 4 = 10min, 5 = 30min
+// Indice nell'array TX_INTERVAL_SECONDS (definito piu' sotto).
+// Valore di FABBRICA: la config runtime salvata in NVS (chiave "tx_int")
+// puo' sovrascriverlo se modificato via downlink FPort 20 comando 0x11.
+// Al primo boot (NVS vuota) si usa questo valore.
+//   0 = 10s (test veloci)
+//   1 = 20s
+//   2 = 1min (default produzione)
+//   3 = 5min
+//   4 = 10min
+//   5 = 30min
 #define TX_INTERVAL_PRESET  2
 
 // ---- Modalita' DEBUG ----
 // Se attivo (1), sostituisce il deep sleep con un delay normale + restart,
 // cosi' l'USB CDC non si stacca e vedi i log nel Monitor Seriale.
 // Da disattivare (0) prima di mettere il device a batteria.
-#define DEBUG_NO_DEEP_SLEEP  1
+#define DEBUG_NO_DEEP_SLEEP  0
 
 const uint32_t TX_INTERVAL_SECONDS[] = {
     10, 20, 60, 300, 600, 1800
@@ -64,14 +88,36 @@ const uint32_t TX_INTERVAL_SECONDS[] = {
 // dove cfgTxIntervalPreset e' letto da NVS (o default TX_INTERVAL_PRESET) al boot.
 
 // ---- Timeout attesa fix GPS ----
-// Il primo fix a freddo può richiedere 30-90s. Successivi tipicamente ~1s.
+// Al boot, il device aspetta un fix GPS valido per questo tempo massimo.
+// Se il timeout scade senza fix, si procede comunque con l'ultima posizione
+// nota (in RTC memory) marcata come "stale" (HDOP = 9999).
+//
+// COLD start (primo fix dopo power-on): il GPS deve scaricare almanacco
+// e ephemerides dai satelliti. Puo' richiedere 30-90 secondi anche con
+// buona visibilita' del cielo.
+//
+// WARM start (fix successivi, con dati in cache): il GPS ha gia' almanacco
+// e ephemerides valide. Il fix arriva tipicamente in 1-10 secondi.
+//
+// COLD e' usato al primo boot dopo power-on (hasWarmData==false in RTC).
+// WARM e' usato ai boot successivi durante il ciclo di sleep/wake.
+// COLD e' modificabile via downlink FPort 20 comando 0x14, WARM e' fisso.
 #define GPS_FIX_TIMEOUT_COLD_S  90
 #define GPS_FIX_TIMEOUT_WARM_S  30
 
 // ---- Datarate LoRaWAN (Spreading Factor) ----
-// SF7 = più veloce, meno robusto. SF12 = più robusto, ~10x airtime.
-// EU868: SF7-SF12, tutti a BW 125 kHz per DR0-DR5.
-// Consigliato: SF9 per test iniziali, SF12 solo se il link è marginale.
+// Lo Spreading Factor determina il tradeoff velocita' vs robustezza:
+//   SF7  = massima velocita' (~5.5 kbps), airtime minimo (~60ms per 32B),
+//          minima portata (~2km LOS)
+//   SF12 = minima velocita' (~250 bps), airtime massimo (~1500ms per 32B),
+//          massima portata (~15km LOS)
+// Consumo energetico scala con l'airtime: SF12 consuma ~25x di SF7 per TX.
+//
+// Consigliato: SF9 per test iniziali (compromesso robustezza/consumo).
+// In modalita' OTAA, ADR (Adaptive Data Rate) sovrascrive questo valore
+// autonomamente in base alla qualita' del link. In ABP resta fisso.
+//
+// Valore di FABBRICA, sovrascrivibile via downlink FPort 20 comando 0x12.
 #define LORAWAN_SF  9
 
 // ---- Credenziali ABP ----
@@ -107,7 +153,12 @@ uint8_t appKey[16] = {
 // Il DevEUI e' comune ad ABP e OTAA: viene derivato dal MAC address del chip
 // tramite la funzione getDevEuiFromMac() (definita piu' avanti nel file).
 
-// FPort applicativo
+// FPort applicativo per gli uplink (misure ambientali).
+// FPort e' un campo LoRaWAN che discrimina il tipo di messaggio a livello
+// di rete (non di payload). Convenzioni del progetto:
+//   FPort 1  = uplink misure (questo)
+//   FPort 10 = downlink comandi ordinari (reboot, identify, ...)
+//   FPort 20 = downlink configurazione persistente (set_tx_interval, ...)
 #define LORAWAN_FPORT  1
 
 // ---- Protezione batteria da under-discharge (soglia software) ----
@@ -134,28 +185,53 @@ uint8_t appKey[16] = {
 #define VBAT_RECOVERY_MV      3300    // sopra: ripresa operativita' normale
 #define VBAT_EMERGENCY_SLEEP_S  21600 // 6 ore di sleep in emergenza
 
-// ---- Persistenza sessione LoRaWAN in NVS ----
-// Se attiva (1), il session buffer LoRaWAN (~300 byte) viene salvato in flash
-// NVS ogni FCNT_NVS_SAVE_EVERY uplink. Tra un salvataggio e l'altro, resta
-// in RTC memory (RAM alimentata solo durante deep sleep).
+// ---- Persistenza LoRaWAN: cosa vive dove ----
+// Se attiva (1), la NVS (flash) viene usata per persistere i NONCES OTAA e la
+// runtime config. La SESSIONE LoRaWAN (che contiene il FCnt) NON va in NVS:
+// vive solo in RTC memory.
 //
-// Caratteristiche di sopravvivenza:
-//   RTC memory  : sopravvive a deep sleep. Persa a power-off e reset HW.
-//   NVS (flash) : sopravvive a power-off, reset HW, reflash del firmware
+// Caratteristiche di sopravvivenza dei due storage:
+//   RTC memory  : sopravvive al deep sleep. Persa a power-off e reset HW.
+//   NVS (flash) : sopravvive a power-off, reset HW e reflash del firmware
 //                 (finche' la partition NVS non viene sovrascritta - vale
 //                 con lo schema di partizioni standard di Arduino ESP32).
 //
-// Al boot da NVS viene aggiunto FCNT_BOOT_MARGIN per superare eventuali
-// pacchetti in volo verso il Network Server.
+// Mappatura adottata (vedi anche l'header in cima al file):
+//   SESSIONE  -> solo RTC memory. Aggiornata dopo ogni TX (cacheSessionInRTC).
+//                Il deep sleep la conserva, quindi il FCnt incrementa tra i
+//                cicli. Un power-off la perde -> il device rifa' un join.
+//   NONCES    -> RTC memory + NVS. La NVS li fa sopravvivere al power-off,
+//                cosi' un rejoin non riusa un DevNonce gia' bruciato.
+//   CONFIG    -> NVS (chiavi tx_int, lora_sf, ...), scritta solo ai downlink.
 //
-// Disattiva (0) se stai ancora facendo debug e non vuoi usurare la flash,
-// oppure se sul Network Server hai attivo "skip frame-counter check".
+// Perche' NON salviamo la sessione in NVS: la flash ha vita limitata (~100k
+// scritture/settore) e salvarla ad ogni ciclo la consumerebbe; salvarla di
+// rado (es. ogni N cicli) esporrebbe invece al rischio di riprendere, dopo un
+// power-off, un FCnt piu' basso di quello gia' trasmesso -> il NS scarterebbe
+// gli uplink come replay finche' il contatore non risale. Rifare un join
+// pulito e' piu' semplice e robusto, ed e' gratis in termini di flash.
+//
+// Disattiva (0) solo per test rapidi in cui non vuoi toccare la flash. Con
+// OTAA e' sconsigliato: senza nonces persistiti, dopo un power-off il device
+// puo' riusare un DevNonce e il join viene rifiutato (vedi #warning sotto).
 #define ENABLE_NVS_PERSISTENCE  1
 
-#define FCNT_NVS_SAVE_EVERY   200    // salva in NVS ogni N uplink
-#define FCNT_BOOT_MARGIN      200    // margine di sicurezza al boot da NVS
+// Namespace NVS. Preferences organizza i dati in namespace (max 15 char) e
+// key (max 15 char). Sotto lo stesso namespace "lora" convivono i nonces OTAA
+// e le chiavi di runtime config.
 #define NVS_NAMESPACE         "lora"
+
+// Chiave NVS per il session buffer. In OTAA (USE_OTAA=1) NON e' usata: la
+// sessione vive solo in RTC. Resta perche' le funzioni save/loadSessionFromNVS
+// la referenziano e sono usate dal ramo ABP e dalla modalita' debug.
 #define NVS_KEY_FCNT_UP       "fcnt_up"
+
+// Parametro storico NON PIU' USATO. Nella versione attuale la sessione non
+// viene mai salvata in NVS in nessuna modalita': in OTAA vive in RTC e si
+// rigenera con un join a power-off; in ABP il ripristino non e' supportato da
+// RadioLib (-1120) quindi il FCnt riparte da 0 ogni ciclo (gestito lato server
+// col frame-counter check disabilitato). Lasciato solo per compatibilita'.
+#define FCNT_NVS_SAVE_EVERY   200
 
 // Chiavi NVS per configurazioni modificabili via downlink (FPort 20)
 // Se una chiave e' assente, il firmware usa il default hardcoded del #define
@@ -199,22 +275,62 @@ uint8_t appKey[16] = {
 // ---- Attivazione LoRaWAN: ABP vs OTAA ----
 // 0 = ABP  - chiavi statiche DevAddr + NwkSKey + AppSKey. La sessione LoRaWAN
 //            e' gia' attiva al boot, nessuna comunicazione radio richiesta
-//            per l'attivazione. Il FCnt e' un problema (vedi sezione
-//            "Persistenza del frame counter").
+//            per l'attivazione.
 // 1 = OTAA - chiavi statiche DevEUI + AppEUI + AppKey. Il device fa un join
 //            via radio al boot: manda JoinRequest, il NS risponde con
 //            JoinAccept che contiene DevAddr + materiale per derivare
-//            NwkSKey e AppSKey di sessione. FCnt gestito automaticamente
-//            dal NS ad ogni join.
+//            NwkSKey e AppSKey di sessione. FCnt gestito automaticamente.
 //
-// Cambiando questo flag NON serve modificare altro nel firmware: il codice
-// in initLoRaWAN() sceglie la strategia in base a USE_OTAA. Serve pero'
-// riconfigurare il device su ChirpStack:
-//   ABP  -> Device Profile con "Device supports OTAA" = OFF, poi inserisci
-//           DevAddr + NwkSKey + AppSKey
-//   OTAA -> Device Profile con "Device supports OTAA" = ON, poi inserisci
-//           solo AppKey (DevAddr assegnato dal NS al join)
-#define USE_OTAA  0
+// ===================================================================
+//  DIFFERENZE OPERATIVE E CONFIG DA FARE - LEGGERE PRIMA DI CAMBIARE
+// ===================================================================
+//
+// Cambiando questo flag NON serve modificare altro nel firmware, ma va
+// riconfigurato il device sul Network Server.
+//
+// -------------------- OTAA (USE_OTAA = 1) -------------------------
+// - Persistenza: la sessione (col FCnt) vive in RTC memory e INCREMENTA
+//   tra i deep sleep. A un power-off si perde la RTC e il device rifa' un
+//   join pulito (FCnt riparte da 0, legittimo). I nonces sono persistiti
+//   in NVS per non riusare un DevNonce.
+// - Protezione anti-replay: ATTIVA (FCnt cresce, il NS la valida).
+// - Config ChirpStack: Device Profile "Device supports OTAA" = ON,
+//   inserire solo AppKey (DevAddr lo assegna il NS al join).
+// - E' la modalita' consigliata per la produzione.
+//
+// -------------------- ABP (USE_OTAA = 0) --------------------------
+// - DevAddr FISSO: lo definisci tu (variabile devAddr) e va inserito
+//   IDENTICO sul NS, insieme a NwkSKey e AppSKey (byte per byte).
+// - Persistenza FCnt: NON possibile con RadioLib 7.x. Il ripristino di
+//   sessione ABP viene scartato con -1120, quindi il FCnt RIPARTE DA 0 ad
+//   ogni ciclo (ogni wake da deep sleep e ogni power-on). Verificato sul
+//   campo. Dettagli tecnici nel ramo ABP di initLoRaWAN().
+// - Protezione anti-replay: RINUNCIATA (vedi punto sotto). Se ti serve,
+//   usa OTAA.
+// - Config ChirpStack (o altro NS):
+//     1) Device Profile: "Device supports OTAA" = OFF.
+//     2) Inserire l'attivazione ABP: DevAddr + NwkSKey + AppSKey uguali al
+//        firmware. (Le chiavi array nel codice = stringa esadecimale sul
+//        NS, stesso ordine MSB-first. Se il MIC non torna, prova a
+//        invertire l'endianness del solo DevAddr.)
+//     3) *** DISABILITARE la validazione del frame counter *** per questo
+//        device (in ChirpStack: device -> opzione "Disable frame-counter
+//        validation" / "Skip frame-counter check"). SENZA questo, essendo
+//        il FCnt sempre 0, il NS scarta ogni uplink dopo il primo come
+//        replay. CON questo, li accetta tutti.
+//   Suggerimento: per ABP crea un DEVICE NUOVO (DevEUI diverso, profilo ABP
+//   puro) invece di riusare un device gia' usato in OTAA, per non
+//   trascinarti dietro la vecchia sessione OTAA (DevAddr/chiavi residui).
+//
+// ---------------- CONFIG GATEWAY (vale per entrambe) --------------
+// Sul concentratore (es. WM1302/SX1302 con chirpstack-concentratord su
+// OpenWRT/RAK): se il gateway NON ha un fix GPS stabile, DISABILITA il GNSS
+// nella config del concentratord (UCI: option gnss '0' nel blocco sx1302,
+// poi restart). Con GNSS attivo ma senza fix, il PPS manda i downlink fuori
+// finestra ("Too early to enqueue") e il device non riceve mai il JoinAccept
+// (OTAA) o i downlink MAC/ADR: si vede rx ok ma tx_emitted sempre 0.
+// ===================================================================
+#define USE_OTAA  1
 
 // Warning di compilazione: OTAA senza NVS = problemi al secondo power-off
 // perche' il DevNonce si perde e il NS rifiuta il nuovo join come replay
@@ -260,13 +376,23 @@ uint8_t appKey[16] = {
 #define ENABLE_ADR    1
 
 // ---- Schema payload ----
-#define SCHEMA_ID  0x42     // SCD41 + L76K + batteria
+// Identificatore univoco del formato dei byte nel payload uplink. E' il
+// primo byte di ogni pacchetto: il codec ChirpStack lo usa per decidere
+// come decodificare i byte successivi. Consente evoluzioni future del
+// payload senza rompere la retrocompatibilita' (basta aggiungere un nuovo
+// SCHEMA_ID e gestirlo nel codec).
+//   0x41 = SDS011 + BME280 (25 byte) - progetto precedente
+//   0x42 = SCD41 + L76K + batteria (32 byte) - questo progetto
+#define SCHEMA_ID  0x42
 
 // =============================================================
 // PIN
 // =============================================================
 
 // --- LoRa SX1262 ---
+// Pin fissi dalla schematica Heltec V4 (identici a V3). NSS = chip select
+// del SPI, DIO1 = interrupt di completamento TX/RX, RST = reset del chip,
+// BUSY = handshake attivo durante operazioni interne del chip.
 #define PIN_LORA_NSS    8
 #define PIN_LORA_SCK    9
 #define PIN_LORA_MOSI  10
@@ -276,6 +402,9 @@ uint8_t appKey[16] = {
 #define PIN_LORA_DIO1  14
 
 // --- I2C SCD41 ---
+// Bus condiviso con altri eventuali sensori I2C. Il SCD41 si alimenta
+// da Vext (controllato da PIN_VEXT_CTRL) quindi si spegne completamente
+// in deep sleep senza consumo residuo.
 #define PIN_I2C_SDA     7
 #define PIN_I2C_SCL     6
 
@@ -343,7 +472,9 @@ static_assert(sizeof(Payload_v0x42) == 32, "Payload deve essere 32 byte");
 // SX1262: RadioLib pinout
 SX1262 radio = new Module(PIN_LORA_NSS, PIN_LORA_DIO1, PIN_LORA_RST, PIN_LORA_BUSY);
 
-// LoRaWAN node in modalità ABP, EU868, subBand 0 (default per EU868)
+// LoRaWAN node su banda EU868, subBand 0 (default EU868).
+// La modalita' effettiva (OTAA/ABP) e' scelta a runtime in initLoRaWAN()
+// in base a USE_OTAA; l'oggetto node e' lo stesso per entrambe.
 LoRaWANNode node(&radio, &EU868, 0);
 
 // GPS
@@ -358,9 +489,10 @@ SensirionI2cScd4x scd4x;
 // Storage tipo key-value: dati organizzati in "namespace" (max 15 char) e
 // dentro ogni namespace in "key" (max 15 char). I valori possono essere
 // int, float, string, o blob binario (con putBytes/getBytes).
-// Nel nostro caso: namespace "lora", key "fcnt_up", valore = session buffer
-// LoRaWAN (~300 byte). Wear leveling automatico: le scritture vengono
-// distribuite su tutti i settori NVS per prolungare la vita della flash.
+// Nel nostro caso (OTAA): namespace "lora" con la key "nonces" (buffer nonces
+// OTAA) e le key di runtime config (tx_int, lora_sf, ...). La sessione NON e'
+// qui: vive in RTC. Wear leveling automatico: le scritture vengono distribuite
+// sui settori NVS per prolungare la vita della flash.
 Preferences prefs;
 
 // Variabili persistenti in RTC memory (sopravvivono al deep sleep,
@@ -459,17 +591,23 @@ void printHex(const uint8_t* buf, size_t len) {
 }
 
 // =============================================================
-// PERSISTENZA sessione LoRaWAN in NVS (Non-Volatile Storage)
+// PERSISTENZA sessione LoRaWAN
 // =============================================================
 //
 // In RadioLib 7.x NON esiste setFCntUp(). Per persistere il FCnt bisogna
-// salvare/ripristinare l'intero session buffer (~100 byte) con
-// getBufferSession() / setBufferSession().
+// salvare/ripristinare l'intero session buffer con getBufferSession() /
+// setBufferSession().
 //
-// Strategia:
-// - Ogni FCNT_NVS_SAVE_EVERY uplink, salva l'intero buffer in NVS
-// - Al deep sleep, tieni una copia in RTC memory (piu' veloce, no usura)
-// - Al boot: prima RTC, poi NVS come fallback
+// Strategia in OTAA (modalita' di default):
+// - Dopo ogni TX si copia la sessione in RTC memory (cacheSessionInRTC).
+//   La RTC sopravvive al deep sleep, quindi il FCnt incrementa tra i cicli.
+// - Al boot si ripristina SOLO dalla RTC. Nessun fallback su NVS: se il boot
+//   arriva da power-off (RTC persa) si rifa' un join, non si ripesca una
+//   sessione vecchia dalla flash (che avrebbe un FCnt ormai superato).
+//
+// Le funzioni save/loadSessionFromNVS qui sotto NON sono usate dal percorso
+// OTAA. Restano perche' servono al ramo ABP (dove la sessione statica va
+// invece persistita in flash) e alla modalita' debug.
 
 // Buffer per la sessione LoRaWAN, in RTC memory (sopravvive al deep sleep)
 RTC_DATA_ATTR uint8_t rtcSessionBuffer[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
@@ -483,6 +621,9 @@ RTC_DATA_ATTR bool    rtcNoncesValid = false;
 
 /**
  * Salva l'attuale buffer di sessione LoRaWAN in NVS.
+ * NON PIU' USATA nella versione attuale (ne' OTAA ne' ABP salvano la sessione
+ * in flash). Lasciata definita per eventuale uso futuro; puo' generare un
+ * warning "defined but not used", innocuo.
  */
 bool saveSessionToNVS() {
     uint8_t* sessionBuf = node.getBufferSession();
@@ -557,17 +698,18 @@ void cacheSessionInRTC() {
 #if USE_OTAA
 
 bool saveNoncesToNVS() {
-    uint8_t buf[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
-    int16_t rc = node.getBufferNonces(buf);
-    if (rc != RADIOLIB_ERR_NONE) {
-        Serial.printf("NVS: getBufferNonces failed rc=%d\n", rc);
+    // getBufferNonces() in RadioLib 7.x ritorna un puntatore al buffer
+    // interno, non riceve un buffer come parametro (come getBufferSession)
+    uint8_t* noncesBuf = node.getBufferNonces();
+    if (!noncesBuf) {
+        Serial.println("NVS: getBufferNonces ha ritornato NULL");
         return false;
     }
     if (!prefs.begin(NVS_NAMESPACE, false)) {
         Serial.println("NVS: apertura namespace R/W fallita");
         return false;
     }
-    size_t written = prefs.putBytes(NVS_KEY_NONCES, buf,
+    size_t written = prefs.putBytes(NVS_KEY_NONCES, noncesBuf,
                                     RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
     prefs.end();
     if (written != RADIOLIB_LORAWAN_NONCES_BUF_SIZE) {
@@ -577,7 +719,7 @@ bool saveNoncesToNVS() {
         return false;
     }
     // Aggiorna anche RTC cache
-    memcpy(rtcNoncesBuffer, buf, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+    memcpy(rtcNoncesBuffer, noncesBuf, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
     rtcNoncesValid = true;
     Serial.println("Nonces OTAA salvati in NVS");
     return true;
@@ -664,19 +806,34 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 
 #if ENABLE_DOWNLINK_HANDLER
 
-// Comandi FPort 10
-#define CMD_REBOOT         0x01
-#define CMD_IDENTIFY       0x02
-#define CMD_FORCE_TX_NOW   0x03
-#define CMD_CLEAR_NVS      0x04
+// ================================================================
+// Comandi FPort 10 - AZIONI (one-shot, non persistenti)
+// ================================================================
+// Formato payload downlink: [command_id][argomenti_opzionali]
+// Il codec ChirpStack (chirpstack_codec.js) traduce JSON -> byte:
+//   {"cmd":"reboot"}       -> [0x01]
+//   {"cmd":"identify"}     -> [0x02]
+//   {"cmd":"force_tx_now"} -> [0x03]
+//   {"cmd":"clear_nvs"}    -> [0x04, 0xA5]
+#define CMD_REBOOT         0x01   // riavvio software del device (ESP.restart())
+#define CMD_IDENTIFY       0x02   // LED lampeggia 10 volte per riconoscimento visivo
+#define CMD_FORCE_TX_NOW   0x03   // salta lo sleep normale, prossimo TX dopo 2s
+#define CMD_CLEAR_NVS      0x04   // cancella NVS namespace 'lora' (richiede 0xA5 magic)
 
-// Comandi FPort 20
-#define CFG_SET_TX_INTERVAL   0x11
-#define CFG_SET_LORAWAN_SF    0x12
-#define CFG_SET_TX_POWER      0x13
-#define CFG_SET_GPS_TIMEOUT   0x14
-#define CFG_SET_BATT_THRESH   0x15
-#define CFG_SET_ADR_ENABLED   0x16
+// ================================================================
+// Comandi FPort 20 - CONFIGURAZIONE (persistente in NVS)
+// ================================================================
+// Formato payload downlink: [config_id][argomenti_binari]
+// Ogni comando modifica un parametro runtime salvandolo nella chiave NVS
+// corrispondente. La modifica viene applicata subito (nella variabile cfg*)
+// e persiste attraverso deep sleep, restart, power-off.
+// Al boot successivo, loadRuntimeConfig() rilegge da NVS il valore aggiornato.
+#define CFG_SET_TX_INTERVAL   0x11   // 1 byte, preset 0-5 -> NVS "tx_int"
+#define CFG_SET_LORAWAN_SF    0x12   // 1 byte, SF 7-12 -> NVS "lora_sf"
+#define CFG_SET_TX_POWER      0x13   // 1 byte, dBm 2-14 -> NVS "tx_pow"
+#define CFG_SET_GPS_TIMEOUT   0x14   // 2 byte LE, secondi 10-300 -> NVS "gps_t"
+#define CFG_SET_BATT_THRESH   0x15   // 4 byte (2xuint16 LE), mV -> NVS "vbat_em"/"vbat_rc"
+#define CFG_SET_ADR_ENABLED   0x16   // 1 byte, 0/1 -> NVS "adr" (effettivo solo in OTAA)
 
 // Fa lampeggiare il LED N volte per identificare visivamente il device
 void identifyBlink(uint8_t times) {
@@ -873,6 +1030,7 @@ void handleDownlink(uint8_t port, uint8_t* buf, size_t len) {
 // SCD41
 // =============================================================
 
+// Indirizzo I2C del sensore SCD41 (fisso da datasheet Sensirion, non modificabile)
 #define SCD41_I2C_ADDR 0x62
 
 bool initScd41() {
@@ -1018,6 +1176,19 @@ void getDevEuiFromMac(uint8_t devEui[8]) {
     devEui[5] = mac[3]; devEui[6] = mac[4]; devEui[7] = mac[5];
 }
 
+// Delay che resetta il watchdog durante attese lunghe (es. backoff join).
+// Un delay() lungo lascerebbe il wdt senza reset e scatterebbe un reset spurio.
+void wdtSafeDelay(uint32_t ms) {
+    uint32_t start = millis();
+    while (millis() - start < ms) {
+#if ENABLE_WATCHDOG
+        esp_task_wdt_reset();
+#endif
+        uint32_t remaining = ms - (millis() - start);
+        delay(remaining > 200 ? 200 : remaining);
+    }
+}
+
 bool initLoRaWAN() {
     Serial.println("Init SPI e SX1262...");
     SPI.begin(PIN_LORA_SCK, PIN_LORA_MISO, PIN_LORA_MOSI, PIN_LORA_NSS);
@@ -1040,15 +1211,34 @@ bool initLoRaWAN() {
     // DevAddr e chiavi di sessione (NwkSKey, AppSKey) vengono derivate
     // dinamicamente. Bisogna persistere i nonces per non ripeterli.
 
-    uint8_t devEui[8];
-    getDevEuiFromMac(devEui);
+    // Deriva il DevEUI come uint64_t (formato richiesto da beginOTAA)
+    // La funzione getDevEuiFromMac riempie un array di 8 byte, lo componiamo
+    // in un uint64_t rispettando il big-endian del formato LoRaWAN.
+    uint8_t devEuiBytes[8];
+    getDevEuiFromMac(devEuiBytes);
+    uint64_t devEui = 0;
+    for (int i = 0; i < 8; i++) {
+        devEui = (devEui << 8) | devEuiBytes[i];
+    }
 
-    Serial.printf("beginOTAA con AppEUI=%016llX, DevEUI derivato da MAC\n",
-                  appEui);
-    node.beginOTAA(appEui, appKey, devEui);
+    Serial.printf("beginOTAA con AppEUI=%016llX, DevEUI=%016llX\n",
+                  appEui, devEui);
 
-    // Prova a ripristinare nonces + sessione dai precedenti join (evita nuovo join)
-    // Priorita': RTC memory -> NVS -> nuovo join
+    // beginOTAA(joinEUI, devEUI, nwkKey, appKey)
+    // In LoRaWAN 1.0.x esiste solo AppKey (nwkKey = NULL o = appKey).
+    // Passiamo NULL per nwkKey: RadioLib in modalita' 1.0 usera' appKey
+    // per entrambi i ruoli crittografici.
+    int16_t rc = node.beginOTAA(appEui, devEui, NULL, (uint8_t*)appKey);
+    if (rc != RADIOLIB_ERR_NONE) {
+        Serial.printf("beginOTAA failed: %d\n", rc);
+        return false;
+    }
+
+    // Ripristino stato dai join precedenti per evitare un nuovo join:
+    //   NONCES   -> da RTC memory, altrimenti da NVS (servono sempre, anche
+    //               per un eventuale rejoin, per non riusare un DevNonce)
+    //   SESSIONE -> solo da RTC memory (mai da NVS, vedi sopra)
+    // Se manca la sessione valida in RTC -> si esegue un join OTAA.
     bool restored = false;
 
     if (rtcNoncesValid) {
@@ -1071,48 +1261,69 @@ bool initLoRaWAN() {
         }
     }
 #endif
-
-    // Sessione esistente -> saltiamo il join (risparmio airtime)
+    // Ripristino della sessione: UNICA fonte e' la RTC memory.
+    // Volutamente NON si legge da NVS: una sessione vecchia in flash avrebbe
+    // un FCnt gia' superato e ChirpStack scarterebbe gli uplink come replay.
+    // Se la sessione RTC c'e' ed e' valida, saltiamo il join (risparmio airtime);
+    // altrimenti (power-off, primo boot) si procede con un join pulito.
     if (rtcSessionValid) {
-        int16_t r = node.setBufferSession(rtcSessionBuffer);
-        if (r == RADIOLIB_ERR_NONE) {
-            Serial.println("Sessione OTAA ripristinata da RTC, join saltato");
-            restored = true;
-        }
-    }
-#if ENABLE_NVS_PERSISTENCE
-    if (!restored) {
-        uint8_t sessionBuf[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
-        if (loadSessionFromNVS(sessionBuf)) {
-            int16_t r = node.setBufferSession(sessionBuf);
-            if (r == RADIOLIB_ERR_NONE) {
-                Serial.println("Sessione OTAA ripristinata da NVS, join saltato");
+        if (node.setBufferSession(rtcSessionBuffer) == RADIOLIB_ERR_NONE) {
+            // activateOTAA dopo il restore = "formalita'" che marca il nodo
+            // attivato; senza, sendReceive puo' dare -1101 NETWORK_NOT_JOINED.
+            int16_t a = node.activateOTAA();
+            if (a == RADIOLIB_LORAWAN_SESSION_RESTORED) {
+                Serial.println("Sessione OTAA ripristinata da RTC, join saltato");
                 restored = true;
-                memcpy(rtcSessionBuffer, sessionBuf,
-                       RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
-                rtcSessionValid = true;
+            } else if (a == RADIOLIB_LORAWAN_NEW_SESSION) {
+                // buffer RTC non valido: ha rifatto un join vero
+                Serial.println("Restore RTC non valido: nuovo join eseguito");
+                restored = true;
+#if ENABLE_NVS_PERSISTENCE
+                saveNoncesToNVS();
+#endif
+                cacheSessionInRTC();
+            } else {
+                Serial.printf("[OTAA] activateOTAA post-restore RTC: %d (rifaccio join)\n", a);
             }
+        } else {
+            Serial.println("[OTAA] setBufferSession(RTC) fallito, rifaccio join");
         }
     }
-#endif
 
     // Nessuna sessione valida -> avvia join con retry
     if (!restored) {
         Serial.println("Avvio join OTAA...");
         const int MAX_JOIN_ATTEMPTS = 3;
         for (int attempt = 1; attempt <= MAX_JOIN_ATTEMPTS; attempt++) {
+#if ENABLE_WATCHDOG
+            esp_task_wdt_reset();
+#endif
             Serial.printf("  Join tentativo %d/%d...\n", attempt, MAX_JOIN_ATTEMPTS);
             int16_t st = node.activateOTAA();
-            if (st == RADIOLIB_LORAWAN_NEW_SESSION) {
-                Serial.println("Join OTAA riuscito!");
+
+            // In RadioLib 7.x sono ENTRAMBI codici di successo:
+            //   RADIOLIB_LORAWAN_NEW_SESSION      (-1118) = nuovo join riuscito
+            //   RADIOLIB_LORAWAN_SESSION_RESTORED (-1117) = sessione ripristinata
+            //                                              dai buffer nonces/session
+            if (st == RADIOLIB_LORAWAN_NEW_SESSION ||
+                st == RADIOLIB_LORAWAN_SESSION_RESTORED) {
+                if (st == RADIOLIB_LORAWAN_NEW_SESSION) {
+                    Serial.println("Join OTAA riuscito (nuova sessione)!");
+                } else {
+                    Serial.println("Sessione OTAA ripristinata dai buffer!");
+                }
                 restored = true;
                 // Salva subito nonces (contengono il nuovo DevNonce usato)
 #if ENABLE_NVS_PERSISTENCE
                 saveNoncesToNVS();
 #endif
                 // Aggiorna nonces in RTC anche se NVS disabilitata
-                node.getBufferNonces(rtcNoncesBuffer);
-                rtcNoncesValid = true;
+                uint8_t* noncesPtr = node.getBufferNonces();
+                if (noncesPtr) {
+                    memcpy(rtcNoncesBuffer, noncesPtr,
+                           RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+                    rtcNoncesValid = true;
+                }
                 cacheSessionInRTC();
                 break;
             }
@@ -1121,7 +1332,7 @@ bool initLoRaWAN() {
             if (attempt < MAX_JOIN_ATTEMPTS) {
                 uint32_t backoff_s = 30UL * attempt;
                 Serial.printf("  Attesa %us prima del prossimo tentativo\n", backoff_s);
-                delay(backoff_s * 1000UL);
+                wdtSafeDelay(backoff_s * 1000UL);
             }
         }
         if (!restored) {
@@ -1134,82 +1345,62 @@ bool initLoRaWAN() {
     // ================================================================
     // ABP - Activation By Personalization
     // ================================================================
-    // Chiavi statiche (DevAddr + NwkSKey + AppSKey). Sessione gia' attiva.
+    // Chiavi statiche (DevAddr + NwkSKey + AppSKey): la sessione e' gia'
+    // attiva al boot, nessun join radio. Il DevAddr in ABP e' FISSO e va
+    // configurato IDENTICO su device e Network Server (vedi nota in fondo).
+    //
+    // ------------------------------------------------------------------
+    //  COMPORTAMENTO DEL FRAME COUNTER IN ABP - LEGGERE
+    // ------------------------------------------------------------------
+    // A differenza dell'OTAA, in ABP NON e' possibile persistere il frame
+    // counter tra i cicli con questa libreria: RadioLib 7.x scarta il
+    // ripristino di sessione ABP con -1120 (RADIOLIB_ERR_SESSION_DISCARDED),
+    // sia da RTC sia da NVS, perche' la ricostruzione dello stato canali
+    // presuppone un join che in ABP non avviene. Non esiste nemmeno una
+    // setFCntUp() pubblica per reiniettare il contatore. L'esempio ufficiale
+    // LoRaWAN_ABP.ino infatti fa solo beginABP() + activateABP(), senza
+    // alcun restore: e' quello che replichiamo qui.
+    //
+    // CONSEGUENZA: ad OGNI ciclo (ogni wake da deep sleep e ogni power-on) il
+    // FCnt riparte da 0. Verificato sul campo: uplink consecutivi arrivano
+    // tutti con FCnt=0.
+    //
+    // PERCHE' FUNZIONA COMUNQUE: il Network Server deve avere la validazione
+    // del frame counter DISABILITATA/RILASSATA per questo device (vedi nota
+    // "CONFIG SERVER" in fondo). Cosi' accetta uplink ripetuti con FCnt=0
+    // invece di scartarli come replay.
+    //
+    // COMPROMESSO: con FCnt fisso a 0 + check rilassato si RINUNCIA alla
+    // protezione anti-replay del frame counter. Accettabile per telemetria
+    // ambientale in rete privata; NON adatto a dati sensibili. Se serve la
+    // protezione anti-replay, usare OTAA (USE_OTAA=1).
+    // ------------------------------------------------------------------
 
-    // BeginABP per LoRaWAN 1.0 (Conduit usa 1.0):
-    //   beginABP(devAddr, fNwkSIntKey, sNwkSIntKey, nwkSEncKey, appSKey)
-    // In LoRaWAN 1.0 esiste solo NwkSKey, quindi:
-    //   fNwkSIntKey = NULL, sNwkSIntKey = NULL, nwkSEncKey = nwkSKey
+    // beginABP per LoRaWAN 1.0.x: esiste solo NwkSKey, quindi
+    // fNwkSIntKey = sNwkSIntKey = NULL, nwkSEncKey = nwkSKey.
     node.beginABP(devAddr, NULL, NULL, nwkSKey, appSKey);
-    Serial.println("beginABP called (LoRaWAN 1.0 mode: fNwk/sNwk = NULL)");
+    Serial.println("beginABP (LoRaWAN 1.0: fNwk/sNwk = NULL)");
 
-    // ---- Riferimento: configurazione LoRaWAN 1.1 (NON usata qui) ----
-    // In LoRaWAN 1.1 le chiavi network sono TRE separate:
-    //   fNwkSIntKey = Forwarding Network Session Integrity Key
-    //   sNwkSIntKey = Serving Network Session Integrity Key
-    //   nwkSEncKey  = Network Session Encryption Key
-    //   appSKey     = Application Session Key
-    //
-    // Vanno tutte definite come uint8_t[16] separati e passate cosi':
-    //
-    //   uint8_t fNwkSIntKey[16] = { 0x.., 0x.., ... };
-    //   uint8_t sNwkSIntKey[16] = { 0x.., 0x.., ... };
-    //   uint8_t nwkSEncKey[16]  = { 0x.., 0x.., ... };
-    //   uint8_t appSKey[16]     = { 0x.., 0x.., ... };
-    //
-    //   node.beginABP(devAddr, fNwkSIntKey, sNwkSIntKey, nwkSEncKey, appSKey);
-    //
-    // Il Network Server deve essere configurato come LoRaWAN 1.1 device.
-    // Il Conduit mPower supporta LoRaWAN 1.0.x per default.
-
-    // activateABP restituisce codici come RADIOLIB_LORAWAN_NEW_SESSION
-    // che non sono errori, solo status. Log soltanto.
+    // activateABP: crea la sessione ABP. Restituisce codici NEGATIVI che sono
+    // SUCCESSI (NEW_SESSION -1118, SESSION_RESTORED -1117), quindi NON si puo'
+    // usare "< 0" per rilevare un errore. Accettiamo i tre codici di successo.
     int16_t abpState = node.activateABP();
-    Serial.printf("activateABP ret=%d ", abpState);
-    switch (abpState) {
-        case RADIOLIB_LORAWAN_NEW_SESSION:      Serial.println("(NEW_SESSION)"); break;
-        case RADIOLIB_LORAWAN_SESSION_RESTORED: Serial.println("(SESSION_RESTORED)"); break;
-        case RADIOLIB_ERR_NONE:                 Serial.println("(OK)"); break;
-        default:                                Serial.println("(?)"); break;
+    bool abpOk = (abpState == RADIOLIB_ERR_NONE) ||
+                 (abpState == RADIOLIB_LORAWAN_NEW_SESSION) ||
+                 (abpState == RADIOLIB_LORAWAN_SESSION_RESTORED);
+    Serial.printf("activateABP ret=%d %s\n", abpState,
+                  abpOk ? "(ok)" : "(ERRORE)");
+    if (!abpOk) {
+        Serial.println("ABP: attivazione fallita, abort ciclo");
+        return false;
     }
+    Serial.println("ABP attivo. FCnt riparte da 0 ad ogni ciclo (vedi nota nel codice).");
+    Serial.println("Richiede 'relaxed frame-counter' sul Network Server.");
 
-    // Prova a ripristinare la sessione precedente per mantenere il FCnt.
-    // Ordine di priorita': RTC memory (veloce) -> NVS (persistente) -> nuova sessione
-    uint8_t sessionBuf[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
-    bool restored = false;
-
-    if (rtcSessionValid) {
-        Serial.println("Ripristino sessione da RTC memory...");
-        int16_t r = node.setBufferSession(rtcSessionBuffer);
-        if (r == RADIOLIB_ERR_NONE) {
-            Serial.println("Sessione ripristinata da RTC OK");
-            restored = true;
-        } else {
-            Serial.printf("setBufferSession(RTC) failed: %d\n", r);
-        }
-    }
-
-    if (!restored) {
-#if ENABLE_NVS_PERSISTENCE
-        if (loadSessionFromNVS(sessionBuf)) {
-            int16_t r = node.setBufferSession(sessionBuf);
-            if (r == RADIOLIB_ERR_NONE) {
-                Serial.println("Sessione ripristinata da NVS OK");
-                restored = true;
-                memcpy(rtcSessionBuffer, sessionBuf, RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
-                rtcSessionValid = true;
-            } else {
-                Serial.printf("setBufferSession(NVS) failed: %d\n", r);
-            }
-        }
-#else
-        Serial.println("Persistenza NVS disattivata (ENABLE_NVS_PERSISTENCE=0)");
-#endif
-    }
-
-    if (!restored) {
-        Serial.println("Nessuna sessione precedente: FCnt parte da 0 (primo boot)");
-    }
+    // NOTA: niente setBufferSession / cacheSessionInRTC qui. In ABP il
+    // ripristino non e' supportato (darebbe -1120) e ricreiamo la sessione da
+    // zero ogni volta di proposito. Le funzioni save/loadSessionFromNVS
+    // restano definite ma non sono usate in ABP.
 #endif  // USE_OTAA
 
     // Imposta potenza TX dalla config runtime (modificabile via downlink)
@@ -1247,36 +1438,65 @@ bool sendPayload(const uint8_t* buf, size_t len) {
     printHex(buf, len);
     Serial.println();
 
-    // sendReceive come nell'esempio ufficiale RadioLib LoRaWAN_ABP.ino
-    int16_t state = node.sendReceive((uint8_t*)buf, len);
+    // In RadioLib 7.x, sendReceive() riceve DIRETTAMENTE il buffer di downlink
+    // come parametro (buffer + puntatore a size). Il fPort del downlink e'
+    // ottenuto tramite LoRaWANEvent_t opzionale.
+#if ENABLE_DOWNLINK_HANDLER
+    uint8_t          dlBuf[64];
+    size_t           dlLen = sizeof(dlBuf);
+    LoRaWANEvent_t   dlEvent;
+    int16_t state = node.sendReceive((uint8_t*)buf, len, LORAWAN_FPORT,
+                                     dlBuf, &dlLen, false,
+                                     NULL, &dlEvent);
+#else
+    int16_t state = node.sendReceive((uint8_t*)buf, len, LORAWAN_FPORT);
+#endif
+
     if (state < RADIOLIB_ERR_NONE) {
-        Serial.printf("sendReceive failed: %d\n", state);
-        switch(state) {
-            case -1101: Serial.println("  (bandwidth non valida - check band plan)"); break;
-            case -1102: Serial.println("  (spreading factor non valido)"); break;
-            case -1105: Serial.println("  (coding rate non valido)"); break;
-            case -1112: Serial.println("  (TX timeout - nessuna risposta dopo trasmissione)"); break;
-            case -1116: Serial.println("  (RX timeout - nessun downlink ricevuto, normale)"); break;
-            case -1117: Serial.println("  (packet size troppo grande per il datarate)"); break;
-            case -1119: Serial.println("  (CRC del downlink errato)"); break;
-            default: break;
-        }
-        return false;
-    }
+		Serial.printf("sendReceive failed: %d\n", state);
+
+		switch (state) {
+			case RADIOLIB_ERR_NETWORK_NOT_JOINED:
+				Serial.println("  (LoRaWAN: NETWORK NOT JOINED)");
+				break;
+
+			case RADIOLIB_ERR_INVALID_BANDWIDTH:
+				Serial.println("  (bandwidth non valida)");
+				break;
+
+			case RADIOLIB_ERR_INVALID_SPREADING_FACTOR:
+				Serial.println("  (spreading factor non valido)");
+				break;
+
+			case RADIOLIB_ERR_INVALID_CODING_RATE:
+				Serial.println("  (coding rate non valido)");
+				break;
+
+			case RADIOLIB_ERR_TX_TIMEOUT:
+				Serial.println("  (TX timeout)");
+				break;
+
+			case RADIOLIB_ERR_RX_TIMEOUT:
+				Serial.println("  (RX timeout)");
+				break;
+
+			default:
+				Serial.println("  (errore RadioLib non gestito)");
+				break;
+		}
+
+		return false;
+	}
     // state == 0 -> nessun downlink; state 1/2 -> downlink in RX1/RX2
     if (state > 0) {
         Serial.printf("TX ok + downlink in RX%d\n", state);
 
 #if ENABLE_DOWNLINK_HANDLER
-        // Leggo il downlink e lo passo al dispatcher
-        uint8_t dlBuf[64];
-        size_t  dlLen = sizeof(dlBuf);
-        uint8_t dlPort = 0;
-        int16_t rc = node.getDownlinkData(dlBuf, &dlLen, &dlPort);
-        if (rc == RADIOLIB_ERR_NONE && dlLen > 0) {
-            handleDownlink(dlPort, dlBuf, dlLen);
+        // Il downlink e' gia' in dlBuf/dlLen, il fPort e' in dlEvent.fPort
+        if (dlLen > 0) {
+            handleDownlink(dlEvent.fPort, dlBuf, dlLen);
         } else {
-            Serial.printf("[DOWNLINK] getDownlinkData rc=%d len=%u\n", rc, (unsigned)dlLen);
+            Serial.println("[DOWNLINK] ricevuto ma payload vuoto (solo MAC commands)");
         }
 #endif
 
@@ -1303,15 +1523,20 @@ bool sendPayload(const uint8_t* buf, size_t len) {
     lastFCntUp = currentFCnt;
     hasWarmData = true;
 
-    // Salva in NVS (flash) solo ogni FCNT_NVS_SAVE_EVERY cicli
-    if (currentFCnt % FCNT_NVS_SAVE_EVERY == 0) {
-#if ENABLE_NVS_PERSISTENCE
-        Serial.printf("Salvataggio periodico sessione in NVS (ogni %d cicli)...\n",
-                      FCNT_NVS_SAVE_EVERY);
-        saveSessionToNVS();
+    // --- Persistenza sessione ---
+    // In ENTRAMBE le modalita' la sessione (col FCnt) sta solo in RTC memory
+    // (cacheSessionInRTC qui sopra) e NON viene scritta in flash: zero usura.
+#if USE_OTAA
+    // OTAA: la RTC conserva la sessione tra i deep sleep -> il FCnt incrementa.
+    // A un power-off la RTC si perde e il device rifa' un join (FCnt da 0,
+    // legittimo), sicuro grazie ai nonces persistiti in NVS.
+#else
+    // ABP: NON salviamo la sessione in NVS. Il ripristino ABP non e' supportato
+    // da RadioLib (darebbe -1120), quindi persistere la sessione sarebbe
+    // inutile: il FCnt riparte comunque da 0 ad ogni ciclo. La ripartenza e'
+    // gestita LATO SERVER con la validazione frame-counter disabilitata (vedi
+    // nota nella sezione USE_OTAA in cima al file).
 #endif
-    }
-
     return true;
 }
 
@@ -1328,7 +1553,16 @@ void enterDeepSleep(uint32_t seconds) {
 #endif
 
 #if DEBUG_NO_DEEP_SLEEP
-    // Modalita' debug: niente deep sleep vero, cosi' l'USB CDC resta viva
+    // === MODALITA' DEBUG ===
+    // Qui usiamo ESP.restart() invece del vero deep sleep, cosi' l'USB CDC non
+    // si stacca e i log restano visibili. ESP.restart() e' un reset software
+    // che AZZERA la RTC memory: quindi la sessione (tenuta solo in RTC) va
+    // persa ad ogni ciclo e il device rifa' un join OTAA ad ogni restart.
+    // E' sicuro perche' i nonces sono persistiti in NVS (niente DevNonce
+    // riusato). In debug quindi vedrai un join ad ogni ciclo: e' atteso.
+    // In produzione (DEBUG_NO_DEEP_SLEEP=0) si usa il vero deep sleep, la RTC
+    // sopravvive e il join avviene una sola volta.
+
     Serial.printf("[DEBUG] Attesa %u s (no deep sleep, USB CDC viva)\n", seconds);
     Serial.flush();
 
@@ -1345,17 +1579,15 @@ void enterDeepSleep(uint32_t seconds) {
     ESP.restart();
     // ESP.restart() non ritorna
 #else
+    // === MODALITA' PRODUZIONE (vero deep sleep) ===
+    // La RTC memory PERSISTE tra un deep sleep e l'altro, quindi la sessione
+    // copiata in RTC dopo ogni TX (cacheSessionInRTC in sendPayload) basta a
+    // mantenere il FCnt aggiornato al risveglio: il device NON rifa' il join,
+    // riprende la sessione e incrementa il contatore. La flash non viene
+    // toccata in questo percorso (nessuna scrittura di sessione), coerente con
+    // la strategia "sessione solo in RTC" descritta in cima al file.
+    //
     Serial.printf("Deep sleep per %u s\n", seconds);
-
-    // Salvataggio "opportunistico" della sessione in NVS prima del deep sleep vero.
-    // Ci proteggiamo contro power-off imprevisti (batteria staccata, brown-out).
-    // Non lo facciamo in modalita' DEBUG per non usurare la flash durante lo sviluppo.
-#if ENABLE_NVS_PERSISTENCE
-    if (rtcSessionValid) {
-        Serial.println("Salvataggio finale sessione in NVS prima del deep sleep...");
-        saveSessionToNVS();
-    }
-#endif
     Serial.flush();
 
     // Spegni tutto
@@ -1404,15 +1636,22 @@ void setup() {
     esp_bt_controller_disable();
 
     // Watchdog hardware: se il ciclo si blocca per piu' di WDT_TIMEOUT_S,
-    // il chip fa reset automatico. Verra' "pettinato" nei punti chiave.
+    // il chip fa reset automatico. Verra' resettato nei punti chiave.
+    //
+    // NOTA: in arduino-esp32 3.x il Task WDT e' gia' auto-inizializzato con
+    // timeout 5s. Se chiamiamo solo esp_task_wdt_init() la nostra config
+    // viene ignorata perche' il wdt "esiste gia'". Serve prima un deinit
+    // per rimuovere quella di default, poi init con la nostra.
 #if ENABLE_WATCHDOG
+    esp_task_wdt_deinit();   // rimuovi eventuale wdt gia' inizializzato
     esp_task_wdt_config_t wdtCfg = {
         .timeout_ms = WDT_TIMEOUT_S * 1000,
-        .idle_core_mask = 0,     // non monitorare i task idle
-        .trigger_panic = true    // panic (reset) al timeout
+        .idle_core_mask = (1 << 0),   // monitora idle task di CPU0
+        .trigger_panic = true         // panic (reset) al timeout
     };
     esp_task_wdt_init(&wdtCfg);
-    esp_task_wdt_add(NULL);      // aggiungi il task corrente (loopTask) al wdt
+    esp_task_wdt_add(NULL);           // aggiungi il task corrente (loopTask) al wdt
+    esp_task_wdt_reset();             // reset iniziale per partire "pulito"
     Serial.printf("Watchdog armato, timeout %us\n", WDT_TIMEOUT_S);
 #endif
 
