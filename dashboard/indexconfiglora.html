@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>LoRaWAN Device Config</title>
+<style>
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Palette: dark/light automatica dalle preferenze sistema */
+:root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --fg: #0f172a;
+    --fg-dim: #64748b;
+    --border: #e2e8f0;
+    --accent: #0284c7;
+    --accent-hover: #0369a1;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --warning: #ea580c;
+    --success: #16a34a;
+    --disabled: #cbd5e1;
+    --input-bg: #ffffff;
+    --code-bg: #f1f5f9;
+    --shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --fg: #f1f5f9;
+        --fg-dim: #94a3b8;
+        --border: #334155;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --danger: #f87171;
+        --danger-hover: #fca5a5;
+        --warning: #fb923c;
+        --success: #4ade80;
+        --disabled: #475569;
+        --input-bg: #0f172a;
+        --code-bg: #0f172a;
+        --shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+.grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+    .container { padding: 24px; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1200px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+    .grid-span-2 { grid-column: span 2; }
+    .grid-span-3 { grid-column: span 3; }
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.app-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+@media (min-width: 768px) {
+    .app-header h1 { font-size: 24px; }
+}
+
+/* Stato connessione con pallino */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+}
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--disabled);
+}
+.status-dot.connected { background: var(--success); box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2); }
+.status-dot.error     { background: var(--danger); }
+.status-dot.connecting {
+    background: var(--warning);
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+}
+@media (min-width: 768px) {
+    .card { padding: 20px; }
+}
+.card h2 {
+    margin: 0 0 16px 0;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ============================================================
+   FORM CONTROLS
+   ============================================================ */
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+label .label-text {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--fg-dim);
+}
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--fg);
+    font-size: 15px;
+    font-family: inherit;
+    /* min touch target 44px per iOS */
+    min-height: 44px;
+}
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+input:disabled, select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Range slider */
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.range-container input[type="range"] {
+    flex: 1;
+    min-height: 44px;
+    accent-color: var(--accent);
+}
+.range-value {
+    min-width: 60px;
+    padding: 4px 10px;
+    background: var(--code-bg);
+    border-radius: 6px;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Toggle switch */
+.toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+.toggle input { display: none; }
+.toggle-slider {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--disabled);
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+.toggle-slider::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+.toggle input:checked ~ .toggle-slider { background: var(--accent); }
+.toggle input:checked ~ .toggle-slider::after { transform: translateX(20px); }
+.toggle input:disabled ~ .toggle-slider { opacity: 0.5; cursor: not-allowed; }
+
+/* Bottoni */
+button {
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    min-height: 44px;
+    transition: background 0.15s;
+}
+button:hover:not(:disabled) { background: var(--accent-hover); }
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+button.secondary {
+    background: transparent;
+    color: var(--fg);
+    border-color: var(--border);
+}
+button.secondary:hover:not(:disabled) {
+    background: var(--code-bg);
+}
+button.danger { background: var(--danger); }
+button.danger:hover:not(:disabled) { background: var(--danger-hover); }
+button.warning { background: var(--warning); }
+button.small { padding: 6px 12px; font-size: 13px; min-height: 34px; }
+
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ============================================================
+   STATE DISPLAY (read-only info)
+   ============================================================ */
+.state-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+@media (min-width: 480px) {
+    .state-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.state-item {
+    padding: 10px 12px;
+    background: var(--code-bg);
+    border-radius: 8px;
+}
+.state-item .k {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg-dim);
+    margin-bottom: 3px;
+}
+.state-item .v {
+    font-weight: 600;
+    font-size: 15px;
+    word-break: break-word;
+}
+
+/* Barra batteria */
+.battery-bar {
+    position: relative;
+    width: 100%;
+    height: 24px;
+    background: var(--code-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.battery-fill {
+    height: 100%;
+    background: var(--success);
+    transition: width 0.3s;
+}
+.battery-fill.warning { background: var(--warning); }
+.battery-fill.critical { background: var(--danger); }
+.battery-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    text-shadow: 0 0 4px rgba(0,0,0,0.3);
+    color: white;
+}
+
+/* Feature flags come chip */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+.chip {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--code-bg);
+    color: var(--fg-dim);
+    border: 1px solid var(--border);
+}
+.chip.on {
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--success);
+    border-color: rgba(74, 222, 128, 0.4);
+}
+
+.warning-banner {
+    padding: 10px 14px;
+    margin-top: 10px;
+    background: rgba(234, 88, 12, 0.1);
+    border-left: 3px solid var(--warning);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--warning);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--fg-dim);
+    font-size: 14px;
+}
+
+/* ============================================================
+   LOG
+   ============================================================ */
+.log {
+    background: var(--code-bg);
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 12px;
+    padding: 8px;
+}
+.log-entry {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 80px 60px 1fr;
+    gap: 8px;
+    align-items: baseline;
+}
+.log-entry:last-child { border-bottom: none; }
+.log-time { color: var(--fg-dim); font-size: 11px; }
+.log-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-align: center;
+}
+.log-tag.up { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+.log-tag.state { background: rgba(56, 189, 248, 0.15); color: var(--accent); }
+.log-tag.down { background: rgba(234, 88, 12, 0.15); color: var(--warning); }
+.log-tag.info { background: var(--code-bg); color: var(--fg-dim); }
+.log-tag.error { background: rgba(220, 38, 38, 0.15); color: var(--danger); }
+.log-msg { word-break: break-word; color: var(--fg); }
+
+.log-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+.toast-container {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1000;
+    pointer-events: none;
+}
+@media (min-width: 640px) {
+    .toast-container {
+        left: auto;
+        max-width: 400px;
+    }
+}
+.toast {
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    pointer-events: auto;
+    animation: slideIn 0.2s ease-out;
+    font-size: 14px;
+}
+.toast.success { border-left-color: var(--success); }
+.toast.error   { border-left-color: var(--danger); }
+.toast.warning { border-left-color: var(--warning); }
+.toast.info    { border-left-color: var(--accent); }
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================================================
+   MODAL DI CONFERMA
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.modal h3 {
+    margin: 0 0 12px 0;
+    font-size: 17px;
+}
+.modal p {
+    margin: 0 0 20px 0;
+    color: var(--fg-dim);
+}
+.modal .btn-row {
+    justify-content: flex-end;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="app-header">
+        <h1>⚙ LoRaWAN Device Config</h1>
+        <div class="status-badge">
+            <span class="status-dot" id="conn-dot"></span>
+            <span id="conn-label">Disconnesso</span>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <!-- CONNESSIONE MQTT -->
+        <div class="card grid-span-2">
+            <h2>Connessione MQTT</h2>
+            <label>
+                <span class="label-text">Broker WebSocket URL</span>
+                <input type="text" id="broker-url" value="wss://proxy.marconicloud.it:8884">
+            </label>
+            <div class="btn-row">
+                <button id="btn-connect">Connetti</button>
+                <button id="btn-disconnect" class="secondary" disabled>Disconnetti</button>
+            </div>
+        </div>
+
+        <!-- DEVICE SELECTOR -->
+        <div class="card">
+            <h2>Device attivo</h2>
+            <label>
+                <span class="label-text">Seleziona device</span>
+                <select id="device-select"></select>
+            </label>
+            <div class="btn-row">
+                <button id="btn-get-state" class="secondary" disabled>Richiedi stato</button>
+            </div>
+            <div id="state-age" style="margin-top: 10px; font-size: 12px; color: var(--fg-dim);"></div>
+        </div>
+
+        <!-- STATO DEVICE (READ-ONLY) -->
+        <div class="card grid-span-3">
+            <h2>Stato del device
+                <span id="state-badge" style="font-size: 12px; font-weight: normal; color: var(--fg-dim);"></span>
+            </h2>
+            <div id="state-empty" class="empty-state">
+                Nessun dato di stato ricevuto. Connettiti e premi "Richiedi stato".
+            </div>
+            <div id="state-content" style="display: none;">
+                <div class="state-grid">
+                    <div class="state-item">
+                        <span class="k">Boot count</span>
+                        <span class="v" id="s-boot">-</span>
+                    </div>
+                    <div class="state-item">
+                        <span class="k">Uptime</span>
+                        <span class="v" id="s-uptime">-</span>
+                    </div>
+                    <div class="state-item">
+                        <span class="k">FW version</span>
+                        <span class="v" id="s-fw">-</span>
+                    </div>
+                    <div class="state-item">
+                        <span class="k">Reset reason</span>
+                        <span class="v" id="s-reset">-</span>
+                    </div>
+                    <div class="state-item">
+                        <span class="k">TX interval</span>
+                        <span class="v" id="s-tx-int">-</span>
+                    </div>
+                    <div class="state-item">
+                        <span class="k">SF · Power</span>
+                        <span class="v" id="s-sf-pw">-</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <div class="state-item" style="background: transparent; padding: 0;">
+                        <span class="k">Batteria</span>
+                    </div>
+                    <div class="battery-bar">
+                        <div class="battery-fill" id="s-batt-fill" style="width: 0%"></div>
+                        <span class="battery-label" id="s-batt-label">-</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <div class="state-item" style="background: transparent; padding: 0;">
+                        <span class="k">Feature flags (compile-time)</span>
+                    </div>
+                    <div class="chips" id="s-features"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIGURAZIONE (READ-WRITE) -->
+        <div class="card grid-span-2">
+            <h2>Configurazione runtime
+                <span style="font-size: 11px; font-weight: normal; color: var(--fg-dim);">
+                    modifiche persistenti in NVS
+                </span>
+            </h2>
+
+            <label>
+                <span class="label-text">Intervallo di trasmissione</span>
+                <select id="cfg-tx-interval">
+                    <option value="0">10 secondi (test veloci)</option>
+                    <option value="1">20 secondi</option>
+                    <option value="2">1 minuto</option>
+                    <option value="3">5 minuti</option>
+                    <option value="4">10 minuti</option>
+                    <option value="5">30 minuti</option>
+                </select>
+            </label>
+
+            <label>
+                <span class="label-text">Spreading Factor <span id="cfg-sf-warn" style="color: var(--warning); font-weight: normal;"></span></span>
+                <div class="range-container">
+                    <input type="range" id="cfg-sf" min="7" max="12" value="9">
+                    <span class="range-value" id="cfg-sf-val">SF9</span>
+                </div>
+            </label>
+
+            <label>
+                <span class="label-text">Potenza TX</span>
+                <div class="range-container">
+                    <input type="range" id="cfg-tx-power" min="2" max="14" value="14">
+                    <span class="range-value" id="cfg-tx-power-val">14 dBm</span>
+                </div>
+            </label>
+
+            <label>
+                <span class="label-text">Timeout fix GPS (secondi)</span>
+                <input type="number" id="cfg-gps-timeout" min="10" max="300" value="90">
+            </label>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <label>
+                    <span class="label-text">Batteria emergency (mV)</span>
+                    <input type="number" id="cfg-vbat-em" min="2500" max="4200" step="50" value="3100">
+                </label>
+                <label>
+                    <span class="label-text">Batteria recovery (mV)</span>
+                    <input type="number" id="cfg-vbat-rec" min="2500" max="4200" step="50" value="3300">
+                </label>
+            </div>
+
+            <label class="toggle" style="margin-top: 12px;">
+                <input type="checkbox" id="cfg-adr">
+                <span class="toggle-slider"></span>
+                <span>ADR (Adaptive Data Rate) <span id="cfg-adr-note" style="color: var(--fg-dim); font-size: 12px;"></span></span>
+            </label>
+        </div>
+
+        <!-- AZIONI -->
+        <div class="card">
+            <h2>Azioni</h2>
+            <div class="btn-row" style="flex-direction: column; align-items: stretch;">
+                <button id="btn-identify" class="secondary" disabled>💡 Identify (blink)</button>
+                <button id="btn-identify-on" class="secondary" disabled>💡 Identify persistente ON</button>
+                <button id="btn-identify-off" class="secondary" disabled>💡 Identify persistente OFF</button>
+                <button id="btn-force-tx" class="secondary" disabled>📡 Force TX now</button>
+                <button id="btn-reboot" class="warning" disabled>🔄 Reboot device</button>
+                <button id="btn-clear-nvs" class="danger" disabled>⚠ Clear NVS (reset config)</button>
+            </div>
+        </div>
+
+        <!-- LOG MQTT -->
+        <div class="card grid-span-3">
+            <h2>
+                Log MQTT
+                <div class="log-controls">
+                    <label style="margin: 0; font-size: 12px;" class="toggle">
+                        <input type="checkbox" id="log-autoscroll" checked>
+                        <span class="toggle-slider" style="width: 32px; height: 18px;"></span>
+                        <span>Auto-scroll</span>
+                    </label>
+                    <button class="secondary small" id="btn-clear-log">Pulisci</button>
+                </div>
+            </h2>
+            <div class="log" id="log-container">
+                <div class="empty-state">Nessun evento MQTT registrato.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- CONTAINER TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- MODAL DI CONFERMA -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <h3 id="modal-title">Conferma azione</h3>
+        <p id="modal-msg">Sei sicuro?</p>
+        <div class="btn-row">
+            <button class="secondary" id="modal-cancel">Annulla</button>
+            <button class="danger" id="modal-confirm">Conferma</button>
+        </div>
+    </div>
+</div>
+
+<!-- Librerie: MQTT.js da CDN + modulo encoder locale -->
+<script src="https://unpkg.com/mqtt@5/dist/mqtt.min.js"></script>
+<script src="mqtt_downlink_encoder.js"></script>
+
+<script>
+'use strict';
+
+/* ================================================================
+   CONFIGURAZIONE DEVICE - hardcoded in pagina (come richiesto).
+   Aggiungere qui i device disponibili.
+   ================================================================ */
+const DEVICES = [
+    {
+        id: 'heltec-serra-01',
+        label: 'Heltec Serra 01 (SCD41 + L76K)',
+        applicationUuid: '1c2774a7-fe34-46ef-a7bf-18dbd11061fb',
+        devEui: 'f85b1bfffebed444'
+    }
+    // Aggiungere qui altri device:
+    // {
+    //     id: 'heltec-serra-02',
+    //     label: 'Heltec Serra 02',
+    //     applicationUuid: '1c2774a7-fe34-46ef-a7bf-18dbd11061fb',
+    //     devEui: '...'
+    // }
+];
+
+/* ================================================================
+   STATO GLOBALE DELL'APP
+   ================================================================ */
+const app = {
+    client: null,               // client MQTT
+    connected: false,
+    currentDevice: DEVICES[0],
+    lastStateAt: null,          // timestamp ultimo state ricevuto
+    lastStateData: null,        // ultimo state parsato
+    ageInterval: null,          // timer per aggiornare "N secondi fa"
+    pendingConfirm: null,       // callback per il modal
+};
+
+/* ================================================================
+   UTILITY UI
+   ================================================================ */
+
+function $(id) { return document.getElementById(id); }
+
+function setConnStatus(state) {
+    // state: 'disconnected', 'connecting', 'connected', 'error'
+    const dot = $('conn-dot');
+    const label = $('conn-label');
+    dot.className = 'status-dot' + (state === 'connected' ? ' connected'
+        : state === 'connecting' ? ' connecting'
+        : state === 'error' ? ' error' : '');
+    label.textContent = state === 'connected' ? 'Connesso'
+        : state === 'connecting' ? 'Connessione...'
+        : state === 'error' ? 'Errore' : 'Disconnesso';
+}
+
+function toast(msg, type) {
+    type = type || 'info';
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.textContent = msg;
+    $('toast-container').appendChild(el);
+    setTimeout(function () {
+        el.style.transition = 'opacity 0.3s';
+        el.style.opacity = '0';
+        setTimeout(function () { el.remove(); }, 300);
+    }, 3500);
+}
+
+function confirm(title, msg, onOk) {
+    $('modal-title').textContent = title;
+    $('modal-msg').textContent = msg;
+    app.pendingConfirm = onOk;
+    $('modal').classList.add('open');
+}
+function closeModal() {
+    $('modal').classList.remove('open');
+    app.pendingConfirm = null;
+}
+
+/**
+ * Aggiunge una riga al log MQTT.
+ * type: 'up' (misure), 'state', 'down', 'info', 'error'
+ */
+function logEvent(type, msg) {
+    const container = $('log-container');
+    // rimuovi empty state
+    const empty = container.querySelector('.empty-state');
+    if (empty) empty.remove();
+
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+
+    const time = new Date().toLocaleTimeString('it-IT', { hour12: false });
+    const tagLabels = { up: 'UP', state: 'STATE', down: 'DOWN', info: 'INFO', error: 'ERROR' };
+
+    entry.innerHTML =
+        '<span class="log-time">' + time + '</span>' +
+        '<span class="log-tag ' + type + '">' + tagLabels[type] + '</span>' +
+        '<span class="log-msg"></span>';
+    entry.querySelector('.log-msg').textContent = msg;
+
+    container.appendChild(entry);
+
+    // Limita a 200 righe per non consumare memoria
+    while (container.children.length > 200) {
+        container.removeChild(container.firstChild);
+    }
+
+    // Auto-scroll se abilitato
+    if ($('log-autoscroll').checked) {
+        container.scrollTop = container.scrollHeight;
+    }
+}
+
+/* ================================================================
+   MQTT CONNECT/DISCONNECT
+   ================================================================ */
+
+function mqttConnect() {
+    const url = $('broker-url').value.trim();
+    if (!url) {
+        toast('Inserisci URL del broker', 'error');
+        return;
+    }
+    setConnStatus('connecting');
+    logEvent('info', 'Connessione a ' + url + '...');
+
+    try {
+        app.client = mqtt.connect(url, {
+            keepalive: 30,
+            reconnectPeriod: 3000,
+            connectTimeout: 10000
+        });
+    } catch (err) {
+        setConnStatus('error');
+        logEvent('error', 'Errore mqtt.connect: ' + err.message);
+        toast('Errore connessione: ' + err.message, 'error');
+        return;
+    }
+
+    app.client.on('connect', function () {
+        app.connected = true;
+        setConnStatus('connected');
+        logEvent('info', 'Connesso al broker');
+        toast('Connesso al broker', 'success');
+        $('btn-connect').disabled = true;
+        $('btn-disconnect').disabled = false;
+        enableDeviceControls(true);
+        subscribeToDevice();
+    });
+
+    app.client.on('reconnect', function () {
+        setConnStatus('connecting');
+        logEvent('info', 'Riconnessione...');
+    });
+
+    app.client.on('close', function () {
+        if (app.connected) {
+            app.connected = false;
+            setConnStatus('disconnected');
+            logEvent('info', 'Connessione chiusa');
+        }
+    });
+
+    app.client.on('error', function (err) {
+        setConnStatus('error');
+        logEvent('error', 'MQTT error: ' + err.message);
+        toast('Errore MQTT: ' + err.message, 'error');
+    });
+
+    app.client.on('message', function (topic, payload) {
+        handleMqttMessage(topic, payload);
+    });
+}
+
+function mqttDisconnect() {
+    if (app.client) {
+        app.client.end(true);
+        app.client = null;
+    }
+    app.connected = false;
+    setConnStatus('disconnected');
+    $('btn-connect').disabled = false;
+    $('btn-disconnect').disabled = true;
+    enableDeviceControls(false);
+}
+
+function subscribeToDevice() {
+    if (!app.connected || !app.currentDevice) return;
+    const d = app.currentDevice;
+    const topic = 'application/' + d.applicationUuid + '/device/' + d.devEui + '/event/up';
+    app.client.subscribe(topic, function (err) {
+        if (err) {
+            logEvent('error', 'Sottoscrizione fallita: ' + err.message);
+        } else {
+            logEvent('info', 'Sottoscritto a ' + topic);
+        }
+    });
+}
+
+/* ================================================================
+   GESTIONE MESSAGGI MQTT IN ARRIVO
+   ================================================================ */
+
+function handleMqttMessage(topic, payload) {
+    let json;
+    try {
+        json = JSON.parse(payload.toString());
+    } catch (err) {
+        logEvent('error', 'JSON invalido su ' + topic);
+        return;
+    }
+
+    // ChirpStack passa l'oggetto decodificato in .object
+    const obj = json.object;
+    if (!obj) {
+        logEvent('up', 'Uplink senza object (codec disattivo?)');
+        return;
+    }
+
+    // Discrimina tra misure (schema 0x42) e state (schema 0x43)
+    if (obj.payload_type === 'state') {
+        handleStatePayload(obj);
+    } else {
+        // Misure ambientali normali
+        const co2 = obj.co2_ppm !== undefined ? obj.co2_ppm + ' ppm' : '?';
+        const temp = obj.temp_c !== undefined ? obj.temp_c.toFixed(1) + '°C' : '?';
+        const hum = obj.hum_pct !== undefined ? obj.hum_pct.toFixed(0) + '%' : '?';
+        const vbat = obj.vbat_mv !== undefined ? obj.vbat_mv + ' mV' : '?';
+        logEvent('up', 'CO2=' + co2 + ' T=' + temp + ' RH=' + hum + ' Vbat=' + vbat);
+    }
+}
+
+/* ================================================================
+   STATE PAYLOAD (schema 0x43)
+   ================================================================ */
+
+function handleStatePayload(s) {
+    app.lastStateAt = new Date();
+    app.lastStateData = s;
+
+    logEvent('state', 'State ricevuto (boot#' + s.boot_count + ', uptime ' +
+        formatUptime(s.uptime_s) + ')');
+
+    $('state-empty').style.display = 'none';
+    $('state-content').style.display = 'block';
+
+    // Info di stato
+    $('s-boot').textContent = s.boot_count;
+    $('s-uptime').textContent = formatUptime(s.uptime_s);
+    $('s-fw').textContent = 'v' + s.fw_version;
+    $('s-reset').textContent = s.reset_reason || '?';
+    $('s-tx-int').textContent = s.cfg_tx_interval_label;
+    $('s-sf-pw').textContent = 'SF' + s.cfg_lorawan_sf + ' · ' + s.cfg_tx_power_dbm + ' dBm';
+
+    // Batteria con barra colorata
+    const pct = s.battery_pct || 0;
+    const fill = $('s-batt-fill');
+    fill.style.width = pct + '%';
+    fill.className = 'battery-fill' + (pct < 20 ? ' critical' : pct < 50 ? ' warning' : '');
+    $('s-batt-label').textContent = pct + '%';
+
+    // Feature flags come chip
+    const chipsEl = $('s-features');
+    chipsEl.innerHTML = '';
+    const flags = s.features || {};
+    const flagNames = {
+        use_otaa:            'OTAA',
+        nvs_persistence:     'NVS',
+        downlink_handler:    'Downlink',
+        watchdog:            'Watchdog',
+        battery_protection:  'Batt.Protect',
+        debug_no_deep_sleep: 'DEBUG'
+    };
+    Object.keys(flagNames).forEach(function (key) {
+        const chip = document.createElement('span');
+        chip.className = 'chip' + (flags[key] ? ' on' : '');
+        chip.textContent = flagNames[key];
+        chipsEl.appendChild(chip);
+    });
+
+    // Popola i controlli di configurazione con i valori attuali
+    // (solo se l'utente non ha modificato nulla di recente)
+    $('cfg-tx-interval').value = s.cfg_tx_interval_preset;
+    $('cfg-sf').value = s.cfg_lorawan_sf;
+    $('cfg-sf-val').textContent = 'SF' + s.cfg_lorawan_sf;
+    $('cfg-tx-power').value = s.cfg_tx_power_dbm;
+    $('cfg-tx-power-val').textContent = s.cfg_tx_power_dbm + ' dBm';
+    $('cfg-gps-timeout').value = s.cfg_gps_timeout_s;
+    $('cfg-vbat-em').value = s.cfg_vbat_emergency_mv;
+    $('cfg-vbat-rec').value = s.cfg_vbat_recovery_mv;
+    $('cfg-adr').checked = s.cfg_adr;
+
+    // Note contestuali sulla base delle feature flags
+    updateContextualNotes(flags);
+
+    // Aggiorna age
+    updateStateAge();
+}
+
+/**
+ * Aggiorna note contestuali basate sui feature flags:
+ * - SF: se ADR attivo, warning che sara' sovrascritto
+ * - ADR: se in modo ABP, il toggle e' ignorato dal firmware
+ */
+function updateContextualNotes(flags) {
+    const adrNote = $('cfg-adr-note');
+    const sfWarn = $('cfg-sf-warn');
+    if (!flags.use_otaa) {
+        adrNote.textContent = '(ignorato in modalità ABP)';
+        $('cfg-adr').disabled = true;
+    } else {
+        adrNote.textContent = '';
+        $('cfg-adr').disabled = false;
+    }
+    if (flags.use_otaa && $('cfg-adr').checked) {
+        sfWarn.textContent = '⚠ ADR attivo lo sovrascriverà';
+    } else {
+        sfWarn.textContent = '';
+    }
+}
+
+function formatUptime(seconds) {
+    if (!seconds || seconds < 0) return '-';
+    const d = Math.floor(seconds / 86400);
+    const h = Math.floor((seconds % 86400) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (d > 0) return d + 'g ' + h + 'h ' + m + 'm';
+    if (h > 0) return h + 'h ' + m + 'm';
+    if (m > 0) return m + 'm ' + s + 's';
+    return s + 's';
+}
+
+function updateStateAge() {
+    if (!app.lastStateAt) {
+        $('state-age').textContent = '';
+        return;
+    }
+    const ageSec = Math.floor((Date.now() - app.lastStateAt.getTime()) / 1000);
+    let ageLabel;
+    if (ageSec < 60) ageLabel = ageSec + ' secondi fa';
+    else if (ageSec < 3600) ageLabel = Math.floor(ageSec / 60) + ' minuti fa';
+    else ageLabel = Math.floor(ageSec / 3600) + ' ore fa';
+    $('state-age').textContent = 'Ultimo aggiornamento: ' + ageLabel;
+    $('state-badge').textContent = 'aggiornato ' + ageLabel;
+}
+
+/* ================================================================
+   PUBLISH DOWNLINK
+   ================================================================ */
+
+/**
+ * Pubblica un downlink sul topic ChirpStack del device attivo.
+ * Il formato del payload MQTT deve essere COMPLETO (devEui, fPort, confirmed,
+ * data), altrimenti ChirpStack scarta silenziosamente il messaggio.
+ *
+ * @param {object} cmd    - oggetto {data: base64, fPort: 10|20} da MqttDownlink
+ * @param {string} label  - descrizione umana per log/toast
+ */
+function publishDownlink(cmd, label) {
+    if (!app.connected) {
+        toast('Non connesso al broker', 'error');
+        return;
+    }
+    if (!cmd || !cmd.data || !cmd.fPort) {
+        toast('Payload downlink invalido', 'error');
+        return;
+    }
+
+    const d = app.currentDevice;
+    const topic = 'application/' + d.applicationUuid + '/device/' + d.devEui + '/command/down';
+
+    // Formato completo richiesto da ChirpStack per accettare il downlink.
+    // Nota: fPort e' esplicito, coerente con quanto il codec dedurrebbe
+    // comunque dal primo byte del payload.
+    const payload = JSON.stringify({
+        devEui:    d.devEui,
+        fPort:     cmd.fPort,
+        confirmed: false,
+        data:      cmd.data
+    });
+
+    app.client.publish(topic, payload, { qos: 0 }, function (err) {
+        if (err) {
+            logEvent('error', 'Pubblicazione fallita: ' + err.message);
+            toast('Errore invio: ' + err.message, 'error');
+        } else {
+            logEvent('down', label + ' → fPort=' + cmd.fPort + ' data=' + cmd.data);
+            toast(label + ' inviato', 'success');
+        }
+    });
+}
+
+/* ================================================================
+   UI EVENT HANDLERS - AZIONI
+   ================================================================ */
+
+function initButtons() {
+    // Range slider labels
+    $('cfg-sf').addEventListener('input', function () {
+        $('cfg-sf-val').textContent = 'SF' + this.value;
+    });
+    $('cfg-tx-power').addEventListener('input', function () {
+        $('cfg-tx-power-val').textContent = this.value + ' dBm';
+    });
+
+    // ADR toggle re-render warning SF
+    $('cfg-adr').addEventListener('change', function () {
+        if (app.lastStateData) {
+            updateContextualNotes(app.lastStateData.features || {});
+        }
+    });
+
+    // Connect/Disconnect
+    $('btn-connect').addEventListener('click', mqttConnect);
+    $('btn-disconnect').addEventListener('click', mqttDisconnect);
+
+    // Get state
+    $('btn-get-state').addEventListener('click', function () {
+        publishDownlink(MqttDownlink.encodeGetState(), 'GET_STATE');
+    });
+
+    // Azioni semplici
+    $('btn-identify').addEventListener('click', function () {
+        publishDownlink(MqttDownlink.encodeIdentify(), 'IDENTIFY');
+    });
+    $('btn-identify-on').addEventListener('click', function () {
+        publishDownlink(MqttDownlink.encodeIdentifyOn(), 'IDENTIFY_ON');
+    });
+    $('btn-identify-off').addEventListener('click', function () {
+        publishDownlink(MqttDownlink.encodeIdentifyOff(), 'IDENTIFY_OFF');
+    });
+    $('btn-force-tx').addEventListener('click', function () {
+        publishDownlink(MqttDownlink.encodeForceTxNow(), 'FORCE_TX_NOW');
+    });
+
+    // Azioni distruttive con conferma
+    $('btn-reboot').addEventListener('click', function () {
+        confirm('Riavvia device?',
+            'Il device verra\' riavviato. La sessione LoRaWAN e le config in NVS verranno mantenute.',
+            function () {
+                publishDownlink(MqttDownlink.encodeReboot(), 'REBOOT');
+            });
+    });
+    $('btn-clear-nvs').addEventListener('click', function () {
+        confirm('Cancella NVS?',
+            'ATTENZIONE: verra\' cancellata la sessione LoRaWAN (FCnt), le config runtime, e in OTAA anche i nonces (richiesto nuovo join). Il device si riavviera\'.',
+            function () {
+                publishDownlink(MqttDownlink.encodeClearNvs(), 'CLEAR_NVS');
+            });
+    });
+
+    // Cambi configurazione: pubblica al blur/change
+    $('cfg-tx-interval').addEventListener('change', function () {
+        const preset = parseInt(this.value, 10);
+        publishDownlink(MqttDownlink.encodeSetTxInterval(preset),
+            'SET_TX_INTERVAL preset=' + preset);
+    });
+    $('cfg-sf').addEventListener('change', function () {
+        const sf = parseInt(this.value, 10);
+        publishDownlink(MqttDownlink.encodeSetLorawanSf(sf), 'SET_LORAWAN_SF SF' + sf);
+    });
+    $('cfg-tx-power').addEventListener('change', function () {
+        const p = parseInt(this.value, 10);
+        publishDownlink(MqttDownlink.encodeSetTxPower(p), 'SET_TX_POWER ' + p + 'dBm');
+    });
+    $('cfg-gps-timeout').addEventListener('change', function () {
+        const sec = parseInt(this.value, 10);
+        try {
+            publishDownlink(MqttDownlink.encodeSetGpsTimeout(sec),
+                'SET_GPS_TIMEOUT ' + sec + 's');
+        } catch (err) { toast(err.message, 'error'); }
+    });
+    // Batteria: valida entrambi i campi insieme, pubblica quando si cambia uno dei due
+    function submitBatt() {
+        const em = parseInt($('cfg-vbat-em').value, 10);
+        const rec = parseInt($('cfg-vbat-rec').value, 10);
+        try {
+            publishDownlink(MqttDownlink.encodeSetBattThresholds(em, rec),
+                'SET_BATT_THRESH em=' + em + ' rec=' + rec);
+        } catch (err) { toast(err.message, 'error'); }
+    }
+    $('cfg-vbat-em').addEventListener('change', submitBatt);
+    $('cfg-vbat-rec').addEventListener('change', submitBatt);
+    $('cfg-adr').addEventListener('change', function () {
+        publishDownlink(MqttDownlink.encodeSetAdrEnabled(this.checked),
+            'SET_ADR_ENABLED ' + (this.checked ? 'on' : 'off'));
+    });
+
+    // Log
+    $('btn-clear-log').addEventListener('click', function () {
+        $('log-container').innerHTML = '<div class="empty-state">Log pulito.</div>';
+    });
+
+    // Modal
+    $('modal-cancel').addEventListener('click', closeModal);
+    $('modal-confirm').addEventListener('click', function () {
+        if (app.pendingConfirm) app.pendingConfirm();
+        closeModal();
+    });
+    $('modal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Device selector
+    $('device-select').addEventListener('change', function () {
+        const dev = DEVICES.find(function (d) { return d.id === this.value; }.bind(this));
+        if (!dev) return;
+        // Unsub dal precedente, sub al nuovo
+        if (app.connected && app.currentDevice) {
+            const oldTopic = 'application/' + app.currentDevice.applicationUuid + '/device/' + app.currentDevice.devEui + '/event/up';
+            app.client.unsubscribe(oldTopic);
+        }
+        app.currentDevice = dev;
+        app.lastStateAt = null;
+        app.lastStateData = null;
+        $('state-empty').style.display = 'block';
+        $('state-content').style.display = 'none';
+        $('state-badge').textContent = '';
+        $('state-age').textContent = '';
+        if (app.connected) subscribeToDevice();
+    });
+}
+
+function enableDeviceControls(enabled) {
+    // Abilita/disabilita tutti i bottoni operativi
+    const ids = ['btn-get-state', 'btn-identify', 'btn-identify-on',
+                 'btn-identify-off', 'btn-force-tx', 'btn-reboot', 'btn-clear-nvs'];
+    ids.forEach(function (id) { $(id).disabled = !enabled; });
+    // I controlli config si abilitano solo quando abbiamo dati state validi
+    // (evita di pubblicare accidentalmente valori random al primo caricamento)
+}
+
+/* ================================================================
+   INIT DEVICE DROPDOWN
+   ================================================================ */
+
+function initDeviceSelector() {
+    const sel = $('device-select');
+    DEVICES.forEach(function (d) {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = d.label;
+        sel.appendChild(opt);
+    });
+    sel.value = DEVICES[0].id;
+    app.currentDevice = DEVICES[0];
+}
+
+/* ================================================================
+   INIT ALL
+   ================================================================ */
+
+document.addEventListener('DOMContentLoaded', function () {
+    initDeviceSelector();
+    initButtons();
+    // Timer per aggiornare "N secondi fa"
+    app.ageInterval = setInterval(updateStateAge, 5000);
+});
+</script>
+
+</body>
+</html>
