@@ -1533,3 +1533,4 @@ I file completi descritti in questa dispensa sono disponibili in:
 - **Dashboard di configurazione**: [`indexconfiglora.html`](dashboard/indexconfiglora.html)
 - **Dashboard di comando singola**: [`dashboard_single.html`](dashboard/dashboard_single.html)
 - **Dashboard di comando multipla**: [`dashboard_multi.html`](dashboard/dashboard_multi.html)
+- **readme configurazione**: [`README-configurazione.md`](dashboard/README-configurazione.md)
