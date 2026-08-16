@@ -83,6 +83,10 @@ Questo pattern MOSFET P active-low è tipico di tutte le schede low-power: duran
 
 ---
 
+<p align="center">
+  <img src="img/nodo_wiring_diagram.svgg" alt="Schema collegamenti" width="1100">
+</p>
+
 [Descrizione collegamenti](dispensa-schema-collegamenti.md)
 
 ---
