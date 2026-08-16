@@ -1397,7 +1397,9 @@ Le variabili da adattare:
 - `<app-uuid>` — Application UUID di ChirpStack v4 (es. `1c2774a7-fe34-46ef-a7bf-18dbd11061fb`, lo trovi nell'URL della UI)
 - `<devEUI>` — DevEUI del device in **lowercase senza trattini** (es. `f85b1bfffebed444`)
 
-Il **formato del payload MQTT** deve contenere quattro campi obbligatori: `devEui`, `fPort`, `confirmed`, `data`. Il `data` è la base64 del payload binario, `fPort` corrisponde al primo byte (10 per azioni, 20 per config). Senza uno di questi campi ChirpStack scarta silenziosamente il downlink.
+Il **formato del payload MQTT** deve contenere quattro campi obbligatori: `devEui`, `fPort`, `confirmed`, `data`. Il `data` è la base64 del payload binario, `fPort` corrisponde al primo byte (10 per azioni, 20 per config). Senza uno di questi campi ChirpStack scarta silenziosamente il downlink. AL posto di data potremmo mettere il campo object con il comando in formato JSON invece che BASE64. 
+
+Al momento della realizzazione della dispensa, il formato object per il campo del comando è affetto da un baco casuale che ne rende poco affidabile il funzionamento. Il difetto è limitato al solo downlink per cui i comandi in uplink si mappano correttamente sui JSON mentre quelli in downlink utilizzano un payload BASE64.
 
 **Reboot del device** (azione, FPort 10, byte 0x01):
 ```bash
@@ -1414,6 +1416,12 @@ mosquitto_pub -h <IP-broker> -p 1883 \
   -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
   -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"Ag=="}'
 ```
+
+oppure 
+
+mosquitto_pub -h proxy.marconicloud.it \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"object":{"cmd":"identify"}}'
 
 **Richiedi state del device** (azione, FPort 10, byte 0x07):
 ```bash
