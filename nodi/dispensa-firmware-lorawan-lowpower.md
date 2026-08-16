@@ -2,6 +2,8 @@
 
 Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN autonomo che campiona CO₂, temperatura, umidità e posizione GPS, e li trasmette via LoRaWAN in classe A con deep sleep.
 
+Complementa la dispensa gateway: quella descrive cosa fa il gateway Chirpstack, questa descrive cosa deve fare il dispositivo LoRaWAN per parlare col il gateway.
+
 ## Indice
 
 1. [Contesto e obiettivi](#contesto-e-obiettivi)
