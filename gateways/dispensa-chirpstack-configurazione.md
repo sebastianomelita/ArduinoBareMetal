@@ -2,7 +2,7 @@
 
 Guida pratica alla configurazione di **ChirpStack v4** come LoRaWAN Network Server + Application Server, per il progetto della stazione ambientale Heltec V4 + SCD41 + L76K. Copre entrambe le modalità di attivazione (ABP e OTAA), il codec JavaScript per la traduzione payload, il flusso MQTT, e i gotcha più comuni.
 
-Complementa la [dispensa firmware](dispensa-firmware-lorawan-lowpower.md): quella descrive cosa fa il device, questa descrive cosa deve fare il Network Server per parlare col device.
+Complementa la [dispensa firmware](../nodi/dispensa-firmware-lorawan-lowpower.md): quella descrive cosa fa il device, questa descrive cosa deve fare il Network Server per parlare col device.
 
 ## Indice
 
