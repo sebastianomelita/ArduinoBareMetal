@@ -41,6 +41,11 @@ Il device è pensato per campionare la qualità dell'aria (CO₂, temperatura, u
 
 Non è un progetto commerciale: la finalità è didattica. Molte scelte sono commentate esplicitamente nel codice per rendere trasparenti i motivi delle decisioni.
 
+Sono state realizzate due dashboard: una di misura e una di configurazione e lettura dello stato del dispositivo.
+
+<p align="center">
+  <img src="img/dasboards.png" alt="Heltec WiFi LoRa 32 pinout" width="1000">
+</p>
 ---
 
 ## Architettura hardware
