@@ -117,7 +117,9 @@ function decodeSchema42(b) {
 //
 // FPort 10 - COMANDI DI AZIONE (one-shot, non persistenti)
 //   { cmd: "reboot" }                    -> [0x01]
-//   { cmd: "identify" }                  -> [0x02]
+//   { cmd: "identify" }                  -> [0x02]   (blink singolo one-shot)
+//   { cmd: "identify_on" }               -> [0x05]   (identify persistente ON)
+//   { cmd: "identify_off" }              -> [0x06]   (identify persistente OFF)
 //   { cmd: "force_tx_now" }              -> [0x03]
 //   { cmd: "clear_nvs" }                 -> [0x04, 0xA5]   (byte magic per confermare)
 //
@@ -131,99 +133,78 @@ function decodeSchema42(b) {
 //     value: { emergency_mv: 3100, recovery_mv: 3300 } }
 //                                             -> [0x15, <em_LSB>, <em_MSB>, <rec_LSB>, <rec_MSB>]
 
+// =============================================================
+// ENCODE DOWNLINK - ACCETTA SOLO BASE64
+// =============================================================
+//
+// Input: { data: "base64_string" }
+// Output: bytes decodificati dalla base64
+//
+// Se il campo data NON è una stringa base64 valida, restituisce errore
+// =============================================================
+
 function encodeDownlink(input) {
     var data = input.data;
-    var port = input.fPort;
 
-    if (!data || !data.cmd) {
-        return { errors: ["Downlink richiede { cmd: '...' }"] };
+    // Controllo 1: data deve esistere
+    if (!data) {
+        return { errors: ["missing data"] };
     }
 
-    var cmd = String(data.cmd).toLowerCase();
-
-    // ---- FPort 10: comandi di azione ----
-    if (port === 10) {
-        switch (cmd) {
-            case "reboot":
-                return { bytes: [0x01], fPort: 10 };
-
-            case "identify":
-                return { bytes: [0x02], fPort: 10 };
-
-            case "force_tx_now":
-                return { bytes: [0x03], fPort: 10 };
-
-            case "clear_nvs":
-                return { bytes: [0x04, 0xA5], fPort: 10 };
-
-            default:
-                return { errors: ["Comando FPort 10 sconosciuto: " + cmd] };
-        }
+    // Controllo 2: data deve essere una stringa
+    if (typeof data !== "string") {
+        return { errors: ["data must be a base64 string, got " + typeof data] };
     }
 
-    // ---- FPort 20: configurazione persistente ----
-    if (port === 20) {
-        switch (cmd) {
-
-            case "set_tx_interval":
-                if (data.value === undefined || data.value < 0 || data.value > 5) {
-                    return { errors: ["set_tx_interval richiede value 0-5"] };
-                }
-                return { bytes: [0x11, data.value], fPort: 20 };
-
-            case "set_lorawan_sf":
-                if (data.value === undefined || data.value < 7 || data.value > 12) {
-                    return { errors: ["set_lorawan_sf richiede value 7-12"] };
-                }
-                return { bytes: [0x12, data.value], fPort: 20 };
-
-            case "set_tx_power":
-                if (data.value === undefined || data.value < 2 || data.value > 14) {
-                    return { errors: ["set_tx_power richiede value 2-14 dBm"] };
-                }
-                return { bytes: [0x13, data.value], fPort: 20 };
-
-            case "set_gps_timeout":
-                if (data.value === undefined || data.value < 10 || data.value > 300) {
-                    return { errors: ["set_gps_timeout richiede value 10-300 secondi"] };
-                }
-                return {
-                    bytes: [0x14, data.value & 0xFF, (data.value >> 8) & 0xFF],
-                    fPort: 20
-                };
-
-            case "set_batt_thresholds":
-                if (!data.value || !data.value.emergency_mv || !data.value.recovery_mv) {
-                    return { errors: ["set_batt_thresholds richiede value: {emergency_mv, recovery_mv}"] };
-                }
-                var em = data.value.emergency_mv;
-                var rc = data.value.recovery_mv;
-                if (em < 2500 || em > 4200 || rc < 2500 || rc > 4200 || rc <= em) {
-                    return { errors: ["thresholds: 2500-4200 mV e recovery > emergency"] };
-                }
-                return {
-                    bytes: [0x15,
-                            em & 0xFF, (em >> 8) & 0xFF,
-                            rc & 0xFF, (rc >> 8) & 0xFF],
-                    fPort: 20
-                };
-
-            case "set_adr_enabled":
-                if (data.value !== 0 && data.value !== 1 &&
-                    data.value !== true && data.value !== false) {
-                    return { errors: ["set_adr_enabled richiede value 0/1 o true/false"] };
-                }
-                var v = (data.value === 1 || data.value === true) ? 1 : 0;
-                return { bytes: [0x16, v], fPort: 20 };
-
-            default:
-                return { errors: ["Comando FPort 20 sconosciuto: " + cmd] };
-        }
+    // Controllo 3: deve essere base64 valida (almeno 2 caratteri, no caratteri strani)
+    var base64Regex = /^[A-Za-z0-9+/]+=*$/;
+    if (!base64Regex.test(data)) {
+        return { errors: ["invalid base64 string: " + data] };
     }
 
-    return { errors: ["FPort " + port + " non supportato (usa 10 per azioni, 20 per config)"] };
+    // Decodifica base64 → bytes
+    var bytes = base64ToBytes(data);
+
+    // Controllo 4: non può essere vuota
+    if (bytes.length === 0) {
+        return { errors: ["empty payload"] };
+    }
+
+    // Estrai il fPort dal primo byte (opzionale, o usa fPort fisso)
+    // Per semplicità, usiamo fPort=10 se il primo byte è 0x01-0x06, altrimenti fPort=20
+    var firstByte = bytes[0];
+    var fPort;
+
+    // Comandi di azione (FPort 10)
+    if (firstByte === 0x01 || firstByte === 0x02 || firstByte === 0x03 ||
+        firstByte === 0x04 || firstByte === 0x05 || firstByte === 0x06) {
+        fPort = 10;
+    } else {
+        // Comandi di configurazione (FPort 20)
+        fPort = 20;
+    }
+
+    // Oppure: se vuoi un fPort fisso, decommenta questa riga e commenta sopra
+    // fPort = 20;  // fisso a 20
+
+    return {
+        bytes: bytes,
+        fPort: fPort
+    };
 }
 
+// =============================================================
+// Utility: base64 → bytes
+// =============================================================
+function base64ToBytes(base64) {
+    // Decodifica base64 in stringa binaria
+    var binaryString = atob(base64);
+    var bytes = new Array(binaryString.length);
+    for (var i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
+}
 
 // =============================================================
 // UTILITY - lettura little-endian
