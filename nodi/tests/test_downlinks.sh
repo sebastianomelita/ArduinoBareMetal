@@ -127,6 +127,24 @@ cmd_identify() {
         'IDENTIFY - LED lampeggia 10 volte'
 }
 
+cmd_identify_on() {
+    publish_downlink \
+        '{"fPort":10,"object":{"cmd":"identify_on"}}' \
+        'IDENTIFY_ON - modalita' persistente attiva (blink continuo)'
+}
+
+cmd_identify_off() {
+    publish_downlink \
+        '{"fPort":10,"object":{"cmd":"identify_off"}}' \
+        'IDENTIFY_OFF - disattiva modalita' identify persistente'
+}
+
+cmd_get_state() {
+    publish_downlink \
+        '{"fPort":10,"object":{"cmd":"get_state"}}' \
+        'GET_STATE - richiede invio payload state 0x43 nel prossimo TX'
+}
+
 cmd_force_tx() {
     publish_downlink \
         '{"fPort":10,"object":{"cmd":"force_tx_now"}}' \
@@ -332,6 +350,9 @@ COMANDI DI CONFIGURAZIONE (FPort 20):
   set_gps_timeout <secondi>    Timeout fix GPS 10-300s
   set_batt_thresh <em> <rc>    Soglie batteria emergency/recovery in mV
   set_adr_enabled <0|1>        Abilita/disabilita ADR (solo effettivo in OTAA)
+  identify_on                  Modalita' identify persistente (blink continuo)
+  identify_off                 Disattiva modalita' identify persistente
+  get_state                    Richiede invio payload state 0x43 nel prossimo TX
 
 MONITORING:
   sub_up                       Ascolta uplink dal device in tempo reale
@@ -373,6 +394,9 @@ fi
 case "${1:-help}" in
     reboot)             cmd_reboot ;;
     identify)           cmd_identify ;;
+    identify_on)        cmd_identify_on ;;
+    identify_off)       cmd_identify_off ;;
+    get_state)          cmd_get_state ;;
     force_tx)           cmd_force_tx ;;
     clear_nvs)          cmd_clear_nvs ;;
 
