@@ -119,19 +119,92 @@ Il processo si riduce a:
 1. Scarica l'immagine da `https://www.chirpstack.io/docs/chirpstack-gateway-os/` — versione **"Full"** (che include tutto lo stack, altrimenti c'è la versione "Base" solo packet forwarder)
 2. Flasha l'immagine sulla SD con Raspberry Pi Imager o Balena Etcher
 3. Inserisci la SD nella Pi, alimenta, aspetta 2-3 minuti per il primo boot
-4. Collega via SSH (`ssh root@<ip-rpi>`, password di default nella documentazione)
-5. Accedi alla UI web via browser: `http://<ip-rpi>:8080`, credenziali di default `admin/admin`
+4. Collega via SSH (`ssh root@<ip-gateway>`, password di default nella documentazione — cambiala subito con `passwd` al primo login)
+5. Accedi alle interfacce web (vedi sottosezione qui sotto)
 
-Il **concentratore radio** (SX1302 sul WM1302) viene rilevato automaticamente al boot. Per verificare:
+### Le tre interfacce di accesso al gateway
 
-```bash
-sudo systemctl status chirpstack-concentratord
+Un aspetto che confonde chi arriva da distribuzioni Linux standard è che sul gateway **coesistono tre interfacce distinte**, ognuna per uno scopo diverso, tutte sullo stesso IP ma su porte/URL diversi:
+
+**1. UI ChirpStack** — dove si gestisce lo stack LoRaWAN
+
+```
+http://<ip-gateway>:8080/
 ```
 
-Se lo status è `active (running)`, il concentratore è operativo e sta ricevendo pacchetti radio. Per vedere il traffico live:
+Credenziali di default: `admin/admin`. È l'interfaccia che si usa nel 99% del tempo quando si opera sul progetto: qui si gestiscono tenant, application, device profile, device, si vedono LoRaWAN frames, events, e si accodano downlink. È la UI di ChirpStack propriamente detta.
+
+**2. LuCI** — l'admin di sistema OpenWrt
+
+```
+https://<ip-gateway>/cgi-bin/luci/admin/
+```
+
+Credenziali: **la stessa password di root del sistema** (quella impostata al primo SSH). LuCI è l'interfaccia web ufficiale di OpenWrt e permette di configurare tutto quello che riguarda **il sistema operativo del gateway**, non ChirpStack:
+
+- Configurazione di rete (Ethernet, WiFi client/AP, VPN, static routes)
+- Gestione dei servizi di sistema (`/etc/init.d/`)
+- Aggiornamento firmware OpenWrt
+- Gestione pacchetti `opkg` via UI
+- Visualizzazione log sistema
+- Firewall, DHCP server, DNS
+
+Il fatto che sia servito su HTTPS (non HTTP come ChirpStack) è una scelta di sicurezza di OpenWrt — al primo accesso il browser mostrerà un warning per certificato self-signed, va accettato manualmente.
+
+**3. SSH** — accesso shell a basso livello
+
+```
+ssh root@<ip-gateway>
+```
+
+Da qui si fa tutto quello che le UI non coprono: editing dei file `.conf`, `logread` per i log, `opkg` per installare pacchetti, `uci` per configurazioni UCI, gestione manuale di Mosquitto/ChirpStack per casi non standard (come il bridge MQTT configurato in questo progetto).
+
+### Quando usare quale
+
+| Cosa devi fare | Usa |
+|----------------|-----|
+| Aggiungere/rimuovere device, application, device profile | UI ChirpStack (8080) |
+| Vedere uplink, downlink, LoRaWAN frames | UI ChirpStack (8080) |
+| Configurare il codec JavaScript | UI ChirpStack (8080) |
+| Cambiare IP, WiFi, gateway di rete | LuCI (443/HTTPS) |
+| Vedere l'uso di CPU/RAM/disco del gateway | LuCI (443/HTTPS) |
+| Installare pacchetti extra (es. Node-RED) | SSH + `opkg` |
+| Configurare il bridge MQTT | SSH + edit `/etc/mosquitto/mosquitto.conf` |
+| Leggere log in tempo reale | SSH + `logread -f` |
+| Modificare i parametri UCI di ChirpStack | SSH + `uci set` + `uci commit` |
+
+Chi conosce Linux tradizionale tende a fare tutto via SSH (per abitudine). Per chi arriva da altre esperienze embedded, LuCI è comodissimo per la configurazione di rete e per non ricordare a memoria i nomi dei servizi.
+
+---
+
+### Verifica funzionamento
+
+Il **concentratore radio** (SX1302 sul WM1302) viene rilevato automaticamente al boot. **ChirpStack Gateway OS è basato su OpenWrt**, quindi non usa `systemd` come le distribuzioni Linux desktop/server: i servizi si gestiscono con gli script `/etc/init.d/` e i log si leggono con `logread`.
+
+Per verificare che il concentratore sia attivo:
 
 ```bash
-sudo journalctl -u chirpstack-concentratord -f
+/etc/init.d/chirpstack-concentratord status
+```
+
+Se ritorna `running`, il concentratore è operativo e sta ricevendo pacchetti radio. Per vedere il traffico live:
+
+```bash
+logread -f | grep concentratord
+```
+
+Il flag `-f` è "follow" (come `tail -f`). Per vedere le ultime 20 righe e poi seguire in tempo reale:
+
+```bash
+logread -n 20 -f
+```
+
+**Nota su OpenWrt vs Linux tradizionale**: OpenWrt non ha `/var/log/syslog` né `journalctl`. Tutti i log del sistema (servizi, kernel, applicazioni) passano attraverso `logread`, che legge da un buffer circolare in RAM (per non usurare la flash). I file di configurazione sono spesso gestiti da **UCI** (Unified Configuration Interface): per vedere la config attuale di ChirpStack sul gateway:
+
+```bash
+uci show chirpstack-concentratord
+uci show chirpstack-mqtt-forwarder
+uci show chirpstack   # solo nelle immagini Full
 ```
 
 **Non serve installare Mosquitto separatamente**: l'immagine Full lo include e lo configura già in modo che tutti i componenti ChirpStack ci si connettano. La porta MQTT locale è `1883`.
@@ -747,7 +820,14 @@ Il bridge Mosquitto forwarda selettivamente topic tra due broker: quello locale 
 
 ### Configurazione bridge tipica
 
-Sul file `/etc/mosquitto/mosquitto.conf` del RPi, si aggiunge una sezione:
+Su OpenWrt ci sono **due approcci** per configurare Mosquitto:
+
+1. **Edit diretto del file `.conf`** (approccio classico Mosquitto, funziona identico su qualunque sistema)
+2. **UCI** (`uci set mosquitto.<sezione>.<opzione>=<valore>` + `uci commit mosquitto`)
+
+Il primo è più immediato per chi conosce già Mosquitto o segue tutorial generici; il secondo è più "in stile OpenWrt" e sopravvive meglio agli aggiornamenti del firmware (UCI mantiene un layer di override sui file di configurazione). Per la configurazione del bridge, che è un caso avanzato non completamente coperto dalle opzioni UCI di default, **l'edit diretto del `.conf` è la strada più semplice**.
+
+Sul file `/etc/mosquitto/mosquitto.conf` del gateway, si aggiunge una sezione:
 
 ```
 connection bridge-esterno
@@ -767,11 +847,24 @@ topic application/+/device/+/command/down in 0
 
 Punti da capire:
 
-- **`out`** = dal broker locale (RPi) verso il broker remoto (centrale)
+- **`out`** = dal broker locale (gateway) verso il broker remoto (centrale)
 - **`in`** = dal broker remoto verso il locale
 - Il `#` è wildcard multi-livello, il `+` è wildcard single-livello
+- Il `0` finale è il **QoS** (0 = at-most-once, il più leggero — sufficiente per uplink LoRaWAN)
 
-Dopo la modifica, `sudo /etc/init.d/mosquitto restart` per applicare.
+Dopo la modifica, riavvia Mosquitto per applicare (comando OpenWrt):
+
+```bash
+/etc/init.d/mosquitto restart
+```
+
+**Attenzione con gli aggiornamenti**: se in futuro aggiorni ChirpStack Gateway OS, potresti trovare il file `mosquitto.conf` sovrascritto e il bridge scomparso. Fai sempre un backup della tua sezione bridge prima di aggiornare il firmware:
+
+```bash
+cp /etc/mosquitto/mosquitto.conf /root/mosquitto.conf.backup
+```
+
+Dopo l'aggiornamento, riapplica le tue modifiche personalizzate confrontando i due file.
 
 ### Verifica funzionamento del bridge
 
@@ -907,7 +1000,7 @@ Bug e configurazioni sbagliate che ho incontrato durante lo sviluppo di questo p
 - Codec configurato ma con errore JavaScript (guarda tab **Events** filtrando per "log")
 - Codec configurato ma non riconosce lo schema_id (per esempio schema 0x42 e codec configurato per 0x41)
 
-**Fix**: verifica il Device Profile del device, tab Codec. Testa il codec con il pannello "Test" inserendo byte esemplari. Guarda i log ChirpStack: `sudo journalctl -u chirpstack -f`.
+**Fix**: verifica il Device Profile del device, tab Codec. Testa il codec con il pannello "Test" inserendo byte esemplari. Guarda i log ChirpStack sul gateway OpenWrt: `logread -f | grep chirpstack`.
 
 ### 7. Il bridge non forwarda i downlink
 
@@ -918,7 +1011,7 @@ Bug e configurazioni sbagliate che ho incontrato durante lo sviluppo di questo p
 - Autenticazione mancante (`remote_username` / `remote_password` non impostati)
 - Firewall che blocca la porta 1883 in entrata sul broker centrale
 
-**Fix**: verifica config `/etc/mosquitto/mosquitto.conf`, dopo il riavvio controlla `sudo tail /var/log/syslog | grep mosquitto`. Se vedi "Bridge unable to connect", controlla rete e credenziali.
+**Fix**: verifica la config `/etc/mosquitto/mosquitto.conf`. Dopo il riavvio (`/etc/init.d/mosquitto restart`), controlla i log con `logread -f | grep mosquitto`. Se vedi "Bridge unable to connect", controlla rete e credenziali.
 
 ### 8. Il device profile non ha "MAC version" compatibile
 
@@ -933,11 +1026,22 @@ Bug e configurazioni sbagliate che ho incontrato durante lo sviluppo di questo p
 **Sintomo**: nella tab **Gateways** vedi il tuo gateway con stato offline (icona rossa) anche se il concentratore è acceso.
 
 **Cause possibili**:
-- Servizio `chirpstack-gateway-bridge` fermo (`sudo systemctl status chirpstack-gateway-bridge`)
-- Configurazione MQTT del gateway bridge disallineata rispetto a Mosquitto
-- Concentratore non rilevato (`sudo systemctl status chirpstack-concentratord`)
+- Servizio `chirpstack-gateway-bridge` fermo (`/etc/init.d/chirpstack-gateway-bridge status`)
+- Configurazione MQTT del gateway bridge disallineata rispetto a Mosquitto (verifica con `uci show chirpstack-mqtt-forwarder`)
+- Concentratore non rilevato (`/etc/init.d/chirpstack-concentratord status`)
 
-**Fix**: `sudo systemctl restart chirpstack-concentratord chirpstack-gateway-bridge`. Poi guarda i log: `sudo journalctl -u chirpstack-gateway-bridge -f`.
+**Fix**: riavvia i servizi coinvolti:
+
+```bash
+/etc/init.d/chirpstack-concentratord restart
+/etc/init.d/chirpstack-gateway-bridge restart
+```
+
+Poi guarda i log:
+
+```bash
+logread -f | grep -E "concentratord|gateway-bridge"
+```
 
 ---
 
@@ -984,19 +1088,33 @@ Mostra gli eventi già processati dal codec, cliccabili per vedere il JSON compl
 
 ### Log ChirpStack (livello sistema)
 
-**Sul RPi**:
+**Sul gateway OpenWrt**, tutti i log del sistema (compresi i servizi ChirpStack) si leggono con `logread` — che legge da un buffer circolare in RAM alimentato da tutti i demoni via syslog.
+
+Per vedere il log completo in tempo reale (come `journalctl -f`):
+
 ```bash
-sudo journalctl -u chirpstack -f
+logread -f
 ```
 
-Mostra i log di sistema del servizio ChirpStack, in tempo reale (con `-f` = follow). Utile per vedere errori bassi livello: connessioni MQTT, gestione delle sessioni, errori di autenticazione dei device.
+Per vedere solo le ultime 50 righe e poi seguire live:
 
-Log dei singoli servizi:
 ```bash
-sudo journalctl -u chirpstack-gateway-bridge -f     # livello gateway
-sudo journalctl -u mosquitto -f                     # broker MQTT
-sudo journalctl -u chirpstack-concentratord -f      # concentratore radio
+logread -n 50 -f
 ```
+
+Filtrare per servizio specifico (i log includono il nome del processo):
+
+```bash
+logread -f | grep chirpstack               # tutti i componenti ChirpStack
+logread -f | grep concentratord            # solo concentratore radio
+logread -f | grep gateway-bridge           # solo gateway bridge
+logread -f | grep mosquitto                # broker MQTT
+logread -f | grep -E "chirpstack|mosq"     # più filtri con regex
+```
+
+Utile per vedere errori a basso livello: connessioni MQTT, gestione delle sessioni, errori di autenticazione dei device, timeout radio.
+
+**Nota**: OpenWrt non salva i log su file per default (per non usurare la flash). Se il gateway si riavvia, il contenuto di `logread` si perde. Se ti serve persistenza, puoi configurare `logd` per scrivere anche su file esterno, oppure inoltrare i log a un server syslog remoto tramite le opzioni UCI di `system.@system[0].log_*`.
 
 ### Monitor MQTT diretto
 
