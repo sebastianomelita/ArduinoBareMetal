@@ -32,6 +32,10 @@ Complementa la [dispensa firmware](dispensa-firmware-lorawan-lowpower.md): quell
 - **Gateway Bridge**: fa da traduttore tra il protocollo dei gateway (Semtech UDP Packet Forwarder o BasicStation) e il formato interno di ChirpStack.
 - **UI web**: interfaccia di amministrazione per configurare tenant, application, device profile, device.
 
+<p align="center">
+  <img src="img/chirpstack_architecture0.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
+</p>
+
 Nella configurazione più semplice — che è quella di questo progetto — tutti e quattro i componenti girano sullo **stesso Raspberry Pi** che fa anche da gateway (grazie al concentratore SX130x). L'immagine **ChirpStack Gateway OS Full** include:
 
 - Il concentratore radio (packet forwarder)
@@ -42,12 +46,16 @@ Nella configurazione più semplice — che è quella di questo progetto — tutt
 - Mosquitto MQTT broker (per la comunicazione tra i vari componenti)
 
 <p align="center">
-  <img src="img/chirpstack_architecture.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
+  <img src="img/chirpstack_architecture.svg" alt="Architettura ChirpStack: componenti e loro relazioni" width="1000">
 </p>
 
 *Figura 1: architettura ChirpStack tipica. Il device parla via radio col gateway; il gateway forwarda i pacchetti UDP al Gateway Bridge; questo li normalizza e li passa al Network Server via MQTT; il NS valida, decifra, deduplica e li passa all'Application Server; l'AS applica il codec e pubblica gli eventi applicativi su MQTT (o via HTTP), a cui possono sottoscriversi dashboard, script, database.*
 
 Il pattern MQTT interno tra i componenti è fondamentale da capire perché è **lo stesso** meccanismo che poi si usa per accedere ai dati applicativi dall'esterno. Un uplink del device arriva sul topic `application/<uuid>/device/<eui>/event/up` e da lì può essere consumato da qualsiasi client MQTT.
+
+<p align="center">
+  <img src="img/chirpstack_architecture1.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
+</p>
 
 ---
 
@@ -243,7 +251,7 @@ Più device che condividono la stessa configurazione tecnica usano lo **stesso**
 - Uno stato di sessione LoRaWAN (attivo/inattivo, FCntUp corrente, ecc.)
 
 <p align="center">
-  <img src="img/chirpstack_hierarchy.png" alt="Gerarchia oggetti ChirpStack v4" width="500">
+  <img src="img/chirpstack_hierarchy.svg" alt="Gerarchia oggetti ChirpStack v4" width="600">
 </p>
 
 *Figura 2: la gerarchia Tenant → Application → Device Profile / Device in ChirpStack v4. Il Device Profile è un template condiviso da più device.*
@@ -369,6 +377,10 @@ Salva. Il device è ora registrato ma **non ha ancora una sessione attiva** — 
 
 Nel device appena creato, vai sulla tab **Activation**.
 
+<p align="center">
+  <img src="img/chirpstack_ui_abp_activation.png" alt="Tab Activation di un device ABP compilata" width="1000">
+</p>
+
 Compila:
 
 - **Device address (DevAddr)**: `260b262c` (o quello che vuoi tu, 8 hex lowercase)
@@ -418,6 +430,10 @@ Se il device non compare mai in LoRaWAN frames, controlla:
 
 Simile al passo 1 di ABP, ma nella tab **Join (OTAA / ABP)**:
 
+<p align="center">
+  <img src="img/otaa-device-profile.png" alt="Tab Join di un Device Profile OTAA" width="1000">
+</p>
+
 - **Device supports OTAA**: **SI** ← questo è il switch
 
 Puoi anche duplicare il Device Profile ABP esistente e cambiare solo questo flag. La UI ChirpStack ha un pulsante "Duplicate" utile per questo.
@@ -441,6 +457,10 @@ Salva.
 ### Passo 3: carica l'AppKey
 
 Nel device appena creato, vai sulla tab **OTAA keys**.
+
+<p align="center">
+  <img src="img/chirpstack_ui_otaa_keys.png" alt="Tab OTAA keys di un device OTAA compilata" width="1000">
+</p>
 
 - **Application key (AppKey)**: 32 caratteri hex, esempio:
   ```
