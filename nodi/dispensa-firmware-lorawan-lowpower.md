@@ -36,11 +36,11 @@ Complementa la dispensa [dispensa gateway](../gateways/dispensa-chirpstack-confi
 
 Il device è pensato per campionare la qualità dell'aria (CO₂, temperatura, umidità) e la posizione, e trasmettere periodicamente questi dati via **LoRaWAN** verso una rete condivisa. I vincoli principali di progetto sono tre:
 
-**Autonomia energetica**. Il device deve poter funzionare per mesi o anni a batteria (opzionalmente con pannello solare). Questo comporta l'uso di deep sleep aggressivo e lo spegnimento fisico delle periferiche tra un ciclo e l'altro.
+- **Autonomia energetica**. Il device deve poter funzionare per mesi o anni a batteria (opzionalmente con pannello solare). Questo comporta l'uso di deep sleep aggressivo e lo spegnimento fisico delle periferiche tra un ciclo e l'altro.
 
-**Robustezza in caso di power-loss**. Non si può fare affidamento sulla continuità dell'alimentazione: la batteria può scaricarsi, il pannello solare può essere ombreggiato, il device può essere spostato e spento. Il firmware deve riprendersi da queste situazioni senza intervento umano e senza rompere le sessioni LoRaWAN attive.
+- **Robustezza in caso di power-loss**. Non si può fare affidamento sulla continuità dell'alimentazione: la batteria può scaricarsi, il pannello solare può essere ombreggiato, il device può essere spostato e spento. Il firmware deve riprendersi da queste situazioni senza intervento umano e senza rompere le sessioni LoRaWAN attive.
 
-**Semplicità di manutenzione**. Il codice deve essere leggibile, con separazione chiara delle responsabilità e con flag di configurazione ben esposti in cima al file. Sviluppo e debug devono essere possibili senza tool esoterici, con solo Arduino IDE e Serial Monitor.
+- **Semplicità di manutenzione**. Il codice deve essere leggibile, con separazione chiara delle responsabilità e con flag di configurazione ben esposti in cima al file. Sviluppo e debug devono essere possibili senza tool esoterici, con solo Arduino IDE e Serial Monitor.
 
 Non è un progetto commerciale: la finalità è didattica. Molte scelte sono commentate esplicitamente nel codice per rendere trasparenti i motivi delle decisioni.
 
