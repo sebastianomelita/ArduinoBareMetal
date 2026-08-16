@@ -4,6 +4,14 @@ Guida pratica alla configurazione di **ChirpStack v4** come LoRaWAN Network Serv
 
 Complementa la [dispensa firmware](../nodi/dispensa-firmware-lorawan-lowpower.md): quella descrive cosa fa il device, questa descrive cosa deve fare il Network Server per parlare col device.
 
+--- 
+
+## **Codifica assistita da AI**
+
+Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude Opus 4.7, tranne il codec Chirpstack realizzato con Deepseek.
+
+---
+
 ## Indice
 
 1. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)
