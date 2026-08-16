@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" font-family="Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 960" font-family="Arial, sans-serif">
 
   <defs>
     <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
@@ -274,62 +274,99 @@
   </g>
 
   <!-- ================================================================ -->
-  <!-- BATTERIA Vapcell F15 (in alto a destra, sotto antenna)            -->
+  <!-- BATTERIA Vapcell F15 (in alto a destra, sopra il BMS)             -->
   <!-- ================================================================ -->
   <g filter="url(#softShadow)">
-    <rect x="820" y="410" width="220" height="130" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="1.8"/>
+    <rect x="820" y="410" width="220" height="105" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="1.8"/>
     <text x="930" y="430" text-anchor="middle" font-size="13" font-weight="bold" fill="#b71c1c">
-      🔋 Vapcell F15 (18650)
+      🔋 Vapcell F15 (14500)
     </text>
     <text x="930" y="445" text-anchor="middle" font-size="9" fill="#c62828" font-style="italic">
-      Li-Ion 3.7V nominali, ~2900 mAh
+      Li-Ion 3.6V nominali, 1500 mAh, NON protetta
     </text>
 
     <line x1="830" y1="455" x2="1030" y2="455" stroke="#ef9a9a" stroke-width="1"/>
 
-    <text x="830" y="472" font-size="10" fill="#263238">Connettore: <tspan font-weight="bold">JST-PH 2.0 SH1.25-2P</tspan></text>
-    <text x="830" y="488" font-size="10" fill="#263238">Range operativo: <tspan font-weight="bold">3.0 - 4.2 V</tspan></text>
-
-    <text x="830" y="510" font-size="9" fill="#c62828" font-weight="bold">⚠ Rispetta la polarità!</text>
-    <text x="830" y="524" font-size="9" fill="#8d6e63" font-style="italic">Il connettore SH1.25 di Heltec è</text>
-    <text x="830" y="536" font-size="9" fill="#8d6e63" font-style="italic">"+ rosso a destra guardando lo slot"</text>
+    <text x="830" y="472" font-size="10" fill="#263238">Formato: <tspan font-weight="bold">14 × 50 mm</tspan> (come una AA)</text>
+    <text x="830" y="486" font-size="10" fill="#263238">Range: <tspan font-weight="bold">2.5 - 4.2 V</tspan>, discharge max 3A</text>
+    <text x="830" y="502" font-size="9" fill="#c62828" font-weight="bold">⚠ Cella nuda: richiede BMS esterno!</text>
   </g>
 
-  <!-- Filo batteria -> connettore BAT -->
-  <path d="M 820 470 L 745 470 L 745 589 L 680 589"
-        fill="none" stroke="#d32f2f" stroke-width="2.5"/>
-  <path d="M 820 490 L 750 490 L 750 594 L 680 594"
-        fill="none" stroke="#212121" stroke-width="2"/>
-  <text x="750" y="465" font-size="8" fill="#d32f2f">+</text>
-  <text x="750" y="500" font-size="8" fill="#212121">−</text>
-
   <!-- ================================================================ -->
-  <!-- PANNELLO SOLARE (in basso a destra)                               -->
+  <!-- BMS 1S 5A (interposto tra batteria e connettore BAT)              -->
   <!-- ================================================================ -->
   <g filter="url(#softShadow)">
-    <rect x="820" y="620" width="220" height="145" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1.8"/>
-    <text x="930" y="640" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">
+    <rect x="820" y="530" width="220" height="115" rx="8" fill="#f3e5f5" stroke="#4a148c" stroke-width="1.8"/>
+    <text x="930" y="550" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a148c">
+      🛡 BMS 1S 5A (DW01A + 8205A)
+    </text>
+    <text x="930" y="565" text-anchor="middle" font-size="9" fill="#6a1b9a" font-style="italic">
+      Protezione over/under/short/current
+    </text>
+
+    <line x1="830" y1="575" x2="1030" y2="575" stroke="#ce93d8" stroke-width="1"/>
+
+    <!-- Pinout BMS -->
+    <text x="830" y="592" font-size="9" fill="#263238">
+      <tspan font-weight="bold">B+</tspan> ← batteria +
+      &#160;&#160;&#160;
+      <tspan font-weight="bold">B−</tspan> ← batteria −
+    </text>
+    <text x="830" y="608" font-size="9" fill="#263238">
+      <tspan font-weight="bold">P+</tspan> → uscita +
+      &#160;&#160;&#160;&#160;&#160;&#160;
+      <tspan font-weight="bold">P−</tspan> → uscita −
+    </text>
+    <text x="830" y="624" font-size="8" fill="#8d6e63" font-style="italic">Cutoff: OV 4.28V / UV 2.5V / OC 5-8A</text>
+    <text x="830" y="636" font-size="8" fill="#8d6e63" font-style="italic">Auto-reset dopo rimozione del carico</text>
+  </g>
+
+  <!-- Filo batteria -> BMS (B+/B-) -->
+  <path d="M 900 515 L 900 530"
+        fill="none" stroke="#d32f2f" stroke-width="2.5"/>
+  <path d="M 960 515 L 960 530"
+        fill="none" stroke="#212121" stroke-width="2"/>
+  <text x="887" y="527" font-size="8" fill="#d32f2f">B+</text>
+  <text x="965" y="527" font-size="8" fill="#212121">B−</text>
+
+  <!-- Filo BMS (P+/P-) -> connettore BAT della scheda -->
+  <path d="M 900 645 L 900 665 L 745 665 L 745 589 L 680 589"
+        fill="none" stroke="#d32f2f" stroke-width="2.5"/>
+  <path d="M 960 645 L 960 670 L 750 670 L 750 594 L 680 594"
+        fill="none" stroke="#212121" stroke-width="2"/>
+  <text x="887" y="660" font-size="8" fill="#d32f2f">P+</text>
+  <text x="965" y="660" font-size="8" fill="#212121">P−</text>
+
+  <!-- Etichetta connessione BMS -> JST -->
+  <text x="770" y="580" font-size="8" fill="#4a148c" font-style="italic">JST-PH 2.0</text>
+
+  <!-- ================================================================ -->
+  <!-- PANNELLO SOLARE (spostato piu' in basso per non sovrapporsi al BMS)-->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="820" y="680" width="220" height="145" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1.8"/>
+    <text x="930" y="700" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">
       ☀ Pannello solare
     </text>
-    <text x="930" y="655" text-anchor="middle" font-size="9" fill="#f57f17" font-style="italic">
+    <text x="930" y="715" text-anchor="middle" font-size="9" fill="#f57f17" font-style="italic">
       opzionale, per ricarica autonoma
     </text>
 
-    <line x1="830" y1="665" x2="1030" y2="665" stroke="#ffe082" stroke-width="1"/>
+    <line x1="830" y1="725" x2="1030" y2="725" stroke="#ffe082" stroke-width="1"/>
 
-    <text x="830" y="682" font-size="10" fill="#263238">Range accettato: <tspan font-weight="bold">4.7 - 6 V</tspan></text>
-    <text x="830" y="696" font-size="10" fill="#263238">Consigliato: <tspan font-weight="bold">5V / 1-2W</tspan></text>
+    <text x="830" y="742" font-size="10" fill="#263238">Range accettato: <tspan font-weight="bold">4.7 - 6 V</tspan></text>
+    <text x="830" y="756" font-size="10" fill="#263238">Consigliato: <tspan font-weight="bold">5V / 1-2W</tspan></text>
 
-    <text x="830" y="716" font-size="9" fill="#8d6e63" font-style="italic">Connettore: JST-PH 2.0 SH1.25-2P</text>
-    <text x="830" y="728" font-size="9" fill="#8d6e63" font-style="italic">(porta distinta da quella batteria)</text>
-    <text x="830" y="746" font-size="9" fill="#e65100" font-weight="bold">✓ Ricarica batteria automaticamente</text>
-    <text x="830" y="758" font-size="9" fill="#e65100" font-weight="bold">   se batteria + solare sono entrambi presenti</text>
+    <text x="830" y="776" font-size="9" fill="#8d6e63" font-style="italic">Connettore: JST-PH 2.0 SH1.25-2P</text>
+    <text x="830" y="788" font-size="9" fill="#8d6e63" font-style="italic">(porta distinta da quella batteria)</text>
+    <text x="830" y="806" font-size="9" fill="#e65100" font-weight="bold">✓ Ricarica batteria automaticamente</text>
+    <text x="830" y="818" font-size="9" fill="#e65100" font-weight="bold">   se batteria + solare sono entrambi presenti</text>
   </g>
 
-  <!-- Filo pannello -> connettore SOL -->
-  <path d="M 820 682 L 745 682 L 745 614 L 680 614"
+  <!-- Filo pannello -> connettore SOL della scheda -->
+  <path d="M 820 742 L 760 742 L 760 614 L 680 614"
         fill="none" stroke="#f57c00" stroke-width="2.5"/>
-  <path d="M 820 700 L 750 700 L 750 619 L 680 619"
+  <path d="M 820 756 L 765 756 L 765 619 L 680 619"
         fill="none" stroke="#212121" stroke-width="2"/>
 
   <!-- ================================================================ -->
