@@ -129,6 +129,12 @@ Se in futuro si volesse implementare davvero il controllo termico software, il f
 
 ### Come si collega
 
+<p align="center">
+  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
+</p>
+
+*Figura 2: scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B− (verso la cella), P+ e P− (verso il carico).*
+
 Il BMS ha **4 pad di contatto**, tipicamente saldati o marcati:
 
 ```
