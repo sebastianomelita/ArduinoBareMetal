@@ -92,7 +92,14 @@ Ogni fase è confinata in una funzione dedicata. Il `setup()` è essenzialmente 
 
 Il payload LoRaWAN è progettato per essere **compatto**, **fisso**, e **riconoscibile**. Compatto perché ogni byte in più aumenta l'airtime e quindi il consumo energetico e il duty cycle usato. Fisso perché il codec sul Network Server deve poter decodificare senza dover interpretare struttura variabile. Riconoscibile perché in futuro potremmo voler aggiungere altri sensori (nuovi schemi) allo stesso Network Server, e serve un modo per distinguerli.
 
-Tutti gli uplink applicativi partono su **FPort 1** (definito dal `#define LORAWAN_FPORT`). All'interno del payload, un **primo byte "schema_id"** identifica univocamente la struttura seguente:
+Il progetto usa **due schemi distinti**, ognuno con il suo FPort:
+
+- **Schema 0x42 (misure ambientali)** su FPort 1 — inviato ad ogni ciclo TX
+- **Schema 0x43 (state del device)** su FPort 2 — inviato solo su richiesta o dopo eventi significativi
+
+### Schema 0x42 — Misure ambientali
+
+All'interno del payload, un **primo byte "schema_id"** identifica univocamente la struttura seguente:
 
 ```c
 #define SCHEMA_ID  0x42     // SCD41 + L76K + batteria
@@ -126,11 +133,70 @@ Alcuni dettagli notevoli:
 
 **`static_assert(sizeof(...) == 32, ...)`**. Se il compilatore per qualsiasi motivo produce una struct di dimensione diversa (per esempio se un futuro sviluppatore modifica lo schema senza aggiornare l'`assert`), il build fallisce subito, prima ancora di scaricare il firmware sul device. È una salvaguardia difensiva a costo zero.
 
-**Big picture: pacchetti versionati**. Il pattern "primo byte come discriminatore di schema" è usato anche da protocolli come CBOR, MessagePack e altri codec versionati. Consente di far coesistere versioni multiple senza ambiguità e senza dover cambiare il formato di trasporto.
+### Schema 0x43 — State del device
 
-**Schema id vs FPort — due discriminatori sovrapposti**. Nel nostro progetto abbiamo **due meccanismi** di discriminazione: il FPort a livello LoRaWAN, e il schema_id come primo byte del payload applicativo. Sembra ridondante, ma i due discriminatori operano a **livelli diversi**: il FPort è visibile al Network Server per instradare i pacchetti al codec giusto, mentre il schema_id è interno al codec e distingue formati concreti che condividono lo stesso "canale" LoRaWAN. La prossima sezione entra nel dettaglio del ruolo di FPort.
+Il payload state serve a comunicare la **configurazione runtime corrente** e alcune **informazioni diagnostiche** del device, in un formato consumabile da un'interfaccia di configurazione remota (webapp, dashboard). È distinto dallo schema misure perché:
+
+- **Frequenza diversa**: le misure viaggiano ad ogni TX, lo state solo su richiesta o dopo eventi
+- **FPort diverso** (2 invece di 1): la webapp filtra facilmente cosa mostrare dove
+- **Contenuto diverso**: config + diagnostica, non dati sensoriali
+
+```c
+#define SCHEMA_ID_STATE  0x43
+
+#pragma pack(push, 1)
+struct Payload_v0x43 {
+    uint8_t  schema_id;              // 0x43
+    uint32_t bootCount;              // reset totali dal power-on
+    uint32_t uptime_s;               // wall-clock secondi dal power-on
+    uint8_t  battery_pct;            // batteria in %
+    uint8_t  cfgTxIntervalPreset;    // preset 0-5
+    uint8_t  cfgLoRaWANSF;           // SF 7-12
+    uint8_t  cfgTxPower;             // dBm 2-14
+    uint16_t cfgGpsTimeoutS;         // secondi 10-300
+    uint16_t cfgVbatEmergencyMv;     // mV
+    uint16_t cfgVbatRecoveryMv;      // mV
+    uint8_t  cfgAdr;                 // 0/1
+    uint8_t  featureFlags;           // bit-packed
+    uint8_t  fwVersion;              // FW_VERSION define
+    uint8_t  resetReason;            // esp_reset_reason() codificato
+};
+#pragma pack(pop)
+
+static_assert(sizeof(Payload_v0x43) == 23, "Payload state deve essere 23 byte");
+```
+
+**Il byte `featureFlags` è bit-packed** per efficienza — un solo byte contiene 6 boolean:
+
+| Bit | Feature |
+|-----|---------|
+| 0 | `USE_OTAA` (1 = OTAA, 0 = ABP) |
+| 1 | `ENABLE_NVS_PERSISTENCE` |
+| 2 | `ENABLE_DOWNLINK_HANDLER` |
+| 3 | `ENABLE_WATCHDOG` |
+| 4 | `ENABLE_BATTERY_PROTECTION` |
+| 5 | `DEBUG_NO_DEEP_SLEEP` |
+
+Sono valori **compile-time**: non modificabili via downlink, ma utili alla webapp per decidere cosa mostrare (per esempio, disabilitare il toggle ADR se il device è in ABP).
+
+**Quando viene inviato il payload state**. Il firmware invia un uplink su FPort 2 in tre occasioni:
+
+1. **Al primo boot dopo un power cycle** (`bootCount == 1`) — così la piattaforma sa che il device è ripartito
+2. **Dopo ogni cambio di configurazione via downlink FPort 20** — feedback all'utente che la modifica è stata applicata
+3. **Su richiesta esplicita** con il comando downlink `GET_STATE` (FPort 10, byte 0x07)
+
+Il meccanismo è governato da una variabile in RTC memory `sendStateNext` (bool): impostata da uno dei trigger sopra, consumata al primo TX riuscito. Se il TX fallisce, il flag resta attivo e ritenta al ciclo successivo.
+
+**Vantaggio pratico**: gli uplink misure normali non trasportano informazioni di configurazione (che sarebbe uno spreco di airtime), ma quando la webapp di configurazione ne ha bisogno può richiederle esplicitamente. Il round-trip tipico è di 1-2 cicli TX.
+
+### Discriminatori: schema id e FPort insieme
+
+Il pattern "primo byte come discriminatore di schema" è usato anche da protocolli come CBOR, MessagePack e altri codec versionati. Consente di far coesistere versioni multiple senza ambiguità.
+
+Nel nostro progetto abbiamo **due meccanismi** di discriminazione: il FPort a livello LoRaWAN, e lo schema_id come primo byte del payload applicativo. Sembra ridondante, ma i due discriminatori operano a **livelli diversi**: il FPort è visibile al Network Server per instradare i pacchetti al codec giusto (o per capire il tipo semantico di messaggio senza decodificare il payload), mentre lo schema_id è interno al codec e distingue formati concreti. La prossima sezione entra nel dettaglio del ruolo di FPort.
 
 ---
+
 
 ## FPort: il discriminatore di tipo LoRaWAN
 
@@ -172,11 +238,12 @@ Abbiamo quindi **223 valori disponibili** per organizzare i nostri messaggi.
 
 ### Le convenzioni del nostro progetto
 
-Nel nostro firmware abbiamo scelto tre FPort:
+Nel nostro firmware abbiamo scelto quattro FPort:
 
 | FPort | Direzione | Uso | Formato interno |
 |-------|-----------|-----|-----------------|
-| **1** | Uplink | Misure ambientali | Struct binaria versionata (byte 0 = `schema_id`) |
+| **1** | Uplink | Misure ambientali | Struct binaria versionata (byte 0 = `schema_id = 0x42`) |
+| **2** | Uplink | State del device (config runtime + diagnostica) | Struct binaria (byte 0 = `schema_id = 0x43`) |
 | **10** | Downlink | Comandi ordinari (azione) | Byte 0 = `command_id`, resto = argomenti |
 | **20** | Downlink | Configurazione persistente | Byte 0 = `config_id`, resto = argomenti |
 
@@ -185,7 +252,14 @@ Sono numeri **arbitrari** ma scelti seguendo una piccola convenzione visiva:
 - Uplink su FPort bassi (1, 2, 3, ...)
 - Downlink su FPort a **decine tonde** (10, 20, 30, ...) per essere riconoscibili a colpo d'occhio nei log del Network Server
 
-Se un giorno aggiungiamo un nuovo tipo di uplink (per esempio un heartbeat separato dalle misure complete), useremo FPort 2. Se aggiungiamo un downlink per aggiornamento OTA, useremo FPort 30. Il pattern si scala facilmente.
+Se un giorno aggiungiamo un downlink per aggiornamento OTA, useremo FPort 30. Il pattern si scala facilmente.
+
+**Perché uplink misure e uplink state su FPort diversi**. Sarebbe stato possibile mettere tutti gli uplink su FPort 1 e discriminare solo per `schema_id`. Ma avere FPort distinti è comodo perché:
+
+- La webapp può sottoscriversi solo agli uplink che le interessano
+- La dashboard misure ignora completamente gli state (e viceversa)
+- La `payload_type` viene distinta anche a livello LoRaWAN, non solo applicativo
+- Il monitoring lato Network Server (per esempio `mosquitto_sub -t application/+/device/+/event/up`) può usare filtri sui topic per rilevare uplink state anomali
 
 ### Il flusso end-to-end del FPort in un downlink
 
@@ -446,6 +520,31 @@ error: 'class LoRaWANNode' has no member named 'getDownlinkData';
 
 la soluzione è passare a `sendReceive()` con la firma estesa (buffer + `LoRaWANEvent_t*`) come mostrato sopra. Il suggerimento del compilatore verso `getDownlinkClassC` è fuorviante: quel metodo esiste ma è per la classe C (device sempre in ascolto), non per la classe A.
 
+**Un secondo trabocchetto — codici di ritorno del join OTAA**. Quando si chiama `node.activateOTAA()`, RadioLib 7.x può ritornare **due valori distinti che sono entrambi successo**, ma è facile confondersi:
+
+```cpp
+#define RADIOLIB_LORAWAN_NEW_SESSION       (-1118)  // successo: nuovo join riuscito
+#define RADIOLIB_LORAWAN_SESSION_RESTORED  (-1117)  // successo: sessione ripristinata dai buffer nonces
+```
+
+Entrambi sono **valori negativi**, quindi verrebbero facilmente trattati come errori se si controlla solo `if (rc == RADIOLIB_ERR_NONE)` o `if (rc >= 0)`. Il codice corretto per gestire il join OTAA è:
+
+```cpp
+int16_t st = node.activateOTAA();
+if (st == RADIOLIB_LORAWAN_NEW_SESSION ||
+    st == RADIOLIB_LORAWAN_SESSION_RESTORED) {
+    // Successo — la sessione e' attiva
+    // NEW_SESSION: appena joinato via radio
+    // SESSION_RESTORED: sessione ricostruita dai buffer nonces
+    //                   (non serve airtime radio, molto piu' veloce)
+    Serial.println("Join OK");
+} else {
+    // Errore vero — retry o abort
+}
+```
+
+Nella pratica `SESSION_RESTORED` è quello che vedi al secondo boot e successivi (dopo che i nonces sono stati salvati in NVS al primo join), mentre `NEW_SESSION` è quello che vedi al primo boot su un device fresco o dopo un `clear_nvs`. Vedere sempre `SESSION_RESTORED` ai boot successivi è **desiderabile** perché non consuma airtime per la JoinRequest.
+
 ---
 
 ## ABP vs OTAA: attivazione statica o dinamica
@@ -571,14 +670,23 @@ Attenzione: **cambiare Device Profile su un device esistente** (per esempio da A
 
 ### Riepilogo: quale scegliere
 
-Nel nostro progetto didattico partiamo con **ABP** (`USE_OTAA=0`) perché:
+**Raccomandazione operativa**: per uso reale del progetto, usa **OTAA** (`#define USE_OTAA 1`) in combinazione con **vero deep sleep** (`#define DEBUG_NO_DEEP_SLEEP 0`). Questa è l'unica configurazione in cui abbiamo verificato che il **FCntUp incrementa correttamente** e i **downlink applicativi funzionano affidabilmente**.
 
-- Non richiede la gestione dei nonces
-- Un `beginABP()` + `activateABP()` sono immediati
-- Non ci sono retry o backoff da capire
-- Perfetto per iniziare a esplorare il protocollo
+**Perché ABP è problematico con RadioLib 7.x** (scoperta emersa dalla debug session del progetto):
 
-Ma il firmware ha **OTAA completamente implementato**: basta cambiare `#define USE_OTAA 1`, ricompilare, e riconfigurare il device su ChirpStack come OTAA. La logica di join, retry, persistenza nonces e ripristino sessione è già presente e collaudata.
+- RadioLib 7.x è ottimizzato per OTAA. La persistenza del session buffer in ABP tramite `setBufferSession()` **restituisce successo** ma internamente non ripristina affidabilmente il FCntUp
+- Il device riparte da `FCntUp=0` ad ogni boot
+- ChirpStack accetta gli uplink grazie a "Skip frame-counter check" ma **considera la sessione sospetta**
+- La coda downlink resta in stato `Pending: no` permanentemente
+- I comandi applicativi (identify, set_config, ...) non vengono mai consegnati al device
+
+In ABP il device continua a inviare uplink correttamente, quindi se il tuo caso d'uso è **solo trasmettere misure** senza mai controllare il device da remoto, ABP funziona. Ma se ti servono downlink applicativi affidabili, serve OTAA.
+
+**Modalità didattica** (`USE_OTAA=0`, ABP): valida per esplorare i concetti LoRaWAN base senza gestire nonces e join. Perfetta per la prima messa in aria del progetto.
+
+**Modalità produzione** (`USE_OTAA=1`, OTAA): pattern chiavi in mano per uso reale, con downlink funzionanti e persistenza corretta.
+
+Il firmware supporta entrambe le modalità: basta cambiare `#define USE_OTAA` e ricompilare, ricordandosi di riconfigurare il device su ChirpStack di conseguenza.
 
 ---
 
@@ -586,63 +694,56 @@ Ma il firmware ha **OTAA completamente implementato**: basta cambiare `#define U
 
 Il **frame counter uplink (FCnt)** è un contatore monotono che ogni end-device incrementa ad ogni trasmissione. Il Network Server ne tiene traccia e **rifiuta i pacchetti con FCnt minore di quello atteso** — protezione contro attacchi di replay.
 
-Il problema: al reset del device (batteria staccata, brown-out, reflash del firmware), il FCnt in memoria RAM si perde. Se il device riparte da FCnt=0, i suoi pacchetti vengono rigettati dal NS finché non risale sopra l'ultimo valore visto.
+Il problema: al reset del device (batteria staccata, brown-out, reflash), il FCnt in RAM si perde. Se il device riparte da FCnt=0, i suoi pacchetti vengono rigettati dal NS finché non risale sopra l'ultimo valore visto.
 
-Le soluzioni tipiche sono tre:
+### Le due strategie disponibili
 
-**A) Disabilitare la verifica FCnt lato server** ("Skip frame-counter check" su ChirpStack, "FCnt Check Enabled = false" sul Conduit). Semplice ma indebolisce la sicurezza — un attaccante che intercetta un pacchetto può riprodurlo.
+**In OTAA** — la strategia consigliata. Ogni `activateOTAA()` genera una sessione nuova con DevAddr fresco e FCnt che riparte da 0 in modo **consensuale**: il device manda `JoinRequest`, il NS accetta, entrambi ripartono puliti. Nessun rischio di replay-rejection. Il firmware persiste i **nonces** in NVS per evitare di ripetere `DevNonce` già usati (che il NS rifiuterebbe come replay del join).
 
-**B) Salvare il FCnt in memoria non volatile** ed incrementarlo con margine di sicurezza al boot. Robusto ma comporta scritture su flash, che ha vita limitata (~100.000 cicli per settore).
+Dopo il primo join, i successivi boot **non rifanno il join radio**: la sessione viene ripristinata dai buffer con `SESSION_RESTORED` (rc=-1117), che è più veloce e non consuma airtime. Il FCntUp riprende dall'ultimo valore salvato.
 
-**C) Passare a OTAA** (Over-The-Air Activation). Ogni join genera un nuovo DevAddr e nuovi FCnt, senza collisioni. Ma richiede procedure di join più complesse e la partecipazione attiva del NS. Vedi la sezione precedente "ABP vs OTAA" per il confronto dettagliato.
+**In ABP** — la strategia teorica: salvare l'intera sessione in NVS con `getBufferSession()`/`setBufferSession()` prima e dopo ogni reset. **Ma in RadioLib 7.x non funziona bene**: `setBufferSession()` ritorna successo ma internamente non ripristina il FCntUp, che riparte sempre da 0. La conseguenza pratica è che i downlink applicativi si bloccano nella coda ChirpStack (`Pending: no` cronico).
 
-Il firmware usa la strategia **B** con ottimizzazioni:
+### Il pattern usato dal firmware in OTAA
 
 ```cpp
-#define FCNT_NVS_SAVE_EVERY   200    // salva ogni 200 uplink
-#define FCNT_BOOT_MARGIN      200    // al boot salta avanti di 200
-
-// RTC memory: sopravvive a deep sleep, persa a power-off
+// RTC memory: sopravvive a deep sleep, persa a power-off/restart
+RTC_DATA_ATTR uint8_t rtcNoncesBuffer[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
 RTC_DATA_ATTR uint8_t rtcSessionBuffer[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
+RTC_DATA_ATTR bool    rtcNoncesValid  = false;
 RTC_DATA_ATTR bool    rtcSessionValid = false;
 
 // NVS (flash): sopravvive a power-off, reset HW, reflash del firmware
 Preferences prefs;
 ```
 
-Al boot si prova prima la RTC memory (veloce, nessuna usura), poi la NVS come fallback:
+Al boot si tenta il ripristino dalla RTC memory (veloce, nessuna usura) e in fallback dalla NVS:
 
 ```cpp
-if (rtcSessionValid) {
-    node.setBufferSession(rtcSessionBuffer);
-} else if (loadSessionFromNVS(sessionBuf)) {
-    node.setBufferSession(sessionBuf);
-}
+// Prima carica nonces (necessari per non ripetere DevNonce)
+if (rtcNoncesValid) { node.setBufferNonces(rtcNoncesBuffer); }
+else if (loadNoncesFromNVS(...)) { node.setBufferNonces(...); }
+
+// Poi tenta di ripristinare la sessione (evita join radio)
+if (rtcSessionValid) { node.setBufferSession(rtcSessionBuffer); }
+else if (loadSessionFromNVS(...)) { node.setBufferSession(...); }
+
+// Se il ripristino sessione fallisce, activateOTAA() fara' il join vero
+int16_t st = node.activateOTAA();
 ```
 
-Dopo ogni TX, si aggiorna sempre la RTC memory; si salva in NVS solo ogni 200 cicli (write batching):
+Dopo ogni TX riuscito, la sessione va aggiornata in RTC. Il salvataggio in NVS è **periodico** (ogni 200 cicli) per limitare l'usura della flash:
 
 ```cpp
-cacheSessionInRTC();       // sempre
+cacheSessionInRTC();       // sempre, zero costo
 if (currentFCnt % FCNT_NVS_SAVE_EVERY == 0) {
     saveSessionToNVS();    // ogni 200 cicli
 }
 ```
 
-**Perché non salvare l'FCnt raw (4 byte) ma l'intero session buffer (~300 byte)?** Perché in RadioLib 7.x **non esiste `setFCntUp()`**. L'unico modo per ripristinare il FCnt è tramite `setBufferSession(buf)`, che ricarica l'intero stato LoRaWAN. Il session buffer contiene FCnt + parametri MAC + configurazione ADR + molto altro. Scriverlo tutto è più byte ma è l'API disponibile.
+**Vita della flash**. Con TX ogni minuto e save ogni 200 cicli: ~7 scritture NVS al giorno. Con wear leveling ESP-IDF ogni settore riceve una frazione delle scritture totali. Vita stimata: **oltre 10 anni** anche in condizioni pessimistiche.
 
-**Vita della flash**. Con TX ogni minuto e save ogni 200 cicli:
-- ~7 scritture NVS al giorno
-- Con wear leveling ESP-IDF, ogni settore riceve una frazione delle scritture totali
-- Vita stimata: **>10 anni** anche in condizioni pessimistiche
-
-**Il flag `ENABLE_NVS_PERSISTENCE`** permette di disattivare completamente NVS per debug:
-
-```cpp
-#define ENABLE_NVS_PERSISTENCE  1  // 0 per debug, 1 per produzione
-```
-
-Durante lo sviluppo (con "skip FCnt check" attivo sul server), tenerlo a 0 evita di usurare la flash con scritture inutili.
+**Il flag `ENABLE_NVS_PERSISTENCE`** permette di disattivare completamente NVS per debug rapido. In produzione va tenuto a `1`. In modalità `DEBUG_NO_DEEP_SLEEP=1` viene salvata la sessione ad ogni ciclo (non ogni 200) perché `ESP.restart()` azzera anche la RTC memory — è documentato più avanti nella sezione "Modalità debug e produzione".
 
 ---
 
@@ -1119,38 +1220,48 @@ A livello LoRaWAN, la distinzione è realizzata tramite due FPort dedicati:
 | Comandi ordinari | **10** | No (one-shot) |
 | Configurazione | **20** | Sì (salvata in NVS) |
 
-### Il codec valida la coerenza cmd/FPort
+### Il codec ChirpStack: input base64, output bytes
 
-Il codec ChirpStack riceve dal client MQTT sia il comando (dentro `object`) che il FPort su cui deve viaggiare. Non sovrascrive il FPort: si limita a:
-
-1. **Verificare che il comando esista**
-2. **Verificare che sia coerente con il FPort scelto** (es. `reboot` è valido su FPort 10, non su FPort 20)
-3. **Tradurlo in byte binari**
+Il codec attualmente in uso (`chirpstack_codec.js`) segue una filosofia **pass-through** rispetto ai comandi: non conosce le semantiche dei singoli comandi. Riceve dal MQTT publisher una **stringa base64 già encodata** e la decodifica in bytes.
 
 ```javascript
 function encodeDownlink(input) {
-    var cmd = String(input.data.cmd).toLowerCase();
-    var port = input.fPort;
-
-    if (port === 10) {
-        // Comandi di azione
-        if (cmd === "reboot")   return { bytes: [0x01] };
-        if (cmd === "identify") return { bytes: [0x02] };
-        // ...
-        return { errors: ["Comando FPort 10 sconosciuto: " + cmd] };
+    var data = input.data;              // stringa base64
+    if (!data || typeof data !== "string") {
+        return { errors: ["missing base64 data"] };
     }
-
-    if (port === 20) {
-        // Configurazione persistente
-        if (cmd === "set_tx_interval") return { bytes: [0x11, input.data.value] };
-        // ...
-    }
+    var bytes = base64ToBytes(data);
+    var fPort = deduceFPort(bytes[0]);  // 0x01-0x07 -> 10, 0x11-0x16 -> 20
+    return { bytes: bytes, fPort: fPort };
 }
 ```
 
-Chi pubblica il downlink deve conoscere la mappatura comando→FPort. Il vantaggio è che il messaggio MQTT è **auto-descrittivo**: guardando il `fPort` capisci subito la natura del comando, e se un domani vuoi inviare un downlink saltando il codec (con `data` pre-encoded invece di `object`), il FPort è già quello corretto.
+**Perché questo pattern invece del classico `{cmd:"reboot"}`**. Durante lo sviluppo abbiamo osservato che il campo `object` nei downlink MQTT verso ChirpStack v4 è **soggetto a comportamenti anomali**: a volte i downlink con oggetto strutturato non venivano inseriti in coda o venivano scartati silenziosamente. Il formato base64 puro è più deterministico e ha meno problemi di serializzazione JSON.
 
-Se sbagli e mandi `"cmd":"reboot"` con `"fPort":20`, il codec ti risponde con un errore esplicito che elenca i comandi validi per quel FPort.
+**Chi costruisce i bytes**. La responsabilità di conoscere la mappa "comando → bytes" si sposta dal codec al **client MQTT** (webapp, script bash, backend). Il vantaggio è che il codec non deve essere aggiornato ogni volta che si aggiunge un comando lato firmware: cambia solo il client che invia. Lo svantaggio è che il client deve conoscere la codifica binaria dettagliata (magic bytes, endianness, ecc.).
+
+**Il modulo `mqtt_downlink_encoder.js`** (nella cartella `webapp/`) fornisce funzioni JavaScript pronte per costruire i payload base64 per tutti i comandi supportati. Vedi la [webapp di configurazione](#la-webapp-di-configurazione) più avanti in questa sezione.
+
+### La deduzione del FPort dal primo byte
+
+Il codec deduce automaticamente il FPort dal primo byte del payload, secondo la convenzione:
+
+- **Byte `0x01`-`0x07`** → FPort 10 (comandi di azione)
+- **Byte `0x11`-`0x16`** → FPort 20 (comandi di configurazione)
+- Altri byte → non validi (rifiutati dal codec)
+
+**Attenzione**: pur essendo deducibile, il **FPort deve essere esplicitamente presente nel messaggio MQTT** che il client pubblica. ChirpStack v4 richiede che il downlink contenga tutti i campi essenziali:
+
+```json
+{
+  "devEui":    "f85b1bfffebed444",
+  "fPort":     10,
+  "confirmed": false,
+  "data":      "AQ=="
+}
+```
+
+Senza uno di questi campi (`devEui`, `fPort`, `confirmed`, `data`) ChirpStack scarta silenziosamente il messaggio.
 
 ### Il primo byte come identificatore di comando
 
@@ -1186,7 +1297,7 @@ Ciclo successivo:     usa TX_INTERVAL_SECONDS[cfgTxIntervalPreset] = 300s
 
 ### La lista dei comandi supportati
 
-**FPort 10 — Comandi ordinari**
+**FPort 10 — Comandi ordinari (azioni one-shot, non persistenti)**
 
 | Comando | Byte | Argomenti | Descrizione |
 |---------|------|-----------|-------------|
@@ -1194,8 +1305,15 @@ Ciclo successivo:     usa TX_INTERVAL_SECONDS[cfgTxIntervalPreset] = 300s
 | `IDENTIFY` | 0x02 | (nessuno) | LED lampeggia 10 volte per identificare visivamente |
 | `FORCE_TX_NOW` | 0x03 | (nessuno) | Setta flag `forceTxNow`, prossimo ciclo TX dopo 2 secondi |
 | `CLEAR_NVS` | 0x04 | `0xA5` (magic) | Cancella l'intera NVS del namespace `lora`, riavvia |
+| `IDENTIFY_ON` | 0x05 | (nessuno) | Attiva modalità identify persistente (blink continuo) |
+| `IDENTIFY_OFF` | 0x06 | (nessuno) | Disattiva modalità identify persistente |
+| `GET_STATE` | 0x07 | (nessuno) | Richiede invio del payload state 0x43 nel prossimo TX |
 
 Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di esso il comando viene ignorato. Un errore accidentale (comando corrotto, checksum sbagliato) non deve poter cancellare una sessione LoRaWAN valida.
+
+`IDENTIFY_ON` è pensato per il **debug in campo**: se hai più device fisicamente vicini e non sai quale è quale, mandi `IDENTIFY_ON` a un DevEUI specifico e cerchi visivamente il device col LED che lampeggia. Poi mandi `IDENTIFY_OFF` per fermarlo.
+
+`GET_STATE` è il **cuore del flusso di configurazione remota**: quando la webapp si apre, non conosce ancora la configurazione corrente del device. Manda `GET_STATE` e attende che il device risponda con un payload state 0x43 su FPort 2.
 
 **FPort 20 — Configurazione persistente**
 
@@ -1208,7 +1326,9 @@ Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di es
 | `SET_BATT_THRESH` | 0x15 | 4 byte (2×uint16 LE) | Cambia soglie batteria emergency + recovery |
 | `SET_ADR_ENABLED` | 0x16 | 1 byte (0 o 1) | Abilita/disabilita ADR (solo effettivo in OTAA) |
 
-Ogni comando include **validazione dei range** sia lato codec (prima di trasmettere) sia lato firmware (prima di salvare in NVS): valori fuori dai limiti vengono ignorati e loggati. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
+Ogni comando include **validazione dei range** sia lato client (prima di trasmettere) sia lato firmware (prima di salvare in NVS): valori fuori dai limiti vengono ignorati e loggati. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
+
+**Feedback automatico**. Dopo ogni comando di configurazione (FPort 20) applicato con successo, il firmware imposta `sendStateNext = true` e nel prossimo ciclo TX invia un payload state 0x43 su FPort 2 con la nuova configurazione. La webapp usa questo meccanismo per aggiornare i campi del form senza dover richiedere esplicitamente `GET_STATE` dopo ogni modifica.
 
 ### Persistenza in NVS delle configurazioni
 
@@ -1251,72 +1371,69 @@ Cambiare un `#define` e riflashare **non sovrascrive** il valore in NVS: i devic
 
 ### Esempi mosquitto_pub
 
-Il topic canonico di ChirpStack per i downlink è:
+Il topic canonico di ChirpStack v4 per i downlink è:
 
 ```
-application/<app-id>/device/<devEUI>/command/down
+application/<app-uuid>/device/<devEUI>/command/down
 ```
 
 Le variabili da adattare:
-- `<app-id>` — Application ID di ChirpStack (es. `1`, lo trovi nell'URL della UI)
-- `<devEUI>` — DevEUI del device in lowercase senza trattini (es. `26a160fffe6e86bc`)
+- `<app-uuid>` — Application UUID di ChirpStack v4 (es. `1c2774a7-fe34-46ef-a7bf-18dbd11061fb`, lo trovi nell'URL della UI)
+- `<devEUI>` — DevEUI del device in **lowercase senza trattini** (es. `f85b1bfffebed444`)
 
-**Il campo `fPort` nel JSON deve corrispondere alla natura del comando**: `10` per azioni ordinarie, `20` per configurazione. Il codec verifica la coerenza e rifiuta i comandi inviati sul FPort sbagliato. Questa scelta rende il messaggio MQTT auto-descrittivo: guardando il JSON capisci subito la categoria del comando senza dover decodificare i byte.
+Il **formato del payload MQTT** deve contenere quattro campi obbligatori: `devEui`, `fPort`, `confirmed`, `data`. Il `data` è la base64 del payload binario, `fPort` corrisponde al primo byte (10 per azioni, 20 per config). Senza uno di questi campi ChirpStack scarta silenziosamente il downlink.
 
-**Reboot del device** (azione, FPort 10):
+**Reboot del device** (azione, FPort 10, byte 0x01):
 ```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"reboot"}}'
+mosquitto_pub -h <IP-broker> -p 1883 \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"AQ=="}'
 ```
 
-**Identify** (azione, FPort 10):
+`AQ==` è la base64 di `[0x01]`.
+
+**Identify** (azione, FPort 10, byte 0x02):
 ```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"identify"}}'
+mosquitto_pub -h <IP-broker> -p 1883 \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"Ag=="}'
 ```
 
-**Forza uplink immediato** (azione, FPort 10):
+**Richiedi state del device** (azione, FPort 10, byte 0x07):
 ```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"force_tx_now"}}'
+mosquitto_pub -h <IP-broker> -p 1883 \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"Bw=="}'
 ```
 
-**Cambia TX interval a 10 secondi** (configurazione, FPort 20):
+**Cambia TX interval a 5 minuti** (configurazione, FPort 20, bytes `[0x11, 0x03]`):
 ```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_tx_interval","value":0}}'
+mosquitto_pub -h <IP-broker> -p 1883 \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":20,"confirmed":false,"data":"EQM="}'
 ```
 
-**Riduci potenza TX a 2 dBm** (configurazione, FPort 20):
+`EQM=` è la base64 di `[0x11, 0x03]` (SET_TX_INTERVAL preset=3).
+
+**Riduci potenza TX a 2 dBm** (configurazione, FPort 20, bytes `[0x13, 0x02]`):
 ```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_tx_power","value":2}}'
+mosquitto_pub -h <IP-broker> -p 1883 \
+  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":20,"confirmed":false,"data":"EwI="}'
 ```
 
-**Soglie batteria personalizzate** (configurazione, FPort 20):
-```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
+**Come generare la base64 lato client**. In JavaScript:
+```javascript
+btoa(String.fromCharCode(0x01))         // "AQ==" - REBOOT
+btoa(String.fromCharCode(0x07))         // "Bw==" - GET_STATE
+btoa(String.fromCharCode(0x11, 0x03))   // "EQM=" - SET_TX_INTERVAL preset=3
 ```
 
-**Disabilita ADR** (configurazione, FPort 20, utile per forzare SF manuale):
-```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_adr_enabled","value":0}}'
-```
-
-**Riabilita ADR**:
-```bash
-mosquitto_pub -h <IP-ChirpStack> \
-  -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_adr_enabled","value":1}}'
+In Python:
+```python
+import base64
+base64.b64encode(bytes([0x01])).decode()          # "AQ=="
+base64.b64encode(bytes([0x11, 0x03])).decode()    # "EQM="
 ```
 
 Nel repository c'è anche uno **script bash `test_downlinks.sh`** che avvolge tutti questi comandi in un'interfaccia sintetica:
@@ -1324,32 +1441,49 @@ Nel repository c'è anche uno **script bash `test_downlinks.sh`** che avvolge tu
 ```bash
 ./test_downlinks.sh reboot
 ./test_downlinks.sh identify
-./test_downlinks.sh set_tx_interval 0
+./test_downlinks.sh get_state
+./test_downlinks.sh set_tx_interval 3
 ./test_downlinks.sh sub_up
 ```
 
-Le variabili di configurazione sono in cima allo script e si possono anche passare come environment override:
+### La webapp di configurazione
 
-```bash
-BROKER_HOST=192.168.1.50 EDGE_ID=lab-01 ./test_downlinks.sh identify
-```
+Per una gestione più comoda dei downlink senza dover ricordare i valori base64, il repository include una **webapp mobile-first** nella cartella `webapp/`:
+
+- **`webapp/index.html`** — singolo file HTML autoconsistente con dashboard responsive
+- **`webapp/mqtt_downlink_encoder.js`** — modulo JavaScript con tutte le funzioni di encoding
+- **`webapp/README.md`** — istruzioni per servirla e configurarla
+
+La webapp si connette al broker MQTT via **WebSocket** (richiede listener `9001` abilitato su Mosquitto) e permette di:
+
+- Vedere lo stato corrente del device (batteria, uptime, boot count, feature flags)
+- Modificare tutte le configurazioni runtime tramite form (TX interval, SF, potenza, GPS timeout, soglie batteria, ADR)
+- Eseguire le azioni one-shot (reboot, identify, force TX, clear NVS) con conferma esplicita per quelle distruttive
+- Vedere il log MQTT in tempo reale (uplink misure, uplink state, downlink inviati)
+
+Il layout è **mobile-first**: 1 colonna su smartphone, 2 su tablet, 3 su desktop. Tema dark/light automatico dalle preferenze sistema. Progettata per essere usabile anche da smartphone in campo per operazioni di manutenzione.
+
+Vedi `webapp/README.md` per il setup completo e la configurazione di Mosquitto WebSocket.
 
 ### Il flusso completo di un comando remoto
 
 Ricapitolando il percorso di un comando dal momento in cui viene pubblicato a quando viene eseguito:
 
-1. **Utente pubblica** su MQTT un JSON su `application/<id>/device/<eui>/command/down` con `{"fPort":10 o 20, "object":{"cmd":..., "value":...}}` — deve scegliere il FPort corretto per la categoria di comando
-2. **ChirpStack riceve** il messaggio e chiama `encodeDownlink()` del codec
-3. **Il codec valida** che il comando sia coerente con il FPort e restituisce `{bytes: [...]}` (o un errore se la coppia cmd/FPort non è valida)
-4. **ChirpStack accoda** il downlink sul FPort ricevuto
-5. **Il device fa il prossimo uplink** (secondo il suo intervallo TX)
-6. **RadioLib apre le finestre RX** (1s e 2s dopo il TX)
-7. **ChirpStack invia il downlink** nella finestra RX appropriata
-8. **`node.sendReceive()` restituisce state > 0**, indicando che è arrivato un downlink
-9. **Il firmware chiama** `handleDownlink(port, buf, len)`, che dispatcha in base al FPort
-10. **Il comando viene eseguito**: azione immediata (FPort 10) o salvataggio in NVS (FPort 20)
+1. **Il client MQTT costruisce i bytes** del comando (es. `[0x11, 0x03]` per SET_TX_INTERVAL preset=3)
+2. **Il client encoda in base64** (`btoa()` in JavaScript, `base64.b64encode()` in Python)
+3. **Il client pubblica** su MQTT topic `application/<uuid>/device/<eui>/command/down` un JSON con `devEui`, `fPort`, `confirmed`, `data`
+4. **ChirpStack riceve** e chiama `encodeDownlink()` del codec
+5. **Il codec decodifica** la base64 e verifica che il primo byte sia in un range valido (`0x01-0x07` o `0x11-0x16`)
+6. **ChirpStack accoda** il downlink con il FPort specificato
+7. **Il device fa il prossimo uplink** (secondo il suo intervallo TX)
+8. **RadioLib apre le finestre RX** (1s e 2s dopo il TX)
+9. **ChirpStack invia il downlink** nella finestra RX appropriata
+10. **`node.sendReceive()` restituisce state > 0**, indicando che è arrivato un downlink
+11. **Il firmware chiama** `handleDownlink(port, buf, len)`, che dispatcha in base al FPort
+12. **Il comando viene eseguito**: azione immediata (FPort 10) o salvataggio in NVS + `sendStateNext = true` (FPort 20)
+13. **Per i comandi FPort 20**: al ciclo successivo il device invia un payload state 0x43 su FPort 2 con la nuova configurazione, così il client vede il feedback della modifica
 
-Latenza tipica end-to-end: da alcuni secondi (se il device sta per trasmettere) a diversi minuti (se ha appena finito un ciclo).
+Latenza tipica end-to-end: da alcuni secondi (se il device sta per trasmettere) a diversi minuti (se ha appena finito un ciclo). Il feedback state (punto 13) aggiunge un ulteriore ciclo TX di latenza.
 
 ### Ricognizione dei log
 
@@ -1377,26 +1511,42 @@ Utile per debug quando il comando arriva ma il device non si comporta come attes
 Il firmware espone alcuni flag di configurazione in cima al file per switchare tra sviluppo e produzione:
 
 ```cpp
-#define DEBUG_NO_DEEP_SLEEP        1   // 1 = niente deep sleep vero (USB CDC viva)
-#define ENABLE_NVS_PERSISTENCE     0   // 0 = niente scritture flash durante il debug
+#define DEBUG_NO_DEEP_SLEEP        0   // 0 = deep sleep vero, 1 = debug con USB CDC viva
+#define ENABLE_NVS_PERSISTENCE     1   // 1 = persistenza sessione + config in flash
 #define ENABLE_BATTERY_PROTECTION  1   // 1 = emergency sleep se vbat sotto soglia
 #define ENABLE_DOWNLINK_HANDLER    1   // 1 = interpreta i downlink come comandi
 #define ENABLE_WATCHDOG            1   // 1 = wdt hardware, 0 durante debug con breakpoint
 #define ENABLE_ADR                 1   // default fabbrica ADR (attivo solo in OTAA)
-#define USE_OTAA                   0   // 1 = OTAA, 0 = ABP (attuale)
+#define USE_OTAA                   1   // 1 = OTAA (raccomandato), 0 = ABP
 ```
 
-**In modalità debug** (`DEBUG_NO_DEEP_SLEEP = 1`):
-- Al posto di `esp_deep_sleep_start()`, il codice usa `delay(seconds*1000)` + `ESP.restart()`
+**Configurazione produzione raccomandata** (i valori sopra):
+- `USE_OTAA=1` — necessario per FCnt e downlink affidabili (vedi sezione "ABP vs OTAA")
+- `DEBUG_NO_DEEP_SLEEP=0` — vero deep sleep, RTC memory persiste
+- `ENABLE_NVS_PERSISTENCE=1` — necessario per nonces OTAA e config runtime
+- `ENABLE_WATCHDOG=1` — recovery automatico da blocchi imprevisti
+- `ENABLE_BATTERY_PROTECTION=1` — protezione della batteria
+
+### Modalità debug (`DEBUG_NO_DEEP_SLEEP=1`)
+
+Al posto di `esp_deep_sleep_start()`, il codice usa `delay(seconds*1000)` + `ESP.restart()`. Effetti:
+
 - USB CDC resta viva → la porta COM non sparisce da Windows
-- Il Monitor Seriale continua a mostrare i log senza interruzioni
+- Il Monitor Seriale continua a mostrare i log senza interruzioni tra un ciclo e l'altro
 - Consumo alto (~30 mA) ma tanto sei con USB collegato
 
-**In modalità produzione** (`DEBUG_NO_DEEP_SLEEP = 0`):
-- Vero deep sleep
-- USB CDC muore al sleep → porta COM sparisce
+**Attenzione ai limiti di questa modalità**:
+- `ESP.restart()` **azzera anche la RTC memory** (a differenza del deep sleep vero, che la preserva). Le variabili `RTC_DATA_ATTR` si perdono ad ogni ciclo.
+- Per far sopravvivere la sessione LoRaWAN, il firmware in questa modalità salva **ad ogni ciclo** in NVS (invece che ogni 200 come in produzione). Costo trascurabile per una sessione di debug, ma se dovessi usare questa modalità in continuo per giorni, l'usura flash sale.
+- **In ABP** questa modalità aggrava il problema di persistenza FCnt (già problematico in ABP con RadioLib 7.x): il device riparte da FCnt=0 ad ogni ciclo. **In OTAA** invece funziona: al primo boot fa il join vero, ai successivi la sessione viene ripristinata da NVS con `SESSION_RESTORED` e il FCnt incrementa.
+
+### Modalità produzione (`DEBUG_NO_DEEP_SLEEP=0`)
+
+- Vero `esp_deep_sleep_start()`
+- USB CDC muore al sleep → porta COM sparisce da Windows/Linux
 - Il Monitor Seriale si scollega dopo ogni TX
-- Ma il device consuma davvero <10 μA in sleep
+- Consumo <10 μA in sleep — batteria dura settimane/mesi
+- La RTC memory **persiste** tra sleep e wake: sessione LoRaWAN, nonces, uptime accumulato, e altre variabili `RTC_DATA_ATTR` sopravvivono senza dover salvare in NVS ad ogni ciclo
 
 Per flashare un device che sta in deep sleep, si usa la sequenza pulsanti **BOOT + RST**:
 1. Tieni premuto BOOT
@@ -1405,9 +1555,11 @@ Per flashare un device che sta in deep sleep, si usa la sequenza pulsanti **BOOT
 
 Ora il device è in bootloader mode indipendentemente da cosa stava facendo il firmware. `esptool.py` può connettersi e flashare.
 
-**Il flag `ENABLE_NVS_PERSISTENCE`** disattiva tutte le scritture in NVS quando è a 0. Utile per non usurare la flash durante lo sviluppo. Con NS che ha "skip FCnt check" attivo, non serve la persistenza per far funzionare il device.
+### Gli altri flag
 
-**Il flag `USE_OTAA`** seleziona la strategia di attivazione LoRaWAN. Con `USE_OTAA=0` il firmware usa ABP (chiavi statiche); con `USE_OTAA=1` usa OTAA (join dinamico con AppKey). Entrambe le modalità sono pienamente implementate — vedi la sezione dedicata "ABP vs OTAA" per i dettagli. Ricorda che OTAA richiede anche `ENABLE_NVS_PERSISTENCE=1` per evitare il fallimento del join dopo power-off.
+**`ENABLE_NVS_PERSISTENCE`** — in produzione va sempre a `1` (necessario per OTAA nonces e config runtime). Solo per test isolati di logica applicativa può essere messo a 0 per evitare qualsiasi scrittura flash.
+
+**`USE_OTAA`** seleziona la strategia di attivazione LoRaWAN. Entrambe le modalità sono pienamente implementate — vedi la sezione dedicata "ABP vs OTAA" per i dettagli. La modalità ABP è utile per una prima esplorazione didattica del protocollo, ma per uso operativo (con downlink affidabili e FCnt persistente) serve OTAA.
 
 ---
 
