@@ -22,7 +22,7 @@
 18. [Nodo LoRaWan HW (RN2483) - rete di sensori](gatewaylorahw.md)
 19. [Nodo LoRaWan HW (RAK811) - rete di sensori](lorarak811.md)
 20. [Nodo LoRaWan HW (LoRa-E5 mini) - rete di sensori](lorae5minihw.md)
-21. [Gateway LoRaWan con Chirpstark](gateways/dispensa-chirpstack-configurazione.md)
+21. [Gateway LoRaWan SX1302 con Chirpstark](gateways/dispensa-chirpstack-configurazione.md)
 22. [Gateway LoRaWan con esp32- rete IP](gatewaylora-ip.md)
 23. [Esercizi](esercizi.md)
 24. [Esercizi riassuntivi](es_riassuntivi.md)
