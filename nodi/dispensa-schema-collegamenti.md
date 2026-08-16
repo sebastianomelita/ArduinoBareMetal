@@ -125,7 +125,7 @@ Le protezioni tipiche sono:
 
 **Attenzione alla temperatura**: i BMS economici (DW01A + 8205A) **non hanno protezione termica**. In installazioni outdoor esposte al sole (rooftop d'estate, interno auto), la temperatura della cella può superare i 60°C — condizione in cui una Li-Ion invecchia molto rapidamente e, in casi estremi, può andare in thermal runaway. Se il nodo lavora in ambienti caldi, considera un BMS con NTC integrato (marcato "with temp protection"), oppure aggiungi un termistore esterno letto da un GPIO del microcontroller per bloccare la carica via software sopra una soglia (tipicamente 45-50°C in carica, 60°C in scarica).
 
-Se in futuro vorrai implementare davvero il controllo termico software, il firmware ha già GPIO liberi disponibili (2, 3, 4, 5 sono ADC-capable) e nel dispatcher handleDownlink FPort 20 potresti aggiungere un SET_TEMP_THRESH per configurarle da remoto. Ma è un'aggiunta futura, non serve per la prima installazione.
+Se in futuro si volesse implementare davvero il controllo termico software, il firmware ha già GPIO liberi disponibili (2, 3, 4, 5 sono ADC-capable) e nel dispatcher handleDownlink FPort 20 si potrebbe aggiungere un SET_TEMP_THRESH per configurarle da remoto. Ma è un'aggiunta futura, non serve per la prima installazione.
 
 ### Come si collega
 
