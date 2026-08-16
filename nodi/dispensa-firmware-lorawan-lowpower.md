@@ -1534,4 +1534,4 @@ I file completi descritti in questa dispensa sono disponibili in:
 - **Codec dashboard**: [`mqtt_downlink_encoder.js`](../dashboard/mqtt_downlink_encoder.js)
 - **Dashboard di comando singola**: [`dashboard_single.html`](../dashboard/dashboard_single.html)
 - **Dashboard di comando multipla**: [`dashboard_multi.html`](../dashboard/dashboard_multi.html)
-- **readme configurazione**: [`README-configurazione.md`](../dashboard/README-configurazione.md)
+- **Readme configurazione**: [`README-configurazione.md`](../dashboard/README-configurazione.md)
