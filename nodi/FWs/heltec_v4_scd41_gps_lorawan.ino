@@ -157,9 +157,11 @@ uint8_t appKey[16] = {
 // FPort e' un campo LoRaWAN che discrimina il tipo di messaggio a livello
 // di rete (non di payload). Convenzioni del progetto:
 //   FPort 1  = uplink misure (questo)
-//   FPort 10 = downlink comandi ordinari (reboot, identify, ...)
+//   FPort 2  = uplink state (config runtime + info diagnostiche)
+//   FPort 10 = downlink comandi ordinari (reboot, identify, get_state, ...)
 //   FPort 20 = downlink configurazione persistente (set_tx_interval, ...)
-#define LORAWAN_FPORT  1
+#define LORAWAN_FPORT        1
+#define LORAWAN_FPORT_STATE  2
 
 // ---- Protezione batteria da under-discharge (soglia software) ----
 // Le celle litio-ione (LiPo, 18650, 14500) si danneggiano irreversibilmente
@@ -357,6 +359,23 @@ uint8_t appKey[16] = {
 #define ENABLE_WATCHDOG    1
 #define WDT_TIMEOUT_S    120
 
+// ---- Modalita' IDENTIFY persistente (option B: sveglio, blink continuo) ----
+// Quando attiva, il device NON va in deep sleep: resta sveglio e lampeggia in
+// continuo, ritrasmettendo ogni IDENTIFY_TX_INTERVAL_S per aprire finestre RX
+// frequenti (identify_off reattivo entro un intervallo). Il GPS e' saltato.
+//
+// IDENTIFY_TX_INTERVAL_S: ogni quanti secondi ritrasmette durante identify.
+//   Piu' corto = identify_off piu' reattivo, piu' airtime. 20s e' un buon
+//   compromesso (duty cycle ampiamente sotto l'1% anche a SF9).
+// IDENTIFY_BLINK_MS: mezzo periodo del lampeggio (150ms -> ~3.3 Hz, ben visibile).
+// IDENTIFY_TIMEOUT_S: timeout di sicurezza. Se nessuno manda identify_off (o si
+//   esce dalla portata radio), la modalita' si spegne da sola dopo N secondi.
+//   Evita che un identify dimenticato tenga il device sveglio a lampeggiare e
+//   trasmettere all'infinito. 1200s = 20 minuti.
+#define IDENTIFY_TX_INTERVAL_S  20
+#define IDENTIFY_BLINK_MS       150
+#define IDENTIFY_TIMEOUT_S      1200
+
 // ---- ADR (Adaptive Data Rate) ----
 // Meccanismo standard LoRaWAN in cui il Network Server ottimizza dinamicamente
 // SF e potenza TX in base alla qualita' del link. Con link buono il device
@@ -382,8 +401,15 @@ uint8_t appKey[16] = {
 // payload senza rompere la retrocompatibilita' (basta aggiungere un nuovo
 // SCHEMA_ID e gestirlo nel codec).
 //   0x41 = SDS011 + BME280 (25 byte) - progetto precedente
-//   0x42 = SCD41 + L76K + batteria (32 byte) - questo progetto
-#define SCHEMA_ID  0x42
+//   0x42 = SCD41 + L76K + batteria (32 byte) - misure ambientali, FPort 1
+//   0x43 = State del device (23 byte) - config runtime + diagnostica, FPort 2
+#define SCHEMA_ID        0x42
+#define SCHEMA_ID_STATE  0x43
+
+// Versione del firmware (visibile nel payload state 0x43).
+// Incrementa a ogni release significativa per permettere alla pagina web
+// di riconoscere quali device sono aggiornati e quali no.
+#define FW_VERSION  1
 
 // =============================================================
 // PIN
@@ -466,6 +492,76 @@ struct Payload_v0x42 {
 static_assert(sizeof(Payload_v0x42) == 32, "Payload deve essere 32 byte");
 
 // =============================================================
+// SCHEMA PAYLOAD 0x43 - STATE (config runtime + diagnostica)
+// =============================================================
+//
+// Inviato su FPort 2 (distinto da FPort 1 delle misure). La pagina web
+// di configurazione lo usa per popolare i campi del form senza dover
+// aspettare un uplink di misura completo.
+//
+// Trasmesso in tre occasioni:
+//   1) Al primo boot dopo un power cycle (bootCount == 1)
+//   2) Dopo ogni cambio di configurazione via downlink FPort 20
+//   3) Su richiesta esplicita via comando GET_STATE (FPort 10, 0x05)
+//
+// Contenuto:
+//   - Info diagnostiche: bootCount, uptime, batteria, reset reason
+//   - Config runtime modificabili via downlink FPort 20 (cfg*)
+//   - Feature flags (compile-time, informativi per l'UI)
+//   - Versione firmware
+//
+// | offset | size | tipo   | campo                | note                      |
+// |--------|------|--------|----------------------|---------------------------|
+// | 0      | 1    | u8     | schema_id            | 0x43                      |
+// | 1      | 4    | u32    | bootCount            | dai boot                  |
+// | 5      | 4    | u32    | uptime_s             | secondi dal power-on (B)  |
+// | 9      | 1    | u8     | battery_pct          | %                         |
+// | 10     | 1    | u8     | cfgTxIntervalPreset  | 0-5                       |
+// | 11     | 1    | u8     | cfgLoRaWANSF         | 7-12                      |
+// | 12     | 1    | u8     | cfgTxPower           | dBm 2-14                  |
+// | 13     | 2    | u16    | cfgGpsTimeoutS       | secondi 10-300            |
+// | 15     | 2    | u16    | cfgVbatEmergencyMv   | mV                        |
+// | 17     | 2    | u16    | cfgVbatRecoveryMv    | mV                        |
+// | 19     | 1    | u8     | cfgAdr               | 0/1                       |
+// | 20     | 1    | u8     | featureFlags         | bit-packed (vedi sotto)   |
+// | 21     | 1    | u8     | fwVersion            | FW_VERSION define         |
+// | 22     | 1    | u8     | resetReason          | esp_reset_reason() coded  |
+//
+// featureFlags bit layout:
+//   Bit 0: USE_OTAA                    (1 = OTAA, 0 = ABP)
+//   Bit 1: ENABLE_NVS_PERSISTENCE      (1 = NVS attiva)
+//   Bit 2: ENABLE_DOWNLINK_HANDLER     (1 = downlink processati)
+//   Bit 3: ENABLE_WATCHDOG             (1 = wdt HW armato)
+//   Bit 4: ENABLE_BATTERY_PROTECTION   (1 = emergency sleep abilitato)
+//   Bit 5: DEBUG_NO_DEEP_SLEEP         (1 = modalita' debug con restart)
+//   Bit 6-7: riservati per estensioni future
+//
+// L'uptime segue la semantica "wall-clock" (B): tempo totale dal power-on
+// incluso il tempo passato in deep sleep. Utile per capire da quanto tempo
+// il device e' in campo.
+
+#pragma pack(push, 1)
+struct Payload_v0x43 {
+    uint8_t  schema_id;
+    uint32_t bootCount;
+    uint32_t uptime_s;
+    uint8_t  battery_pct;
+    uint8_t  cfgTxIntervalPreset;
+    uint8_t  cfgLoRaWANSF;
+    uint8_t  cfgTxPower;
+    uint16_t cfgGpsTimeoutS;
+    uint16_t cfgVbatEmergencyMv;
+    uint16_t cfgVbatRecoveryMv;
+    uint8_t  cfgAdr;
+    uint8_t  featureFlags;
+    uint8_t  fwVersion;
+    uint8_t  resetReason;
+};
+#pragma pack(pop)
+
+static_assert(sizeof(Payload_v0x43) == 23, "Payload state deve essere 23 byte");
+
+// =============================================================
 // OGGETTI GLOBALI
 // =============================================================
 
@@ -503,6 +599,30 @@ RTC_DATA_ATTR int32_t  lastLat_e7  = 0;
 RTC_DATA_ATTR int32_t  lastLon_e7  = 0;
 RTC_DATA_ATTR bool     hasWarmData = false;   // primo boot -> cold
 RTC_DATA_ATTR bool     forceTxNow  = false;   // set da downlink FORCE_TX_NOW: prossimo ciclo TX subito
+
+// Uptime "wall-clock" accumulato attraverso i deep sleep.
+// Ad ogni deep sleep aggiungiamo (millis()/1000 + sleep_seconds) qui.
+// millis() si azzera ad ogni wake, ma questa variabile persiste in RTC.
+// Si azzera solo con power-off/reset HW (che azzera anche bootCount).
+RTC_DATA_ATTR uint32_t uptimeAccumulatedS = 0;
+
+// Flag per richiedere l'invio di un payload state 0x43 nel prossimo ciclo TX.
+// Settato da:
+//   - Comando downlink GET_STATE (FPort 10, 0x05)
+//   - Dopo qualsiasi cambio config via downlink FPort 20 (feedback all'utente)
+//   - Al primo boot dopo un power cycle (bootCount == 1)
+// Il flag persiste in RTC memory: se settato in un ciclo e non consumato
+// (es. per errore TX), viene ritentato nel ciclo successivo.
+RTC_DATA_ATTR bool sendStateNext = false;
+
+// ---- Modalita' IDENTIFY persistente (per ispezione fisica su edificio) ----
+// Attivata da downlink identify_on (0x05), disattivata da identify_off (0x06).
+// Quando attiva (option B), il device NON dorme: resta sveglio, lampeggia in
+// continuo e ritrasmette ogni IDENTIFY_TX_INTERVAL_S (finestre RX frequenti per
+// ricevere identify_off). Salta il GPS. Un timeout di sicurezza la spegne dopo
+// IDENTIFY_TIMEOUT_S. Il flag e' in RTC cosi' sopravvive a un eventuale deep
+// sleep di rientro (es. join fallito), ma un power-off lo azzera (voluto).
+RTC_DATA_ATTR bool     identifyMode = false;   // modalita' identify attiva
 
 // Configurazioni runtime (caricate al boot da NVS o dai default #define)
 // Vengono modificate dal downlink handler via FPort 20.
@@ -819,6 +939,9 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 #define CMD_IDENTIFY       0x02   // LED lampeggia 10 volte per riconoscimento visivo
 #define CMD_FORCE_TX_NOW   0x03   // salta lo sleep normale, prossimo TX dopo 2s
 #define CMD_CLEAR_NVS      0x04   // cancella NVS namespace 'lora' (richiede 0xA5 magic)
+#define CMD_IDENTIFY_ON    0x05   // attiva modalita' identify persistente
+#define CMD_IDENTIFY_OFF   0x06   // disattiva modalita' identify persistente
+#define CMD_GET_STATE      0x07   // richiede invio payload state 0x43 nel prossimo TX
 
 // ================================================================
 // Comandi FPort 20 - CONFIGURAZIONE (persistente in NVS)
@@ -835,14 +958,38 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 #define CFG_SET_BATT_THRESH   0x15   // 4 byte (2xuint16 LE), mV -> NVS "vbat_em"/"vbat_rc"
 #define CFG_SET_ADR_ENABLED   0x16   // 1 byte, 0/1 -> NVS "adr" (effettivo solo in OTAA)
 
-// Fa lampeggiare il LED N volte per identificare visivamente il device
+// Fa lampeggiare il LED N volte per identificare visivamente il device.
+// NOTA: durante il ciclo il LED e' gia' acceso (ledOn() nel setup), quindi
+// partiamo da SPENTO per dare contrasto, altrimenti i lampeggi si confondono
+// con lo stato acceso di base e non si vedono. Alla fine lo rimettiamo acceso
+// per non alterare lo stato del ciclo (verra' spento al deep sleep).
 void identifyBlink(uint8_t times) {
+    ledOff();
+    delay(300);
     for (uint8_t i = 0; i < times; i++) {
         ledOn();
-        delay(200);
+        delay(150);
         ledOff();
-        delay(200);
+        delay(150);
     }
+    ledOn();   // ripristina lo stato "acceso" del ciclo
+}
+
+// Lampeggia il LED in continuo per 'ms' millisecondi, pettinando il watchdog.
+// Usato dalla modalita' identify (option B): il device resta sveglio e
+// lampeggia tra un uplink e l'altro. A fine funzione il LED resta spento.
+void blinkFor(uint32_t ms) {
+    uint32_t start = millis();
+    bool on = false;
+    while (millis() - start < ms) {
+        on = !on;
+        digitalWrite(PIN_LED, on ? HIGH : LOW);
+#if ENABLE_WATCHDOG
+        esp_task_wdt_reset();
+#endif
+        delay(IDENTIFY_BLINK_MS);
+    }
+    ledOff();
 }
 
 // Cancella l'intera NVS (namespace 'lora'). Riavvia poi il device.
@@ -877,6 +1024,18 @@ void handleDownlinkPort10(uint8_t* buf, size_t len) {
             identifyBlink(10);
             break;
 
+        case CMD_IDENTIFY_ON:
+            Serial.println("[DOWNLINK] IDENTIFY_ON: modalita' identify persistente attivata");
+            Serial.printf("           blink continuo, TX ogni %us, timeout %us (~%u min)\n",
+                          IDENTIFY_TX_INTERVAL_S, IDENTIFY_TIMEOUT_S, IDENTIFY_TIMEOUT_S / 60);
+            identifyMode = true;
+            break;
+
+        case CMD_IDENTIFY_OFF:
+            Serial.println("[DOWNLINK] IDENTIFY_OFF: modalita' identify disattivata");
+            identifyMode = false;
+            break;
+
         case CMD_FORCE_TX_NOW:
             Serial.println("[DOWNLINK] FORCE_TX_NOW: prossimo ciclo TX immediato");
             forceTxNow = true;   // resta in RTC memory fino al prossimo boot
@@ -888,6 +1047,11 @@ void handleDownlinkPort10(uint8_t* buf, size_t len) {
                 return;
             }
             clearNvsAndReboot();
+            break;
+
+        case CMD_GET_STATE:
+            Serial.println("[DOWNLINK] GET_STATE: verra' inviato payload state nel prossimo TX");
+            sendStateNext = true;
             break;
 
         default:
@@ -913,6 +1077,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
                 cfgTxIntervalPreset = buf[1];
                 Serial.printf("[DOWNLINK] SET_TX_INTERVAL: preset=%u (%us)\n",
                               buf[1], TX_INTERVAL_SECONDS[buf[1]]);
+                sendStateNext = true;   // feedback state al prossimo TX
             }
             break;
 
@@ -930,6 +1095,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
                     Serial.println("           usa set_adr_enabled=0 prima, se vuoi forzare SF manuale");
                 }
 #endif
+                sendStateNext = true;
             }
             break;
 
@@ -941,6 +1107,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
             if (saveConfigUChar(NVS_KEY_TX_POWER, buf[1])) {
                 cfgTxPower = buf[1];
                 Serial.printf("[DOWNLINK] SET_TX_POWER: %u dBm\n", buf[1]);
+                sendStateNext = true;
             }
             break;
 
@@ -957,6 +1124,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
             if (saveConfigUShort(NVS_KEY_GPS_TIMEOUT, sec)) {
                 cfgGpsTimeoutS = sec;
                 Serial.printf("[DOWNLINK] SET_GPS_TIMEOUT: %us\n", sec);
+                sendStateNext = true;
             }
             break;
         }
@@ -978,6 +1146,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
                 cfgVbatRecoveryMv  = rc;
                 Serial.printf("[DOWNLINK] SET_BATT_THRESH: emergency=%umV recovery=%umV\n",
                               em, rc);
+                sendStateNext = true;
             }
             break;
         }
@@ -995,6 +1164,7 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
                 Serial.printf("[DOWNLINK] SET_ADR_ENABLED: %s\n",
                               cfgAdr ? "abilitato" : "disabilitato");
                 Serial.println("           applicato al prossimo initLoRaWAN (reboot o wake)");
+                sendStateNext = true;
             }
             break;
         }
@@ -1433,6 +1603,104 @@ bool initLoRaWAN() {
     return true;
 }
 
+// =============================================================
+// PAYLOAD STATE 0x43
+// =============================================================
+//
+// Costruisce il payload state con i valori correnti del device.
+// I feature flags sono impacchettati in un singolo byte per efficienza.
+// La batteria viene letta appena prima (valore fresco).
+
+/**
+ * Impacchetta i feature flags compile-time in un singolo byte.
+ * L'ordine dei bit e' documentato nel commento della struct Payload_v0x43.
+ */
+uint8_t buildFeatureFlags() {
+    uint8_t flags = 0;
+#if USE_OTAA
+    flags |= (1 << 0);
+#endif
+#if ENABLE_NVS_PERSISTENCE
+    flags |= (1 << 1);
+#endif
+#if ENABLE_DOWNLINK_HANDLER
+    flags |= (1 << 2);
+#endif
+#if ENABLE_WATCHDOG
+    flags |= (1 << 3);
+#endif
+#if ENABLE_BATTERY_PROTECTION
+    flags |= (1 << 4);
+#endif
+#if DEBUG_NO_DEEP_SLEEP
+    flags |= (1 << 5);
+#endif
+    return flags;
+}
+
+/**
+ * Codifica esp_reset_reason() in un byte per il payload state.
+ * L'enum ESP-IDF sta gia' in un byte, cast diretto.
+ * Valori tipici che ci si aspetta:
+ *   1 = ESP_RST_POWERON     (power-on da 0)
+ *   3 = ESP_RST_SW          (ESP.restart())
+ *   4 = ESP_RST_PANIC       (crash / panic)
+ *   5 = ESP_RST_INT_WDT     (interrupt watchdog)
+ *   6 = ESP_RST_TASK_WDT    (task watchdog - il nostro ENABLE_WATCHDOG)
+ *   7 = ESP_RST_WDT         (altri watchdog)
+ *   8 = ESP_RST_DEEPSLEEP   (wake da deep sleep)
+ *  11 = ESP_RST_BROWNOUT    (calo di tensione)
+ */
+uint8_t getResetReasonByte() {
+    return (uint8_t)esp_reset_reason();
+}
+
+/**
+ * Costruisce il payload state 0x43 e lo trasmette su FPort 2.
+ * Ritorna true se TX riuscito, false altrimenti.
+ * Non ha effetti collaterali sulla sessione LoRaWAN oltre il TX stesso.
+ */
+bool sendStatePayload() {
+    Payload_v0x43 state = {};
+    state.schema_id           = SCHEMA_ID_STATE;
+    state.bootCount           = bootCount;
+    // Uptime "wall-clock" (semantica B): tempo accumulato in precedenti sleep
+    // + tempo trascorso da questo boot. millis() si azzera ad ogni wake ma
+    // uptimeAccumulatedS in RTC persiste attraverso i deep sleep.
+    state.uptime_s            = uptimeAccumulatedS + (millis() / 1000);
+    // Batteria letta al momento (valore fresco, ~10ms per lettura ADC)
+    state.battery_pct         = vbatToPercent(readBatteryMv());
+    state.cfgTxIntervalPreset = cfgTxIntervalPreset;
+    state.cfgLoRaWANSF        = cfgLoRaWANSF;
+    state.cfgTxPower          = cfgTxPower;
+    state.cfgGpsTimeoutS      = cfgGpsTimeoutS;
+    state.cfgVbatEmergencyMv  = cfgVbatEmergencyMv;
+    state.cfgVbatRecoveryMv   = cfgVbatRecoveryMv;
+    state.cfgAdr              = cfgAdr ? 1 : 0;
+    state.featureFlags        = buildFeatureFlags();
+    state.fwVersion           = FW_VERSION;
+    state.resetReason         = getResetReasonByte();
+
+    Serial.printf("TX STATE %u byte su FPort %u: ",
+                  (unsigned)sizeof(state), LORAWAN_FPORT_STATE);
+    printHex((uint8_t*)&state, sizeof(state));
+    Serial.println();
+
+    // TX senza attesa downlink dedicata (usa la firma minima).
+    // Il downlink handler in caso di risposta arrivera' col prossimo uplink
+    // di misure standard (piu' frequente).
+    int16_t st = node.sendReceive((uint8_t*)&state, sizeof(state),
+                                  LORAWAN_FPORT_STATE);
+    if (st < RADIOLIB_ERR_NONE) {
+        Serial.printf("TX state fallito: %d\n", st);
+        return false;
+    }
+    Serial.println("TX state ok");
+    // Aggiorna RTC session cache dopo il TX
+    cacheSessionInRTC();
+    return true;
+}
+
 bool sendPayload(const uint8_t* buf, size_t len) {
     Serial.printf("TX %u byte: ", (unsigned)len);
     printHex(buf, len);
@@ -1552,6 +1820,11 @@ void enterDeepSleep(uint32_t seconds) {
     esp_task_wdt_delete(NULL);
 #endif
 
+    // Accumula uptime "wall-clock" (semantica B): tempo attivo del ciclo
+    // corrente + tempo che passeremo in sleep. Serve al payload state 0x43.
+    // Si azzera solo con power-off/reset HW (RTC persa).
+    uptimeAccumulatedS += (millis() / 1000) + seconds;
+
 #if DEBUG_NO_DEEP_SLEEP
     // === MODALITA' DEBUG ===
     // Qui usiamo ESP.restart() invece del vero deep sleep, cosi' l'USB CDC non
@@ -1657,6 +1930,13 @@ void setup() {
 
     bootCount++;
 
+    // Al primo boot dopo un power cycle (bootCount == 1), richiediamo l'invio
+    // del payload state per far sapere alla piattaforma che il device e'
+    // ripartito e comunicare la sua configurazione corrente.
+    if (bootCount == 1) {
+        sendStateNext = true;
+    }
+
     // Carica config runtime da NVS (o default se assenti)
     loadRuntimeConfig();
 
@@ -1676,6 +1956,9 @@ void setup() {
                   );
     if (forceTxNow) {
         Serial.println(" [FLAG] forceTxNow attivo (da downlink precedente)");
+    }
+    if (identifyMode) {
+        Serial.println(" [FLAG] IDENTIFY attivo (blink continuo, no deep sleep)");
     }
 
     // Stampa DevEUI derivato dal MAC address (formato standard LoRaWAN)
@@ -1709,21 +1992,35 @@ void setup() {
 
     // --- 1) Alimenta periferiche ---
     vextOn();
-    gpsPowerOn();
+
+    // In modalita' IDENTIFY il GPS si salta (ispezione al chiuso, fix inutile
+    // e allungherebbe il ciclo). Il blink continuo e la TX periodica sono
+    // gestiti dal loop identify piu' avanti, non qui.
+    bool skipGps = identifyMode;
+    if (!skipGps) {
+        gpsPowerOn();
+    }
     delay(100);   // stabilizzazione alimentazioni
 
-    // --- 2) Init GPS (comincia subito a "leggere") ---
-    initGps();
+    // --- 2) Init GPS (solo se non in identify) ---
+    if (!skipGps) {
+        initGps();
+    }
 
     // --- 3) Init SCD41 ---
     if (!initScd41()) {
         Serial.println("SCD41 init fallito, procedo con valori nulli");
     }
 
-    // --- 4) Attendi fix GPS in parallelo alle misure SCD41 ---
-    // Il primo dato SCD41 arriva dopo ~5 s, il fix GPS 30-90 s.
-    uint32_t gpsTimeout = hasWarmData ? GPS_FIX_TIMEOUT_WARM_S : cfgGpsTimeoutS;
-    bool gpsOk = waitForGpsFix(gpsTimeout);
+    // --- 4) Attendi fix GPS (saltato in identify) ---
+    bool gpsOk = false;
+    if (!skipGps) {
+        // Il primo dato SCD41 arriva dopo ~5 s, il fix GPS 30-90 s.
+        uint32_t gpsTimeout = hasWarmData ? GPS_FIX_TIMEOUT_WARM_S : cfgGpsTimeoutS;
+        gpsOk = waitForGpsFix(gpsTimeout);
+    } else {
+        Serial.println("[IDENTIFY] GPS saltato");
+    }
 
     // --- 5) Leggi SCD41 ---
     uint16_t co2 = 0;
@@ -1745,6 +2042,13 @@ void setup() {
     // rovina irreversibilmente sotto ~2.5V, dobbiamo evitare che ci arrivi.
 #if ENABLE_BATTERY_PROTECTION
     if (vbat_mv > 0 && vbat_mv < cfgVbatEmergencyMv) {
+        // Batteria critica: annulla anche l'eventuale modalita' identify, che
+        // tiene il device attivo e lampeggiante -> ultima cosa da fare con la
+        // cella quasi scarica.
+        if (identifyMode) {
+            Serial.println("[IDENTIFY] Batteria critica: modalita' identify forzata OFF");
+            identifyMode = false;
+        }
         Serial.println();
         Serial.println("############################################");
         Serial.printf(" BATTERIA CRITICA: %u mV < soglia %u mV\n",
@@ -1804,8 +2108,82 @@ void setup() {
     }
 
     // --- 8) Init LoRaWAN e trasmetti ---
-    if (initLoRaWAN()) {
+    bool loraOk = initLoRaWAN();
+    if (loraOk) {
         sendPayload((uint8_t*)&payload, sizeof(payload));
+        // La prima TX puo' aver ricevuto identify_on (imposta identifyMode)
+        // o get_state (imposta sendStateNext).
+
+        // Se richiesto (primo boot, cambio config, comando get_state), invia
+        // anche il payload state 0x43 su FPort 2. Consuma un secondo TX slot
+        // ma solo occasionalmente (non ad ogni ciclo).
+        if (sendStateNext) {
+            Serial.println("[STATE] sendStateNext attivo, invio payload state...");
+            if (sendStatePayload()) {
+                sendStateNext = false;   // consumato solo se TX riuscito
+            } else {
+                Serial.println("[STATE] TX fallito, ritento al prossimo ciclo");
+                // sendStateNext resta true, ritenta al prossimo wake
+            }
+        }
+    }
+
+    // --- 8b) MODALITA' IDENTIFY (option B): sveglio, blink continuo, TX periodica ---
+    // Se identifyMode e' attivo (per un identify_on ricevuto ora o in un ciclo
+    // precedente), NON si va in deep sleep: si resta svegli lampeggiando in
+    // continuo e ritrasmettendo ogni IDENTIFY_TX_INTERVAL_S. Ogni TX apre una
+    // finestra RX in cui puo' arrivare identify_off. Esce quando: identify_off
+    // ricevuto, timeout scaduto, o batteria critica.
+    if (loraOk && identifyMode) {
+        Serial.println("[IDENTIFY] Modalita' attiva: resto sveglio, blink continuo");
+        gpsPowerOff();   // GPS inutile in identify, spengo per non sprecare
+        uint32_t identifyStart = millis();
+
+        while (identifyMode) {
+            // Timeout di sicurezza
+            if (millis() - identifyStart >= (uint32_t)IDENTIFY_TIMEOUT_S * 1000UL) {
+                Serial.println("[IDENTIFY] Timeout raggiunto, disattivo");
+                identifyMode = false;
+                break;
+            }
+
+            // Lampeggio continuo per l'intervallo (pettina il wdt internamente)
+            blinkFor((uint32_t)IDENTIFY_TX_INTERVAL_S * 1000UL);
+
+            // Rileggi sensori + batteria per la prossima TX
+            uint16_t ico2 = 0; float itmp = 0, ihum = 0;
+            bool iscd = readScd41(ico2, itmp, ihum);
+            uint16_t ivbat = readBatteryMv();
+
+            // Protezione batteria anche in identify
+#if ENABLE_BATTERY_PROTECTION
+            if (ivbat > 0 && ivbat < cfgVbatEmergencyMv) {
+                Serial.println("[IDENTIFY] Batteria critica: esco e vado in emergency sleep");
+                identifyMode = false;
+                scd4x.stopPeriodicMeasurement();
+                enterDeepSleep(VBAT_EMERGENCY_SLEEP_S);
+                return;
+            }
+#endif
+
+            // Payload identify: niente GPS (fix_quality=0, posizione stale)
+            Payload_v0x42 ip = {};
+            ip.schema_id   = SCHEMA_ID;
+            ip.fix_quality = 0;
+            ip.satellites  = 0;
+            ip.battery_pct = vbatToPercent(ivbat);
+            ip.timestamp   = (uint64_t)(millis() / 1000);
+            ip.co2_ppm     = iscd ? ico2 : 0;
+            ip.temp_c100   = iscd ? (int16_t)(itmp * 100.0f) : 0;
+            ip.hum_pct100  = iscd ? (uint16_t)(ihum * 100.0f) : 0;
+            ip.vbat_mv     = ivbat;
+            ip.hdop_x100   = 9999;   // marker "posizione non valida"
+
+            // TX: apre la finestra RX in cui puo' arrivare identify_off
+            // (handleDownlink azzera identifyMode -> il while esce)
+            sendPayload((uint8_t*)&ip, sizeof(ip));
+        }
+        Serial.println("[IDENTIFY] Uscita dalla modalita', ritorno al ciclo normale");
     }
 
     // --- 9) Spegni SCD41 (fermando le misure periodiche) ---
