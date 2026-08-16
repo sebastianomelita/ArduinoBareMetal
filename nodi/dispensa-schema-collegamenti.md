@@ -7,12 +7,13 @@ Documento di riferimento per il cablaggio fisico del nodo. Complementa la [dispe
 1. [Componenti richiesti](#componenti-richiesti)
 2. [Schema visuale](#schema-visuale)
 3. [Le particolarità della Heltec V4](#le-particolarità-della-heltec-v4)
-4. [Pinout dettagliato](#pinout-dettagliato)
-5. [Cablaggio passo passo](#cablaggio-passo-passo)
-6. [Il partitore batteria e la misura VBAT](#il-partitore-batteria-e-la-misura-vbat)
-7. [Il pannello solare — dimensionamento e scelta](#il-pannello-solare--dimensionamento-e-scelta)
-8. [Precauzioni e cose da NON fare](#precauzioni-e-cose-da-non-fare)
-9. [Checklist di verifica prima di alimentare](#checklist-di-verifica-prima-di-alimentare)
+4. [Il BMS 1S 5A e la protezione della cella](#il-bms-1s-5a-e-la-protezione-della-cella)
+5. [Pinout dettagliato](#pinout-dettagliato)
+6. [Cablaggio passo passo](#cablaggio-passo-passo)
+7. [Il partitore batteria e la misura VBAT](#il-partitore-batteria-e-la-misura-vbat)
+8. [Il pannello solare — dimensionamento e scelta](#il-pannello-solare--dimensionamento-e-scelta)
+9. [Precauzioni e cose da NON fare](#precauzioni-e-cose-da-non-fare)
+10. [Checklist di verifica prima di alimentare](#checklist-di-verifica-prima-di-alimentare)
 
 ---
 
@@ -25,13 +26,17 @@ Per assemblare il nodo servono:
 | Scheda principale | **Heltec WiFi LoRa 32 V4** | Micro + radio LoRa + gestione batteria | Versione high-power raccomandata (28 dBm) |
 | Sensore ambientale | **Sensirion SCD41** | CO2 (NDIR) + temperatura + umidità | Modulo I²C, richiede 3.3V |
 | GPS | **Quectel L76K** | Fix GNSS per geolocalizzazione | UART 9600 baud, richiede antenna GPS |
-| Batteria | **Vapcell F15 (18650)** | Alimentazione autonoma | ~2900 mAh, 3.0-4.2V, JST-PH 2.0 |
+| Batteria | **Vapcell F15 (14500)** | Alimentazione autonoma | 1500 mAh, 3.0-4.2V, **cella NON protetta** |
+| **Protezione batteria** | **BMS 1S 5A** (DW01A + 8205A) | Protegge la cella da over/under/short | **Obbligatorio** con celle nude |
 | Pannello solare (opzionale) | **5V / 1-2W** | Ricarica batteria | JST-PH 2.0, range 4.7-6V |
 | Antenna LoRa | **SMA/IPEX 868 MHz** | Trasmissione radio | 2-3 dBi tipici |
 | Antenna GPS | **Attiva 3.3V** | Ricezione satelliti | Solitamente inclusa col modulo L76K |
 | Cavi jumper | **F/F o F/M** | Cablaggio SCD41 e L76K | 20-30 cm consigliati |
+| Connettori JST-PH 2.0 | Femmina 2-pin | Cablaggio batteria e pannello | 2 connettori (uno per BAT, uno per SOL) |
 
-Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SCD41 ~€20, L76K ~€15, batteria + pannello + antenne ~€15-20).
+Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SCD41 ~€20, L76K ~€15, batteria + BMS + pannello + antenne ~€15-20).
+
+**Nota sulla batteria**: la Vapcell F15 è una **14500** (formato AA, 14 × 50 mm), non una 18650 come si potrebbe pensare dal nome commerciale. Ha capacità 1500 mAh e non ha PCB di protezione integrato. Se preferisci una 18650, cerca celle **protette** (marcate "protected", tipicamente **Keeppower**, **Fenix ARB-L18**, **NCR18650B protected**) o comunque abbina anche a queste un BMS come raccomandato di seguito.
 
 ---
 
@@ -93,6 +98,92 @@ La V4 mantiene la **compatibilità pinout** con la V3 per tutti i pin GPIO princ
 - V4 aggiunge nuovi pin per GNSS dedicato e controllo alimentazione
 - La potenza TX massima è più alta (28 dBm vs 22 dBm) — devi rispettare i limiti duty cycle regionali
 - Il partitore batteria è diverso (V4: 390k+100k, V3: 100k+100k) — la formula di lettura VBAT cambia
+
+---
+
+## Il BMS 1S 5A e la protezione della cella
+
+Le celle Li-Ion "nude" come la Vapcell F15 (14500) non hanno alcun circuito di protezione integrato. Sono **potenzialmente pericolose** se lasciate scaricare sotto ~2.5V, caricare sopra ~4.3V, o cortocircuitate. Il **BMS (Battery Management System) 1S 5A** è un piccolo PCB che si interpone tra la cella e il carico per aggiungere queste protezioni.
+
+### Cosa fa esattamente
+
+Un tipico BMS 1S 5A economico (da AliExpress/Amazon a ~€1-2 l'uno) è basato su due chip:
+
+- **DW01A** — protection IC. Monitora la tensione della cella e comanda i MOSFET.
+- **8205A** (o FS8205A) — dual N-MOSFET. Interrompe il circuito quando serve.
+
+Le protezioni tipiche sono:
+
+| Evento | Soglia (nominale) | Cosa fa il BMS |
+|--------|-------------------|----------------|
+| Overcharge protection (OVP) | **4.28 V** (±25 mV) | Interrompe la carica quando la tensione della cella supera il limite |
+| Overdischarge protection (UVP) | **2.50 V** (±80 mV) | Interrompe l'erogazione quando la cella scende troppo |
+| Overcurrent protection (OCP) | **5-8 A** (variabile) | Interrompe se il carico assorbe troppa corrente |
+| Short circuit protection (SCP) | ~200 A (istantaneo) | Interrompe entro ~100 μs in caso di corto tra P+ e P− |
+
+**Auto-reset**: dopo un evento di protezione (es. cella scaricata), il BMS **riabilita l'uscita automaticamente** quando le condizioni tornano nella norma. Esempio: cella a 2.4V → BMS interrompe. Colleghi il pannello solare o USB → la carica passa attraverso il BMS in senso inverso e ricarica la cella. Quando VBAT sale sopra 2.7V circa (soglia di release), il BMS riabilita anche il canale di scarica.
+
+**Attenzione alla temperatura**: i BMS economici (DW01A + 8205A) **non hanno protezione termica**. In installazioni outdoor esposte al sole (rooftop d'estate, interno auto), la temperatura della cella può superare i 60°C — condizione in cui una Li-Ion invecchia molto rapidamente e, in casi estremi, può andare in thermal runaway. Se il nodo lavora in ambienti caldi, considera un BMS con NTC integrato (marcato "with temp protection"), oppure aggiungi un termistore esterno letto da un GPIO del microcontroller per bloccare la carica via software sopra una soglia (tipicamente 45-50°C in carica, 60°C in scarica).
+
+### Come si collega
+
+Il BMS ha **4 pad di contatto**, tipicamente saldati o marcati:
+
+```
+    ┌────────────────────┐
+    │  B+           P+   │
+    │                    │
+    │       DW01A        │
+    │       8205A        │
+    │                    │
+    │  B−           P−   │
+    └────────────────────┘
+       ↑              ↓
+    verso            verso
+    cella nuda       Heltec V4 (connettore BAT)
+```
+
+- **B+ / B−** (Battery) — collegati direttamente alla cella (+ e − rispettivamente)
+- **P+ / P−** (Pack) — uscita protetta, che va all'esterno (nel nostro caso, al connettore JST BAT della Heltec V4)
+
+**Sequenza di montaggio consigliata**:
+
+1. Salda i fili al BMS **prima** di collegare la cella (più facile senza tensioni presenti)
+2. Fili sui pad **P+ / P−** → connettore JST-PH 2.0 femmina (che poi si innesta nel connettore BAT della Heltec)
+3. Fili sui pad **B+ / B−** → strisce di nickel (o direttamente ai poli della cella con saldatore da 40W+, ma con cautela per non surriscaldare la cella)
+4. Solo alla fine, applica le connessioni B+/B− sulla cella
+5. Verifica con multimetro che tra P+ e P− ci sia la tensione della cella (segno che il BMS conduce)
+
+### Dove posizionarlo fisicamente
+
+Il BMS è piccolo (tipicamente 20 × 8 × 3 mm). Può essere:
+
+- **Incollato al fianco della cella** con nastro Kapton — la soluzione più comune, mantiene tutto compatto
+- **In un cassetto porta-batteria con protezione integrata** — alcuni porta-batterie 14500/18650 hanno il BMS già montato all'interno del guscio
+- **Su una piccola scheda separata dentro l'enclosure** — se preferisci tenere i componenti smontabili
+
+**Attenzione**: non incastrare il BMS in modo che i pad B+ e P+ possano toccare accidentalmente il metallo della cella o dell'enclosure. Un ponticello involontario tra B+ e B− è un corto secco della cella.
+
+### Quando non serve
+
+Il BMS **non è necessario** se:
+
+- Usi una **cella protetta** (marcata "protected" — ha già il PCB di protezione saldato sul − della cella, aumentando la lunghezza di ~3 mm)
+- Usi un **pacchetto batteria per progetti hobby** (tipo modelli di droni) che integra già la sua protezione
+- Il tuo caso d'uso permette di monitorare manualmente la cella (per esempio: lab con carica costante, mai lasciato incustodito)
+
+Nel nostro progetto, con celle F15 nude e installazione outdoor autonoma con pannello solare, il BMS è **essenziale**. Senza:
+
+- Una notte lunga con TX intensivo potrebbe portare la cella sotto 2.5V → danno permanente alla cella (perdita di capacità irreversibile)
+- Un giorno di sole intenso su pannello mal dimensionato potrebbe caricare oltre 4.3V → possibile venting o incendio della cella
+
+Il costo del BMS è trascurabile (~€1) rispetto al costo di sostituire una cella danneggiata (o peggio, di gestire un incendio da Li-Ion).
+
+### Il BMS interagisce con la ricarica solare?
+
+Sì, in modo trasparente. Il pannello solare collegato al connettore SOL della V4 alimenta il circuito di ricarica interno della scheda. Questo circuito eroga corrente al connettore BAT (a ~4.2V CV) che, attraverso il BMS, ricarica la cella.
+
+Il BMS in questa fase è "trasparente": lascia passare la corrente in senso inverso (dal + al − del pack, e quindi B+ verso B−) finché la cella non raggiunge 4.28V. A quel punto interviene il BMS bloccando la carica ulteriore. Prima di allora, il regolatore CC/CV della Heltec ha già interrotto la carica al valore corretto (4.2V), quindi il BMS agisce solo come safety net.
 
 ---
 
@@ -170,18 +261,38 @@ Il L76K usa 4 fili (UART standard):
 
 **Alimentazione**: se il tuo modulo L76K breakout ha un pin dedicato per l'enable/power (spesso marcato `EN`, `PWR` o `SET`), puoi collegarlo al GPIO 34 per averne il controllo dal firmware. Altrimenti collegalo permanentemente ai 3.3V — il modulo consumerà i suoi ~30 mA quando la scheda è alimentata (accettabile in USB, gravoso a batteria).
 
-### 3. Batteria → Heltec V4
+### 3. Batteria + BMS → Heltec V4
 
-La batteria Vapcell F15 va connessa al **connettore JST-PH 2.0 marcato "BAT"** sulla V4.
+La cella Vapcell F15 **non** va connessa direttamente al connettore JST BAT della V4. Va prima interposto il **BMS 1S 5A** che protegge la cella dai vari eventi di malfunzionamento (vedi sezione dedicata sopra).
 
-**Polarità critica**: guardando il connettore BAT sulla V4 con l'apertura verso di te, **il pin di destra è il positivo (+)**. Alcune batterie 18650 commerciali con cablaggio già saldato hanno il rosso a sinistra, quindi controlla sempre col multimetro prima di inserire il connettore.
+**Sequenza dei collegamenti**:
 
-Se la batteria è nuova senza cablaggio, salda:
-- Filo rosso al polo `+` della batteria (il "positivo" con il bordo rialzato)
-- Filo nero al polo `−` (il "negativo" piatto)
-- Termina con un connettore JST-PH 2.0 femmina (contatto rosso corrispondente al pin destro del connettore board)
+```
+Cella F15 (+) ──[filo rosso]──> BMS pad B+
+Cella F15 (−) ──[filo nero]───> BMS pad B−
 
-**Precauzione**: NON mettere in corto il connettore o la batteria durante il cablaggio. Una 18650 in corto può erogare oltre 10A e sviluppare abbastanza calore da bruciare fili o innescare la batteria stessa. Se puoi, salda i fili alla batteria **prima** di collegare l'altra estremità al connettore JST.
+BMS pad P+ ──[filo rosso]──> connettore JST-PH 2.0, pin +
+BMS pad P− ──[filo nero]───> connettore JST-PH 2.0, pin −
+
+Connettore JST-PH femmina ──> connettore BAT sulla V4
+```
+
+**Polarità critica del connettore BAT della V4**: guardando il connettore BAT sulla V4 con l'apertura verso di te, **il pin di destra è il positivo (+)**. Alcuni connettori JST-PH pre-cablati commerciali hanno il rosso a sinistra invece che a destra, quindi controlla **sempre col multimetro** prima di inserire il connettore. Un errore di polarità danneggia sia la scheda sia possibilmente il BMS.
+
+**Come saldare la cella al BMS in sicurezza**:
+
+1. Prepara i fili con connettore JST-PH già pronto per il lato Pack
+2. Salda prima i fili sui pad **P+/P−** del BMS (con la cella non ancora connessa: nessuna tensione, tutto sicuro)
+3. Prepara due strisce di nichel corte (~15 mm) o due fili corti e spessi (AWG 22 o superiore)
+4. Salda le strisce/fili sui pad **B+/B−** del BMS
+5. Solo alla fine, salda le strisce/fili sui poli della cella (**+** = polo con anello rialzato tipico, **−** = polo piatto). Lavora **rapidamente** (< 3 secondi per contatto) per non surriscaldare la cella
+6. Isola tutti i contatti con nastro Kapton o guaina termorestringente
+7. Verifica col multimetro: tra P+ e P− del BMS deve esserci la tensione della cella (~3.7V se carica media)
+8. Solo ora, inserisci il connettore JST-PH nel connettore BAT della V4
+
+**Alternativa senza saldature**: si trovano in commercio **porta-cella 14500** con contatti a molla e con BMS già integrato. Sono più costosi (€3-5) ma eliminano la necessità di saldare direttamente sulla cella. Consigliati per chi non ha esperienza con saldatura su Li-Ion.
+
+**Precauzione**: NON mettere mai in corto il connettore o la cella. Una 14500 può erogare 5-10A in caso di corto, sviluppando calore sufficiente a bruciare fili, sciogliere la guaina isolante o innescare la cella. Il BMS proteggerebbe da un corto tra P+ e P− (con interruzione entro ~100 μs), ma **non** protegge da un corto direttamente tra i poli della cella (che bypassa il BMS). Ecco perché è cruciale isolare bene i contatti B+ e B−.
 
 ### 4. Pannello solare → Heltec V4 (opzionale)
 
@@ -252,10 +363,16 @@ Con TX ogni 5 minuti (più realistico):
 
 ### Durata su batteria sola
 
-Vapcell F15 = **2900 mAh utili** (considerando taglio a 3.0V).
+Vapcell F15 = **1500 mAh nominali** (in pratica ~1200 mAh utili considerando taglio del BMS a 2.5V invece di 3.0V, e derating per basse temperature).
 
-- Con TX ogni 60s: **~290 giorni** = 9-10 mesi
-- Con TX ogni 5 min: **~1450 giorni** = 4 anni (limite pratico: autoscarica della batteria)
+- Con TX ogni 60s: **~120 giorni** = 4 mesi
+- Con TX ogni 5 min: **~600 giorni** = ~20 mesi (limite pratico: autoscarica ~2% al mese)
+
+Se scegli invece una vera **18650 protetta** da 3000-3500 mAh:
+- Con TX ogni 60s: **~300 giorni** = 10 mesi
+- Con TX ogni 5 min: **~4-5 anni** (limite pratico: autoscarica)
+
+La differenza è significativa: la 14500 è compatta ma con circa 1/2 della capacità di una 18650. Se il nodo va installato in posti difficili da raggiungere (rooftop, agricoltura remota), vale la pena considerare una 18650 protetta anche se il porta-batteria è più grande.
 
 ### Con pannello solare da 1W
 
@@ -306,13 +423,17 @@ Prima di alimentare il nodo per la prima volta, verifica in questo ordine:
 - [ ] Antenna LoRa collegata al connettore IPEX (non lo scollegherai più)
 - [ ] SCD41 cablato: VDD, GND, SDA, SCL nei pin corretti (rispettivamente 3.3V, GND, GPIO 7, GPIO 6)
 - [ ] L76K cablato: VCC, GND, RX↔TX incrociati correttamente (GPS TX su GPIO 39, GPS RX su GPIO 38)
+- [ ] BMS interposto tra cella e connettore JST BAT (cella su B+/B−, JST su P+/P−)
+- [ ] Pad B+/B− del BMS isolati con Kapton o guaina termorestringente (nessun contatto con il case della cella o metallo dell'enclosure)
 - [ ] Nessun cortocircuito visibile tra fili adiacenti (guarda dai due lati)
 
 **Verifiche con multimetro (scheda SPENTA)**:
 
 - [ ] Continuità 0Ω tra tutti i GND (SCD41-GND ↔ L76K-GND ↔ V4-GND)
 - [ ] Nessuna continuità (∞Ω) tra VDD/VCC dei moduli e GND (evita corti in alimentazione)
-- [ ] Polarità della batteria: rosso sul + della cella
+- [ ] Tra i pad **P+ e P−** del BMS: tensione della cella (~3.0-4.2V se cella carica). Se leggi 0V, controlla che B+/B− siano collegati correttamente alla cella
+- [ ] Tra il pin `+` e `−` del connettore JST-PH lato Pack del BMS: stessa tensione dei pad P+/P− (verifica del cablaggio interno)
+- [ ] Polarità del connettore JST-PH corretta rispetto al connettore BAT della V4 (pin destro = positivo guardando il connettore board)
 - [ ] Polarità del pannello solare (se presente): rosso sul + del pannello
 
 **Prima accensione — via USB (NON con batteria)**:
