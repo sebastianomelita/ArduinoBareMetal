@@ -27,6 +27,10 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 
 ## Contesto e obiettivi
 
+<p align="center">
+  <img src="img/sensore-lorawan.png" alt="Heltec WiFi LoRa 32 pinout" width="600">
+</p>
+
 Il device è pensato per campionare la qualità dell'aria (CO₂, temperatura, umidità) e la posizione, e trasmettere periodicamente questi dati via **LoRaWAN** verso una rete condivisa. I vincoli principali di progetto sono tre:
 
 **Autonomia energetica**. Il device deve poter funzionare per mesi o anni a batteria (opzionalmente con pannello solare). Questo comporta l'uso di deep sleep aggressivo e lo spegnimento fisico delle periferiche tra un ciclo e l'altro.
