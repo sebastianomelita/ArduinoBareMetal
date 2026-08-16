@@ -44,7 +44,7 @@ Non è un progetto commerciale: la finalità è didattica. Molte scelte sono com
 Sono state realizzate due dashboard: una di misura e una di configurazione e lettura dello stato del dispositivo.
 
 <p align="center">
-  <img src="img/dashboards.png" alt="Dashboards" width="1000">
+  <img src="img/dashboards.png" alt="Dashboards" width="1100">
 </p>
 ---
 
