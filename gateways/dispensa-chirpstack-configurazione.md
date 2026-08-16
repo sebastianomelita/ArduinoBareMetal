@@ -2,7 +2,7 @@
 
 Guida pratica alla configurazione di **ChirpStack v4** come LoRaWAN Network Server + Application Server, per il progetto della stazione ambientale Heltec V4 + SCD41 + L76K. Copre entrambe le modalità di attivazione (ABP e OTAA), il codec JavaScript per la traduzione payload, il flusso MQTT, e i gotcha più comuni.
 
-Complementa la [dispensa firmware](../nodi/dispensa-firmware-lorawan-lowpower.md): quella descrive cosa fa il device, questa descrive cosa deve fare il Network Server per parlare col device.
+Complementa la [dispensa firmware](dispensa-firmware-lorawan-lowpower.md): quella descrive cosa fa il device, questa descrive cosa deve fare il Network Server per parlare col device.
 
 ## Indice
 
@@ -32,10 +32,6 @@ Complementa la [dispensa firmware](../nodi/dispensa-firmware-lorawan-lowpower.md
 - **Gateway Bridge**: fa da traduttore tra il protocollo dei gateway (Semtech UDP Packet Forwarder o BasicStation) e il formato interno di ChirpStack.
 - **UI web**: interfaccia di amministrazione per configurare tenant, application, device profile, device.
 
-<p align="center">
-  <img src="img/chirpstack_architecture0.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
-</p>
-
 Nella configurazione più semplice — che è quella di questo progetto — tutti e quattro i componenti girano sullo **stesso Raspberry Pi** che fa anche da gateway (grazie al concentratore SX130x). L'immagine **ChirpStack Gateway OS Full** include:
 
 - Il concentratore radio (packet forwarder)
@@ -46,37 +42,97 @@ Nella configurazione più semplice — che è quella di questo progetto — tutt
 - Mosquitto MQTT broker (per la comunicazione tra i vari componenti)
 
 <p align="center">
-  <img src="img/chirpstack_architecture.svg" alt="Architettura ChirpStack: componenti e loro relazioni" width="1000">
+  <img src="img/chirpstack_architecture.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
 </p>
 
 *Figura 1: architettura ChirpStack tipica. Il device parla via radio col gateway; il gateway forwarda i pacchetti UDP al Gateway Bridge; questo li normalizza e li passa al Network Server via MQTT; il NS valida, decifra, deduplica e li passa all'Application Server; l'AS applica il codec e pubblica gli eventi applicativi su MQTT (o via HTTP), a cui possono sottoscriversi dashboard, script, database.*
 
 Il pattern MQTT interno tra i componenti è fondamentale da capire perché è **lo stesso** meccanismo che poi si usa per accedere ai dati applicativi dall'esterno. Un uplink del device arriva sul topic `application/<uuid>/device/<eui>/event/up` e da lì può essere consumato da qualsiasi client MQTT.
 
-<p align="center">
-  <img src="img/chirpstack_architecture1.png" alt="Architettura ChirpStack: componenti e loro relazioni" width="700">
-</p>
 ---
 
 ## Setup del gateway con ChirpStack Gateway OS
 
-Il metodo consigliato per il gateway di questo progetto è **flashare l'immagine ChirpStack Gateway OS Full** sulla scheda SD del Raspberry Pi (nel nostro caso RPi 4 con concentratore Waveshare SX1302 o simile).
+### I componenti hardware
+
+Il gateway di questo progetto è costruito assemblando quattro elementi. Ognuno ha un ruolo specifico che vale la pena capire, sia per orientarsi in fase di acquisto/sostituzione, sia per diagnosticare eventuali problemi:
+
+**1. Raspberry Pi 3 Model B/B+** — è l'**host computing** su cui gira lo stack software ChirpStack (packet forwarder, Network Server, Application Server, MQTT broker, UI web). Ha connettore GPIO a 40 pin, WiFi/Ethernet per la connettività IP, e slot SD per il filesystem. Il modello 3 è più che sufficiente per un gateway singolo: il carico computazionale è basso (~5-10% CPU in condizioni normali). RPi 4 e RPi 5 funzionano ugualmente e offrono più margine per applicazioni edge computing pesanti (es. Node-RED con molti flow, database locale, dashboard).
+
+**2. WM1302 LoRaWAN Gateway Module (SPI, EU868)** — è il **concentratore radio**, cioè il cuore RF del gateway. Basato su due chip Semtech:
+- **SX1302**: baseband LoRa che gestisce la modulazione/demodulazione simultanea di **8 canali LoRa + 1 canale FSK**. Può ricevere pacchetti su tutti gli SF (7-12) e tutte le frequenze del piano EU868 in parallelo.
+- **SX1250**: front-end RF (LNA + PA) che gestisce trasmissione e ricezione con sensibilità fino a **-139 dBm @ SF12** e potenza TX fino a **26 dBm** (400 mW).
+
+Il modulo ha form factor **mini-PCIe** (52 pin) ma è **puramente meccanico**: nessun segnale PCI-Express. La comunicazione con la Raspberry avviene via **SPI** (versione SPI del modulo, quella usata qui) o USB (versione alternativa). La versione SPI ha latenza minore e non richiede driver USB, quindi è la scelta preferita per gateway stabili.
+
+**3. WM1302 Raspberry Pi HAT** — è l'**adattatore fisico** che monta il modulo mini-PCIe sopra la Raspberry. Senza HAT, il modulo mini-PCIe non ha alcun modo di connettersi ai GPIO della Pi. L'HAT fornisce:
+- Il connettore mini-PCIe 52 pin per il modulo WM1302
+- Il connettore 40 pin femmina che si innesta sul GPIO della Pi
+- Un **chip di autenticazione LoRaWAN** (fornisce un identificativo hardware univoco al gateway)
+- Un modulo **GPS** integrato per timestamp preciso dei pacchetti ricevuti (fondamentale in reti multi-gateway per l'algoritmo di deduplicazione lato NS)
+
+**4. Antenna LoRa 868 MHz** — chiude il sistema radio. Le caratteristiche tipiche del kit Seeed sono:
+- Frequenza: **868 MHz** (banda EU868)
+- Guadagno: **2.8 dBi** (omnidirezionale, adatta per gateway indoor/rooftop)
+- Lunghezza: 19.5 cm
+- Connettore: SMA maschio, avvitato all'antenna e collegato al connettore SMA femmina sul modulo WM1302
+
+L'antenna è **essenziale**: senza di essa il modulo WM1302 può danneggiarsi durante la trasmissione (il PA del SX1250 opera in condizioni di mismatch di impedenza estremo). Non accendere mai il gateway senza antenna collegata.
+
+### Come si combinano
+
+Il montaggio fisico è semplice:
+
+1. **WM1302 → Pi HAT**: si inserisce il modulo mini-PCIe nel connettore 52 pin del HAT e si fissa con due viti.
+2. **Antenna → WM1302**: si avvita il connettore SMA dell'antenna al modulo (con Pi spenta).
+3. **Pi HAT → Raspberry Pi 3**: si allineano i 40 pin del HAT con il GPIO della Pi e si spinge (con Pi spenta).
+4. **Alimentazione**: si alimenta la Raspberry tramite l'alimentatore USB standard (5V, min 2.5A). Il HAT preleva l'alimentazione dalla Pi tramite GPIO, non serve alimentatore separato.
+
+Il risultato è un gateway compatto (formato Pi + HAT ~15 × 10 × 5 cm) autoconsistente, con antenna esterna.
+
+### Perché questa combinazione
+
+Rispetto ad alternative comuni:
+- **Waveshare SX1302 HAT**: soluzione simile, spesso più economica. Compatibile con lo stesso software ChirpStack.
+- **Gateway commerciali "chiusi"** (Kerlink, MikroTik, Dragino OLG02/LG308): pronti all'uso, meno customizzabili, prezzi maggiori.
+- **The Things Indoor Gateway**: economico ma è basato sul più vecchio SX1301 (una generazione precedente), con meno canali simultanei e sensibilità inferiore.
+
+La combinazione **WM1302 + Pi HAT + RPi3** offre il miglior rapporto tra:
+- **Prestazioni radio** (8 canali LoRa in RX simultanea, sensibilità -139 dBm)
+- **Flessibilità software** (RPi standard con Linux completo, personalizzabile)
+- **Costo totale** (~€150-200 per l'intero gateway completo)
+- **Possibilità di edge computing** (la RPi è un computer completo, non solo un packet forwarder — vedi la sezione "Deployment models")
+
+### Il software: ChirpStack Gateway OS Full
+
+Il metodo consigliato per la parte software è **flashare l'immagine ChirpStack Gateway OS Full** sulla scheda SD della Raspberry Pi. Questa immagine include già:
+
+- Il **packet forwarder** (già configurato per SX1302)
+- **ChirpStack Gateway Bridge**
+- **ChirpStack Network Server**
+- **ChirpStack Application Server**
+- **UI web** di amministrazione
+- **Mosquitto MQTT broker**
 
 Il processo si riduce a:
 
-1. Scarica l'immagine da `https://www.chirpstack.io/docs/chirpstack-gateway-os/` — versione "Full" per avere tutti i componenti pre-installati
-2. Flasha l'immagine sulla scheda SD con Raspberry Pi Imager o Balena Etcher
-3. Inserisci la SD nel RPi, alimenta, aspetta 2-3 minuti per il primo boot
+1. Scarica l'immagine da `https://www.chirpstack.io/docs/chirpstack-gateway-os/` — versione **"Full"** (che include tutto lo stack, altrimenti c'è la versione "Base" solo packet forwarder)
+2. Flasha l'immagine sulla SD con Raspberry Pi Imager o Balena Etcher
+3. Inserisci la SD nella Pi, alimenta, aspetta 2-3 minuti per il primo boot
 4. Collega via SSH (`ssh root@<ip-rpi>`, password di default nella documentazione)
 5. Accedi alla UI web via browser: `http://<ip-rpi>:8080`, credenziali di default `admin/admin`
 
-Il **concentratore radio** viene rilevato automaticamente se è connesso via SPI/USB al momento del boot. Per verificare:
+Il **concentratore radio** (SX1302 sul WM1302) viene rilevato automaticamente al boot. Per verificare:
 
 ```bash
 sudo systemctl status chirpstack-concentratord
 ```
 
-Se lo status è `active (running)`, il concentratore è operativo.
+Se lo status è `active (running)`, il concentratore è operativo e sta ricevendo pacchetti radio. Per vedere il traffico live:
+
+```bash
+sudo journalctl -u chirpstack-concentratord -f
+```
 
 **Non serve installare Mosquitto separatamente**: l'immagine Full lo include e lo configura già in modo che tutti i componenti ChirpStack ci si connettano. La porta MQTT locale è `1883`.
 
@@ -114,7 +170,7 @@ Più device che condividono la stessa configurazione tecnica usano lo **stesso**
 - Uno stato di sessione LoRaWAN (attivo/inattivo, FCntUp corrente, ecc.)
 
 <p align="center">
-  <img src="img/chirpstack_hierarchy.svg" alt="Gerarchia oggetti ChirpStack v4" width="600">
+  <img src="img/chirpstack_hierarchy.png" alt="Gerarchia oggetti ChirpStack v4" width="500">
 </p>
 
 *Figura 2: la gerarchia Tenant → Application → Device Profile / Device in ChirpStack v4. Il Device Profile è un template condiviso da più device.*
@@ -206,7 +262,7 @@ Compila:
 - **Expected uplink interval (secs)**: `120` — usa il valore che ti serve, serve al NS per rilevare device offline
 
 Nella tab **Join (OTAA / ABP)**:
-- **Device supports OTAA**: **NO** ← questo è lo switch che indica ABP
+- **Device supports OTAA**: **NO** ← questo è il switch che indica ABP
 
 Nella tab **Class-B** e **Class-C**: lascia tutto come default (non usiamo classi B/C).
 
@@ -225,7 +281,6 @@ Salva. Vedrai comparire l'application nell'elenco. Clicca su di essa per aprirla
 
 Dentro l'application, vai su **Devices → Add device**.
 
-
 Compila:
 
 - **Name**: `heltec-serra-01` (identificativo umano)
@@ -240,10 +295,6 @@ Salva. Il device è ora registrato ma **non ha ancora una sessione attiva** — 
 ### Passo 4: attiva la sessione ABP
 
 Nel device appena creato, vai sulla tab **Activation**.
-
-<p align="center">
-  <img src="img/chirpstack_ui_abp_activation.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
-</p>
 
 Compila:
 
@@ -294,10 +345,6 @@ Se il device non compare mai in LoRaWAN frames, controlla:
 
 Simile al passo 1 di ABP, ma nella tab **Join (OTAA / ABP)**:
 
-<p align="center">
-  <img src="img/otaa-device-profile.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
-</p>
-
 - **Device supports OTAA**: **SI** ← questo è il switch
 
 Puoi anche duplicare il Device Profile ABP esistente e cambiare solo questo flag. La UI ChirpStack ha un pulsante "Duplicate" utile per questo.
@@ -321,10 +368,6 @@ Salva.
 ### Passo 3: carica l'AppKey
 
 Nel device appena creato, vai sulla tab **OTAA keys**.
-
-<p align="center">
-  <img src="img/chirpstack_ui_otaa_keys.png" alt="Gerarchia oggetti ChirpStack v4" width="1000">
-</p>
 
 - **Application key (AppKey)**: 32 caratteri hex, esempio:
   ```
@@ -533,31 +576,160 @@ Il campo `object` è quello popolato dal codec — è quello che tipicamente le 
 
 ### Formato del payload downlink
 
-Per inviare un downlink, pubblichi su `application/<UUID>/device/<EUI>/command/down` un JSON tipo:
+Per inviare un downlink al device, pubblichi un JSON su `application/<UUID>/device/<EUI>/command/down`. ChirpStack accetta **due formati alternativi** per specificare il payload: `data` (base64 pre-encodato) oppure `object` (JSON che passa attraverso il codec).
+
+#### Formato con `data` — quello usato dal nostro progetto
 
 ```json
 {
+  "devEui":    "f85b1bfffebed444",
+  "fPort":     10,
   "confirmed": false,
-  "fPort": 10,
-  "object": {
+  "data":      "Ag=="
+}
+```
+
+`Ag==` in base64 è `[0x02]`, che il device interpreterà come IDENTIFY (secondo la convenzione del nostro firmware, byte 0x02 su FPort 10 = IDENTIFY).
+
+Con `data`, ChirpStack **bypassa `encodeDownlink()`** del codec e mette direttamente i byte in coda. Il client che pubblica il downlink deve conoscere la mappa "comando → byte" e fare l'encoding base64 lato suo. Nel nostro progetto questo è fatto dal modulo `mqtt_downlink_encoder.js` (nella cartella `webapp/`).
+
+**Tutti i quattro campi sono obbligatori** (`devEui`, `fPort`, `confirmed`, `data`). Se ne manca uno, ChirpStack scarta silenziosamente il messaggio senza errore visibile — un tipico gotcha.
+
+#### Formato con `object` — quello "canonico" ma attualmente problematico
+
+```json
+{
+  "devEui":    "f85b1bfffebed444",
+  "fPort":     10,
+  "confirmed": false,
+  "object":    {
     "cmd": "identify"
   }
 }
 ```
 
-ChirpStack riceve, chiama `encodeDownlink()` del codec passandogli `object` e `fPort`, e mette il risultato in coda per il device. Al prossimo uplink, il downlink viene consegnato nella finestra RX.
+Con `object`, ChirpStack chiama `encodeDownlink()` del codec passandogli `object` e `fPort`. Il codec traduce `{"cmd":"identify"}` in `[0x02]` e mette il risultato in coda. Il client MQTT è più "pulito" (non deve conoscere byte specifici, magic bytes, endianness), tutta la logica di encoding è centralizzata nel codec.
 
-In alternativa a `object`, puoi passare direttamente i byte in `data` (base64):
+**Esempio più elaborato con parametri**:
 
 ```json
 {
+  "devEui":    "f85b1bfffebed444",
+  "fPort":     20,
   "confirmed": false,
-  "fPort": 10,
-  "data": "Ag=="
+  "object":    {
+    "cmd": "set_tx_interval",
+    "value": 3
+  }
 }
 ```
 
-`Ag==` in base64 è `[0x02]`, che il device interpreterà come IDENTIFY. Questa forma bypassa il codec — utile se il codec non riconosce il comando o se vuoi testare byte specifici.
+Il codec, ricevendo `{cmd:"set_tx_interval", value:3}` su fPort 20, produrrebbe `[0x11, 0x03]` = SET_TX_INTERVAL preset=3 (5 minuti).
+
+#### Perché il progetto usa `data` invece di `object`
+
+Durante lo sviluppo abbiamo osservato **comportamenti non deterministici** con il formato `object`: alcuni downlink inviati come `object` non venivano mai accodati o venivano scartati silenziosamente, senza log di errore evidenti sul lato ChirpStack. Il pattern era intermittente e non riproducibile in modo affidabile — sintomo tipico di un bug di serializzazione o di gestione interna. Il formato `data`, essendo bytes puri che bypassano completamente il codec, si è dimostrato **più deterministico**: quando lo pubblichiamo, arriva sempre in coda.
+
+La scelta pragmatica del progetto è stata quindi:
+- **Il codec**: implementa solo `decodeUplink` (funzione robusta e usata continuamente). L'`encodeDownlink` è ridotto a passthrough — riceve `data` base64, decodifica, ritorna i bytes.
+- **Il client MQTT** (webapp, script, backend): costruisce i bytes lato client con il modulo `mqtt_downlink_encoder.js`, li encoda in base64, li pubblica come `data`.
+
+**Trade-off**: chi vuole aggiungere un nuovo comando deve aggiornare il modulo JavaScript client-side, non il codec ChirpStack. Ma il beneficio è la stabilità operativa.
+
+#### Il codec pronto per il futuro
+
+Quando il bug ChirpStack sarà risolto (o se il tuo caso non lo mostra), il codec del progetto **è già predisposto** per accettare anche il formato `object`. Basta estendere `encodeDownlink` con una branch che riconosce `input.data.cmd`. Un esempio funzionante da tenere pronto:
+
+```javascript
+function encodeDownlink(input) {
+    // Se arriva 'cmd' (formato 'object'), usiamo la logica strutturata
+    if (input.data && input.data.cmd) {
+        return encodeByCommand(input.data.cmd, input.data.value, input.fPort);
+    }
+    // Altrimenti fallback: se arriva stringa (formato 'data' base64), passthrough
+    if (typeof input.data === "string") {
+        var bytes = base64ToBytes(input.data);
+        return { bytes: bytes, fPort: deduceFPort(bytes[0]) };
+    }
+    return { errors: ["Formato downlink non riconosciuto"] };
+}
+
+function encodeByCommand(cmd, value, fPort) {
+    switch (cmd) {
+        // FPort 10 - azioni
+        case "reboot":       return { bytes: [0x01], fPort: 10 };
+        case "identify":     return { bytes: [0x02], fPort: 10 };
+        case "force_tx_now": return { bytes: [0x03], fPort: 10 };
+        case "clear_nvs":    return { bytes: [0x04, 0xA5], fPort: 10 };
+        case "identify_on":  return { bytes: [0x05], fPort: 10 };
+        case "identify_off": return { bytes: [0x06], fPort: 10 };
+        case "get_state":    return { bytes: [0x07], fPort: 10 };
+
+        // FPort 20 - configurazione
+        case "set_tx_interval":
+            if (value < 0 || value > 5)
+                return { errors: ["preset fuori range 0-5"] };
+            return { bytes: [0x11, value], fPort: 20 };
+
+        case "set_lorawan_sf":
+            if (value < 7 || value > 12)
+                return { errors: ["SF fuori range 7-12"] };
+            return { bytes: [0x12, value], fPort: 20 };
+
+        case "set_tx_power":
+            if (value < 2 || value > 14)
+                return { errors: ["potenza fuori range 2-14 dBm"] };
+            return { bytes: [0x13, value], fPort: 20 };
+
+        case "set_gps_timeout":
+            if (value < 10 || value > 300)
+                return { errors: ["timeout fuori range 10-300 s"] };
+            // uint16 little-endian
+            return { bytes: [0x14, value & 0xFF, (value >> 8) & 0xFF], fPort: 20 };
+
+        case "set_batt_thresholds":
+            var em = value.emergency_mv, rec = value.recovery_mv;
+            if (rec <= em) return { errors: ["recovery deve essere > emergency"] };
+            return {
+                bytes: [0x15,
+                        em  & 0xFF, (em  >> 8) & 0xFF,
+                        rec & 0xFF, (rec >> 8) & 0xFF],
+                fPort: 20
+            };
+
+        case "set_adr_enabled":
+            return { bytes: [0x16, value ? 1 : 0], fPort: 20 };
+
+        default:
+            return { errors: ["Comando sconosciuto: " + cmd] };
+    }
+}
+
+function deduceFPort(firstByte) {
+    if (firstByte >= 0x01 && firstByte <= 0x07) return 10;
+    if (firstByte >= 0x11 && firstByte <= 0x16) return 20;
+    return 20;   // fallback prudente
+}
+```
+
+Con questo codec attivo, la webapp potrebbe pubblicare in modo più espressivo, per esempio:
+
+```bash
+# Cambiare TX interval a 5 minuti col formato 'object' (piu' leggibile)
+mosquitto_pub -h broker -p 1883 \
+  -t "application/1c27.../device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":20,"confirmed":false,
+       "object":{"cmd":"set_tx_interval","value":3}}'
+
+# Soglie batteria con parametri strutturati
+mosquitto_pub -h broker -p 1883 \
+  -t "application/1c27.../device/f85b1bfffebed444/command/down" \
+  -m '{"devEui":"f85b1bfffebed444","fPort":20,"confirmed":false,
+       "object":{"cmd":"set_batt_thresholds",
+                 "value":{"emergency_mv":3000,"recovery_mv":3300}}}'
+```
+
+Fino ad allora, restiamo sul più sicuro `data` con base64.
 
 ### Un dettaglio critico sui topic
 
@@ -612,10 +784,10 @@ mosquitto_sub -h localhost -v -t "application/+/device/+/command/down"
 ```bash
 mosquitto_pub -h broker.centrale.example.com \
   -t "application/<UUID>/device/f85b1bfffebed444/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"identify"}}'
+  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"Ag=="}'
 ```
 
-Se sul Terminale 1 vedi comparire il messaggio, il bridge sta importando correttamente. Il downlink dovrebbe apparire nella tab **Queue** del device su ChirpStack UI.
+`Ag==` è la base64 di `[0x02]` = IDENTIFY. Se sul Terminale 1 vedi comparire il messaggio, il bridge sta importando correttamente. Il downlink dovrebbe apparire nella tab **Queue** del device su ChirpStack UI.
 
 ### Perché il bridge è essenziale per i downlink remoti
 
@@ -667,10 +839,10 @@ Per automatizzare l'invio di comandi da script o applicazioni, si pubblica su MQ
 ```bash
 mosquitto_pub -h <ip-broker> \
   -t "application/<UUID>/device/<DevEUI>/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"identify"}}'
+  -m '{"devEui":"<DevEUI>","fPort":10,"confirmed":false,"data":"Ag=="}'
 ```
 
-L'effetto è identico all'enqueue dalla UI. Il downlink appare nella Queue e viene consegnato al prossimo uplink.
+Nota il formato completo obbligatorio (`devEui`, `fPort`, `confirmed`, `data`). L'effetto è identico all'enqueue dalla UI: il downlink appare nella Queue e viene consegnato al prossimo uplink.
 
 ### Enqueue via API REST
 
