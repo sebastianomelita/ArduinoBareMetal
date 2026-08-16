@@ -50,9 +50,11 @@ Sono state realizzate due dashboard: una di misura e una di configurazione e let
   <img src="img/dashboards.png" alt="Dashboards" width="1100">
 </p>
 
-**Codifica assistita da AI**.
+---
 
-Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude Opus 4.7
+## **Codifica assistita da AI**
+
+Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude Opus 4.7, tranne il codec Chirpstack realizzato con Deepseek.
 
 ---
 
