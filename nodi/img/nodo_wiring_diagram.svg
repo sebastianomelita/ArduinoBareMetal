@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 900" font-family="Arial, sans-serif">
+
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+      <feOffset dx="0" dy="1.5" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ================================================================ -->
+  <!-- TITOLO E LEGENDA                                                  -->
+  <!-- ================================================================ -->
+  <text x="550" y="30" text-anchor="middle" font-size="19" font-weight="bold" fill="#212121">
+    Schema di collegamento — Nodo LoRaWAN Heltec V4
+  </text>
+  <text x="550" y="50" text-anchor="middle" font-size="12" fill="#616161">
+    SCD41 (CO2/T/RH) + L76K (GPS) + Vapcell F15 (batteria) + Pannello solare
+  </text>
+
+  <!-- Legenda colori -->
+  <g transform="translate(20, 70)">
+    <rect x="0" y="0" width="220" height="90" rx="6" fill="#fafafa" stroke="#bdbdbd" stroke-width="1"/>
+    <text x="10" y="18" font-size="11" font-weight="bold" fill="#424242">Legenda linee</text>
+
+    <line x1="10" y1="32" x2="35" y2="32" stroke="#d32f2f" stroke-width="2.5"/>
+    <text x="42" y="36" font-size="10" fill="#424242">Alimentazione (+)</text>
+
+    <line x1="10" y1="48" x2="35" y2="48" stroke="#212121" stroke-width="2.5"/>
+    <text x="42" y="52" font-size="10" fill="#424242">Massa (GND)</text>
+
+    <line x1="10" y1="64" x2="35" y2="64" stroke="#1976d2" stroke-width="2.5"/>
+    <text x="42" y="68" font-size="10" fill="#424242">Dati (I²C / UART / SPI)</text>
+
+    <line x1="10" y1="80" x2="35" y2="80" stroke="#f57c00" stroke-width="2.5"/>
+    <text x="42" y="84" font-size="10" fill="#424242">Controllo (enable, ADC)</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- SCHEDA CENTRALE: Heltec WiFi LoRa 32 V4                          -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="400" y="240" width="300" height="440" rx="10" fill="#eceff1" stroke="#37474f" stroke-width="2.5"/>
+
+    <text x="550" y="265" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">
+      Heltec WiFi LoRa 32 V4
+    </text>
+    <text x="550" y="282" text-anchor="middle" font-size="10" fill="#546e7a" font-style="italic">
+      ESP32-S3R2 + SX1262 + OLED
+    </text>
+
+    <!-- Divisore -->
+    <line x1="415" y1="295" x2="685" y2="295" stroke="#90a4ae" stroke-width="1"/>
+
+    <!-- Pin lato sinistro (I²C, control) -->
+    <text x="415" y="315" font-size="10" font-weight="bold" fill="#263238">Pin (lato SX/dati)</text>
+
+    <!-- Pin: GPIO 7 SDA -->
+    <circle cx="400" cy="332" r="4" fill="#1976d2"/>
+    <text x="418" y="336" font-size="10" fill="#0d47a1"><tspan font-weight="bold">7</tspan> — SDA (I²C data)</text>
+
+    <!-- Pin: GPIO 6 SCL -->
+    <circle cx="400" cy="352" r="4" fill="#1976d2"/>
+    <text x="418" y="356" font-size="10" fill="#0d47a1"><tspan font-weight="bold">6</tspan> — SCL (I²C clock)</text>
+
+    <!-- Pin: GPIO 36 VEXT_CTRL -->
+    <circle cx="400" cy="378" r="4" fill="#f57c00"/>
+    <text x="418" y="382" font-size="10" fill="#e65100"><tspan font-weight="bold">36</tspan> — VEXT_CTRL</text>
+    <text x="418" y="394" font-size="8" fill="#8d6e63" font-style="italic">LOW = Vext ON (3.3V ai sensori)</text>
+
+    <!-- Pin: GPIO 38 GPS RX (ESP TX) -->
+    <circle cx="400" cy="416" r="4" fill="#1976d2"/>
+    <text x="418" y="420" font-size="10" fill="#0d47a1"><tspan font-weight="bold">38</tspan> — GPS_TX (ESP→GPS)</text>
+
+    <!-- Pin: GPIO 39 GPS TX (ESP RX) -->
+    <circle cx="400" cy="436" r="4" fill="#1976d2"/>
+    <text x="418" y="440" font-size="10" fill="#0d47a1"><tspan font-weight="bold">39</tspan> — GPS_RX (ESP←GPS)</text>
+
+    <!-- Pin: GPIO 34 VGNSS_CTRL -->
+    <circle cx="400" cy="462" r="4" fill="#f57c00"/>
+    <text x="418" y="466" font-size="10" fill="#e65100"><tspan font-weight="bold">34</tspan> — VGNSS_CTRL</text>
+    <text x="418" y="478" font-size="8" fill="#8d6e63" font-style="italic">LOW = GPS ON, HIGH = OFF</text>
+
+    <!-- Divisore -->
+    <line x1="415" y1="495" x2="685" y2="495" stroke="#90a4ae" stroke-width="1"/>
+
+    <!-- Pin: ADC batteria -->
+    <text x="415" y="515" font-size="10" font-weight="bold" fill="#263238">Misura batteria</text>
+
+    <circle cx="400" cy="532" r="4" fill="#f57c00"/>
+    <text x="418" y="536" font-size="10" fill="#e65100"><tspan font-weight="bold">1</tspan> — ADC1_CH0 (VBAT read)</text>
+
+    <circle cx="400" cy="552" r="4" fill="#f57c00"/>
+    <text x="418" y="556" font-size="10" fill="#e65100"><tspan font-weight="bold">37</tspan> — ADC_CTRL</text>
+    <text x="418" y="568" font-size="8" fill="#8d6e63" font-style="italic">LOW = abilita partitore VBAT</text>
+
+    <!-- Pin: LED -->
+    <line x1="415" y1="583" x2="685" y2="583" stroke="#90a4ae" stroke-width="1"/>
+    <circle cx="400" cy="600" r="4" fill="#f57c00"/>
+    <text x="418" y="604" font-size="10" fill="#e65100"><tspan font-weight="bold">35</tspan> — LED (bianco, on-board)</text>
+
+    <!-- Pin lato destro (LoRa) -->
+    <text x="620" y="315" font-size="10" font-weight="bold" fill="#263238" text-anchor="end">Pin LoRa (interni)</text>
+    <text x="620" y="332" text-anchor="end" font-size="9" fill="#546e7a">GPIO 8 — NSS (CS)</text>
+    <text x="620" y="346" text-anchor="end" font-size="9" fill="#546e7a">GPIO 9 — SCK</text>
+    <text x="620" y="360" text-anchor="end" font-size="9" fill="#546e7a">GPIO 10 — MOSI</text>
+    <text x="620" y="374" text-anchor="end" font-size="9" fill="#546e7a">GPIO 11 — MISO</text>
+    <text x="620" y="388" text-anchor="end" font-size="9" fill="#546e7a">GPIO 12 — RST</text>
+    <text x="620" y="402" text-anchor="end" font-size="9" fill="#546e7a">GPIO 13 — BUSY</text>
+    <text x="620" y="416" text-anchor="end" font-size="9" fill="#546e7a">GPIO 14 — DIO1</text>
+    <text x="620" y="432" text-anchor="end" font-size="8" fill="#8d6e63" font-style="italic">(collegati internamente</text>
+    <text x="620" y="443" text-anchor="end" font-size="8" fill="#8d6e63" font-style="italic">al chip SX1262)</text>
+
+    <!-- Connettori a destra della board -->
+    <line x1="620" y1="470" x2="685" y2="470" stroke="#90a4ae" stroke-width="1"/>
+    <text x="620" y="490" font-size="10" font-weight="bold" fill="#263238" text-anchor="end">Connettori fisici</text>
+
+    <!-- USB-C -->
+    <rect x="620" y="500" width="55" height="18" rx="3" fill="#455a64" stroke="#263238"/>
+    <text x="647" y="513" text-anchor="middle" font-size="9" fill="white" font-weight="bold">USB-C</text>
+
+    <!-- IPEX antenna -->
+    <circle cx="670" cy="540" r="8" fill="#78909c" stroke="#263238"/>
+    <text x="670" y="544" text-anchor="middle" font-size="9" fill="white" font-weight="bold">A</text>
+    <text x="655" y="558" text-anchor="end" font-size="9" fill="#546e7a">IPEX (antenna LoRa)</text>
+
+    <!-- JST-PH batteria -->
+    <rect x="625" y="580" width="55" height="18" rx="2" fill="#d32f2f" stroke="#b71c1c"/>
+    <text x="652" y="593" text-anchor="middle" font-size="9" fill="white" font-weight="bold">🔋 BAT</text>
+
+    <!-- JST-PH solare -->
+    <rect x="625" y="605" width="55" height="18" rx="2" fill="#fbc02d" stroke="#f57f17"/>
+    <text x="652" y="618" text-anchor="middle" font-size="9" fill="#212121" font-weight="bold">☀ SOL</text>
+
+    <text x="622" y="638" text-anchor="end" font-size="8" fill="#8d6e63" font-style="italic">JST-PH 2.0 SH1.25-2P</text>
+    <text x="622" y="649" text-anchor="end" font-size="8" fill="#8d6e63" font-style="italic">(due porte separate su V4)</text>
+
+    <!-- LED on-board -->
+    <text x="415" y="625" font-size="10" font-weight="bold" fill="#263238">LED on-board</text>
+    <circle cx="475" cy="655" r="10" fill="#fff9c4" stroke="#f57f17" stroke-width="1.5"/>
+    <circle cx="475" cy="655" r="4" fill="#ffeb3b"/>
+    <text x="492" y="659" font-size="9" fill="#616161">GPIO 35</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- SCD41 (in alto a sinistra)                                        -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="60" y="200" width="200" height="130" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
+    <text x="160" y="220" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">
+      Sensirion SCD41
+    </text>
+    <text x="160" y="235" text-anchor="middle" font-size="9" fill="#388e3c" font-style="italic">
+      CO2 (NDIR) + T + RH
+    </text>
+
+    <line x1="70" y1="245" x2="250" y2="245" stroke="#a5d6a7" stroke-width="1"/>
+
+    <!-- Pinout SCD41 -->
+    <circle cx="80" cy="264" r="4" fill="#d32f2f"/>
+    <text x="90" y="268" font-size="10" fill="#263238"><tspan font-weight="bold">VDD</tspan> — 3.3V (da Vext)</text>
+
+    <circle cx="80" cy="284" r="4" fill="#212121"/>
+    <text x="90" y="288" font-size="10" fill="#263238"><tspan font-weight="bold">GND</tspan></text>
+
+    <circle cx="80" cy="304" r="4" fill="#1976d2"/>
+    <text x="90" y="308" font-size="10" fill="#263238"><tspan font-weight="bold">SDA</tspan> — GPIO 7</text>
+
+    <circle cx="80" cy="324" r="4" fill="#1976d2"/>
+    <text x="90" y="328" font-size="10" fill="#263238"><tspan font-weight="bold">SCL</tspan> — GPIO 6</text>
+  </g>
+
+  <!-- Fili SCD41 → V4 -->
+  <!-- VDD (rosso) da SCD41 al Vext (che è controllato da GPIO36) -->
+  <path d="M 260 264 L 340 264 L 340 378 L 400 378"
+        fill="none" stroke="#d32f2f" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="345" y="260" font-size="8" fill="#d32f2f" font-style="italic">3.3V da Vext</text>
+
+  <!-- GND (nero) -->
+  <path d="M 260 284 L 355 284 L 355 700 L 550 700 L 550 680"
+        fill="none" stroke="#212121" stroke-width="1.8"/>
+  <text x="355" y="280" font-size="8" fill="#212121">GND comune</text>
+
+  <!-- SDA (blu) -->
+  <line x1="260" y1="304" x2="330" y2="304" stroke="#1976d2" stroke-width="2"/>
+  <line x1="330" y1="304" x2="330" y2="332" stroke="#1976d2" stroke-width="2"/>
+  <line x1="330" y1="332" x2="400" y2="332" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- SCL (blu) -->
+  <line x1="260" y1="324" x2="320" y2="324" stroke="#1976d2" stroke-width="2"/>
+  <line x1="320" y1="324" x2="320" y2="352" stroke="#1976d2" stroke-width="2"/>
+  <line x1="320" y1="352" x2="400" y2="352" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- ================================================================ -->
+  <!-- L76K GPS (in basso a sinistra)                                    -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="60" y="410" width="200" height="140" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+    <text x="160" y="430" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">
+      GPS L76K
+    </text>
+    <text x="160" y="445" text-anchor="middle" font-size="9" fill="#1976d2" font-style="italic">
+      NMEA su UART, 9600 baud
+    </text>
+
+    <line x1="70" y1="455" x2="250" y2="455" stroke="#90caf9" stroke-width="1"/>
+
+    <!-- Pinout L76K -->
+    <circle cx="80" cy="472" r="4" fill="#d32f2f"/>
+    <text x="90" y="476" font-size="10" fill="#263238"><tspan font-weight="bold">VCC</tspan> — 3.3V (dedicato VGNSS)</text>
+
+    <circle cx="80" cy="490" r="4" fill="#212121"/>
+    <text x="90" y="494" font-size="10" fill="#263238"><tspan font-weight="bold">GND</tspan></text>
+
+    <circle cx="80" cy="508" r="4" fill="#1976d2"/>
+    <text x="90" y="512" font-size="10" fill="#263238"><tspan font-weight="bold">TX</tspan> — GPIO 39 (ESP RX)</text>
+
+    <circle cx="80" cy="526" r="4" fill="#1976d2"/>
+    <text x="90" y="530" font-size="10" fill="#263238"><tspan font-weight="bold">RX</tspan> — GPIO 38 (ESP TX)</text>
+
+    <text x="90" y="546" font-size="8" fill="#546e7a" font-style="italic">L76K si accende via VGNSS_CTRL (GPIO 34)</text>
+  </g>
+
+  <!-- Fili L76K → V4 -->
+  <!-- VCC (rosso) -->
+  <path d="M 260 472 L 335 472 L 335 462 L 400 462"
+        fill="none" stroke="#d32f2f" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- GND (nero) -->
+  <line x1="260" y1="490" x2="360" y2="490" stroke="#212121" stroke-width="1.8"/>
+  <line x1="360" y1="490" x2="360" y2="700" stroke="#212121" stroke-width="1.8"/>
+
+  <!-- TX GPS -> RX ESP (blu, GPIO 39) -->
+  <line x1="260" y1="508" x2="325" y2="508" stroke="#1976d2" stroke-width="2"/>
+  <line x1="325" y1="508" x2="325" y2="436" stroke="#1976d2" stroke-width="2"/>
+  <line x1="325" y1="436" x2="400" y2="436" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- RX GPS -> TX ESP (blu, GPIO 38) -->
+  <line x1="260" y1="526" x2="315" y2="526" stroke="#1976d2" stroke-width="2"/>
+  <line x1="315" y1="526" x2="315" y2="416" stroke="#1976d2" stroke-width="2"/>
+  <line x1="315" y1="416" x2="400" y2="416" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- ================================================================ -->
+  <!-- ANTENNA LoRa (in alto a destra)                                   -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="820" y="200" width="220" height="90" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="1.8"/>
+    <text x="930" y="222" text-anchor="middle" font-size="13" font-weight="bold" fill="#bf360c">
+      Antenna LoRa 868 MHz
+    </text>
+
+    <line x1="830" y1="235" x2="1030" y2="235" stroke="#ffcc80" stroke-width="1"/>
+
+    <text x="830" y="252" font-size="10" fill="#546e7a">Connettore <tspan font-weight="bold">IPEX (u.FL)</tspan></text>
+    <text x="830" y="266" font-size="10" fill="#546e7a">Guadagno tipico: <tspan font-weight="bold">2-3 dBi</tspan></text>
+    <text x="830" y="280" font-size="10" fill="#546e7a" font-style="italic">Obbligatoria in TX (evita danni PA)</text>
+  </g>
+
+  <!-- Freccia antenna -> IPEX board -->
+  <path d="M 820 260 L 730 540 L 685 540"
+        fill="none" stroke="#e65100" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Icona antenna (a destra della sezione antenna) -->
+  <g transform="translate(1035, 220)">
+    <line x1="0" y1="30" x2="0" y2="0" stroke="#455a64" stroke-width="2"/>
+    <path d="M -8 -5 Q 0 -15 8 -5" fill="none" stroke="#e65100" stroke-width="1.5"/>
+    <path d="M -14 -2 Q 0 -22 14 -2" fill="none" stroke="#e65100" stroke-width="1.5"/>
+    <path d="M -20 2 Q 0 -30 20 2" fill="none" stroke="#e65100" stroke-width="1.5"/>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- BATTERIA Vapcell F15 (in alto a destra, sotto antenna)            -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="820" y="410" width="220" height="130" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="1.8"/>
+    <text x="930" y="430" text-anchor="middle" font-size="13" font-weight="bold" fill="#b71c1c">
+      🔋 Vapcell F15 (18650)
+    </text>
+    <text x="930" y="445" text-anchor="middle" font-size="9" fill="#c62828" font-style="italic">
+      Li-Ion 3.7V nominali, ~2900 mAh
+    </text>
+
+    <line x1="830" y1="455" x2="1030" y2="455" stroke="#ef9a9a" stroke-width="1"/>
+
+    <text x="830" y="472" font-size="10" fill="#263238">Connettore: <tspan font-weight="bold">JST-PH 2.0 SH1.25-2P</tspan></text>
+    <text x="830" y="488" font-size="10" fill="#263238">Range operativo: <tspan font-weight="bold">3.0 - 4.2 V</tspan></text>
+
+    <text x="830" y="510" font-size="9" fill="#c62828" font-weight="bold">⚠ Rispetta la polarità!</text>
+    <text x="830" y="524" font-size="9" fill="#8d6e63" font-style="italic">Il connettore SH1.25 di Heltec è</text>
+    <text x="830" y="536" font-size="9" fill="#8d6e63" font-style="italic">"+ rosso a destra guardando lo slot"</text>
+  </g>
+
+  <!-- Filo batteria -> connettore BAT -->
+  <path d="M 820 470 L 745 470 L 745 589 L 680 589"
+        fill="none" stroke="#d32f2f" stroke-width="2.5"/>
+  <path d="M 820 490 L 750 490 L 750 594 L 680 594"
+        fill="none" stroke="#212121" stroke-width="2"/>
+  <text x="750" y="465" font-size="8" fill="#d32f2f">+</text>
+  <text x="750" y="500" font-size="8" fill="#212121">−</text>
+
+  <!-- ================================================================ -->
+  <!-- PANNELLO SOLARE (in basso a destra)                               -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="820" y="620" width="220" height="145" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1.8"/>
+    <text x="930" y="640" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">
+      ☀ Pannello solare
+    </text>
+    <text x="930" y="655" text-anchor="middle" font-size="9" fill="#f57f17" font-style="italic">
+      opzionale, per ricarica autonoma
+    </text>
+
+    <line x1="830" y1="665" x2="1030" y2="665" stroke="#ffe082" stroke-width="1"/>
+
+    <text x="830" y="682" font-size="10" fill="#263238">Range accettato: <tspan font-weight="bold">4.7 - 6 V</tspan></text>
+    <text x="830" y="696" font-size="10" fill="#263238">Consigliato: <tspan font-weight="bold">5V / 1-2W</tspan></text>
+
+    <text x="830" y="716" font-size="9" fill="#8d6e63" font-style="italic">Connettore: JST-PH 2.0 SH1.25-2P</text>
+    <text x="830" y="728" font-size="9" fill="#8d6e63" font-style="italic">(porta distinta da quella batteria)</text>
+    <text x="830" y="746" font-size="9" fill="#e65100" font-weight="bold">✓ Ricarica batteria automaticamente</text>
+    <text x="830" y="758" font-size="9" fill="#e65100" font-weight="bold">   se batteria + solare sono entrambi presenti</text>
+  </g>
+
+  <!-- Filo pannello -> connettore SOL -->
+  <path d="M 820 682 L 745 682 L 745 614 L 680 614"
+        fill="none" stroke="#f57c00" stroke-width="2.5"/>
+  <path d="M 820 700 L 750 700 L 750 619 L 680 619"
+        fill="none" stroke="#212121" stroke-width="2"/>
+
+  <!-- ================================================================ -->
+  <!-- BOX partitore batteria (in basso a sinistra della scheda)        -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="60" y="600" width="290" height="110" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text x="205" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a148c">
+      Partitore batteria interno (V4)
+    </text>
+
+    <line x1="70" y1="628" x2="340" y2="628" stroke="#ce93d8" stroke-width="1"/>
+
+    <text x="70" y="646" font-size="10" fill="#263238">
+      <tspan font-family="ui-monospace, monospace" font-weight="bold">VBAT = (100 / 490) × V_ADC1_CH0</tspan>
+    </text>
+    <text x="70" y="660" font-size="9" fill="#546e7a">Partitore <tspan font-weight="bold">390 kΩ + 100 kΩ</tspan> integrato nella scheda</text>
+    <text x="70" y="676" font-size="9" fill="#546e7a">Il pin <tspan font-family="ui-monospace, monospace" font-weight="bold">ADC_CTRL (GPIO 37)</tspan> deve essere LOW</text>
+    <text x="70" y="690" font-size="9" fill="#546e7a">durante la lettura, per abilitare il partitore.</text>
+    <text x="70" y="704" font-size="9" fill="#8d6e63" font-style="italic">Nel firmware: <tspan font-family="ui-monospace, monospace">readBatteryMv()</tspan> gestisce tutto.</text>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- USB-C in basso                                                    -->
+  <!-- ================================================================ -->
+  <g filter="url(#softShadow)">
+    <rect x="440" y="780" width="220" height="90" rx="8" fill="#e8eaf6" stroke="#283593" stroke-width="1.5"/>
+    <text x="550" y="800" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a237e">
+      USB-C
+    </text>
+    <text x="550" y="814" text-anchor="middle" font-size="9" fill="#3949ab" font-style="italic">
+      Alimentazione 5V + programmazione seriale
+    </text>
+
+    <line x1="450" y1="822" x2="650" y2="822" stroke="#9fa8da" stroke-width="1"/>
+
+    <text x="450" y="840" font-size="9" fill="#263238">Alternativa a batteria per sviluppo/debug</text>
+    <text x="450" y="854" font-size="9" fill="#263238">Ricarica batteria se collegata contemporaneamente</text>
+    <text x="450" y="866" font-size="8" fill="#8d6e63" font-style="italic">⚠ USB e ingresso 5V "VE" sono mutuamente esclusivi</text>
+  </g>
+
+  <!-- Freccia USB -> board -->
+  <line x1="550" y1="780" x2="550" y2="680" stroke="#3949ab" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+</svg>
