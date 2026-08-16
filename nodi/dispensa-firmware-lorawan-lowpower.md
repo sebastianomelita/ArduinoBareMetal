@@ -46,6 +46,7 @@ Sono state realizzate due dashboard: una di misura e una di configurazione e let
 <p align="center">
   <img src="img/dashboards.png" alt="Dashboards" width="1100">
 </p>
+
 ---
 
 ## Architettura hardware
