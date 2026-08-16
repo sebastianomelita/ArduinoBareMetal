@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marconi Cloud · Sensore Ambientale (ChirpStack)</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.10.1/mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0f1a; --bg2: #111827; --bg3: #1a2233;
+  --border: #1e2d45; --accent: #00e5ff; --accent2: #7c3aed; --accent3: #f59e0b;
+  --ok: #22c55e; --warn: #f59e0b; --danger: #ef4444;
+  --text: #e2e8f0; --muted: #64748b;
+  --font-head: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  background: var(--bg); color: var(--text); font-family: var(--font-mono);
+  min-height: 100vh; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .35;
+}
+
+header {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(10,15,26,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .75rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.logo {
+  font-family: var(--font-head); font-weight: 800; font-size: 1.1rem;
+  letter-spacing: .08em; color: var(--accent); white-space: nowrap;
+}
+.logo span { color: var(--text); }
+.header-meta { flex: 1; font-size: .7rem; color: var(--muted); line-height: 1.4; }
+.header-meta strong { color: var(--text); }
+#last-update { font-size: .65rem; color: var(--muted); }
+#conn-badge {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+  padding: .3rem .7rem; border-radius: 999px;
+  border: 1px solid var(--border); transition: all .4s;
+}
+#conn-badge.connecting { color: var(--warn); border-color: var(--warn); }
+#conn-badge.connected  { color: var(--ok);   border-color: var(--ok); }
+#conn-badge.error      { color: var(--danger);border-color: var(--danger); }
+#conn-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+#conn-badge.connected .dot { animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(1.4); }
+}
+
+main {
+  position: relative; z-index: 1;
+  max-width: 1400px; margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-line, var(--accent)), transparent);
+  opacity: 0; transition: opacity .4s;
+}
+.card.fresh::before { opacity: 1; }
+.card-label {
+  font-size: .6rem; font-weight: 700; letter-spacing: .14em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: .4rem;
+}
+.card-value {
+  font-family: var(--font-head); font-size: 2.6rem; font-weight: 800;
+  line-height: 1; color: var(--val-color, var(--accent)); transition: color .4s;
+}
+.card-unit { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); margin-top: .25rem; }
+.card-bar { margin-top: .9rem; height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.card-bar-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--val-color, var(--accent));
+  transition: width .6s cubic-bezier(.4,0,.2,1), background .4s; width: 0%;
+}
+@keyframes flash {
+  0%   { background: rgba(0,229,255,.12); }
+  100% { background: var(--bg2); }
+}
+.card.flash { animation: flash .5s ease-out; }
+.card-a { --accent-line: #38bdf8; }
+.card-b { --accent-line: #818cf8; }
+.card-c { --accent-line: #34d399; }
+.card-d { --accent-line: #fb923c; }
+.card-e { --accent-line: #f87171; }
+.card-f { --accent-line: #a78bfa; }
+
+.chart-card, .meta-card, .log-card, .map-card { grid-column: 1 / -1; }
+
+.chart-title {
+  font-family: var(--font-head); font-size: .85rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--text); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.chart-title .pill {
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em;
+  background: var(--bg3); color: var(--muted);
+  padding: .15rem .5rem; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.chart-wrap { position: relative; height: 160px; }
+
+#map { height: 320px; border-radius: 8px; background: var(--bg3); }
+
+.meta-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: .6rem .8rem; margin-top: .75rem;
+}
+.meta-item { font-size: .7rem; }
+.meta-item .k { color: var(--muted); }
+.meta-item .v { color: var(--text); font-weight: 700; }
+
+#pkt-counter { font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: var(--accent); }
+
+.signal-bars { display: flex; gap: 2px; align-items: flex-end; height: 18px; }
+.signal-bars .bar {
+  width: 5px; border-radius: 1px;
+  background: var(--bg3); transition: background .4s;
+}
+.signal-bars .bar.active { background: var(--ok); }
+.signal-bars .bar:nth-child(1) { height: 5px; }
+.signal-bars .bar:nth-child(2) { height: 8px; }
+.signal-bars .bar:nth-child(3) { height: 12px; }
+.signal-bars .bar:nth-child(4) { height: 16px; }
+
+#log { height: 120px; overflow-y: auto; font-size: .65rem; line-height: 1.6; color: var(--muted); margin-top: .5rem; }
+#log .entry { border-bottom: 1px solid var(--border); padding: .15rem 0; }
+#log .entry .t { color: var(--accent); margin-right: .5rem; }
+#log .entry .ok { color: var(--ok); }
+#log .entry .err { color: var(--danger); }
+
+#actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .5rem; }
+.btn {
+  font-family: var(--font-mono); font-size: .65rem; padding: .35rem .8rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px;
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr 1fr; }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 580px) {
+  main { grid-template-columns: 1fr; }
+}
+
+.leaflet-container { background: var(--bg3); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: var(--bg2); color: var(--text); border: 1px solid var(--border);
+}
+.leaflet-popup-content { font-family: var(--font-mono); font-size: .7rem; }
+.leaflet-popup-content b { color: var(--accent); font-family: var(--font-head); }
+.map-marker {
+  border-radius: 50%; border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 12px currentColor;
+  width: 22px; height: 22px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MARCONI<span>CLOUD</span></div>
+  <div class="header-meta">
+    <strong id="hdr-name">Stazione Ambientale (ChirpStack)</strong><br>
+    <span id="hdr-dev">—</span> &nbsp;·&nbsp;
+    <span id="hdr-topic">—</span>
+  </div>
+  <span id="last-update">—</span>
+  <div id="conn-badge" class="connecting">
+    <span class="dot"></span>
+    <span id="conn-text">CONNECTING</span>
+  </div>
+</header>
+
+<main id="main-grid"></main>
+
+<script>
+/* ============================================================
+ * CONFIG - modifica qui per il tuo device
+ * ============================================================ */
+const BROKER   = 'wss://proxy.marconicloud.it:8884';    // IP RPi ChirpStack, listener WebSocket
+const DEV_EUI  = 'f85b1bfffebed444';           // DevEUI in lowercase, no trattini
+const DEV_NAME = 'Stazione Laboratorio';       // sovrascritto da deviceName di ChirpStack
+const MAX_PTS  = 60;
+
+// Topic: intercetta gli uplink di TUTTE le app, poi filtra per DevEUI
+// (in questo modo funziona indipendentemente dall'application_id)
+const TOPIC = 'application/+/device/' + DEV_EUI + '/event/up';
+
+/* ============================================================
+ * QUALITA'
+ * ============================================================ */
+function qLabel(v, ranges) {
+  for (const [thr, label, color] of ranges) {
+    if (v < thr) return [label, color];
+  }
+  const last = ranges[ranges.length-1];
+  return [last[1], last[2]];
+}
+const R_PM10 = [[20,'BUONA','#22c55e'],[40,'DISCRETA','#a3e635'],[50,'MEDIA','#f59e0b'],[100,'SCARSA','#f97316'],[Infinity,'PESSIMA','#ef4444']];
+const R_PM25 = [[10,'BUONA','#22c55e'],[25,'DISCRETA','#a3e635'],[35,'MEDIA','#f59e0b'],[50,'SCARSA','#f97316'],[Infinity,'PESSIMA','#ef4444']];
+const R_CO2  = [[800,'OTTIMA','#22c55e'],[1000,'BUONA','#a3e635'],[1500,'MEDIA','#f59e0b'],[2000,'ALTA','#f97316'],[Infinity,'CRITICA','#ef4444']];
+const R_VOC  = [[150,'BASSO','#22c55e'],[300,'MEDIO','#f59e0b'],[Infinity,'ALTO','#ef4444']];
+const R_HUM  = [[30,'SECCO','#f59e0b'],[70,'CONFORT','#22c55e'],[Infinity,'UMIDO','#38bdf8']];
+const R_BAT  = [[20,'CRITICA','#ef4444'],[50,'BASSA','#f59e0b'],[Infinity,'OK','#22c55e']];
+
+/* ============================================================
+ * SCHEMI (basati su object di ChirpStack, campi decodificati dal codec)
+ * ============================================================ */
+const SCHEMAS = {
+
+  // 0x41: SDS011 + BME280 (formato ChirpStack: pm10, pm25, eCO2, tVOC, temp, press)
+  0x41: {
+    name: 'SDS011 + BME280',
+    hasGps: false,
+    kpis: [
+      { key:'pm10',  label:'PM10',  unit:'µg/m³', decimals:1, colorClass:'card-a', ranges:R_PM10, barMin:0, barMax:150 },
+      { key:'pm25',  label:'PM2.5', unit:'µg/m³', decimals:1, colorClass:'card-b', ranges:R_PM25, barMin:0, barMax:100 },
+      { key:'eCO2',  label:'eCO₂',  unit:'ppm',   decimals:0, colorClass:'card-c', ranges:R_CO2,  barMin:350,barMax:2500 },
+      { key:'tVOC',  label:'tVOC',  unit:'ppb',   decimals:0, colorClass:'card-d', ranges:R_VOC,  barMin:0, barMax:600 },
+      { key:'temp',  label:'Temperatura', unit:'°C', decimals:1, colorClass:'card-e',
+        ranges:[[10,'FREDDO','#38bdf8'],[25,'OK','#22c55e'],[35,'CALDO','#f59e0b'],[Infinity,'HOT','#ef4444']],
+        barMin:0, barMax:45 },
+      { key:'press', label:'Pressione', unit:'hPa', decimals:1, colorClass:'card-f',
+        ranges:[[Infinity,'','#a78bfa']], barMin:950, barMax:1050 },
+    ],
+    charts: [
+      { id:'ch-pm', title:'PM10 / PM2.5', series:[
+        { key:'pm10', label:'PM10',  color:'#38bdf8' },
+        { key:'pm25', label:'PM2.5', color:'#818cf8' },
+      ]},
+      { id:'ch-gas', title:'eCO₂ / tVOC', series:[
+        { key:'eCO2', label:'eCO₂', color:'#34d399' },
+        { key:'tVOC', label:'tVOC', color:'#fb923c' },
+      ]},
+      { id:'ch-temp', title:'Temperatura', series:[
+        { key:'temp', label:'Temp °C', color:'#f87171', fill:true },
+      ]},
+      { id:'ch-press', title:'Pressione', series:[
+        { key:'press', label:'Press hPa', color:'#a78bfa', fill:true },
+      ]},
+    ],
+    csvFields: ['pm10','pm25','eCO2','tVOC','temp','press'],
+    summary: v => `PM10=${(v.pm10||0).toFixed(1)} PM2.5=${(v.pm25||0).toFixed(1)} eCO2=${v.eCO2||0} T=${(v.temp||0).toFixed(1)}°C`,
+  },
+
+  // 0x42: SCD41 + L76K + batteria (formato ChirpStack)
+  0x42: {
+    name: 'SCD41 + L76K + batteria',
+    hasGps: true,
+    kpis: [
+      { key:'co2_ppm',    label:'CO₂',         unit:'ppm', decimals:0, colorClass:'card-c', ranges:R_CO2,  barMin:350, barMax:2500 },
+      { key:'temp_c',     label:'Temperatura', unit:'°C',  decimals:1, colorClass:'card-e',
+        ranges:[[10,'FREDDO','#38bdf8'],[25,'OK','#22c55e'],[32,'CALDO','#f59e0b'],[Infinity,'HOT','#ef4444']],
+        barMin:0, barMax:45 },
+      { key:'hum_pct',    label:'Umidità',     unit:'%',   decimals:1, colorClass:'card-a', ranges:R_HUM, barMin:0, barMax:100 },
+      { key:'battery_pct',label:'Batteria',    unit:'%',   decimals:0, colorClass:'card-d', ranges:R_BAT, barMin:0, barMax:100 },
+      { key:'satellites', label:'Satelliti',   unit:'in fix', decimals:0, colorClass:'card-b',
+        ranges:[[4,'SCARSO','#ef4444'],[7,'OK','#a3e635'],[Infinity,'BUONO','#22c55e']],
+        barMin:0, barMax:12 },
+      { key:'alt_m',      label:'Altitudine',  unit:'m sul mare', decimals:0, colorClass:'card-f',
+        ranges:[[Infinity,'','#a78bfa']], barMin:0, barMax:1000 },
+    ],
+    charts: [
+      { id:'ch-co2',  title:'CO₂', series:[
+        { key:'co2_ppm', label:'CO₂ ppm', color:'#34d399', fill:true },
+      ]},
+      { id:'ch-th',   title:'Temperatura / Umidità', series:[
+        { key:'temp_c', label:'Temp °C', color:'#f87171' },
+        { key:'hum_pct',label:'RH %',    color:'#60a5fa' },
+      ]},
+      { id:'ch-bat',  title:'Batteria', series:[
+        { key:'vbat_mv',     label:'V (mV)', color:'#fb923c' },
+        { key:'battery_pct', label:'%',       color:'#a78bfa' },
+      ]},
+      { id:'ch-sat',  title:'Satelliti / HDOP', series:[
+        { key:'satellites', label:'Sat',  color:'#22c55e' },
+        { key:'hdop',       label:'HDOP', color:'#f59e0b' },
+      ]},
+    ],
+    csvFields: ['co2_ppm','temp_c','hum_pct','vbat_mv','battery_pct','fix_quality','satellites','alt_m','hdop'],
+    summary: v => `CO₂=${v.co2_ppm||0}ppm T=${(v.temp_c||0).toFixed(1)}°C RH=${(v.hum_pct||0).toFixed(0)}% 🔋${v.battery_pct||'?'}%`,
+  },
+};
+
+/* ============================================================
+ * STATO
+ * ============================================================ */
+let currentSchema = null;
+let history = [];
+let pktCount = 0;
+const charts = {};
+let map = null;
+let marker = null;
+
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pct = (v, min, max) => clamp((v-min)/(max-min)*100, 2, 100).toFixed(1) + '%';
+
+function flashCard(cardEl) {
+  cardEl.classList.remove('flash','fresh');
+  void cardEl.offsetWidth;
+  cardEl.classList.add('flash','fresh');
+}
+
+function log(msg, cls='') {
+  const el = $('log');
+  if (!el) return;
+  const time = new Date().toLocaleTimeString('it-IT');
+  const div  = document.createElement('div');
+  div.className = 'entry';
+  div.innerHTML = `<span class="t">${time}</span><span class="${cls}">${msg}</span>`;
+  el.prepend(div);
+  if (el.children.length > 80) el.lastChild.remove();
+}
+
+function setSignal(rssi) {
+  const bars = rssi >= -70 ? 4 : rssi >= -85 ? 3 : rssi >= -100 ? 2 : 1;
+  document.querySelectorAll('#sig-bars .bar').forEach((b,i) => {
+    b.classList.toggle('active', i < bars);
+  });
+}
+
+/* Layout dinamico ---------------------------------------------- */
+function buildLayout(schema) {
+  const main = $('main-grid');
+  main.innerHTML = '';
+  currentSchema = schema;
+
+  schema.kpis.forEach(k => {
+    const card = document.createElement('div');
+    card.className = 'card ' + (k.colorClass || '');
+    card.id = 'c-' + k.key;
+    card.innerHTML = `
+      <div class="card-label">${k.label}</div>
+      <div class="card-value" id="v-${k.key}">—</div>
+      <div class="card-unit">${k.unit} &nbsp;·&nbsp; <span id="q-${k.key}">—</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="b-${k.key}"></div></div>
+    `;
+    main.appendChild(card);
+  });
+
+  const chartCard = document.createElement('div');
+  chartCard.className = 'card chart-card';
+  chartCard.innerHTML = `
+    <div class="chart-title">
+      Andamento temporale
+      <span class="pill">ULTIMI ${MAX_PTS} CAMPIONI</span>
+    </div>
+    <div class="chart-grid" id="chart-grid"></div>
+  `;
+  main.appendChild(chartCard);
+  const cg = chartCard.querySelector('#chart-grid');
+  schema.charts.forEach(ch => {
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-wrap';
+    wrap.innerHTML = `<canvas id="${ch.id}"></canvas>`;
+    cg.appendChild(wrap);
+  });
+
+  if (schema.hasGps) {
+    const mapCard = document.createElement('div');
+    mapCard.className = 'card map-card';
+    mapCard.innerHTML = `
+      <div class="chart-title">
+        Posizione
+        <span class="pill" id="gps-status">In attesa fix…</span>
+      </div>
+      <div id="map"></div>
+    `;
+    main.appendChild(mapCard);
+    setTimeout(initMap, 100);
+  }
+
+  const metaCard = document.createElement('div');
+  metaCard.className = 'card meta-card';
+  metaCard.innerHTML = `
+    <div class="chart-title">
+      Metadati pacchetto &nbsp;
+      <span style="font-family:var(--font-mono);font-size:.8rem;color:var(--accent)">
+        PKT #<span id="pkt-counter">0</span>
+      </span>
+      <span class="pill">${schema.name}</span>
+      <div class="signal-bars" id="sig-bars" style="margin-left:auto">
+        <div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+      </div>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-item"><span class="k">App </span><span class="v" id="m-app">—</span></div>
+      <div class="meta-item"><span class="k">RSSI </span><span class="v" id="m-rssi">—</span></div>
+      <div class="meta-item"><span class="k">SNR </span><span class="v" id="m-snr">—</span></div>
+      <div class="meta-item"><span class="k">Freq </span><span class="v" id="m-freq">—</span></div>
+      <div class="meta-item"><span class="k">DR </span><span class="v" id="m-dr">—</span></div>
+      <div class="meta-item"><span class="k">FCnt </span><span class="v" id="m-fcnt">—</span></div>
+      <div class="meta-item"><span class="k">DevAddr </span><span class="v" id="m-dev">—</span></div>
+      <div class="meta-item"><span class="k">Gateway </span><span class="v" id="m-gw">—</span></div>
+      <div class="meta-item"><span class="k">UTC </span><span class="v" id="m-utc">—</span></div>
+    </div>
+    <div id="actions">
+      <button class="btn" id="btn-csv">Esporta CSV</button>
+      <button class="btn" id="btn-clear">Cancella storico</button>
+    </div>
+  `;
+  main.appendChild(metaCard);
+  $('btn-csv').addEventListener('click', exportCsv);
+  $('btn-clear').addEventListener('click', () => { history = []; rebuildCharts(); log('Storico cancellato'); });
+
+  const logCard = document.createElement('div');
+  logCard.className = 'card log-card';
+  logCard.innerHTML = `
+    <div class="chart-title">Log eventi <span class="pill">LIVE</span></div>
+    <div id="log"></div>
+  `;
+  main.appendChild(logCard);
+
+  buildCharts(schema);
+}
+
+/* Chart.js ---------------------------------------------------- */
+const chartDefaults = {
+  animation: false, responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { color: '#64748b', font: { family: 'Space Mono', size: 10 }, boxWidth: 10 } },
+    tooltip: { enabled: true }
+  },
+  scales: {
+    x: { display: false },
+    y: { grid: { color: 'rgba(30,45,69,.8)' }, ticks: { color: '#64748b', font: { family: 'Space Mono', size: 9 } } }
+  }
+};
+
+function buildCharts(schema) {
+  Object.values(charts).forEach(c => c.destroy());
+  Object.keys(charts).forEach(k => delete charts[k]);
+  schema.charts.forEach(ch => {
+    const datasets = ch.series.map(s => ({
+      label: s.label,
+      borderColor: s.color,
+      backgroundColor: s.color + '22',
+      borderWidth: 1.5, pointRadius: 0, tension: .4, fill: !!s.fill,
+      data: []
+    }));
+    charts[ch.id] = new Chart($(ch.id), {
+      type: 'line',
+      data: { labels: [], datasets },
+      options: JSON.parse(JSON.stringify(chartDefaults))
+    });
+  });
+}
+
+function pushCharts(labelTxt) {
+  currentSchema.charts.forEach(ch => {
+    const c = charts[ch.id];
+    c.data.labels.push(labelTxt);
+    ch.series.forEach((s, i) => {
+      const last = history[history.length-1];
+      c.data.datasets[i].data.push(last[s.key]);
+    });
+    if (c.data.labels.length > MAX_PTS) {
+      c.data.labels.shift();
+      c.data.datasets.forEach(d => d.data.shift());
+    }
+    c.update('none');
+  });
+}
+
+function rebuildCharts() {
+  buildCharts(currentSchema);
+  history.forEach(h => {
+    const lbl = new Date(h._t).toLocaleTimeString('it-IT');
+    currentSchema.charts.forEach(ch => {
+      const c = charts[ch.id];
+      c.data.labels.push(lbl);
+      ch.series.forEach((s, i) => c.data.datasets[i].data.push(h[s.key]));
+    });
+  });
+  Object.values(charts).forEach(c => c.update('none'));
+}
+
+/* Mappa ------------------------------------------------------- */
+function initMap() {
+  if (map) return;
+  map = L.map('map', {
+    center: [37.5, 15.09], zoom: 12, scrollWheelZoom: true,
+  });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap · CARTO',
+    subdomains: 'abcd', maxZoom: 20
+  }).addTo(map);
+}
+
+function updateMap(obj) {
+  if (!map) return;
+  // ChirpStack: la posizione arriva come obj.location, popolata dal codec
+  // solo se il fix e' valido
+  if (!obj.location || obj.location.latitude == null) {
+    $('gps-status').textContent = 'No fix';
+    return;
+  }
+  const lat = obj.location.latitude;
+  const lon = obj.location.longitude;
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="map-marker" style="background:#00e5ff;color:#00e5ff"></div>`,
+    iconSize: [22, 22], iconAnchor: [11, 11],
+  });
+  if (!marker) {
+    marker = L.marker([lat, lon], { icon }).addTo(map);
+    map.setView([lat, lon], 14);
+  } else {
+    marker.setLatLng([lat, lon]);
+    marker.setIcon(icon);
+  }
+  marker.bindPopup(
+    `<b>${DEV_NAME}</b><br>` +
+    `<span style="color:var(--muted);font-size:.6rem">${DEV_EUI}</span><br>` +
+    `Lat: ${lat.toFixed(6)}<br>Lon: ${lon.toFixed(6)}<br>` +
+    `Alt: ${obj.location.altitude ?? '—'} m<br>` +
+    `${obj.satellites ?? '?'} satelliti · HDOP ${(obj.hdop||0).toFixed(1)}`
+  );
+  $('gps-status').textContent = `${obj.satellites ?? '?'} sat · HDOP ${(obj.hdop||0).toFixed(1)}`;
+}
+
+/* CSV --------------------------------------------------------- */
+function exportCsv() {
+  if (history.length === 0) return;
+  const header = ['iso_time', ...currentSchema.csvFields];
+  const rows = history.map(h => {
+    const iso  = new Date(h._t).toISOString();
+    const vals = currentSchema.csvFields.map(f => h[f] != null ? h[f] : '');
+    return [iso, ...vals].join(',');
+  });
+  const csv  = [header.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `${DEV_NAME.replace(/\s+/g,'_')}_${DEV_EUI}_${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  log(`CSV esportato (${history.length} righe)`, 'ok');
+}
+
+/* Card update ------------------------------------------------- */
+function updateKpiCard(k, values) {
+  const v = values[k.key];
+  if (v == null) return;
+  const [label, color] = qLabel(v, k.ranges);
+  const card = $('c-' + k.key);
+  $('v-' + k.key).textContent = (+v).toFixed(k.decimals);
+  $('v-' + k.key).style.color = color;
+  $('q-' + k.key).textContent = label;
+  $('q-' + k.key).style.color = color;
+  $('b-' + k.key).style.width = pct(v, k.barMin, k.barMax);
+  $('b-' + k.key).style.background = color;
+  card.style.setProperty('--val-color', color);
+  flashCard(card);
+}
+
+/* Main handler ------------------------------------------------ */
+function handleMessage(topic, payload) {
+  let msg;
+  try { msg = JSON.parse(payload.toString()); }
+  catch(e) { log('JSON parse error: '+e.message, 'err'); return; }
+
+  // Filtro DevEUI (topic wildcard su application_id)
+  const info = msg.deviceInfo;
+  if (!info || info.devEui.toLowerCase() !== DEV_EUI.toLowerCase()) return;
+
+  const obj = msg.object;
+  if (!obj) { log('object mancante (codec disattivo?)', 'err'); return; }
+
+  const schemaId = obj.schema_id;
+  if (schemaId == null) { log('schema_id mancante', 'err'); return; }
+
+  const schema = SCHEMAS[schemaId];
+  if (!schema) { log(`Schema sconosciuto 0x${schemaId.toString(16)}`, 'err'); return; }
+
+  // Ricostruisci layout se lo schema cambia
+  if (schema !== currentSchema) {
+    log(`Layout ricostruito per schema ${schema.name}`);
+    history = [];
+    buildLayout(schema);
+  }
+
+  pktCount++;
+  $('pkt-counter').textContent = pktCount;
+  $('last-update').textContent = 'Ultimo agg.: ' + new Date().toLocaleTimeString('it-IT');
+  $('hdr-name').textContent = info.deviceName || DEV_NAME;
+
+  const now = Date.now();
+  history.push({ ...obj, _t: now });
+  if (history.length > MAX_PTS) history.shift();
+
+  schema.kpis.forEach(k => updateKpiCard(k, obj));
+  pushCharts(new Date(now).toLocaleTimeString('it-IT'));
+
+  if (schema.hasGps) updateMap(obj);
+
+  // Metadata ChirpStack
+  const rx = (msg.rxInfo && msg.rxInfo[0]) || {};
+  const tx = msg.txInfo || {};
+  $('m-app').textContent  = info.applicationName || '—';
+  $('m-rssi').textContent = (rx.rssi ?? '—') + (rx.rssi != null ? ' dBm' : '');
+  $('m-snr').textContent  = (rx.snr != null ? rx.snr.toFixed(1) : '—') + (rx.snr != null ? ' dB' : '');
+  $('m-freq').textContent = tx.frequency ? (tx.frequency/1e6).toFixed(3) + ' MHz' : '—';
+  $('m-dr').textContent   = msg.dr != null ? 'DR' + msg.dr : '—';
+  $('m-fcnt').textContent = msg.fCnt ?? '—';
+  $('m-dev').textContent  = msg.devAddr ?? '—';
+  $('m-gw').textContent   = rx.gatewayId ?? '—';
+  $('m-utc').textContent  = msg.time ? new Date(msg.time).toLocaleString('it-IT') : '—';
+  if (rx.rssi != null) setSignal(rx.rssi);
+
+  log('PKT#' + pktCount + ' · ' + schema.summary(obj), 'ok');
+}
+
+/* MQTT -------------------------------------------------------- */
+function setBadge(state, text) {
+  const b = $('conn-badge');
+  b.className = '';
+  b.classList.add(state);
+  $('conn-text').textContent = text;
+}
+
+function connect() {
+  $('hdr-name').textContent  = DEV_NAME;
+  $('hdr-dev').textContent   = DEV_EUI;
+  $('hdr-topic').textContent = TOPIC;
+  setBadge('connecting', 'CONNECTING');
+
+  const client = mqtt.connect(BROKER, {
+    clientId: 'mcloud-single-cs-' + Math.random().toString(16).slice(2,8),
+    clean: true,
+    reconnectPeriod: 5000,
+    connectTimeout: 15000,
+  });
+
+  client.on('connect', () => {
+    setBadge('connected', 'ONLINE');
+    log('Connesso. Sottoscritto a ' + TOPIC, 'ok');
+    client.subscribe(TOPIC, { qos: 0 }, err => {
+      if (err) log('Subscribe error: ' + err.message, 'err');
+    });
+  });
+  client.on('message', handleMessage);
+  client.on('error',     err => { setBadge('error', 'ERROR'); log('Errore MQTT: ' + err.message, 'err'); });
+  client.on('close',     () => { setBadge('connecting', 'RECONNECTING'); log('Connessione chiusa, riconnessione…'); });
+  client.on('reconnect', () => { setBadge('connecting', 'RECONNECTING'); log('Tentativo riconnessione…'); });
+  client.on('offline',   () => { setBadge('error', 'OFFLINE'); log('Client offline', 'err'); });
+}
+
+/* Boot -------------------------------------------------------- */
+window.addEventListener('DOMContentLoaded', () => {
+  // Parti con layout schema 0x42 come placeholder (verra' ricreato se serve)
+  buildLayout(SCHEMAS[0x42]);
+  connect();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marconi Cloud · Rete Sensori LoRaWAN (ChirpStack)</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.10.1/mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:       #0a0f1a;
+  --bg2:      #111827;
+  --bg3:      #1a2233;
+  --border:   #1e2d45;
+  --accent:   #00e5ff;
+  --accent2:  #7c3aed;
+  --ok:       #22c55e;
+  --warn:     #f59e0b;
+  --danger:   #ef4444;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .35;
+}
+
+header {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(10,15,26,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .75rem 1.5rem;
+  display: flex; align-items: center; gap: 1.25rem;
+}
+.logo {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: .08em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.logo span { color: var(--text); }
+.header-meta {
+  flex: 1;
+  font-size: .7rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.header-meta strong { color: var(--text); }
+#stats {
+  display: flex; gap: 1rem;
+  font-size: .7rem;
+  color: var(--muted);
+}
+#stats strong { color: var(--accent); font-family: var(--font-head); font-size: 1.1rem; }
+#conn-badge {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  transition: all .4s;
+}
+#conn-badge.connecting { color: var(--warn); border-color: var(--warn); }
+#conn-badge.connected  { color: var(--ok);   border-color: var(--ok); }
+#conn-badge.error      { color: var(--danger);border-color: var(--danger); }
+#conn-badge .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor;
+}
+#conn-badge.connected .dot { animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(1.4); }
+}
+
+main {
+  position: relative; z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+.card-title {
+  font-family: var(--font-head);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--text);
+  margin-bottom: .75rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.card-title .pill {
+  font-size: .55rem; font-weight: 700; letter-spacing: .1em;
+  background: var(--bg3); color: var(--muted);
+  padding: .15rem .5rem; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+#map-card { grid-column: 1 / 2; }
+#map { height: 400px; border-radius: 8px; background: var(--bg3); }
+
+#detail-card { grid-column: 2 / 3; }
+#detail-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: .75rem;
+}
+#detail-name { font-family: var(--font-head); font-size: 1.2rem; color: var(--accent); }
+#detail-eui { font-size: .65rem; color: var(--muted); }
+#detail-empty { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: .8rem; }
+#detail-content { display: none; }
+
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .6rem; margin-bottom: 1rem; }
+.kpi {
+  background: var(--bg3); border-radius: 8px;
+  padding: .6rem .75rem;
+  border-left: 3px solid var(--accent);
+}
+.kpi-label {
+  font-size: .55rem; font-weight: 700; letter-spacing: .12em;
+  color: var(--muted); text-transform: uppercase;
+}
+.kpi-value {
+  font-family: var(--font-head); font-size: 1.4rem; font-weight: 800;
+  color: var(--text); margin-top: .15rem;
+}
+.kpi-unit { font-size: .6rem; color: var(--muted); }
+
+#detail-chart-wrap { position: relative; height: 180px; margin-bottom: .75rem; }
+
+.detail-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: .35rem .7rem; font-size: .65rem;
+}
+.detail-meta .k { color: var(--muted); }
+.detail-meta .v { color: var(--text); font-weight: 700; }
+
+#detail-actions { margin-top: .75rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+.btn {
+  font-family: var(--font-mono); font-size: .65rem;
+  padding: .35rem .8rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px;
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+#grid-card { grid-column: 1 / -1; }
+#device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem; }
+.dev-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: .7rem .85rem;
+  cursor: pointer; transition: all .2s; position: relative;
+}
+.dev-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.dev-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.dev-card.offline { opacity: .5; }
+.dev-name { font-family: var(--font-head); font-size: .85rem; font-weight: 700; color: var(--text); margin-bottom: .1rem; }
+.dev-eui { font-size: .55rem; color: var(--muted); margin-bottom: .4rem; word-break: break-all; }
+.dev-primary { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .3rem; }
+.dev-primary-val { font-family: var(--font-head); font-size: 1.4rem; font-weight: 800; }
+.dev-primary-lbl { font-size: .55rem; color: var(--muted); letter-spacing: .1em; }
+.dev-secondary { font-size: .65rem; color: var(--muted); }
+.dev-status {
+  position: absolute; top: .5rem; right: .55rem;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--muted);
+}
+.dev-status.online  { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+.dev-status.stale   { background: var(--warn); }
+.dev-status.offline { background: var(--danger); }
+.dev-age { font-size: .55rem; color: var(--muted); margin-top: .3rem; }
+
+#log-card { grid-column: 1 / -1; }
+#log { height: 130px; overflow-y: auto; font-size: .65rem; line-height: 1.6; color: var(--muted); }
+#log .entry { border-bottom: 1px solid var(--border); padding: .15rem 0; }
+#log .entry .t { color: var(--accent); margin-right: .5rem; }
+#log .entry .dev { color: var(--accent2); margin-right: .5rem; }
+#log .entry .ok { color: var(--ok); }
+#log .entry .err { color: var(--danger); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; }
+  #map-card, #detail-card { grid-column: 1 / -1; }
+}
+
+.leaflet-container { background: var(--bg3); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: var(--bg2); color: var(--text); border: 1px solid var(--border);
+}
+.leaflet-popup-content { font-family: var(--font-mono); font-size: .7rem; }
+.leaflet-popup-content b { color: var(--accent); font-family: var(--font-head); }
+.map-marker {
+  border-radius: 50%; border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 8px currentColor;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-family: var(--font-head); font-size: .55rem; font-weight: 800;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MARCONI<span>CLOUD</span></div>
+  <div class="header-meta">
+    <strong>Rete Sensori LoRaWAN · ChirpStack</strong><br>
+    <span id="hdr-broker">—</span> &nbsp;·&nbsp;
+    <span id="hdr-topic">—</span>
+  </div>
+  <div id="stats">
+    <div>DEVICE <strong id="stat-devices">0</strong></div>
+    <div>ONLINE <strong id="stat-online">0</strong></div>
+    <div>PACCHETTI <strong id="stat-pkts">0</strong></div>
+  </div>
+  <div id="conn-badge" class="connecting">
+    <span class="dot"></span>
+    <span id="conn-text">CONNECTING</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="card" id="map-card">
+    <div class="card-title">
+      Mappa dispositivi
+      <span class="pill" id="map-count">0 con GPS</span>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <div class="card" id="detail-card">
+    <div class="card-title">Dettaglio dispositivo <span class="pill" id="detail-schema">—</span></div>
+    <div id="detail-empty">
+      Nessun dispositivo selezionato.<br>
+      <span style="font-size:.7rem">In attesa di uplink…</span>
+    </div>
+    <div id="detail-content">
+      <div id="detail-header">
+        <div>
+          <div id="detail-name">—</div>
+          <div id="detail-eui">—</div>
+        </div>
+        <div style="text-align:right; font-size:.65rem; color:var(--muted);">
+          <div>Ultimo uplink</div>
+          <div id="detail-last" style="color:var(--text); font-weight:700;">—</div>
+        </div>
+      </div>
+      <div class="kpi-grid" id="detail-kpis"></div>
+      <div id="detail-chart-wrap"><canvas id="detail-chart"></canvas></div>
+      <div class="detail-meta" id="detail-meta"></div>
+      <div id="detail-actions">
+        <button class="btn" id="btn-csv">Esporta CSV</button>
+        <button class="btn" id="btn-clear-history">Cancella storico</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="grid-card">
+    <div class="card-title">Dispositivi <span class="pill">CLICCA PER SELEZIONARE</span></div>
+    <div id="device-grid"></div>
+  </div>
+
+  <div class="card" id="log-card">
+    <div class="card-title">Log eventi <span class="pill">LIVE</span></div>
+    <div id="log"></div>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+ * CONFIG - modifica qui per il tuo broker
+ * ============================================================ */
+
+// Broker MQTT ChirpStack (WebSocket)
+// Nota: ChirpStack OS non abilita WebSocket per default. Devi editare
+// /etc/mosquitto/mosquitto.conf aggiungendo:
+//    listener 9001
+//    protocol websockets
+// e riavviare mosquitto.
+const BROKER = 'wss://proxy.marconicloud.it:8884';    // IP del RPi con ChirpStack
+
+// Topic di ChirpStack per gli eventi uplink
+const TOPIC  = 'application/+/device/+/event/up';
+
+const MAX_HISTORY_POINTS = 60;
+const STALE_MULTIPLIER   = 3;
+const OFFLINE_MULTIPLIER = 6;
+const DEFAULT_TX_INTERVAL_S = 60;
+
+// Registry opzionale per personalizzare colori dei device.
+// Il "name" arriva già da ChirpStack (msg.deviceInfo.deviceName),
+// qui puoi assegnare colori diversi per la mappa.
+const DEVICE_COLORS = {
+  '26a160fffe6e86bc': '#00e5ff',
+  '26a160fffe6e8770': '#f59e0b',
+  // ...aggiungi qui i tuoi devEui in lowercase senza trattini
+};
+
+/* ============================================================
+ * SCHEMI PAYLOAD
+ * ============================================================
+ * Il codec ChirpStack decodifica già i byte in msg.object.
+ * Qui dobbiamo solo mappare msg.object → KPI/serie/chart in base a schema_id.
+ */
+
+const SCHEMAS = {
+
+  // 0x41: SDS011 + BME280
+  0x41: {
+    name: 'SDS011 + BME280',
+    // Campi previsti in object (dal codec):
+    //   pm10, pm25, eCO2, tVOC, temp, press, pmSensorID
+    kpis: [
+      { key: 'pm10',  label: 'PM10',  unit: 'µg/m³', decimals: 1, quality: v => qPm10(v) },
+      { key: 'pm25',  label: 'PM2.5', unit: 'µg/m³', decimals: 1, quality: v => qPm25(v) },
+      { key: 'eCO2',  label: 'eCO₂',  unit: 'ppm',   decimals: 0, quality: v => qCO2(v)  },
+    ],
+    primary: { key: 'pm25', label: 'PM2.5', unit: 'µg/m³', decimals: 1, quality: v => qPm25(v) },
+    series: [
+      { key: 'pm10', label: 'PM10',  color: '#38bdf8' },
+      { key: 'pm25', label: 'PM2.5', color: '#818cf8' },
+    ],
+    csvFields: ['pm10','pm25','eCO2','tVOC','temp','press'],
+    hasGps: false,
+    summary: v => `PM10=${(v.pm10||0).toFixed(1)} PM2.5=${(v.pm25||0).toFixed(1)} CO2=${v.eCO2||0}`,
+  },
+
+  // 0x42: SCD41 + L76K + batteria
+  0x42: {
+    name: 'SCD41 + L76K + batteria',
+    // Campi previsti in object (dal codec):
+    //   co2_ppm, temp_c, hum_pct, battery_pct, vbat_mv,
+    //   fix_quality, satellites, alt_m, hdop,
+    //   location: { latitude, longitude, altitude, source, accuracy } (se fix)
+    kpis: [
+      { key: 'co2_ppm', label: 'CO₂',  unit: 'ppm', decimals: 0, quality: v => qCO2(v) },
+      { key: 'temp_c',  label: 'Temp', unit: '°C',  decimals: 1, quality: v => qTemp(v) },
+      { key: 'hum_pct', label: 'RH',   unit: '%',   decimals: 1, quality: v => qHum(v) },
+    ],
+    primary: { key: 'co2_ppm', label: 'CO₂', unit: 'ppm', decimals: 0, quality: v => qCO2(v) },
+    series: [
+      { key: 'co2_ppm', label: 'CO₂',  color: '#34d399' },
+      { key: 'temp_c',  label: 'Temp', color: '#f87171' },
+      { key: 'hum_pct', label: 'RH',   color: '#60a5fa' },
+    ],
+    csvFields: ['co2_ppm','temp_c','hum_pct','vbat_mv','battery_pct','fix_quality','satellites','alt_m','hdop'],
+    hasGps: true,
+    summary: v => `CO₂=${v.co2_ppm||0} T=${(v.temp_c||0).toFixed(1)}°C RH=${(v.hum_pct||0).toFixed(0)}%`,
+  },
+};
+
+/* Qualità colore ------------------------------------------------ */
+function qPm10(v){ return v<20?'#22c55e':v<40?'#a3e635':v<50?'#f59e0b':v<100?'#f97316':'#ef4444'; }
+function qPm25(v){ return v<10?'#22c55e':v<25?'#a3e635':v<35?'#f59e0b':v<50?'#f97316':'#ef4444'; }
+function qCO2(v) { return v<800?'#22c55e':v<1000?'#a3e635':v<1500?'#f59e0b':v<2000?'#f97316':'#ef4444'; }
+function qTemp(v){ return v<10?'#38bdf8':v<25?'#22c55e':v<32?'#f59e0b':'#ef4444'; }
+function qHum(v) { return v<30?'#f59e0b':v<70?'#22c55e':'#38bdf8'; }
+
+/* ============================================================
+ * STATO
+ * ============================================================ */
+const devices = new Map();
+let selectedEui = null;
+let totalPackets = 0;
+let map = null;
+let detailChart = null;
+
+const $ = id => document.getElementById(id);
+
+function niceColor(eui) {
+  return DEVICE_COLORS[eui.toLowerCase()] || '#00e5ff';
+}
+
+function formatAge(ms) {
+  const s = Math.floor(ms / 1000);
+  if (s < 60)   return s + 's fa';
+  if (s < 3600) return Math.floor(s/60)  + 'min fa';
+  if (s < 86400)return Math.floor(s/3600)+ 'h fa';
+  return Math.floor(s/86400) + 'g fa';
+}
+
+function statusOf(dev) {
+  const age = Date.now() - dev.lastSeen;
+  const expected = (dev.txIntervalS || DEFAULT_TX_INTERVAL_S) * 1000;
+  if (age < expected * STALE_MULTIPLIER)   return 'online';
+  if (age < expected * OFFLINE_MULTIPLIER) return 'stale';
+  return 'offline';
+}
+
+/* Persistenza -------------------------------------------------- */
+function saveKnownDevices() {
+  const list = [];
+  devices.forEach((d, eui) => {
+    list.push({
+      eui, schema: d.schema, name: d.name, appName: d.appName,
+      lastSeen: d.lastSeen, lastValues: d.lastValues,
+      lat: d.lat, lon: d.lon,
+    });
+  });
+  try { localStorage.setItem('mcloud_devs_cs', JSON.stringify(list)); } catch(e){}
+}
+function loadKnownDevices() {
+  try {
+    const raw = localStorage.getItem('mcloud_devs_cs');
+    if (!raw) return;
+    const list = JSON.parse(raw);
+    list.forEach(item => {
+      const d = ensureDevice(item.eui, item.schema, item.name, item.appName);
+      d.lastSeen   = item.lastSeen;
+      d.lastValues = item.lastValues;
+      if (item.lat != null && item.lon != null) {
+        d.lat = item.lat;
+        d.lon = item.lon;
+        placeMarker(d);
+      }
+    });
+  } catch(e){}
+}
+
+/* Device object ----------------------------------------------- */
+function ensureDevice(eui, schema, name, appName) {
+  let d = devices.get(eui);
+  if (!d) {
+    d = {
+      eui, schema,
+      name:       name || eui,
+      appName:    appName || '—',
+      color:      niceColor(eui),
+      firstSeen:  Date.now(),
+      lastSeen:   0,
+      lastValues: null,
+      lastMeta:   null,
+      history:    [],
+      lat: null, lon: null,
+      marker: null,
+      txIntervalS: DEFAULT_TX_INTERVAL_S,
+    };
+    devices.set(eui, d);
+  } else {
+    if (name)    d.name    = name;
+    if (appName) d.appName = appName;
+  }
+  return d;
+}
+
+/* Mappa Leaflet ------------------------------------------------ */
+function initMap() {
+  map = L.map('map', {
+    center: [37.5, 15.09],
+    zoom: 11,
+    scrollWheelZoom: true,
+  });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap · CARTO',
+    subdomains: 'abcd',
+    maxZoom: 20
+  }).addTo(map);
+}
+
+function makeMarkerIcon(color) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="map-marker" style="background:${color};color:${color}"></div>`,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+  });
+}
+
+function placeMarker(d) {
+  if (d.lat == null || d.lon == null) return;
+  const icon = makeMarkerIcon(d.color);
+  if (!d.marker) {
+    d.marker = L.marker([d.lat, d.lon], { icon }).addTo(map);
+    d.marker.on('click', () => selectDevice(d.eui));
+  } else {
+    d.marker.setLatLng([d.lat, d.lon]);
+    d.marker.setIcon(icon);
+  }
+  d.marker.bindPopup(popupContent(d));
+}
+
+function popupContent(d) {
+  const s = SCHEMAS[d.schema];
+  const v = d.lastValues;
+  if (!s || !v) return `<b>${d.name}</b><br>${d.eui}`;
+  const rows = s.kpis.map(k => {
+    const val = v[k.key];
+    if (val == null) return '';
+    return `${k.label}: <b style="color:${k.quality(val)}">${(+val).toFixed(k.decimals)} ${k.unit}</b>`;
+  }).filter(Boolean).join('<br>');
+  return `<b>${d.name}</b><br><span style="color:var(--muted);font-size:.6rem">${d.eui}</span><br>${rows}<br><span style="color:var(--muted);font-size:.6rem">${formatAge(Date.now()-d.lastSeen)}</span>`;
+}
+
+function updateMapCount() {
+  let n = 0;
+  devices.forEach(d => { if (d.marker) n++; });
+  $('map-count').textContent = n + ' con GPS';
+}
+
+/* Griglia device ---------------------------------------------- */
+function renderGrid() {
+  const grid = $('device-grid');
+  grid.innerHTML = '';
+  const sorted = Array.from(devices.values()).sort((a,b) => b.lastSeen - a.lastSeen);
+  sorted.forEach(d => grid.appendChild(makeDevCard(d)));
+
+  $('stat-devices').textContent = devices.size;
+  const onlineN = sorted.filter(d => statusOf(d) === 'online').length;
+  $('stat-online').textContent = onlineN;
+}
+
+function makeDevCard(d) {
+  const el = document.createElement('div');
+  el.className = 'dev-card' + (d.eui === selectedEui ? ' selected' : '');
+  const stat = statusOf(d);
+  if (stat === 'offline') el.classList.add('offline');
+
+  const s = SCHEMAS[d.schema];
+  const v = d.lastValues;
+  let primaryHtml = '<div class="dev-primary"><div class="dev-primary-val">—</div></div>';
+  let secondaryHtml = '';
+  if (s && v) {
+    const p = s.primary;
+    const pv = v[p.key];
+    if (pv != null) {
+      const color = p.quality(pv);
+      primaryHtml = `
+        <div class="dev-primary">
+          <div class="dev-primary-val" style="color:${color}">${(+pv).toFixed(p.decimals)}</div>
+          <div class="dev-primary-lbl">${p.label}<br>${p.unit}</div>
+        </div>`;
+    }
+    if (d.schema === 0x41 && v.pm10 != null) {
+      secondaryHtml = `PM10 ${v.pm10.toFixed(1)} · eCO₂ ${v.eCO2}`;
+    } else if (d.schema === 0x42) {
+      const t = v.temp_c != null ? v.temp_c.toFixed(1) : '—';
+      const h = v.hum_pct != null ? v.hum_pct.toFixed(0) : '—';
+      const b = v.battery_pct != null ? v.battery_pct : '—';
+      secondaryHtml = `T ${t}°C · RH ${h}% · 🔋${b}%`;
+    }
+  }
+
+  el.innerHTML = `
+    <div class="dev-status ${stat}"></div>
+    <div class="dev-name">${d.name}</div>
+    <div class="dev-eui">${d.eui}</div>
+    ${primaryHtml}
+    <div class="dev-secondary">${secondaryHtml}</div>
+    <div class="dev-age">${d.lastSeen ? formatAge(Date.now()-d.lastSeen) : 'mai visto'}</div>
+  `;
+  el.addEventListener('click', () => selectDevice(d.eui));
+  return el;
+}
+
+/* Dettaglio device -------------------------------------------- */
+function selectDevice(eui) {
+  selectedEui = eui;
+  try { localStorage.setItem('mcloud_sel_cs', eui); } catch(e){}
+  renderGrid();
+  renderDetail();
+}
+
+function renderDetail() {
+  const d = devices.get(selectedEui);
+  if (!d || !d.lastValues) {
+    $('detail-empty').style.display = 'block';
+    $('detail-content').style.display = 'none';
+    return;
+  }
+  $('detail-empty').style.display = 'none';
+  $('detail-content').style.display = 'block';
+
+  const s = SCHEMAS[d.schema];
+  $('detail-name').textContent = d.name;
+  $('detail-eui').textContent  = d.eui;
+  $('detail-last').textContent = formatAge(Date.now() - d.lastSeen);
+  $('detail-schema').textContent = s ? s.name : ('schema 0x' + d.schema.toString(16));
+
+  const kg = $('detail-kpis');
+  kg.innerHTML = '';
+  s.kpis.forEach(k => {
+    const val = d.lastValues[k.key];
+    if (val == null) return;
+    const color = k.quality(val);
+    const el = document.createElement('div');
+    el.className = 'kpi';
+    el.style.borderLeftColor = color;
+    el.innerHTML = `
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value" style="color:${color}">${(+val).toFixed(k.decimals)}</div>
+      <div class="kpi-unit">${k.unit}</div>`;
+    kg.appendChild(el);
+  });
+
+  renderDetailChart(d, s);
+
+  const mg = $('detail-meta');
+  const meta = d.lastMeta || {};
+  const rows = [
+    ['App',       d.appName || '—'],
+    ['RSSI',      meta.rssi != null ? meta.rssi + ' dBm' : '—'],
+    ['SNR',       meta.snr != null ? meta.snr.toFixed(1) + ' dB'  : '—'],
+    ['Freq',      meta.freq ? (meta.freq/1e6).toFixed(3) + ' MHz' : '—'],
+    ['DR',        meta.dr != null ? 'DR' + meta.dr : '—'],
+    ['FCnt',      meta.fcnt ?? '—'],
+    ['DevAddr',   meta.devaddr || '—'],
+    ['Gateway',   meta.gateway || '—'],
+  ];
+  if (d.schema === 0x42) {
+    const v = d.lastValues;
+    rows.push(['GPS', v.fix_quality ? `${v.satellites} sat, HDOP ${(v.hdop||0).toFixed(1)}` : 'no fix']);
+    rows.push(['Alt', (v.alt_m ?? '—') + ' m']);
+    rows.push(['Batteria', `${v.vbat_mv || '—'} mV (${v.battery_pct || '—'}%)`]);
+  }
+  mg.innerHTML = rows.map(([k,v]) =>
+    `<div><span class="k">${k}</span> <span class="v">${v}</span></div>`
+  ).join('');
+}
+
+function renderDetailChart(d, s) {
+  const labels   = d.history.map(h => new Date(h._t).toLocaleTimeString('it-IT'));
+  const datasets = s.series.map(sr => ({
+    label: sr.label,
+    borderColor: sr.color,
+    backgroundColor: sr.color + '22',
+    borderWidth: 1.5,
+    pointRadius: 0,
+    tension: .4,
+    data: d.history.map(h => h[sr.key]),
+  }));
+
+  if (detailChart) detailChart.destroy();
+  detailChart = new Chart($('detail-chart'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#64748b', font: { family: 'Space Mono', size: 10 } } },
+      },
+      scales: {
+        x: { ticks: { color: '#64748b', font: { family: 'Space Mono', size: 8 }, maxTicksLimit: 6 },
+             grid: { color: 'rgba(30,45,69,.4)' } },
+        y: { ticks: { color: '#64748b', font: { family: 'Space Mono', size: 9 } },
+             grid: { color: 'rgba(30,45,69,.8)' } },
+      }
+    }
+  });
+}
+
+/* CSV --------------------------------------------------------- */
+function exportCsv() {
+  const d = devices.get(selectedEui);
+  if (!d || d.history.length === 0) return;
+  const s = SCHEMAS[d.schema];
+  const header = ['iso_time', ...s.csvFields];
+  const rows = d.history.map(h => {
+    const iso = new Date(h._t).toISOString();
+    const vals = s.csvFields.map(f => h[f] != null ? h[f] : '');
+    return [iso, ...vals].join(',');
+  });
+  const csv = [header.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${d.name.replace(/\s+/g,'_')}_${d.eui}_${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  log(`CSV esportato per ${d.name} (${d.history.length} righe)`, 'ok');
+}
+
+function clearHistory() {
+  const d = devices.get(selectedEui);
+  if (!d) return;
+  d.history = [];
+  renderDetail();
+  log(`Storico cancellato per ${d.name}`);
+}
+
+/* Log --------------------------------------------------------- */
+function log(msg, cls='', eui=null) {
+  const el   = $('log');
+  const time = new Date().toLocaleTimeString('it-IT');
+  const div  = document.createElement('div');
+  div.className = 'entry';
+  let devTag = '';
+  if (eui) {
+    const d = devices.get(eui);
+    const nm = d ? d.name : eui;
+    devTag = `<span class="dev">[${nm.slice(0,14)}]</span>`;
+  }
+  div.innerHTML = `<span class="t">${time}</span>${devTag}<span class="${cls}">${msg}</span>`;
+  el.prepend(div);
+  if (el.children.length > 150) el.lastChild.remove();
+}
+
+/* ============================================================
+ * MQTT HANDLER - formato ChirpStack
+ * ============================================================ */
+function handleMessage(topic, payload) {
+  let msg;
+  try { msg = JSON.parse(payload.toString()); }
+  catch(e) { log('JSON parse error: '+e.message, 'err'); return; }
+
+  // Formato ChirpStack: msg.deviceInfo, msg.object (già decodificato), msg.rxInfo, ...
+  const info = msg.deviceInfo;
+  if (!info || !info.devEui) { log('Messaggio senza deviceInfo.devEui', 'err'); return; }
+
+  const eui  = info.devEui.toLowerCase();
+  const name = info.deviceName || eui;
+  const app  = info.applicationName || '—';
+
+  // Object decodificato dal codec
+  const obj = msg.object;
+  if (!obj) {
+    log(`${name}: object mancante (codec disattivo?)`, 'err', eui);
+    return;
+  }
+  const schemaId = obj.schema_id;
+  if (schemaId == null) {
+    log(`${name}: schema_id mancante nel payload decodificato`, 'err', eui);
+    return;
+  }
+  const schema = SCHEMAS[schemaId];
+  if (!schema) {
+    log(`Schema sconosciuto 0x${schemaId.toString(16)}`, 'err', eui);
+    return;
+  }
+
+  totalPackets++;
+  $('stat-pkts').textContent = totalPackets;
+
+  // Metadata dai vari campi ChirpStack
+  const rx = (msg.rxInfo && msg.rxInfo[0]) || {};
+  const tx = msg.txInfo || {};
+
+  const d = ensureDevice(eui, schemaId, name, app);
+  d.schema     = schemaId;
+  d.lastSeen   = Date.now();
+  d.lastValues = obj;
+  d.lastMeta   = {
+    rssi:    rx.rssi,
+    snr:     rx.snr,
+    freq:    tx.frequency,
+    dr:      msg.dr,
+    fcnt:    msg.fCnt,
+    devaddr: msg.devAddr,
+    gateway: rx.gatewayId,
+  };
+  d.history.push({ ...obj, _t: d.lastSeen });
+  if (d.history.length > MAX_HISTORY_POINTS) d.history.shift();
+
+  // GPS: ChirpStack lo espone in obj.location (grazie al nostro codec)
+  if (obj.location && obj.location.latitude != null) {
+    d.lat = obj.location.latitude;
+    d.lon = obj.location.longitude;
+    placeMarker(d);
+    updateMapCount();
+  }
+
+  log(schema.summary(obj), 'ok', eui);
+
+  saveKnownDevices();
+  renderGrid();
+  if (eui === selectedEui) renderDetail();
+}
+
+/* ============================================================
+ * MQTT CONNECT
+ * ============================================================ */
+function setBadge(state, text) {
+  const b = $('conn-badge');
+  b.className = '';
+  b.classList.add(state);
+  $('conn-text').textContent = text;
+}
+
+function connect() {
+  $('hdr-broker').textContent = BROKER;
+  $('hdr-topic').textContent  = TOPIC;
+  setBadge('connecting', 'CONNECTING');
+  log('Connessione a ' + BROKER);
+
+  const client = mqtt.connect(BROKER, {
+    clientId: 'mcloud-multi-cs-' + Math.random().toString(16).slice(2,8),
+    clean: true,
+    reconnectPeriod: 5000,
+    connectTimeout: 15000,
+  });
+
+  client.on('connect', () => {
+    setBadge('connected', 'ONLINE');
+    log('Connesso. Sottoscritto a ' + TOPIC, 'ok');
+    client.subscribe(TOPIC, { qos: 0 }, err => {
+      if (err) log('Subscribe error: ' + err.message, 'err');
+    });
+  });
+  client.on('message', handleMessage);
+  client.on('error',     err => { setBadge('error', 'ERROR'); log('Errore MQTT: ' + err.message, 'err'); });
+  client.on('close',     () => { setBadge('connecting', 'RECONNECTING'); log('Connessione chiusa, riconnessione…'); });
+  client.on('reconnect', () => { setBadge('connecting', 'RECONNECTING'); log('Tentativo riconnessione…'); });
+  client.on('offline',   () => { setBadge('error', 'OFFLINE'); log('Client offline', 'err'); });
+}
+
+/* Boot -------------------------------------------------------- */
+window.addEventListener('DOMContentLoaded', () => {
+  initMap();
+  loadKnownDevices();
+
+  const savedSel = localStorage.getItem('mcloud_sel_cs');
+  if (savedSel && devices.has(savedSel)) {
+    selectedEui = savedSel;
+  } else if (devices.size > 0) {
+    const sorted = Array.from(devices.values()).sort((a,b) => b.lastSeen - a.lastSeen);
+    selectedEui = sorted[0].eui;
+  }
+
+  $('btn-csv').addEventListener('click', exportCsv);
+  $('btn-clear-history').addEventListener('click', clearHistory);
+
+  renderGrid();
+  renderDetail();
+  setInterval(() => { renderGrid(); if (selectedEui) renderDetail(); }, 5000);
+
+  connect();
+});
+</script>
+</body>
+</html>
