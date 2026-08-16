@@ -83,6 +83,10 @@ Questo pattern MOSFET P active-low è tipico di tutte le schede low-power: duran
 
 ---
 
+[Descrizione collegamenti](dispensa-schema-collegamenti.md)
+
+---
+
 ## Il ciclo di vita del firmware
 
 A differenza di un firmware Arduino tradizionale con `setup()` una volta e `loop()` continuo, questo firmware è strutturato come **ciclo singolo**: dopo ogni trasmissione entra in deep sleep. Al wake, la CPU riparte da capo con un nuovo `setup()`. Il `loop()` è vuoto perché non viene mai eseguito — il flusso finisce sempre in `esp_deep_sleep_start()` prima.
