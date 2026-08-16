@@ -53,7 +53,7 @@ Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SC
 ## Cablaggio
 
 <p align="center">
-  <img src="img/cabling-lora-device.png" alt="cabling-lora-device.png" width="500">
+  <img src="img/cabling-lora-device.png" alt="cabling-lora-device.png" width="700">
 </p>
 
 ---
