@@ -1530,7 +1530,7 @@ I file completi descritti in questa dispensa sono disponibili in:
 - **Firmware Arduino**: [`FWs/heltec_v4_scd41_gps_lorawan.ino`](FWs/heltec_v4_scd41_gps_lorawan.ino)
 - **Codec JavaScript per ChirpStack**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js)
 - **Script bash di test downlink**: [`tests/test_downlinks.sh`](tests/test_downlinks.sh)
-- **Dashboard di configurazione**: [`indexconfiglora.html`](dashboard/indexconfiglora.html)
+- **Dashboard di configurazione**: [`indexconfiglora.html`](../dashboard/indexconfiglora.html)
 - **Dashboard di comando singola**: [`dashboard_single.html`](../dashboard/dashboard_single.html)
 - **Dashboard di comando multipla**: [`dashboard_multi.html`](../dashboard/dashboard_multi.html)
 - **readme configurazione**: [`README-configurazione.md`](../dashboard/README-configurazione.md)
