@@ -58,6 +58,8 @@ Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SC
 
 Il WiFi non è utile per il nostro progetto per cui è stato disattivato via FW per evitare un inutile spreco di energia. Però, qualora lo si volesse utilizzare, magari accendendolo da remoto via LoRaWAN con un comando in dowlink, l'antenna è stata cablata ugualmente. 
 
+L'antenna del GNSS è solidale con il modulo stesso.
+
 ---
 
 ## Le particolarità della Heltec V4
