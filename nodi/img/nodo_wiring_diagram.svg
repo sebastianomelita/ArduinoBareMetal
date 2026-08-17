@@ -97,7 +97,7 @@
 
     <circle cx="400" cy="552" r="4" fill="#f57c00"/>
     <text x="418" y="556" font-size="10" fill="#e65100"><tspan font-weight="bold">37</tspan> — ADC_CTRL</text>
-    <text x="418" y="568" font-size="8" fill="#8d6e63" font-style="italic">LOW = abilita partitore VBAT</text>
+    <text x="418" y="568" font-size="8" fill="#8d6e63" font-style="italic">HIGH = abilita partitore VBAT (V4)</text>
 
     <!-- Pin: LED -->
     <line x1="415" y1="583" x2="685" y2="583" stroke="#90a4ae" stroke-width="1"/>
@@ -384,7 +384,7 @@
       <tspan font-family="ui-monospace, monospace" font-weight="bold">VBAT = (100 / 490) × V_ADC1_CH0</tspan>
     </text>
     <text x="70" y="660" font-size="9" fill="#546e7a">Partitore <tspan font-weight="bold">390 kΩ + 100 kΩ</tspan> integrato nella scheda</text>
-    <text x="70" y="676" font-size="9" fill="#546e7a">Il pin <tspan font-family="ui-monospace, monospace" font-weight="bold">ADC_CTRL (GPIO 37)</tspan> deve essere LOW</text>
+    <text x="70" y="676" font-size="9" fill="#546e7a">Il pin <tspan font-family="ui-monospace, monospace" font-weight="bold">ADC_CTRL (GPIO 37)</tspan> deve essere HIGH</text>
     <text x="70" y="690" font-size="9" fill="#546e7a">durante la lettura, per abilitare il partitore.</text>
     <text x="70" y="704" font-size="9" fill="#8d6e63" font-style="italic">Nel firmware: <tspan font-family="ui-monospace, monospace">readBatteryMv()</tspan> gestisce tutto.</text>
   </g>
