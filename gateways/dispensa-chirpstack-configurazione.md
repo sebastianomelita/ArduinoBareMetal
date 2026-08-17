@@ -76,7 +76,7 @@ Il pattern MQTT interno tra i componenti è fondamentale da capire perché è **
 </p>
 
 <p align="center">
-  <img src="img/lora-gateway-davanti-dietro.png" alt="gateway" width="500">
+  <img src="img/lora-gateway-davanti-dietro.png" alt="gateway" width="400">
 </p>
 
 Il gateway di questo progetto è costruito assemblando quattro elementi. Ognuno ha un ruolo specifico che vale la pena capire, sia per orientarsi in fase di acquisto/sostituzione, sia per diagnosticare eventuali problemi:
