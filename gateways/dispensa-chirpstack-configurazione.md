@@ -75,6 +75,10 @@ Il pattern MQTT interno tra i componenti è fondamentale da capire perché è **
   <img src="img/lora-gateway.png" alt="gateway" width="1100">
 </p>
 
+<p align="center">
+  <img src="img/lora-gateway-davanti-dietro.png" alt="gateway" width="600">
+</p>
+
 Il gateway di questo progetto è costruito assemblando quattro elementi. Ognuno ha un ruolo specifico che vale la pena capire, sia per orientarsi in fase di acquisto/sostituzione, sia per diagnosticare eventuali problemi:
 
 **1. Raspberry Pi 3 Model B/B+** — è l'**host computing** su cui gira lo stack software ChirpStack (packet forwarder, Network Server, Application Server, MQTT broker, UI web). Ha connettore GPIO a 40 pin, WiFi/Ethernet per la connettività IP, e slot SD per il filesystem. Il modello 3 è più che sufficiente per un gateway singolo: il carico computazionale è basso (~5-10% CPU in condizioni normali). RPi 4 e RPi 5 funzionano ugualmente e offrono più margine per applicazioni edge computing pesanti (es. Node-RED con molti flow, database locale, dashboard).
