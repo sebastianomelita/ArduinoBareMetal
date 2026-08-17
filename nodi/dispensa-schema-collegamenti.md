@@ -228,7 +228,7 @@ Riferimento completo per orientarsi sui pin usati dal firmware:
 | **34** | VGNSS_CTRL | Output | LOW = GPS acceso, HIGH = spento |
 | **35** | LED bianco on-board | Output | Indicatore visivo |
 | **36** | VEXT_CTRL | Output | LOW = Vext ON, HIGH = OFF |
-| **37** | ADC_CTRL | Output | LOW = abilita partitore VBAT |
+| **37** | ADC_CTRL | Output | HIGH = abilita partitore VBAT |
 | **38** | UART TX → GPS RX | Output | ESP trasmette al GPS |
 | **39** | UART RX ← GPS TX | Input | ESP riceve dal GPS |
 
@@ -360,10 +360,15 @@ uint16_t vbat_mv = (uint32_t)adc_mv * 490 / 100;
 
 **Perché il partitore va abilitato via GPIO 37 (ADC_CTRL)?** Un partitore permanente attivo consumerebbe corrente continuamente attraverso le resistenze — con 4.2V ai capi di 490 kΩ, il consumo è `I = 4.2 / 490.000 ≈ 8.5 μA`. Non tanto in valore assoluto, ma **quasi la metà del consumo totale del device in deep sleep** (20 μA). Per questo Heltec ha aggiunto un MOSFET in serie al partitore, controllato da `ADC_CTRL`:
 
-- `GPIO 37 = LOW` → il MOSFET conduce, il partitore è attivo, si può leggere VBAT
-- `GPIO 37 = HIGH` → il MOSFET è aperto, il partitore è disconnesso, zero consumo
+- `GPIO 37 = HIGH` → il MOSFET conduce, il partitore è attivo, si può leggere VBAT
+- `GPIO 37 = LOW` → il MOSFET è aperto, il partitore è disconnesso, zero consumo
+
+Nota V3 vs V4: sulla V3 la logica era invertita (LOW abilitava, HIGH disabilitava).
+Sulla V4 Heltec ha cambiato la polarità del MOSFET. Riflashando codice ereditato
+dalla V3 senza correggere, si legge sempre 0 mV.
 
 Il firmware attiva il partitore solo per il tempo strettamente necessario alla misura (~10 ms), poi lo disattiva.
+
 
 ---
 
