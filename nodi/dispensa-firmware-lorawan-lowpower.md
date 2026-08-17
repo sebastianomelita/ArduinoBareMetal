@@ -63,7 +63,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
 
 <p align="center">
-  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="800">
+  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
 </p>
 
 *Figura 1: pinout della Heltec WiFi LoRa 32. L'immagine mostra la V3, ma la V4 R8 usa la stessa piedinatura sugli header J2/J3 con l'aggiunta del connettore SH1.25-8P per il modulo di espansione (GPS/batteria).*
