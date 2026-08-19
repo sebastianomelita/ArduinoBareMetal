@@ -2,59 +2,42 @@
 
 Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN autonomo che campiona CO₂, temperatura, umidità e posizione GPS, e li trasmette via LoRaWAN in classe A con deep sleep.
 
-Complementa la dispensa [dispensa gateway](../gateways/dispensa-chirpstack-configurazione.md): quella descrive cosa fa il gateway Chirpstack, questa descrive cosa deve fare il dispositivo LoRaWAN per parlare col il gateway.
-
 ## Indice
 
 1. [Contesto e obiettivi](#contesto-e-obiettivi)
 2. [Architettura hardware](#architettura-hardware)
-3. [Schema collegamenti](#Schema-collegamenti)
-4. [Il ciclo di vita del firmware](#il-ciclo-di-vita-del-firmware)
-5. [Schema del payload versionato](#schema-del-payload-versionato)
-6. [FPort: il discriminatore di tipo LoRaWAN](#fport-il-discriminatore-di-tipo-lorawan)
-7. [Gestione dell'alimentazione delle periferiche](#gestione-dellalimentazione-delle-periferiche)
-8. [Sensore SCD41: I²C e misure periodiche](#sensore-scd41-ic-e-misure-periodiche)
-9. [GPS L76K: parsing NMEA e timeout adattivo](#gps-l76k-parsing-nmea-e-timeout-adattivo)
-10. [LoRaWAN con RadioLib 7.x](#lorawan-con-radiolib-7x)
-11. [ABP vs OTAA: attivazione statica o dinamica](#abp-vs-otaa-attivazione-statica-o-dinamica)
-12. [Persistenza del frame counter](#persistenza-del-frame-counter)
-13. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
-14. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
-15. [Watchdog hardware](#watchdog-hardware)
-16. [ADR e politica di gestione dei parametri runtime](#adr-e-politica-di-gestione-dei-parametri-runtime)
-17. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
-18. [Modalità debug e produzione](#modalità-debug-e-produzione)
-19. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
+3. [Il ciclo di vita del firmware](#il-ciclo-di-vita-del-firmware)
+4. [Schema del payload versionato](#schema-del-payload-versionato)
+5. [FPort: il discriminatore di tipo LoRaWAN](#fport-il-discriminatore-di-tipo-lorawan)
+6. [Gestione dell'alimentazione delle periferiche](#gestione-dellalimentazione-delle-periferiche)
+7. [Sensore SCD41: I²C e misure periodiche](#sensore-scd41-ic-e-misure-periodiche)
+8. [GPS L76K: parsing NMEA e timeout adattivo](#gps-l76k-parsing-nmea-e-timeout-adattivo)
+9. [LoRaWAN con RadioLib 7.x](#lorawan-con-radiolib-7x)
+10. [ABP vs OTAA: attivazione statica o dinamica](#abp-vs-otaa-attivazione-statica-o-dinamica)
+11. [Persistenza del frame counter](#persistenza-del-frame-counter)
+12. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
+13. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
+14. [Watchdog hardware](#watchdog-hardware)
+15. [ADR e politica di gestione dei parametri runtime](#adr-e-politica-di-gestione-dei-parametri-runtime)
+16. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
+17. [Modalità debug e produzione](#modalità-debug-e-produzione)
+18. [Ottimizzazione dei consumi](#ottimizzazione-dei-consumi)
+19. [Meccanismi di riattivazione e manutenzione](#meccanismi-di-riattivazione-e-manutenzione)
+20. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
 
 ---
 
 ## Contesto e obiettivi
 
-<p align="center">
-  <img src="img/sensore-lorawan.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
-</p>
-
 Il device è pensato per campionare la qualità dell'aria (CO₂, temperatura, umidità) e la posizione, e trasmettere periodicamente questi dati via **LoRaWAN** verso una rete condivisa. I vincoli principali di progetto sono tre:
 
-- **Autonomia energetica**. Il device deve poter funzionare per mesi o anni a batteria (opzionalmente con pannello solare). Questo comporta l'uso di deep sleep aggressivo e lo spegnimento fisico delle periferiche tra un ciclo e l'altro.
+**Autonomia energetica**. Il device deve poter funzionare per mesi o anni a batteria (opzionalmente con pannello solare). Questo comporta l'uso di deep sleep aggressivo e lo spegnimento fisico delle periferiche tra un ciclo e l'altro.
 
-- **Robustezza in caso di power-loss**. Non si può fare affidamento sulla continuità dell'alimentazione: la batteria può scaricarsi, il pannello solare può essere ombreggiato, il device può essere spostato e spento. Il firmware deve riprendersi da queste situazioni senza intervento umano e senza rompere le sessioni LoRaWAN attive.
+**Robustezza in caso di power-loss**. Non si può fare affidamento sulla continuità dell'alimentazione: la batteria può scaricarsi, il pannello solare può essere ombreggiato, il device può essere spostato e spento. Il firmware deve riprendersi da queste situazioni senza intervento umano e senza rompere le sessioni LoRaWAN attive.
 
-- **Semplicità di manutenzione**. Il codice deve essere leggibile, con separazione chiara delle responsabilità e con flag di configurazione ben esposti in cima al file. Sviluppo e debug devono essere possibili senza tool esoterici, con solo Arduino IDE e Serial Monitor.
+**Semplicità di manutenzione**. Il codice deve essere leggibile, con separazione chiara delle responsabilità e con flag di configurazione ben esposti in cima al file. Sviluppo e debug devono essere possibili senza tool esoterici, con solo Arduino IDE e Serial Monitor.
 
 Non è un progetto commerciale: la finalità è didattica. Molte scelte sono commentate esplicitamente nel codice per rendere trasparenti i motivi delle decisioni.
-
-Sono state realizzate due dashboard: una di misura e una di configurazione e lettura dello stato del dispositivo.
-
-<p align="center">
-  <img src="img/dashboards.png" alt="Dashboards" width="1100">
-</p>
-
----
-
-## **Codifica assistita da AI**
-
-Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude Opus 4.7, tranne il codec Chirpstack realizzato con Deepseek.
 
 ---
 
@@ -63,7 +46,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
 
 <p align="center">
-  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
+  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="600">
 </p>
 
 *Figura 1: pinout della Heltec WiFi LoRa 32. L'immagine mostra la V3, ma la V4 R8 usa la stessa piedinatura sugli header J2/J3 con l'aggiunta del connettore SH1.25-8P per il modulo di espansione (GPS/batteria).*
@@ -83,16 +66,6 @@ Sulla V4 esistono due pin di controllo dell'alimentazione periferica, entrambi c
 - **VGNSS_Ctrl (GPIO 34)** — pilota l'alimentazione del solo modulo GPS. Nella particolare release del PCB usata qui la logica è invertita rispetto alla documentazione base: LOW = GPS acceso.
 
 Questo pattern MOSFET P active-low è tipico di tutte le schede low-power: durante il deep sleep, il micro non ha bisogno di "spegnere attivamente" niente perché il pin che comanda il MOSFET si trova già nello stato che spegne il gate (attivo alto quando spento). L'unico accorgimento è mantenere questo livello anche durante il sleep — vedi la sezione sui GPIO hold.
-
----
-
-## Schema collegamenti
-
-<p align="center">
-  <img src="img/nodo_wiring_diagram.svg" alt="Schema collegamenti" width="1100">
-</p>
-
-[Descrizione collegamenti](dispensa-schema-collegamenti.md)
 
 ---
 
@@ -179,7 +152,7 @@ struct Payload_v0x43 {
     uint32_t bootCount;              // reset totali dal power-on
     uint32_t uptime_s;               // wall-clock secondi dal power-on
     uint8_t  battery_pct;            // batteria in %
-    uint8_t  cfgTxIntervalPreset;    // preset 0-5
+    uint8_t  cfgTxIntervalPreset;    // preset 0-8 (8 = STORAGE MODE)
     uint8_t  cfgLoRaWANSF;           // SF 7-12
     uint8_t  cfgTxPower;             // dBm 2-14
     uint16_t cfgGpsTimeoutS;         // secondi 10-300
@@ -189,13 +162,17 @@ struct Payload_v0x43 {
     uint8_t  featureFlags;           // bit-packed
     uint8_t  fwVersion;              // FW_VERSION define
     uint8_t  resetReason;            // esp_reset_reason() codificato
+    // ---- Estensione v2: features risparmio energetico ----
+    uint8_t  cfgGpsEnabled;          // 0/1 (modulo SENSOR DISABLE)
+    uint8_t  cfgGpsSkipCycles;       // 0-255 (modulo GPS SKIP)
+    uint8_t  cfgScdEnabled;          // 0/1 (modulo SENSOR DISABLE)
 };
 #pragma pack(pop)
 
-static_assert(sizeof(Payload_v0x43) == 23, "Payload state deve essere 23 byte");
+static_assert(sizeof(Payload_v0x43) == 26, "Payload state deve essere 26 byte");
 ```
 
-**Il byte `featureFlags` è bit-packed** per efficienza — un solo byte contiene 6 boolean:
+**Il byte `featureFlags` è bit-packed** per efficienza — un solo byte contiene 8 boolean:
 
 | Bit | Feature |
 |-----|---------|
@@ -205,8 +182,12 @@ static_assert(sizeof(Payload_v0x43) == 23, "Payload state deve essere 23 byte");
 | 3 | `ENABLE_WATCHDOG` |
 | 4 | `ENABLE_BATTERY_PROTECTION` |
 | 5 | `DEBUG_NO_DEEP_SLEEP` |
+| 6 | `ENABLE_STORAGE_MODE` (preset TX = 8 disponibile) |
+| 7 | `ENABLE_TRIPLE_RST_RESET` (emergency unlock disponibile) |
 
-Sono valori **compile-time**: non modificabili via downlink, ma utili alla webapp per decidere cosa mostrare (per esempio, disabilitare il toggle ADR se il device è in ABP).
+Sono valori **compile-time**: non modificabili via downlink, ma utili alla webapp per decidere cosa mostrare (per esempio, disabilitare il toggle ADR se il device è in ABP, o nascondere il preset STORAGE se non è compilato).
+
+I tre campi in coda al payload (`cfgGpsEnabled`, `cfgGpsSkipCycles`, `cfgScdEnabled`) sono invece **modificabili a runtime** via downlink FPort 20 (comandi 0x17, 0x18, 0x19). Vedi la sezione "Ottimizzazione dei consumi" più avanti.
 
 **Quando viene inviato il payload state**. Il firmware invia un uplink su FPort 2 in tre occasioni:
 
@@ -1348,14 +1329,21 @@ Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di es
 
 | Comando | Byte | Argomenti | Descrizione |
 |---------|------|-----------|-------------|
-| `SET_TX_INTERVAL` | 0x11 | 1 byte (0-5) | Cambia preset TX: 0=10s, 1=20s, 2=1min, 3=5min, 4=10min, 5=30min |
+| `SET_TX_INTERVAL` | 0x11 | 1 byte (0-8) | Cambia preset TX: 0=10s, 1=20s, 2=1min, 3=2min, 4=5min, 5=10min, 6=30min, 7=1h, 8=**STORAGE MODE** (sleep infinito) |
 | `SET_LORAWAN_SF` | 0x12 | 1 byte (7-12) | Cambia spreading factor |
 | `SET_TX_POWER` | 0x13 | 1 byte (2-14) | Cambia potenza TX in dBm |
 | `SET_GPS_TIMEOUT` | 0x14 | 2 byte LE (10-300) | Cambia timeout attesa fix GPS in secondi |
 | `SET_BATT_THRESH` | 0x15 | 4 byte (2×uint16 LE) | Cambia soglie batteria emergency + recovery |
 | `SET_ADR_ENABLED` | 0x16 | 1 byte (0 o 1) | Abilita/disabilita ADR (solo effettivo in OTAA) |
+| `SET_GPS_SKIP` | 0x17 | 1 byte (0-255) | Fix GPS ogni N+1 cicli (0=ogni ciclo, 9=ogni 10) |
+| `SET_GPS_ENABLED` | 0x18 | 1 byte (0 o 1) | Abilita/disabilita completamente il GPS |
+| `SET_SCD_ENABLED` | 0x19 | 1 byte (0 o 1) | Abilita/disabilita completamente il SCD41 |
 
 Ogni comando include **validazione dei range** sia lato client (prima di trasmettere) sia lato firmware (prima di salvare in NVS): valori fuori dai limiti vengono ignorati e loggati. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
+
+**Il preset 8 = STORAGE MODE** è un caso limite di `SET_TX_INTERVAL` che merita attenzione: mette il device in deep sleep infinito (~15 μA di consumo). Vedi la sezione dedicata "Ottimizzazione dei consumi" più avanti per il flusso completo di uscita da storage.
+
+**I comandi 0x17-0x19** sono le tre feature di risparmio energetico avanzato aggiunte in seguito. Sono trattati nel dettaglio nella sezione "Ottimizzazione dei consumi".
 
 **Feedback automatico**. Dopo ogni comando di configurazione (FPort 20) applicato con successo, il firmware imposta `sendStateNext = true` e nel prossimo ciclo TX invia un payload state 0x43 su FPort 2 con la nuova configurazione. La webapp usa questo meccanismo per aggiornare i campi del form senza dover richiedere esplicitamente `GET_STATE` dopo ogni modifica.
 
@@ -1410,9 +1398,7 @@ Le variabili da adattare:
 - `<app-uuid>` — Application UUID di ChirpStack v4 (es. `1c2774a7-fe34-46ef-a7bf-18dbd11061fb`, lo trovi nell'URL della UI)
 - `<devEUI>` — DevEUI del device in **lowercase senza trattini** (es. `f85b1bfffebed444`)
 
-Il **formato del payload MQTT** deve contenere quattro campi obbligatori: `devEui`, `fPort`, `confirmed`, `data`. Il `data` è la base64 del payload binario, `fPort` corrisponde al primo byte (10 per azioni, 20 per config). Senza uno di questi campi ChirpStack scarta silenziosamente il downlink. AL posto di data potremmo mettere il campo object con il comando in formato JSON invece che BASE64. 
-
-Al momento della realizzazione della dispensa, il formato object per il campo del comando è affetto da un baco casuale che ne rende poco affidabile il funzionamento. Il difetto è limitato al solo downlink per cui i comandi in uplink si mappano correttamente sui JSON mentre quelli in downlink utilizzano un payload BASE64.
+Il **formato del payload MQTT** deve contenere quattro campi obbligatori: `devEui`, `fPort`, `confirmed`, `data`. Il `data` è la base64 del payload binario, `fPort` corrisponde al primo byte (10 per azioni, 20 per config). Senza uno di questi campi ChirpStack scarta silenziosamente il downlink.
 
 **Reboot del device** (azione, FPort 10, byte 0x01):
 ```bash
@@ -1429,12 +1415,6 @@ mosquitto_pub -h <IP-broker> -p 1883 \
   -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
   -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"data":"Ag=="}'
 ```
-
-oppure 
-
-mosquitto_pub -h proxy.marconicloud.it \
-  -t "application/1c2774a7-fe34-46ef-a7bf-18dbd11061fb/device/f85b1bfffebed444/command/down" \
-  -m '{"devEui":"f85b1bfffebed444","fPort":10,"confirmed":false,"object":{"cmd":"identify"}}'
 
 **Richiedi state del device** (azione, FPort 10, byte 0x07):
 ```bash
@@ -1597,6 +1577,229 @@ Ora il device è in bootloader mode indipendentemente da cosa stava facendo il f
 **`ENABLE_NVS_PERSISTENCE`** — in produzione va sempre a `1` (necessario per OTAA nonces e config runtime). Solo per test isolati di logica applicativa può essere messo a 0 per evitare qualsiasi scrittura flash.
 
 **`USE_OTAA`** seleziona la strategia di attivazione LoRaWAN. Entrambe le modalità sono pienamente implementate — vedi la sezione dedicata "ABP vs OTAA" per i dettagli. La modalità ABP è utile per una prima esplorazione didattica del protocollo, ma per uso operativo (con downlink affidabili e FCnt persistente) serve OTAA.
+
+**`ENABLE_STORAGE_MODE`**, **`ENABLE_GPS_SKIP`**, **`ENABLE_SENSOR_DISABLE`**, **`ENABLE_TRIPLE_RST_RESET`**, **`ENABLE_SERIAL_MENU`** — attivano/disattivano le feature di risparmio energetico avanzato e di manutenzione. Ognuna può essere disabilitata individualmente mettendo il flag a `0`, in tal caso il codice della feature viene completamente escluso dal binario (nessun impatto su flash o RAM). Vedi le prossime due sezioni.
+
+---
+
+## Ottimizzazione dei consumi
+
+Il firmware supporta quattro meccanismi complementari per ridurre il consumo elettrico oltre il default. Sono tutti configurabili via downlink LoRa senza dover riflashare il device.
+
+### Il quadro dei consumi tipici
+
+Con la configurazione di default (TX ogni 60 s, GPS fix ogni ciclo, SCD41 abilitato), i consumi per ciclo sono:
+
+| Fase | Durata | Corrente | Energia per ciclo |
+|------|--------|----------|-------------------|
+| GPS cold start | ~60 s | 35 mA | ~580 μAh |
+| GPS warm start | ~15 s | 25 mA | ~100 μAh |
+| SCD41 misura | ~10 s | 15 mA | ~40 μAh |
+| ESP32 attivo | ~15 s | 40 mA | ~170 μAh |
+| LoRa TX (SF9, 14 dBm) | ~0.2 s | 130 mA | ~7 μAh |
+| Deep sleep | resto del ciclo | 15 μA | trascurabile |
+
+Il **GPS domina** i consumi. Se il device è statico o non serve un fix ad ogni ciclo, ci sono grosse ottimizzazioni possibili.
+
+### Autonomia stimata con batteria 14500 (1500 mAh utili)
+
+| Configurazione | Consumo medio | Autonomia |
+|----------------|---------------|-----------|
+| TX 60s + GPS ogni ciclo (default) | ~10 mAh/g | ~5 mesi |
+| TX 60s + GPS skip 9 (fix ogni 10 cicli) | ~3 mAh/g | ~16 mesi |
+| TX 60s + GPS disabilitato | ~1.5 mAh/g | ~30 mesi |
+| TX 5min + GPS ogni ciclo | ~2 mAh/g | ~24 mesi |
+| TX 30min + GPS disabilitato | ~0.5 mAh/g | limite autoscarica |
+| TX 1h + GPS disabilitato | ~0.3 mAh/g | limite autoscarica |
+| **STORAGE MODE** (sleep infinito) | ~0.4 mAh/g | limite autoscarica |
+
+I valori sono stime indicative — l'autonomia reale dipende da temperatura, invecchiamento cella, condizioni radio (SF, ADR), esposizione al pannello solare se presente.
+
+### Feature 1 — GPS SKIP (fix ogni N cicli)
+
+Comando: `SET_GPS_SKIP` (FPort 20, byte 0x17, 1 byte 0-255).
+
+Se il device è installato in un punto **fisso** (rooftop, giardino, palo), non serve un fix GPS ad ogni TX. Basta un fix ogni tanto per confermare "sono ancora dove ero", risparmiando l'80-95% del consumo GPS.
+
+Come funziona:
+- `cfgGpsSkipCycles = 0` → fix ogni ciclo (default)
+- `cfgGpsSkipCycles = N` → fix ogni N+1 cicli, ovvero uno su N+1
+
+Nei cicli "senza fix", il payload trasmette **l'ultima posizione nota**, memorizzata in RTC memory dopo l'ultimo fix riuscito. Per distinguere questi payload da un fix appena preso, il campo `hdop_x100` è marcato con il valore sentinella **9999**. Il codec ChirpStack riconosce questo marker ed espone il campo `gps_stale: true` nell'oggetto JSON — la dashboard può decidere di rappresentare la posizione con un'icona diversa (es. pin sbiadito).
+
+Perché la variabile è in RTC memory e non in NVS: le posizioni cambiano solo dopo un fix riuscito, e la RTC memory sopravvive al deep sleep — perfetto. Al power-off si perdono, ma è accettabile: al primo boot il firmware forza comunque un fix per popolare la RTC.
+
+### Feature 2 — GPS/SCD DISABLE (spegnimento completo dei sensori)
+
+Comandi: `SET_GPS_ENABLED` (byte 0x18) e `SET_SCD_ENABLED` (byte 0x19), FPort 20, 1 byte (0/1).
+
+Se il device è installato in un contesto dove un sensore **non serve del tutto** (es. GPS indoor, o SCD41 non fisicamente collegato), lo si può disattivare completamente. Effetti:
+
+- Il modulo non viene alimentato (Vext / VGNSS restano OFF)
+- Il payload uplink porta **valori sentinella** invalidi:
+  - CO2: `0xFFFF` (65535)
+  - Temperatura: `0x7FFF` (32767)
+  - Umidità: `0xFFFF`
+  - HDOP: `0xFFFF`
+- Il codec ChirpStack riconosce questi sentinella e restituisce `null` per i campi corrispondenti, così la dashboard non mostra valori spuri
+- Nel payload state (0x43), i due byte `cfgGpsEnabled` e `cfgScdEnabled` riflettono lo stato attivo/inattivo — la webapp aggiorna la UI di conseguenza
+
+### Feature 3 — STORAGE MODE (sleep operativo)
+
+Comando: `SET_TX_INTERVAL` (byte 0x11) con **preset 8**.
+
+È un caso limite di `SET_TX_INTERVAL`. Quando lo si imposta, il device entra in un deep sleep **senza timer di wake** dopo il prossimo TX di conferma. Il device non si sveglierà mai autonomamente. Consumo circa 15 μA (praticamente uguale a "device spento"), autonomia teorica misurata in anni.
+
+**Come uscire da storage**: vedi la prossima sezione ("Meccanismi di riattivazione e manutenzione"). In sintesi: colleghi USB, premi RST, il device torna operativo.
+
+**Uso tipico**: dismissione temporanea del device (fine stagione, magazzino, spedizione). Anche per stress-test di durata batteria.
+
+### Feature 4 — Cambio TX interval
+
+Comando: `SET_TX_INTERVAL` (byte 0x11) con preset 0-7 (esclusi il default 2 e lo storage 8).
+
+Aumentare l'intervallo TX è il modo più semplice e diretto per ridurre i consumi in modo lineare. Passare da 1 min a 5 min riduce quasi di 5x i consumi. Passare da 1 min a 1 h li riduce di quasi 60x.
+
+Preset disponibili: 10s, 20s, 1min, 2min, 5min, 10min, 30min, 1h. La scelta dipende dal caso d'uso:
+
+- **10-20s**: solo per debug e test iniziali
+- **1-2 min**: monitoraggio real-time (allarmi CO2, geolocalizzazione veicoli)
+- **5-30 min**: monitoraggio ambientale standard
+- **1h**: monitoraggio agricolo, meteo di lungo periodo, controllo mensile
+
+---
+
+## Meccanismi di riattivazione e manutenzione
+
+Il firmware espone **tre meccanismi distinti** per interagire con un device in campo:
+
+1. **Menu seriale USB** — pattern principale con USB collegato: interfaccia interattiva con comandi granulari
+2. **VBAT-detect automatico** — fallback silenzioso: se il menu va in timeout, il device esce comunque da storage se USB è collegato
+3. **Triplo RST** — safety net offline: reset totale ai default di fabbrica, funziona senza USB
+
+I tre meccanismi sono **complementari**, non alternativi. Ognuno copre uno scenario diverso:
+
+| Meccanismo | USB necessario | Terminale necessario | Cosa fa |
+|------------|----------------|----------------------|---------|
+| Menu seriale | Sì | Sì | Interfaccia ricca: wake, reset totale, status, force TX, clear NVS |
+| VBAT-detect | Sì | No | Wake da storage (solo TX interval al default), preserva altre config |
+| Triplo RST | **No** | No | Reset totale ai default di fabbrica |
+
+### Il menu seriale (pattern principale)
+
+Quando il device fa boot dopo un **reset hardware** (`ESP_RST_EXT`) o un **power-on** (`ESP_RST_POWERON`), il firmware verifica se USB è collegato (VBAT > 4.25V). Se sì, apre un **menu interattivo** sulla seriale USB per 10 secondi:
+
+```
+============================================
+  HELTEC V4 - MENU DI MANUTENZIONE
+  Timeout: 10 secondi
+--------------------------------------------
+  W  Wake da storage (reset solo TX interval)
+  R  Reset TOTALE config runtime ai default
+  S  Status dump (VBAT, config, GPS, ecc.)
+  T  Force TX now (esci ed esegui ciclo TX)
+  C  Clear NVS COMPLETA (include nonces OTAA)
+  N  Continue Normal boot (o attendi timeout)
+  ?  Ristampa questo menu
+============================================
+>
+```
+
+Durante l'attesa, il LED bianco lampeggia lentamente (heartbeat 1 Hz) per indicare visivamente che il device sta ascoltando.
+
+**Uso tipico**:
+
+1. Apri un terminale seriale sull'host (Arduino Serial Monitor, screen, PuTTY, minicom)
+2. Attacca USB al device
+3. Premi RST sul device
+4. Attendi ~1-2 secondi che la porta COM appaia e il menu si stampi
+5. Digita il comando (case-insensitive)
+
+I comandi distruttivi (`R`, `C`) richiedono conferma esplicita con `Y` entro 5 secondi, altrimenti annullano.
+
+**Il comando `S` (Status dump)** è particolarmente utile per debug in campo: stampa tutto lo stato del device (bootCount, VBAT, tutte le config runtime, ultimo GPS noto, ecc.) senza dover interrogare la rete LoRa. Utile quando fai deployment in un posto senza copertura o quando il device sta dando problemi radio.
+
+### Il fallback VBAT-detect (pattern quotidiano)
+
+Se il menu seriale si apre ma **va in timeout** (utente non digita nulla) e il device **era in storage mode**, il firmware esegue automaticamente il wake-from-storage: `cfgTxIntervalPreset` viene resettato al default (2 = 1 min) e il device torna operativo.
+
+Questo pattern preserva l'esperienza "attacca USB + premi RST + il device torna vivo" anche per chi non ha un terminale seriale disponibile o non conosce i comandi del menu.
+
+**Solo `cfgTxIntervalPreset` viene toccato**: SF, TX power, GPS skip, GPS enabled, SCD enabled, soglie batteria, ADR — tutti restano com'erano. Le personalizzazioni della webapp sopravvivono.
+
+### Il triplo RST (safety net offline)
+
+Se l'utente preme RST **3 volte consecutive** entro 8 secondi, il firmware **cancella TUTTE le config runtime** e ricarica i default di fabbrica. Feedback visivo: 3 blink lunghi (500 ms on/off).
+
+I nonces OTAA **non vengono toccati**: il device continua a comunicare col Network Server senza dover rifare il join.
+
+**Uso tipico**: hai fatto casino con la config e il device non è più raggiungibile via LoRa. Esempi:
+- TX power impostato a 2 dBm, il gateway non riceve più il device
+- SF sbagliato per la distanza, uplink persi
+- GPS + SCD disabilitati, la webapp non vede più i valori
+- Storage mode senza USB a disposizione
+
+Il triplo RST è la rete di sicurezza: **funziona a batteria sola**, senza USB, senza terminale, senza copertura LoRa. Basta accesso fisico al device e al pulsante RST.
+
+### Approfondimento tecnico
+
+<details>
+<summary><em>Perché USB CDC muore in deep sleep</em></summary>
+
+Quando l'ESP32-S3 entra in deep sleep vero (`esp_deep_sleep_start()`), il controller USB-Serial/JTAG viene spento insieme al resto del chip. La porta COM sull'host **sparisce** immediatamente. Al wake, il chip deve **enumerarsi di nuovo** con l'host USB, un processo che richiede circa 1-2 secondi.
+
+Conseguenze operative:
+- Se il device è in **storage mode**, la sua porta COM non esiste sull'host per tutto il tempo. Non puoi mandare comandi finché non lo svegli con RST.
+- Al wake, il menu seriale attende `SERIAL_MENU_ENUM_DELAY_MS` (1500 ms) prima di stampare il banner, per non perdere i primi caratteri durante l'enumerazione.
+- Nel firmware in modalità produzione (`DEBUG_NO_DEEP_SLEEP=0`), la porta COM è visibile solo durante la finestra attiva di ~15 s per ciclo TX. Fuori da questa finestra, la porta scompare.
+
+</details>
+
+<details>
+<summary><em>Perché VBAT-detect ha ambiguità (falsi positivi e negativi)</em></summary>
+
+Il rilevamento "USB collegato" tramite lettura VBAT è **indiretto**: si assume che se VBAT > 4.25 V allora deve esserci una sorgente di ricarica (USB). Ma:
+
+- **Falso negativo**: se colleghi USB con batteria molto scarica (es. 3.0 V), il chip TP4054 va in fase CC (constant current) e VBAT resta sotto la soglia per qualche minuto prima di salire in CV. In questa finestra, il firmware non rileva USB. Workaround: aspetta 2-3 minuti dopo aver collegato USB prima di premere RST.
+
+- **Falso positivo**: se hai il pannello solare collegato e c'è tanto sole, VBAT può salire a 4.2 V+ anche senza USB. Il firmware vede "USB collegato" quando in realtà è il pannello. Nel nostro caso questo è considerato un comportamento accettabile: se il pannello ha ricaricato la batteria al massimo, ha senso considerare il device "svegliabile".
+
+La soglia 4.25 V è un compromesso: alta quanto basta per non essere raggiunta da una cella carica in scarica (max ~4.15 V), bassa quanto basta per essere rilevata durante la ricarica CV.
+
+Una soluzione hardware più robusta sarebbe collegare un pin GPIO al VBUS USB tramite partitore, ma richiederebbe modifica al PCB.
+
+</details>
+
+<details>
+<summary><em>Perché il menu seriale non si apre ad ogni boot</em></summary>
+
+Il menu seriale è costoso in termini energetici: attesa attiva di 10 secondi consumando ~30 mA (~85 μAh per ciclo). Se si aprisse ad ogni wake da deep sleep, aggiungerebbe circa il 50% di consumo al ciclo normale.
+
+Il firmware evita questo problema aprendo il menu **solo** dopo `ESP_RST_EXT` o `ESP_RST_POWERON`, che sono eventi rari e sempre associati a un intervento manuale dell'utente (pressione RST o collegamento batteria). I wake normali da sleep passano al ciclo TX senza toccare la seriale.
+
+L'ulteriore filtro su VBAT > 4.25 V garantisce che il menu non si apra nemmeno se qualcuno preme RST accidentalmente a device fuori dall'enclosure ma senza USB — non ci sarebbe utente in ascolto sulla seriale, sarebbe puro spreco.
+
+</details>
+
+<details>
+<summary><em>Come <code>esp_reset_reason()</code> distingue reset hardware da wake sleep</em></summary>
+
+L'ESP-IDF mantiene una piccola area di memoria RTC dedicata a memorizzare il motivo dell'ultimo reset. Questa area viene aggiornata dal bootloader in base ai registri hardware dell'RTC controller.
+
+Valori rilevanti per il nostro firmware:
+
+- `ESP_RST_POWERON` (1) — reset da alimentazione appena data (batteria collegata, brownout risolto)
+- `ESP_RST_EXT` (2) — reset da pin EN esterno (pulsante RST premuto)
+- `ESP_RST_SW` (3) — reset da software (`ESP.restart()`)
+- `ESP_RST_DEEPSLEEP` (8) — wake normale da deep sleep (timer o GPIO wake)
+
+Il modulo TRIPLE_RST_RESET incrementa il contatore RTC **solo** per i primi tre valori (`ESP_RST_POWERON`, `ESP_RST_EXT`, `ESP_RST_SW`), escludendo il wake normale da sleep. Così i cicli TX ripetuti non innescano falsamente il reset di sicurezza.
+
+Il modulo SERIAL_MENU controlla solo `ESP_RST_EXT` e `ESP_RST_POWERON`: `ESP_RST_SW` viene ignorato perché è tipicamente un riavvio programmato del firmware stesso (non un intervento utente).
+
+L'area RTC che memorizza il reason **sopravvive al reset software e hardware**, ma **non al power-off completo**. Quindi al primo boot dopo aver ricollegato la batteria, `esp_reset_reason()` restituisce `ESP_RST_POWERON`.
+
+</details>
 
 ---
 
