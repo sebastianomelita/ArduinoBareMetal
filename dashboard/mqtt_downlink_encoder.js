@@ -79,15 +79,28 @@
     // -------------------------------------------------------------
     // Costanti: mapping preset TX interval
     // -------------------------------------------------------------
+    //
+    // Il preset 8 = STORAGE MODE: mette il device in deep sleep infinito.
+    // Wake solo tramite reset hardware (RST) con USB collegato per riattivare
+    // il preset di default. Consumo ~15 uA, autonomia teorica anni.
 
     var TX_INTERVAL_PRESETS = {
-        0: { seconds: 10,   label: '10 secondi' },
-        1: { seconds: 20,   label: '20 secondi' },
-        2: { seconds: 60,   label: '1 minuto' },
-        3: { seconds: 300,  label: '5 minuti' },
-        4: { seconds: 600,  label: '10 minuti' },
-        5: { seconds: 1800, label: '30 minuti' }
+        0: { seconds: 10,    label: '10 secondi' },
+        1: { seconds: 20,    label: '20 secondi' },
+        2: { seconds: 60,    label: '1 minuto' },
+        3: { seconds: 120,   label: '2 minuti' },
+        4: { seconds: 300,   label: '5 minuti' },
+        5: { seconds: 600,   label: '10 minuti' },
+        6: { seconds: 1800,  label: '30 minuti' },
+        7: { seconds: 3600,  label: '1 ora' },
+		8: { seconds: 3600*24,  label: '24 ore' },
+		9: { seconds: 3600*24*7,  label: '1 settimana' },
+        10: { seconds: 0,     label: 'STORAGE (sleep infinito)' }
     };
+
+    // Preset STORAGE MODE (deep sleep infinito, wake solo su RST + USB)
+    var TX_PRESET_STORAGE = 10;
+    var TX_PRESET_MAX     =10;
 
     // -------------------------------------------------------------
     // Codici comando (allineati col firmware .ino)
@@ -109,6 +122,10 @@
     var CFG_SET_GPS_TIMEOUT = 0x14;
     var CFG_SET_BATT_THRESH = 0x15;
     var CFG_SET_ADR_ENABLED = 0x16;
+    // Nuovi comandi: features risparmio energetico
+    var CFG_SET_GPS_SKIP    = 0x17;
+    var CFG_SET_GPS_ENABLED = 0x18;
+    var CFG_SET_SCD_ENABLED = 0x19;
 
     // Magic byte richiesto da CLEAR_NVS per evitare cancellazioni accidentali
     var CLEAR_NVS_MAGIC = 0xA5;
@@ -121,14 +138,14 @@
      * Helper interno: costruisce l'oggetto {data, fPort} dai bytes.
      * Deduce il fPort dal primo byte usando le stesse regole del codec:
      *   0x01-0x07 -> FPort 10 (azioni)
-     *   0x11-0x16 -> FPort 20 (configurazione)
+     *   0x11-0x19 -> FPort 20 (configurazione)
      */
     function wrap(bytes) {
         var first = bytes[0];
         var fPort;
         if (first >= 0x01 && first <= 0x07) {
             fPort = FPORT_ACTION;
-        } else if (first >= 0x11 && first <= 0x16) {
+        } else if (first >= 0x11 && first <= 0x19) {
             fPort = FPORT_CONFIG;
         } else {
             throw new Error('Byte comando fuori range noto: 0x' + first.toString(16));
@@ -190,12 +207,22 @@
     // -------------------------------------------------------------
 
     /**
-     * Imposta l'intervallo TX. Preset 0-5:
-     *   0=10s, 1=20s, 2=1min, 3=5min, 4=10min, 5=30min
+     * Imposta l'intervallo TX. Preset 0-8:
+     *   0=10s, 1=20s, 2=1min, 3=2min, 4=5min, 5=10min, 6=30min, 7=1h,
+     *   8=STORAGE (deep sleep infinito, vedi encodeSetStorageMode).
      */
     function encodeSetTxInterval(preset) {
-        validateRange(preset, 0, 5, 'preset');
+        validateRange(preset, 0, TX_PRESET_MAX, 'preset');
         return wrap([CFG_SET_TX_INTERVAL, preset]);
+    }
+
+    /**
+     * Scorciatoia per attivare la STORAGE MODE (preset 8).
+     * Il device entrera' in deep sleep infinito dopo il prossimo TX,
+     * consumando ~15 uA. Per riattivarlo: collega USB, premi RST.
+     */
+    function encodeSetStorageMode() {
+        return wrap([CFG_SET_TX_INTERVAL, TX_PRESET_STORAGE]);
     }
 
     /** Imposta lo Spreading Factor LoRa. Range 7-12. */
@@ -247,6 +274,49 @@
     }
 
     // -------------------------------------------------------------
+    // FPort 20 - Features di risparmio energetico
+    // -------------------------------------------------------------
+
+    /**
+     * Imposta N tale che il fix GPS avvenga ogni N+1 cicli.
+     *   N=0   -> fix ogni ciclo (comportamento normale)
+     *   N=9   -> fix ogni 10 cicli (~90% risparmio consumo GPS)
+     *   N=59  -> fix ogni ora se TX ogni minuto
+     * Range: 0-255. Nei cicli senza fix, il payload usa l'ultima
+     * posizione nota memorizzata in RTC (marker HDOP=9999).
+     */
+    function encodeSetGpsSkip(n) {
+        validateRange(n, 0, 255, 'n');
+        return wrap([CFG_SET_GPS_SKIP, n]);
+    }
+
+    /**
+     * Abilita/disabilita completamente il GPS. Se disattivato:
+     *   - Il modulo L76K non viene alimentato
+     *   - Il payload riporta valori placeholder (lat=0, lon=0, HDOP=0xFFFF)
+     *   - Il codec ChirpStack riconosce i placeholder e restituisce
+     *     campi null nel JSON in output
+     * Utile per installazioni indoor dove il fix GPS non serve.
+     */
+    function encodeSetGpsEnabled(enabled) {
+        var v = enabled ? 1 : 0;
+        return wrap([CFG_SET_GPS_ENABLED, v]);
+    }
+
+    /**
+     * Abilita/disabilita completamente il SCD41 (sensore CO2). Se disattivato:
+     *   - Il sensore non viene alimentato via Vext
+     *   - Il payload riporta valori placeholder (CO2=0xFFFF, T=0x7FFF)
+     *   - Il codec ChirpStack riconosce i placeholder e restituisce
+     *     campi null nel JSON in output
+     * Utile se il sensore non e' fisicamente collegato.
+     */
+    function encodeSetScdEnabled(enabled) {
+        var v = enabled ? 1 : 0;
+        return wrap([CFG_SET_SCD_ENABLED, v]);
+    }
+
+    // -------------------------------------------------------------
     // Esportazione API
     // -------------------------------------------------------------
 
@@ -262,14 +332,21 @@
 
         // FPort 20 - configurazione
         encodeSetTxInterval:     encodeSetTxInterval,
+        encodeSetStorageMode:    encodeSetStorageMode,   // scorciatoia per preset=8
         encodeSetLorawanSf:      encodeSetLorawanSf,
         encodeSetTxPower:        encodeSetTxPower,
         encodeSetGpsTimeout:     encodeSetGpsTimeout,
         encodeSetBattThresholds: encodeSetBattThresholds,
         encodeSetAdrEnabled:     encodeSetAdrEnabled,
+        // Features risparmio energetico
+        encodeSetGpsSkip:        encodeSetGpsSkip,
+        encodeSetGpsEnabled:     encodeSetGpsEnabled,
+        encodeSetScdEnabled:     encodeSetScdEnabled,
 
         // Costanti utili
         TX_INTERVAL_PRESETS: TX_INTERVAL_PRESETS,
+        TX_PRESET_STORAGE:   TX_PRESET_STORAGE,
+        TX_PRESET_MAX:       TX_PRESET_MAX,
 
         // Utility esposta per testing
         _bytesToBase64: bytesToBase64
