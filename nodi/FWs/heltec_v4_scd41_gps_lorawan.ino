@@ -2213,6 +2213,12 @@ void checkLongPressBootAtSetup() {
             // del sleep finale vede preset=TX_PRESET_STORAGE ed entra
             // in enterStorageDeepSleep() automaticamente.
             sendStateNext = true;
+            // IMPORTANTE: segnala al fallback VBAT-detect che questa e'
+            // una scelta esplicita dell'utente, NON annullarla!
+            // Senza questo flag, il fallback vedrebbe "storage attivo +
+            // USB collegato" e resetterebbe il preset a 2 vanificando
+            // il long-press. Stesso meccanismo del menu seriale I/W.
+            menuPresetChangedExplicitly = true;
 
             Serial.println("[LONG_PRESS] Preset salvato. Proseguo boot per");
             Serial.println("[LONG_PRESS] fare TX misure + TX state, poi storage sleep.");
