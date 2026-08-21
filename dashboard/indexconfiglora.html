@@ -506,7 +506,7 @@ button.small { padding: 6px 12px; font-size: 13px; min-height: 34px; }
 
     <!-- HEADER -->
     <div class="app-header">
-        <h1>⚙ LoRaWAN Device Config</h1>
+        <h1>âš™ LoRaWAN Device Config</h1>
         <div class="status-badge">
             <span class="status-dot" id="conn-dot"></span>
             <span id="conn-label">Disconnesso</span>
@@ -572,7 +572,7 @@ button.small { padding: 6px 12px; font-size: 13px; min-height: 34px; }
                         <span class="v" id="s-tx-int">-</span>
                     </div>
                     <div class="state-item">
-                        <span class="k">SF · Power</span>
+                        <span class="k">SF Â· Power</span>
                         <span class="v" id="s-sf-pw">-</span>
                     </div>
                 </div>
@@ -606,14 +606,19 @@ button.small { padding: 6px 12px; font-size: 13px; min-height: 34px; }
 
             <label>
                 <span class="label-text">Intervallo di trasmissione</span>
-                <select id="cfg-tx-interval">
-                    <option value="0">10 secondi (test veloci)</option>
-                    <option value="1">20 secondi</option>
-                    <option value="2">1 minuto</option>
-                    <option value="3">5 minuti</option>
-                    <option value="4">10 minuti</option>
-                    <option value="5">30 minuti</option>
-                </select>
+				<select id="cfg-tx-interval">
+					<option value="0">10 secondi (test)</option>
+					<option value="1">20 secondi</option>
+					<option value="2" selected>1 minuto (default)</option>
+					<option value="3">2 minuti</option>
+					<option value="4">5 minuti</option>
+					<option value="5">10 minuti</option>
+					<option value="6">30 minuti</option>
+					<option value="7">1 ora</option>
+					<option value="8">1 giorno</option>
+					<option value="9">1 settimana</option>
+					<option value="10">STORAGE (sleep infinito)</option>
+				</select>
             </label>
 
             <label>
@@ -653,18 +658,35 @@ button.small { padding: 6px 12px; font-size: 13px; min-height: 34px; }
                 <span class="toggle-slider"></span>
                 <span>ADR (Adaptive Data Rate) <span id="cfg-adr-note" style="color: var(--fg-dim); font-size: 12px;"></span></span>
             </label>
+			<!-- GPS Skip (slider o numero 0-59) -->
+			<label>
+				GPS Skip (fix ogni N+1 cicli)
+				<input type="number" id="cfg-gps-skip" min="0" max="255" value="0">
+			</label>
+
+			<!-- GPS Enabled (checkbox) -->
+			<label>
+				<input type="checkbox" id="cfg-gps-enabled" checked>
+				GPS attivo
+			</label>
+
+			<!-- SCD Enabled (checkbox) -->
+			<label>
+				<input type="checkbox" id="cfg-scd-enabled" checked>
+				SCD41 attivo
+			</label>
         </div>
 
         <!-- AZIONI -->
         <div class="card">
             <h2>Azioni</h2>
             <div class="btn-row" style="flex-direction: column; align-items: stretch;">
-                <button id="btn-identify" class="secondary" disabled>💡 Identify (blink)</button>
-                <button id="btn-identify-on" class="secondary" disabled>💡 Identify persistente ON</button>
-                <button id="btn-identify-off" class="secondary" disabled>💡 Identify persistente OFF</button>
-                <button id="btn-force-tx" class="secondary" disabled>📡 Force TX now</button>
-                <button id="btn-reboot" class="warning" disabled>🔄 Reboot device</button>
-                <button id="btn-clear-nvs" class="danger" disabled>⚠ Clear NVS (reset config)</button>
+                <button id="btn-identify" class="secondary" disabled>ðŸ’¡ Identify (blink)</button>
+                <button id="btn-identify-on" class="secondary" disabled>ðŸ’¡ Identify persistente ON</button>
+                <button id="btn-identify-off" class="secondary" disabled>ðŸ’¡ Identify persistente OFF</button>
+                <button id="btn-force-tx" class="secondary" disabled>ðŸ“¡ Force TX now</button>
+                <button id="btn-reboot" class="warning" disabled>ðŸ”„ Reboot device</button>
+                <button id="btn-clear-nvs" class="danger" disabled>âš  Clear NVS (reset config)</button>
             </div>
         </div>
 
@@ -933,7 +955,7 @@ function handleMqttMessage(topic, payload) {
     } else {
         // Misure ambientali normali
         const co2 = obj.co2_ppm !== undefined ? obj.co2_ppm + ' ppm' : '?';
-        const temp = obj.temp_c !== undefined ? obj.temp_c.toFixed(1) + '°C' : '?';
+        const temp = obj.temp_c !== undefined ? obj.temp_c.toFixed(1) + 'Â°C' : '?';
         const hum = obj.hum_pct !== undefined ? obj.hum_pct.toFixed(0) + '%' : '?';
         const vbat = obj.vbat_mv !== undefined ? obj.vbat_mv + ' mV' : '?';
         logEvent('up', 'CO2=' + co2 + ' T=' + temp + ' RH=' + hum + ' Vbat=' + vbat);
@@ -960,7 +982,12 @@ function handleStatePayload(s) {
     $('s-fw').textContent = 'v' + s.fw_version;
     $('s-reset').textContent = s.reset_reason || '?';
     $('s-tx-int').textContent = s.cfg_tx_interval_label;
-    $('s-sf-pw').textContent = 'SF' + s.cfg_lorawan_sf + ' · ' + s.cfg_tx_power_dbm + ' dBm';
+    $('s-sf-pw').textContent = 'SF' + s.cfg_lorawan_sf + ' Â· ' + s.cfg_tx_power_dbm + ' dBm';
+	
+	// Dentro il handler che riceve state
+	$('cfg-gps-skip').value    = s.cfg_gps_skip_cycles;
+	$('cfg-gps-enabled').checked = s.cfg_gps_enabled;
+	$('cfg-scd-enabled').checked = s.cfg_scd_enabled;
 
     // Batteria con barra colorata
     const pct = s.battery_pct || 0;
@@ -1016,14 +1043,14 @@ function updateContextualNotes(flags) {
     const adrNote = $('cfg-adr-note');
     const sfWarn = $('cfg-sf-warn');
     if (!flags.use_otaa) {
-        adrNote.textContent = '(ignorato in modalità ABP)';
+        adrNote.textContent = '(ignorato in modalitÃ  ABP)';
         $('cfg-adr').disabled = true;
     } else {
         adrNote.textContent = '';
         $('cfg-adr').disabled = false;
     }
     if (flags.use_otaa && $('cfg-adr').checked) {
-        sfWarn.textContent = '⚠ ADR attivo lo sovrascriverà';
+        sfWarn.textContent = 'âš  ADR attivo lo sovrascriverÃ ';
     } else {
         sfWarn.textContent = '';
     }
@@ -1095,7 +1122,7 @@ function publishDownlink(cmd, label) {
             logEvent('error', 'Pubblicazione fallita: ' + err.message);
             toast('Errore invio: ' + err.message, 'error');
         } else {
-            logEvent('down', label + ' → fPort=' + cmd.fPort + ' data=' + cmd.data);
+            logEvent('down', label + ' â†’ fPort=' + cmd.fPort + ' data=' + cmd.data);
             toast(label + ' inviato', 'success');
         }
     });
@@ -1160,12 +1187,47 @@ function initButtons() {
             });
     });
 
-    // Cambi configurazione: pubblica al blur/change
-    $('cfg-tx-interval').addEventListener('change', function () {
-        const preset = parseInt(this.value, 10);
-        publishDownlink(MqttDownlink.encodeSetTxInterval(preset),
-            'SET_TX_INTERVAL preset=' + preset);
-    });
+	// Intervallo TX
+	$('cfg-tx-interval').addEventListener('change', function (e) {
+		const sel = e.target;
+		const preset = parseInt(sel.value, 10);
+
+		if (preset === MqttDownlink.TX_PRESET_STORAGE) {
+			const previousValue = app.lastStateData
+				? app.lastStateData.cfg_tx_interval_preset
+				: '2';
+
+			confirm(
+				'STORAGE MODE',
+				'Il device entrerà in sleep INFINITO.\n\n' +
+				'Il risveglio sarà possibile solo premendo RST con USB collegato.\n\n' +
+				'Confermi?',
+				function () {
+					try {
+						const cmd = MqttDownlink.encodeSetTxInterval(preset);
+						publishDownlink(cmd, 'SET_TX_INTERVAL STORAGE');
+					} catch (err) {
+						toast(err.message, 'error');
+						sel.value = previousValue;
+					}
+				}
+			);
+
+			return;
+		}
+
+		try {
+			const cmd = MqttDownlink.encodeSetTxInterval(preset);
+			publishDownlink(cmd, 'SET_TX_INTERVAL preset=' + preset);
+		} catch (err) {
+			toast(err.message, 'error');
+
+			if (app.lastStateData) {
+				sel.value = app.lastStateData.cfg_tx_interval_preset;
+			}
+		}
+	});
+	
     $('cfg-sf').addEventListener('change', function () {
         const sf = parseInt(this.value, 10);
         publishDownlink(MqttDownlink.encodeSetLorawanSf(sf), 'SET_LORAWAN_SF SF' + sf);
@@ -1196,6 +1258,35 @@ function initButtons() {
         publishDownlink(MqttDownlink.encodeSetAdrEnabled(this.checked),
             'SET_ADR_ENABLED ' + (this.checked ? 'on' : 'off'));
     });
+	
+	$('cfg-gps-enabled').addEventListener('change', function (e) {
+		try {
+			const cmd = MqttDownlink.encodeSetGpsEnabled(e.target.checked);
+			publishDownlink(cmd,'SET_GPS_ENABLED ' + (e.target.checked ? 'ON' : 'OFF'));
+		} catch (err) {
+			toast(err.message, 'error');
+		}
+	});
+
+	$('cfg-gps-skip').addEventListener('change', function (e) {
+		try {
+			const value = parseInt(e.target.value, 10);
+			const cmd = MqttDownlink.encodeSetGpsSkip(value);
+			publishDownlink(cmd, 'SET_GPS_SKIP ' + value);
+		} catch (err) {
+			toast(err.message, 'error');
+		}
+	});
+
+	$('cfg-scd-enabled').addEventListener('change', function (e) {
+		try {
+			const cmd = MqttDownlink.encodeSetScdEnabled(e.target.checked);
+
+			publishDownlink(cmd,'SET_SCD_ENABLED ' + (e.target.checked ? 'ON' : 'OFF'));
+		} catch (err) {
+			toast(err.message, 'error');
+		}
+	});
 
     // Log
     $('btn-clear-log').addEventListener('click', function () {
