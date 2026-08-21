@@ -57,6 +57,7 @@
 #include <WiFi.h>
 #include <esp_bt.h>
 #include <esp_task_wdt.h>
+#include "esp32s3/rtc.h"
 
 // =============================================================
 // CONFIGURAZIONE
@@ -70,9 +71,12 @@
 //   0 = 10s (test veloci)
 //   1 = 20s
 //   2 = 1min (default produzione)
-//   3 = 5min
-//   4 = 10min
-//   5 = 30min
+//   3 = 2min
+//   4 = 5min
+//   5 = 10min
+//   6 = 30min
+//   7 = 1h
+//   8 = STORAGE (deep sleep infinito, wake solo su RST - vedi modulo STORAGE MODE)
 #define TX_INTERVAL_PRESET  2
 
 // ---- Modalita' DEBUG ----
@@ -82,10 +86,19 @@
 #define DEBUG_NO_DEEP_SLEEP  0
 
 const uint32_t TX_INTERVAL_SECONDS[] = {
-    10, 20, 60, 300, 600, 1800
+    10, 20, 60, 120, 300, 600, 1800, 3600, 3600*24, 3600*24*7, 0
+//  0   1   2    3    4    5    6     7    8=1d     9=1w      10=STORAGE (0 = infinito)
 };
+#define TX_PRESET_MAX     10
+#define TX_PRESET_STORAGE 10
+
 // L'intervallo di trasmissione runtime e' TX_INTERVAL_SECONDS[cfgTxIntervalPreset]
 // dove cfgTxIntervalPreset e' letto da NVS (o default TX_INTERVAL_PRESET) al boot.
+// NOTA: preset 10 = STORAGE MODE, il valore 0 nell'array non viene mai usato
+// direttamente: la logica STORAGE MODE bypassa esp_sleep_enable_timer_wakeup().
+// Preset 8 (1 giorno) e 9 (1 settimana) usano il deep sleep normale con timer:
+// il device dorme a lungo ma si sveglia periodicamente per un ciclo TX regolare,
+// mantenendo la responsivita' ai downlink (Class A: RX window dopo ogni TX).
 
 // ---- Timeout attesa fix GPS ----
 // Al boot, il device aspetta un fix GPS valido per questo tempo massimo.
@@ -237,13 +250,18 @@ uint8_t appKey[16] = {
 
 // Chiavi NVS per configurazioni modificabili via downlink (FPort 20)
 // Se una chiave e' assente, il firmware usa il default hardcoded del #define
-#define NVS_KEY_TX_INTERVAL   "tx_int"     // uint8_t preset 0-5
+#define NVS_KEY_TX_INTERVAL   "tx_int"     // uint8_t preset 0-10 (10=STORAGE)
 #define NVS_KEY_LORAWAN_SF    "lora_sf"    // uint8_t 7-12
 #define NVS_KEY_TX_POWER      "tx_pow"     // uint8_t dBm 2-14
 #define NVS_KEY_GPS_TIMEOUT   "gps_t"      // uint16_t sec
 #define NVS_KEY_VBAT_EMERG    "vbat_em"    // uint16_t mV
 #define NVS_KEY_VBAT_RECOV    "vbat_rc"    // uint16_t mV
 #define NVS_KEY_ADR           "adr"        // uint8_t 0/1
+
+// Chiavi NVS per le nuove feature di risparmio energetico (moduli STORAGE / SKIP)
+#define NVS_KEY_GPS_ENABLED   "gps_en"     // uint8_t 0/1 - modulo GPS SKIP
+#define NVS_KEY_GPS_SKIP      "gps_skip"   // uint8_t 0-255 - modulo GPS SKIP
+#define NVS_KEY_SCD_ENABLED   "scd_en"     // uint8_t 0/1 - modulo SCD DISABLE
 
 // Chiave NVS per nonces OTAA (solo se USE_OTAA=1)
 // Persiste DevNonce e JoinNonce cosi' il device non ripete valori dopo
@@ -262,7 +280,7 @@ uint8_t appKey[16] = {
 //     0x04 CLEAR_NVS        - cancella NVS (richiede byte magic 0xA5 dopo)
 //
 //   FPort 20 = CONFIGURAZIONE (persistente in NVS)
-//     0x11 SET_TX_INTERVAL  - byte preset 0-5 (10s/20s/1m/5m/10m/30m)
+//     0x11 SET_TX_INTERVAL  - byte preset 0-10 (10s/20s/1m/2m/5m/10m/30m/1h/1d/1w/STORAGE)
 //     0x12 SET_LORAWAN_SF   - byte SF 7-12
 //     0x13 SET_TX_POWER     - byte dBm 2-14
 //     0x14 SET_GPS_TIMEOUT  - uint16 LE secondi (10-300)
@@ -394,6 +412,59 @@ uint8_t appKey[16] = {
 // disabilita prima ADR con set_adr_enabled.
 #define ENABLE_ADR    1
 
+// ---- FEATURES DI RISPARMIO ENERGETICO ----
+// Flag compile-time per abilitare/disabilitare intere feature.
+// Metti a 0 per rimuoverle completamente dal firmware (risparmi flash/RAM
+// e semplifichi il flusso, se non ti servono).
+
+// STORAGE MODE (preset TX = 6)
+// Permette di mettere il device in deep sleep "infinito" via downlink
+// (SET_TX_INTERVAL con preset 6). Consumo ~15 uA, wake solo su reset HW.
+// Al reset con USB collegato, torna operativo automaticamente.
+#define ENABLE_STORAGE_MODE       1
+
+// GPS SKIP LOGIC (SET_GPS_SKIP)
+// Permette di eseguire il fix GPS solo ogni N cicli invece di ogni ciclo.
+// Enorme risparmio energetico su installazioni fisse dove la posizione
+// non cambia (basta un fix ogni tanto per confermare "e' ancora li'").
+#define ENABLE_GPS_SKIP           1
+
+// GPS / SCD DISABLE (SET_GPS_ENABLED, SET_SCD_ENABLED)
+// Permette di disattivare completamente GPS o SCD41 via downlink, con
+// payload che riporta valori "placeholder" (0xFFFF/0x7FFF) invece dei dati.
+// Utile se il device e' installato in un contesto dove alcune misure non
+// servono (es. GPS indoor, o SCD41 non installato).
+#define ENABLE_SENSOR_DISABLE     1
+
+// TRIPLE RESET SAFETY NET
+// Se l'utente preme RST 3 volte consecutive entro pochi secondi, la config
+// runtime viene resettata ai default di fabbrica. Utile come "emergency
+// unlock" se il device e' in una config sbagliata e non e' raggiungibile
+// via radio (es. TX interval troppo alto, o storage mode senza USB).
+#define ENABLE_TRIPLE_RST_RESET   1
+
+// SERIAL MENU (manutenzione via USB)
+// Menu interattivo su USB CDC che si apre al boot dopo un reset hardware
+// (ESP_RST_EXT o ESP_RST_POWERON) se USB e' collegato. Permette
+// operazioni di manutenzione senza dover passare per LoRa:
+// wake da storage, reset config, status dump, force TX, clear NVS.
+// Se non arrivano comandi entro SERIAL_MENU_TIMEOUT_S, il boot prosegue.
+#define ENABLE_SERIAL_MENU        1
+
+// LONG PRESS BOOT AT SETUP (spegnimento operativo hardware)
+// All'inizio del setup, il firmware legge GPIO 0 (pulsante BOOT).
+// Se BOOT e' premuto SUBITO DOPO un reset (RST premuto, poi BOOT
+// premuto entro il boot), inizia un polling di LONG_PRESS_STORAGE_MS
+// millisecondi. Se BOOT resta premuto per tutta la durata, il
+// device salva cfgTxIntervalPreset=8 (STORAGE MODE) in NVS ed
+// entra in deep sleep infinito.
+// Se BOOT NON e' premuto al boot (99% dei casi), il polling termina
+// istantaneamente e il boot prosegue normalmente. Zero costo
+// energetico nel caso normale.
+// USO: premi RST, poi tieni premuto BOOT per 3 secondi. LED fisso
+// mentre tieni premuto, 3 lampi lunghi di conferma quando scatta.
+#define ENABLE_LONG_PRESS_STORAGE 1
+
 // ---- Schema payload ----
 // Identificatore univoco del formato dei byte nel payload uplink. E' il
 // primo byte di ogni pacchetto: il codec ChirpStack lo usa per decidere
@@ -402,7 +473,7 @@ uint8_t appKey[16] = {
 // SCHEMA_ID e gestirlo nel codec).
 //   0x41 = SDS011 + BME280 (25 byte) - progetto precedente
 //   0x42 = SCD41 + L76K + batteria (32 byte) - misure ambientali, FPort 1
-//   0x43 = State del device (23 byte) - config runtime + diagnostica, FPort 2
+//   0x43 = State del device (26 byte) - config runtime + diagnostica, FPort 2
 #define SCHEMA_ID        0x42
 #define SCHEMA_ID_STATE  0x43
 
@@ -444,7 +515,7 @@ uint8_t appKey[16] = {
 
 // --- Batteria ---
 #define PIN_VBAT_READ   1   // ADC1_CH0
-#define PIN_ADC_CTRL   37   // LOW = abilita partitore VBAT
+#define PIN_ADC_CTRL   37   // HIGH = abilita partitore VBAT (V4! sulla V3 era LOW)
 
 // --- Indicatori ---
 #define PIN_LED        35
@@ -516,7 +587,7 @@ static_assert(sizeof(Payload_v0x42) == 32, "Payload deve essere 32 byte");
 // | 1      | 4    | u32    | bootCount            | dai boot                  |
 // | 5      | 4    | u32    | uptime_s             | secondi dal power-on (B)  |
 // | 9      | 1    | u8     | battery_pct          | %                         |
-// | 10     | 1    | u8     | cfgTxIntervalPreset  | 0-5                       |
+// | 10     | 1    | u8     | cfgTxIntervalPreset  | 0-8 (8 = STORAGE MODE)    |
 // | 11     | 1    | u8     | cfgLoRaWANSF         | 7-12                      |
 // | 12     | 1    | u8     | cfgTxPower           | dBm 2-14                  |
 // | 13     | 2    | u16    | cfgGpsTimeoutS       | secondi 10-300            |
@@ -526,6 +597,9 @@ static_assert(sizeof(Payload_v0x42) == 32, "Payload deve essere 32 byte");
 // | 20     | 1    | u8     | featureFlags         | bit-packed (vedi sotto)   |
 // | 21     | 1    | u8     | fwVersion            | FW_VERSION define         |
 // | 22     | 1    | u8     | resetReason          | esp_reset_reason() coded  |
+// | 23     | 1    | u8     | cfgGpsEnabled        | 0/1 (modulo GPS SKIP)     |
+// | 24     | 1    | u8     | cfgGpsSkipCycles     | 0-255 (modulo GPS SKIP)   |
+// | 25     | 1    | u8     | cfgScdEnabled        | 0/1 (modulo SCD DISABLE)  |
 //
 // featureFlags bit layout:
 //   Bit 0: USE_OTAA                    (1 = OTAA, 0 = ABP)
@@ -534,7 +608,8 @@ static_assert(sizeof(Payload_v0x42) == 32, "Payload deve essere 32 byte");
 //   Bit 3: ENABLE_WATCHDOG             (1 = wdt HW armato)
 //   Bit 4: ENABLE_BATTERY_PROTECTION   (1 = emergency sleep abilitato)
 //   Bit 5: DEBUG_NO_DEEP_SLEEP         (1 = modalita' debug con restart)
-//   Bit 6-7: riservati per estensioni future
+//   Bit 6: ENABLE_STORAGE_MODE         (1 = feature storage mode disponibile)
+//   Bit 7: ENABLE_TRIPLE_RST_RESET     (1 = feature emergency unlock disponibile)
 //
 // L'uptime segue la semantica "wall-clock" (B): tempo totale dal power-on
 // incluso il tempo passato in deep sleep. Utile per capire da quanto tempo
@@ -556,10 +631,14 @@ struct Payload_v0x43 {
     uint8_t  featureFlags;
     uint8_t  fwVersion;
     uint8_t  resetReason;
+    // ---- Estensione v2: features di risparmio energetico ----
+    uint8_t  cfgGpsEnabled;         // 0 = GPS disattivato, 1 = attivo
+    uint8_t  cfgGpsSkipCycles;      // 0 = fix ogni ciclo, N = fix ogni N+1 cicli
+    uint8_t  cfgScdEnabled;         // 0 = SCD41 disattivato, 1 = attivo
 };
 #pragma pack(pop)
 
-static_assert(sizeof(Payload_v0x43) == 23, "Payload state deve essere 23 byte");
+static_assert(sizeof(Payload_v0x43) == 26, "Payload state deve essere 26 byte");
 
 // =============================================================
 // OGGETTI GLOBALI
@@ -634,6 +713,36 @@ uint16_t cfgVbatEmergencyMv;       // mV
 uint16_t cfgVbatRecoveryMv;        // mV
 bool     cfgAdr;                   // ADR abilitato/disabilitato
 
+// ---- Config runtime per features risparmio energetico ----
+// Caricate in loadRuntimeConfig() da NVS (o default #define se NVS vuota)
+bool     cfgGpsEnabled;            // 0 = GPS disattivato, 1 = attivo (SET_GPS_ENABLED)
+uint8_t  cfgGpsSkipCycles;         // 0 = fix ogni ciclo, N = fix ogni N+1 cicli (SET_GPS_SKIP)
+bool     cfgScdEnabled;            // 0 = SCD41 disattivato, 1 = attivo (SET_SCD_ENABLED)
+
+// ---- Contatori RTC per feature di risparmio ----
+// Sopravvivono al deep sleep, si azzerano al power-off e al reset hardware.
+RTC_DATA_ATTR uint32_t rtcGpsSkipCounter = 0;   // conteggio cicli senza fix
+RTC_DATA_ATTR int32_t  rtcLastLat_e7 = 0;       // ultima posizione nota (per skip)
+RTC_DATA_ATTR int32_t  rtcLastLon_e7 = 0;
+RTC_DATA_ATTR int16_t  rtcLastAlt_m = 0;
+RTC_DATA_ATTR bool     rtcLastFixValid = false; // true dopo il primo fix riuscito
+
+// ---- Contatori RTC per TRIPLE RESET SAFETY NET ----
+// Contano quanti reset "veloci" (< TRIPLE_RST_WINDOW_S) sono avvenuti in
+// sequenza. Al raggiungimento di TRIPLE_RST_COUNT reset consecutivi entro
+// la finestra temporale, la config runtime viene resettata ai default.
+RTC_DATA_ATTR uint8_t  rtcResetCounter = 0;
+//RTC_DATA_ATTR uint32_t rtcLastResetMs = 0;      // timestamp millisec ultimo reset
+
+// Stato di ritorno del menu, dice al setup() cosa fare dopo
+enum SerialMenuResult {
+    SMR_CONTINUE_NORMAL_BOOT = 0,   // esci dal menu, prosegui normalmente
+    SMR_FORCE_TX_NOW,               // esci dal menu, force TX
+    SMR_REBOOT,                     // reboot immediato (dopo reset config)
+    SMR_PRESET_CHANGED_EXPLICITLY   // l'utente ha modificato preset via menu:
+                                    // NON attivare fallback VBAT-detect
+};
+
 // =============================================================
 // UTILITY
 // =============================================================
@@ -662,11 +771,12 @@ void gpsPowerOff() {
 
 /**
  * Legge la tensione della batteria in millivolt.
- * ADC_Ctrl deve essere LOW durante la lettura per abilitare il partitore.
+ * ADC_Ctrl deve essere HIGH durante la lettura per abilitare il partitore
+ * (nota: sulla V3 la convenzione era opposta - LOW abilita)
  */
 uint16_t readBatteryMv() {
     pinMode(PIN_ADC_CTRL, OUTPUT);
-    digitalWrite(PIN_ADC_CTRL, LOW);
+    digitalWrite(PIN_ADC_CTRL, HIGH);   // V4: HIGH abilita il partitore
     delay(10);
 
     analogReadResolution(12);
@@ -677,7 +787,7 @@ uint16_t readBatteryMv() {
     }
     uint32_t adcMv = sum / 16;
 
-    digitalWrite(PIN_ADC_CTRL, HIGH);   // disabilita partitore per risparmiare
+    digitalWrite(PIN_ADC_CTRL, LOW);    // V4: LOW disabilita il partitore per risparmiare
 
     // Il partitore sulla V4 divide per ~4.9 (schema Heltec):
     //   VBAT ----[390k]----+----[100k]---- GND
@@ -879,6 +989,10 @@ void loadRuntimeConfig() {
     cfgVbatEmergencyMv  = VBAT_EMERGENCY_MV;
     cfgVbatRecoveryMv   = VBAT_RECOVERY_MV;
     cfgAdr              = (bool)ENABLE_ADR;
+    // Default per features risparmio energetico
+    cfgGpsEnabled       = true;   // default: GPS attivo
+    cfgGpsSkipCycles    = 0;      // default: fix ogni ciclo (nessun skip)
+    cfgScdEnabled       = true;   // default: SCD41 attivo
 
     // Prova a leggere da NVS (se una chiave manca, mantiene il default)
     if (prefs.begin(NVS_NAMESPACE, true)) {   // true = read-only
@@ -889,15 +1003,45 @@ void loadRuntimeConfig() {
         cfgVbatEmergencyMv  = prefs.getUShort(NVS_KEY_VBAT_EMERG,   cfgVbatEmergencyMv);
         cfgVbatRecoveryMv   = prefs.getUShort(NVS_KEY_VBAT_RECOV,   cfgVbatRecoveryMv);
         cfgAdr              = prefs.getUChar (NVS_KEY_ADR,          cfgAdr ? 1 : 0) != 0;
+        // Features risparmio energetico
+        cfgGpsEnabled       = prefs.getUChar (NVS_KEY_GPS_ENABLED,  cfgGpsEnabled ? 1 : 0) != 0;
+        cfgGpsSkipCycles    = prefs.getUChar (NVS_KEY_GPS_SKIP,     cfgGpsSkipCycles);
+        cfgScdEnabled       = prefs.getUChar (NVS_KEY_SCD_ENABLED,  cfgScdEnabled ? 1 : 0) != 0;
         prefs.end();
     }
 
     // Sanity check (evita valori assurdi da NVS corrotta)
-    if (cfgTxIntervalPreset > 5) cfgTxIntervalPreset = TX_INTERVAL_PRESET;
+    if (cfgTxIntervalPreset > TX_PRESET_MAX) cfgTxIntervalPreset = TX_INTERVAL_PRESET;
     if (cfgLoRaWANSF < 7 || cfgLoRaWANSF > 12) cfgLoRaWANSF = LORAWAN_SF;
     if (cfgTxPower < 2 || cfgTxPower > 14) cfgTxPower = 14;
     if (cfgGpsTimeoutS < 10 || cfgGpsTimeoutS > 300) cfgGpsTimeoutS = GPS_FIX_TIMEOUT_COLD_S;
-    // cfgAdr e' bool, nessun sanity check necessario
+    // cfgGpsSkipCycles: qualunque valore 0-255 e' valido, no check
+    // cfgGpsEnabled, cfgScdEnabled, cfgAdr sono bool, no check
+}
+
+/**
+ * @brief Resetta la config runtime ai valori di default (#define di fabbrica),
+ *        cancellando le chiavi corrispondenti da NVS.
+ *
+ * Chiamata dal modulo TRIPLE RST RESET quando l'utente preme RST 3 volte,
+ * o dal comando CLEAR_NVS. Non tocca i nonces OTAA (che restano validi).
+ */
+void clearRuntimeConfigToDefaults() {
+    if (prefs.begin(NVS_NAMESPACE, false)) {
+        prefs.remove(NVS_KEY_TX_INTERVAL);
+        prefs.remove(NVS_KEY_LORAWAN_SF);
+        prefs.remove(NVS_KEY_TX_POWER);
+        prefs.remove(NVS_KEY_GPS_TIMEOUT);
+        prefs.remove(NVS_KEY_VBAT_EMERG);
+        prefs.remove(NVS_KEY_VBAT_RECOV);
+        prefs.remove(NVS_KEY_ADR);
+        prefs.remove(NVS_KEY_GPS_ENABLED);
+        prefs.remove(NVS_KEY_GPS_SKIP);
+        prefs.remove(NVS_KEY_SCD_ENABLED);
+        prefs.end();
+    }
+    // Ricarica le variabili in RAM con i default
+    loadRuntimeConfig();
 }
 
 // Helper per scrivere una config in NVS
@@ -915,9 +1059,1180 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 }
 
 
-// =============================================================
-// DOWNLINK HANDLER
-// =============================================================
+// ###################################################################
+// #                                                                 #
+// #    FEATURE MODULES: risparmio energetico avanzato               #
+// #                                                                 #
+// #    Ciascun modulo e' isolato in una sezione ben delimitata,     #
+// #    con funzioni auto-descrittive e commenti dedicati.           #
+// #    Ciascuno puo' essere disabilitato con il flag                #
+// #    ENABLE_XXX corrispondente (in cima al file).                 #
+// #                                                                 #
+// ###################################################################
+
+
+// ===================================================================
+// MODULO: STORAGE MODE (preset TX = 6)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Modalita' di "spegnimento operativo" del device. Attivata tramite
+// downlink SET_TX_INTERVAL con preset 6, mette il device in deep
+// sleep infinito (senza timer di wake).
+//
+// COMPORTAMENTO
+// -------------
+//   - Consumo elettrico: ~15 uA (praticamente uguale a "device spento")
+//   - Durata teorica: >10 anni con batteria 1500 mAh (limite pratico
+//     autoscarica ~2%/mese della cella Li-Ion)
+//   - Wake: solo tramite reset hardware (pulsante RST)
+//
+// FLUSSO DI RIATTIVAZIONE
+// -----------------------
+//   1. Utente collega cavetto USB al device
+//   2. Utente preme RST manualmente
+//   3. Al boot, il device legge VBAT:
+//        - VBAT > 4.25V (USB collegato) -> resetta preset a default
+//          (2 = 1 minuto), il device torna operativo
+//        - VBAT <= 4.25V (batteria sola) -> il device fa UN uplink di
+//          conferma "sono vivo, ancora in storage" e torna a dormire
+//          (utile per verifica remota da webapp)
+//
+// PERCHE' UN PRESET NELL'ARRAY E NON UN COMANDO SEPARATO
+// ------------------------------------------------------
+// Riusare SET_TX_INTERVAL evita di introdurre un nuovo comando
+// downlink dedicato. La logica "device dormiente" e' semanticamente
+// un caso limite di "TX interval infinito", coerente con gli altri
+// preset (che sono intervalli finiti).
+//
+// COMPORTAMENTO CON USB IN FUNZIONAMENTO NORMALE
+// ----------------------------------------------
+// Se il device NON e' in storage mode (preset != 6), USB attaccato
+// non ha alcun effetto sul flusso: il device continua a lavorare
+// normalmente e la batteria si ricarica in background. Nessuna
+// logica speciale.
+// -------------------------------------------------------------------
+
+#if ENABLE_STORAGE_MODE
+
+//#define VBAT_USB_DETECT_MV     4250   // sopra questa soglia = USB collegato
+#define VBAT_USB_DETECT_MV     4000   // sopra questa soglia = USB collegato
+
+/**
+ * @brief Verifica se il device deve entrare in modalita' storage.
+ * @return true se il preset TX corrente e' quello di storage
+ */
+bool isStorageMode() {
+    return cfgTxIntervalPreset == TX_PRESET_STORAGE;
+}
+
+/**
+ * @brief Chiamata al boot, decide se resettare cfgTxIntervalPreset a default.
+ *
+ * Se il device era in storage E VBAT indica USB collegato, il preset
+ * TX viene resettato al default di fabbrica (TX_INTERVAL_PRESET) e
+ * salvato in NVS. Il device tornera' operativo dal prossimo TX.
+ *
+ * Se il device era in storage E VBAT indica batteria sola, il preset
+ * resta 6 (il ciclo attuale fara' un TX di conferma e tornera' a
+ * dormire).
+ *
+ * Se il device NON era in storage, questa funzione non fa nulla.
+ *
+ * @param vbat_mv tensione batteria letta ora (in mV)
+ * @return true se e' stato fatto il "wake from storage", false altrimenti
+ */
+bool checkUsbWakeupAndReset(uint16_t vbat_mv) {
+    if (!isStorageMode()) {
+        return false;   // device non era in storage, nessuna azione
+    }
+    if (vbat_mv < VBAT_USB_DETECT_MV) {
+        Serial.println("STORAGE MODE: wake da RST ma nessun USB (VBAT < 4.25V)");
+        Serial.println("STORAGE MODE: faccio TX di conferma e torno a dormire");
+        // Il device resta in storage, il ciclo TX gestira' l'invio
+        sendStateNext = true;  // il prossimo TX sara' un payload state
+        return false;
+    }
+    // USB collegato: torna operativo
+    Serial.printf("STORAGE MODE: USB rilevato (VBAT=%u mV), reset a preset default %u\n",
+                  vbat_mv, TX_INTERVAL_PRESET);
+    cfgTxIntervalPreset = TX_INTERVAL_PRESET;
+    saveConfigUChar(NVS_KEY_TX_INTERVAL, cfgTxIntervalPreset);
+    sendStateNext = true;   // notifica al server che siamo tornati operativi
+
+    // Feedback visivo: 5 blink veloci = "wake from storage OK"
+    for (int i = 0; i < 5; i++) {
+        ledOn();  delay(100);
+        ledOff(); delay(100);
+    }
+    return true;
+}
+
+/**
+ * @brief Entra in deep sleep infinito (senza timer di wake).
+ *
+ * Chiamata al posto di enterDeepSleep() quando il device e' in
+ * storage mode. Il wake sara' possibile solo tramite reset hardware.
+ * Prima dello sleep, tutte le periferiche vengono spente (Vext,
+ * VGNSS) e i GPIO messi in hold.
+ */
+void enterStorageDeepSleep() {
+    Serial.println("STORAGE MODE: entering INFINITE deep sleep (wake only on RST)");
+    Serial.flush();
+
+    // Spegni periferiche esterne
+    vextOff();
+    gpsPowerOff();
+
+    // Hold dei GPIO di controllo
+    gpio_hold_en((gpio_num_t)PIN_VEXT_CTRL);
+    gpio_hold_en((gpio_num_t)PIN_VGNSS_CTRL);
+    gpio_deep_sleep_hold_en();
+
+    // NON chiamare esp_sleep_enable_timer_wakeup()
+    // NON abilitare wake su GPIO (fuori scope di questo modulo)
+    esp_deep_sleep_start();
+}
+
+#endif  // ENABLE_STORAGE_MODE
+
+
+// ===================================================================
+// MODULO: GPS SKIP LOGIC (SET_GPS_SKIP)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Permette di eseguire il fix GPS solo ogni N+1 cicli invece che ad
+// ogni ciclo TX. Su installazioni fisse (nodo che non si sposta),
+// non serve un fix GPS ogni minuto.
+//
+// COMPORTAMENTO
+// -------------
+//   cfgGpsSkipCycles = 0  -> fix ogni ciclo (default, comportamento normale)
+//   cfgGpsSkipCycles = 9  -> fix ogni 10 cicli (uno su 10)
+//   cfgGpsSkipCycles = 59 -> fix ogni ora (se TX ogni minuto)
+//
+// Nei cicli "senza fix", il payload usa l'ultima posizione nota
+// memorizzata in RTC memory (marcata come "stale" con HDOP=9999).
+//
+// RISPARMIO ENERGETICO
+// --------------------
+// Il GPS e' la periferica piu' energivora del nodo:
+//   - Cold start:  ~35 mA per 60-90 secondi   = ~580 uAh per ciclo
+//   - Warm start:  ~25 mA per 10-30 secondi   = ~70 uAh per ciclo
+//   - Skip totale: ~0 mA (GPS spento)         = ~0 uAh per ciclo
+//
+// Con TX ogni 60s, skip 9 (fix ogni 10 cicli):
+//   - Consumo attivo medio: da ~10 mAh/giorno a ~3 mAh/giorno
+//   - Autonomia: da 4 mesi a >1 anno con batteria 1500 mAh
+// -------------------------------------------------------------------
+
+#if ENABLE_GPS_SKIP
+
+/**
+ * @brief Decide se questo ciclo TX deve fare un fix GPS o saltarlo.
+ *
+ * Usa il contatore RTC rtcGpsSkipCounter per tenere traccia dei
+ * cicli passati dall'ultimo fix. Se cfgGpsSkipCycles = N, il fix
+ * avviene ogni N+1 cicli.
+ *
+ * @return true se il ciclo corrente deve fare il fix GPS
+ */
+bool shouldDoGpsFix() {
+    // Se GPS disabilitato completamente, non fare mai il fix
+    if (!cfgGpsEnabled) return false;
+
+    // Se skip = 0, fai il fix ogni volta
+    if (cfgGpsSkipCycles == 0) {
+        rtcGpsSkipCounter = 0;
+        return true;
+    }
+
+    // Se non abbiamo ancora un fix "warm", forziamo il fix
+    // (serve almeno il primo fix per popolare la RTC memory)
+    if (!rtcLastFixValid) {
+        rtcGpsSkipCounter = 0;
+        return true;
+    }
+
+    // Logica skip: fai il fix se il contatore ha raggiunto la soglia
+    rtcGpsSkipCounter++;
+    if (rtcGpsSkipCounter > cfgGpsSkipCycles) {
+        rtcGpsSkipCounter = 0;
+        return true;
+    }
+
+    // Salta il fix
+    return false;
+}
+
+/**
+ * @brief Popola i campi GPS del payload con l'ultima posizione nota (skip).
+ *
+ * Chiamata quando shouldDoGpsFix() ha ritornato false. Il payload
+ * riporta le coordinate ultime, ma con HDOP=9999 come marker "stale".
+ *
+ * @param payload puntatore alla struct payload da popolare
+ */
+void useLastKnownPosition(Payload_v0x42* payload) {
+    if (rtcLastFixValid) {
+        payload->lat_e7      = rtcLastLat_e7;
+        payload->lon_e7      = rtcLastLon_e7;
+        payload->alt_m       = rtcLastAlt_m;
+        payload->hdop_x100   = 9999;   // marker "posizione stale"
+        payload->fix_quality = 1;      // fix precedente valido
+        payload->satellites  = 0;      // non stiamo osservando ora
+        Serial.printf("GPS SKIP: uso ultima posizione (skip counter %u/%u)\n",
+                      rtcGpsSkipCounter, cfgGpsSkipCycles);
+    } else {
+        // Nessuna posizione nota (mai preso un fix). Segnaliamo con zeri.
+        payload->lat_e7      = 0;
+        payload->lon_e7      = 0;
+        payload->alt_m       = 0;
+        payload->hdop_x100   = 9999;
+        payload->fix_quality = 0;
+        payload->satellites  = 0;
+    }
+}
+
+/**
+ * @brief Memorizza in RTC memory una nuova posizione GPS valida.
+ *
+ * Chiamata dopo un fix GPS riuscito. La posizione sopravvive al
+ * deep sleep, si perde al power-off/reflash.
+ */
+void saveGpsFixToRTC(int32_t lat_e7, int32_t lon_e7, int16_t alt_m) {
+    rtcLastLat_e7   = lat_e7;
+    rtcLastLon_e7   = lon_e7;
+    rtcLastAlt_m    = alt_m;
+    rtcLastFixValid = true;
+}
+
+#endif  // ENABLE_GPS_SKIP
+
+
+// ===================================================================
+// MODULO: SENSOR DISABLE (SET_GPS_ENABLED, SET_SCD_ENABLED)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Permette di disattivare completamente il GPS L76K o il SCD41 via
+// downlink. Utile quando il sensore fisicamente non e' presente,
+// o quando non serve nel contesto di installazione.
+//
+// COMPORTAMENTO
+// -------------
+// Quando un sensore e' disattivato:
+//   - Il modulo non viene alimentato (via Vext/VGNSS)
+//   - Il payload riporta valori "placeholder" ben definiti:
+//       CO2  = 0xFFFF (65535 = valore invalido)
+//       T    = 0x7FFF (32767 = valore invalido)
+//       RH   = 0xFFFF (65535 = valore invalido)
+//   - Il codec ChirpStack riconosce questi placeholder e restituisce
+//     'null' invece dei valori, cosi' la dashboard non mostra dati
+//     spuri.
+//
+// USO TIPICO
+// ----------
+// GPS disabilitato: nodo installato indoor senza fix necessario
+// SCD41 disabilitato: nodo montato senza sensore CO2 collegato
+// -------------------------------------------------------------------
+
+#if ENABLE_SENSOR_DISABLE
+
+// Placeholder per valori "sensore disattivato"
+#define SENSOR_DISABLED_U16_INVALID    0xFFFFu   // per CO2 (ppm) e RH (%x100)
+#define SENSOR_DISABLED_I16_INVALID    0x7FFF    // per temperatura (°Cx100)
+
+/**
+ * @brief Popola i campi SCD41 del payload con valori "disattivato".
+ *
+ * Chiamata quando cfgScdEnabled = false. Il codec deve riconoscere
+ * questi placeholder e restituire null invece dei valori.
+ */
+void useScdDisabledPayload(Payload_v0x42* payload) {
+    payload->co2_ppm     = SENSOR_DISABLED_U16_INVALID;
+    payload->temp_c100   = SENSOR_DISABLED_I16_INVALID;
+    payload->hum_pct100  = SENSOR_DISABLED_U16_INVALID;
+    Serial.println("SCD41 DISABLED: valori placeholder nel payload");
+}
+
+/**
+ * @brief Popola i campi GPS del payload con valori "disattivato".
+ *
+ * Chiamata quando cfgGpsEnabled = false. Segnala la disattivazione
+ * con fix_quality=0 e HDOP=0xFFFF.
+ */
+void useGpsDisabledPayload(Payload_v0x42* payload) {
+    payload->lat_e7      = 0;
+    payload->lon_e7      = 0;
+    payload->alt_m       = 0;
+    payload->hdop_x100   = SENSOR_DISABLED_U16_INVALID;
+    payload->fix_quality = 0;
+    payload->satellites  = 0;
+    Serial.println("GPS DISABLED: valori placeholder nel payload");
+}
+
+#endif  // ENABLE_SENSOR_DISABLE
+
+
+// ===================================================================
+// MODULO: TRIPLE RESET SAFETY NET (emergency unlock hardware)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Se l'utente preme RST 3 volte consecutive entro una finestra
+// temporale breve, la config runtime viene resettata ai valori di
+// default di fabbrica. Utile come "escape hatch" quando il device
+// e' in una config sbagliata (es. storage mode senza USB, TX
+// interval troppo alto, ADR sbagliato) e non e' raggiungibile via
+// radio.
+//
+// COMPORTAMENTO
+// -------------
+// Al boot, se il reset e' avvenuto entro TRIPLE_RST_WINDOW_S dal
+// precedente, il contatore rtcResetCounter viene incrementato.
+// Se il contatore raggiunge TRIPLE_RST_COUNT (3), la config viene
+// resettata e il contatore azzerato.
+//
+// Se il tempo dal reset precedente e' maggiore di TRIPLE_RST_WINDOW_S,
+// il contatore viene azzerato (nuovo tentativo di sequenza).
+//
+// FEEDBACK VISIVO
+// ---------------
+// Quando il reset ai default viene applicato, il LED lampeggia 3
+// volte lentamente (~500ms on/off) per confermare visivamente
+// all'utente che il reset e' avvenuto.
+// -------------------------------------------------------------------
+
+#if ENABLE_TRIPLE_RST_RESET
+
+#define TRIPLE_RST_COUNT      3
+#define TRIPLE_RST_WINDOW_MS  8000
+
+// Tempo RTC che sopravvive ai reset hardware.
+// NON usare millis(): millis() riparte da zero ad ogni reboot.
+RTC_DATA_ATTR uint64_t rtcLastResetUs = 0;
+
+
+// -------------------------------------------------------------
+// Blink di conferma del reset configurazione
+// -------------------------------------------------------------
+void tripleResetBlinkConfirm() {
+    Serial.println("[BLINK] tripleResetBlinkConfirm() chiamata - inizio 3 blink lunghi");
+    // 1. Disabilita la ritenuta globale e quella specifica del pin LED
+    gpio_deep_sleep_hold_dis();
+    gpio_hold_dis((gpio_num_t)PIN_LED);
+    
+    // 2. FONDAMENTALE: Ripristina la direzione del pin come output
+    pinMode(PIN_LED, OUTPUT); 
+
+    delay(10); // Piccolo ritardo per stabilizzare i registri
+
+    // Partiamo da LED spento
+    ledOff();
+    delay(100);
+
+    for (uint8_t i = 0; i < TRIPLE_RST_COUNT; i++) {
+        Serial.printf("[BLINK] Blink %u/%u\n", i+1, TRIPLE_RST_COUNT);
+        ledOn();
+        delay(1000);   // 1 secondo acceso (LUNGO, ben visibile)
+
+        ledOff();
+        delay(300);    // 300ms spento
+    }
+
+    // Assicurati che lo stato finale desiderato sia impostato prima del blocco
+    ledOff(); 
+    Serial.println("[BLINK] Fine sequenza blink");
+    
+    // 3. Riabilita la ritenuta per il Deep Sleep
+    gpio_hold_en((gpio_num_t)PIN_LED);
+    gpio_deep_sleep_hold_en();
+}
+
+// -------------------------------------------------------------
+// Controllo sequenza 3 reset entro TRIPLE_RST_WINDOW_MS
+// -------------------------------------------------------------
+bool checkTripleResetToDefaults() {
+    esp_reset_reason_t reason = esp_reset_reason();
+    // Consideriamo validi per la sequenza:
+    // - power-on
+    // - reset esterno tramite RST
+    // - ESP.restart()
+    // - reset da USB (auto-reset da upload firmware IDE Arduino)
+    //
+    // NON consideriamo validi wake da deep sleep, watchdog,
+    // brownout, panic ecc.
+    bool isResetForTriple =
+        (reason == ESP_RST_POWERON) ||
+        (reason == ESP_RST_EXT)     ||
+        (reason == ESP_RST_SW)      ||
+        (reason == ESP_RST_USB);
+
+    if (!isResetForTriple) {
+        rtcResetCounter = 0;
+        rtcLastResetUs = 0;
+        return false;
+    }
+    // ---------------------------------------------------------
+    // Legge il timer RTC.
+    //
+    // A differenza di millis(), questo riferimento temporale
+    // continua a essere disponibile attraverso il reset.
+    // ---------------------------------------------------------
+    uint64_t nowUs = esp_rtc_get_time_us();
+
+    // Primo reset della sequenza.
+    if (rtcResetCounter == 0 || rtcLastResetUs == 0) {
+        rtcResetCounter = 1;
+        rtcLastResetUs = nowUs;
+        Serial.printf(
+            "TRIPLE RST: 1/%u - premi RST ancora entro %u s\n",
+            TRIPLE_RST_COUNT,
+            TRIPLE_RST_WINDOW_MS / 1000
+        );
+        return false;
+    }
+    // ---------------------------------------------------------
+    // Calcola il tempo trascorso dall'ultimo reset.
+    // ---------------------------------------------------------
+    uint64_t elapsedUs = nowUs - rtcLastResetUs;
+    uint64_t windowUs =
+        (uint64_t)TRIPLE_RST_WINDOW_MS * 1000ULL;
+    // ---------------------------------------------------------
+    // Troppo tempo: nuova sequenza.
+    // ---------------------------------------------------------
+    if (elapsedUs > windowUs) {
+        Serial.printf(
+            "TRIPLE RST: finestra scaduta (%llu ms) -> riparto da 1\n",
+            elapsedUs / 1000ULL
+        );
+        rtcResetCounter = 1;
+        rtcLastResetUs = nowUs;
+        Serial.printf(
+            "TRIPLE RST: 1/%u - premi RST ancora entro %u s\n",
+            TRIPLE_RST_COUNT,
+            TRIPLE_RST_WINDOW_MS / 1000
+        );
+        return false;
+    }
+    // ---------------------------------------------------------
+    // Reset avvenuto entro gli 8 secondi.
+    // Incrementa il contatore.
+    // ---------------------------------------------------------
+    rtcResetCounter++;
+    rtcLastResetUs = nowUs;
+    Serial.printf(
+        "TRIPLE RST: %u/%u - intervallo %llu ms\n",
+        rtcResetCounter,
+        TRIPLE_RST_COUNT,
+        elapsedUs / 1000ULL
+    );
+    // ---------------------------------------------------------
+    // TERZO RESET ENTRO 8 SECONDI
+    // ---------------------------------------------------------
+    if (rtcResetCounter >= TRIPLE_RST_COUNT) {
+        Serial.println();
+        Serial.println("========================================");
+        Serial.println("*** TRIPLE RST DETECTED ***");
+        Serial.println("*** RESET CONFIG TO DEFAULTS ***");
+        Serial.println("========================================");
+        // Cancella la configurazione runtime dalla NVS.
+        clearRuntimeConfigToDefaults();
+        // Sequenza completata.
+        rtcResetCounter = 0;
+        rtcLastResetUs = 0;
+        // Feedback visivo IMMEDIATO.
+        tripleResetBlinkConfirm();
+        return true;
+    }
+    return false;
+}
+#endif  // ENABLE_TRIPLE_RST_RESET
+
+
+// ===================================================================
+// MODULO: SERIAL_MENU (manutenzione via USB)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Menu interattivo su USB CDC che si apre al boot dopo un reset
+// hardware (RST o power-on) se USB e' collegato. Offre operazioni di
+// manutenzione avanzate senza dover passare per LoRa: wake da storage,
+// reset config, status dump, force TX, clear NVS.
+//
+// TRIGGER DI APERTURA
+// -------------------
+// Il menu si apre SE E SOLO SE:
+//   1. Il boot e' avvenuto per reset hardware (ESP_RST_EXT) o
+//      power-on (ESP_RST_POWERON), NON per wake da deep sleep
+//   2. VBAT indica USB collegato (VBAT > 4.25V)
+//
+// La condizione 1 evita di aprire il menu ad ogni ciclo TX (che
+// pagherebbe ~10s di consumo attivo inutili). La condizione 2 evita
+// di aprire il menu quando non c'e' terminale connesso.
+//
+// FALLBACK SILENZIOSO SU VBAT-DETECT
+// ----------------------------------
+// Se il menu si apre ma va in timeout (utente non digita nulla) E
+// il device era in storage mode, viene eseguito automaticamente il
+// wake-from-storage (equivalente al VBAT-detect). Cosi' il pattern
+// "attacca USB + premi RST + non fare altro" continua a funzionare
+// come prima.
+//
+// COMANDI SUPPORTATI
+// ------------------
+//   W  Wake da storage (resetta solo cfgTxIntervalPreset al default)
+//   R  Reset totale ai default di fabbrica (tutte le config runtime)
+//   S  Status dump (bootCount, FCnt, VBAT, config, ultimo GPS)
+//   T  Force TX now (esci dal menu e vai al ciclo TX)
+//   C  Clear NVS completa (nonces OTAA inclusi - forza rejoin)
+//   N  Continue Normal boot (esci dal menu, prosegui il boot)
+//   ?  Help (ristampa la lista comandi)
+//
+// I comandi distruttivi (R, C) richiedono conferma "Y" entro 5s.
+//
+// PERCHE' USB CDC E' DISPONIBILE QUI
+// ----------------------------------
+// Serial.begin(115200) e' stato gia' chiamato in setup(). Sull'ESP32-S3
+// l'USB CDC e' su un controller dedicato (USB-Serial/JTAG) che parte
+// automaticamente. Dopo un reset hardware l'host impiega ~1-2s a
+// riconnettersi (enumerazione USB), quindi il menu attende brevemente
+// prima di iniziare a leggere per non perdere caratteri.
+// -------------------------------------------------------------------
+
+#if ENABLE_SERIAL_MENU
+
+// ---- Configurazione del modulo ----
+#define SERIAL_MENU_TIMEOUT_MS       10000    // 10 secondi timeout comando
+#define SERIAL_MENU_CONFIRM_TIMEOUT_MS 5000   // 5 secondi timeout conferma Y
+#define SERIAL_MENU_ENUM_DELAY_MS      1500   // attesa enumerazione USB
+#define SERIAL_MENU_HEARTBEAT_MS       1000   // periodo blink "sto ascoltando"
+
+// Flag: settato a true quando il menu ha modificato esplicitamente il
+// preset TX (comandi W o I). Il fallback VBAT-detect nel setup lo
+// controlla per NON annullare una scelta esplicita dell'utente
+// (es. utente digita I,10,Y per andare in storage: il fallback non
+// deve resettare il preset a 2!).
+bool menuPresetChangedExplicitly = false;
+
+/**
+ * @brief Stampa il banner e la lista comandi sulla seriale.
+ */
+void serialMenuPrintBanner() {
+    Serial.println();
+    Serial.println("============================================");
+    Serial.println("  HELTEC V4 - MENU DI MANUTENZIONE");
+    Serial.printf ("  Timeout: %u secondi\n", SERIAL_MENU_TIMEOUT_MS / 1000);
+    Serial.println("--------------------------------------------");
+    Serial.println("  W  Wake da storage (reset solo TX interval)");
+    Serial.println("  R  Reset TOTALE config runtime ai default");
+    Serial.println("  I  Imposta TX interval (preset 0-10)");
+    Serial.println("  S  Status dump (VBAT, config, GPS, ecc.)");
+    Serial.println("  T  Force TX now (esci ed esegui ciclo TX)");
+    Serial.println("  C  Clear NVS COMPLETA (include nonces OTAA)");
+    Serial.println("  N  Continue Normal boot (o attendi timeout)");
+    Serial.println("  ?  Ristampa questo menu");
+    Serial.println("============================================");
+    Serial.print  ("> ");
+}
+
+/**
+ * @brief Stampa uno status dump completo del device sulla seriale.
+ *
+ * Utile per diagnostica in campo senza dover interrogare la rete LoRa.
+ */
+void serialMenuPrintStatus() {
+    Serial.println();
+    Serial.println("---- STATUS DUMP ----");
+    Serial.printf ("  Firmware:     v%u\n", FW_VERSION);
+    Serial.printf ("  Boot count:   %u\n", bootCount);
+    Serial.printf ("  Uptime:       %lu s\n", (unsigned long)(uptimeAccumulatedS + millis() / 1000));
+    Serial.printf ("  Reset reason: %d\n", (int)esp_reset_reason());
+    Serial.println();
+    Serial.println("  ---- Alimentazione ----");
+    uint16_t vbat = readBatteryMv();
+    Serial.printf ("  VBAT:         %u mV (%u %%)\n", vbat, vbatToPercent(vbat));
+    Serial.printf ("  USB detected: %s (soglia 4250 mV)\n",
+                   (vbat > VBAT_USB_DETECT_MV) ? "SI" : "NO");
+    Serial.println();
+    Serial.println("  ---- Config runtime ----");
+    if (cfgTxIntervalPreset == TX_PRESET_STORAGE) {
+        Serial.println("  TX interval:  STORAGE MODE (sleep infinito)");
+    } else {
+        Serial.printf ("  TX interval:  preset=%u (%u s)\n",
+                       cfgTxIntervalPreset,
+                       TX_INTERVAL_SECONDS[cfgTxIntervalPreset]);
+    }
+    Serial.printf ("  LoRaWAN SF:   %u\n", cfgLoRaWANSF);
+    Serial.printf ("  TX power:     %u dBm\n", cfgTxPower);
+    Serial.printf ("  GPS timeout:  %u s\n", cfgGpsTimeoutS);
+    Serial.printf ("  VBAT emerg:   %u mV\n", cfgVbatEmergencyMv);
+    Serial.printf ("  VBAT recov:   %u mV\n", cfgVbatRecoveryMv);
+    Serial.printf ("  ADR:          %s\n", cfgAdr ? "ON" : "OFF");
+    Serial.printf ("  GPS enabled:  %s\n", cfgGpsEnabled ? "SI" : "NO");
+    Serial.printf ("  GPS skip:     %u cicli\n", cfgGpsSkipCycles);
+    Serial.printf ("  SCD enabled:  %s\n", cfgScdEnabled ? "SI" : "NO");
+    Serial.println();
+    Serial.println("  ---- Ultimo GPS noto ----");
+    if (rtcLastFixValid) {
+        Serial.printf ("  Lat: %.7f  Lon: %.7f  Alt: %d m\n",
+                       rtcLastLat_e7 / 1.0e7, rtcLastLon_e7 / 1.0e7,
+                       rtcLastAlt_m);
+    } else {
+        Serial.println("  (nessun fix valido in RTC)");
+    }
+    Serial.println("---- END STATUS ----");
+    Serial.println();
+}
+
+/**
+ * @brief Attende conferma "Y" dell'utente entro CONFIRM_TIMEOUT_MS.
+ * @return true se l'utente ha digitato Y (case-insensitive), false altrimenti
+ */
+bool serialMenuWaitConfirmation() {
+    Serial.print("Confermi? Digita Y entro 5s: ");
+    String s = serialMenuReadLine(SERIAL_MENU_CONFIRM_TIMEOUT_MS);
+
+    if (s.length() == 0) {
+        Serial.println("timeout, annullato");
+        return false;
+    }
+    char c = s.charAt(0);
+    if (c == 'Y' || c == 'y') {
+        Serial.println("Y (confermato)");
+        return true;
+    }
+    Serial.printf("%c (annullato)\n", c);
+    return false;
+}
+
+/**
+ * @brief Cancella completamente la NVS del namespace 'lora', inclusi i
+ *        nonces OTAA. Al prossimo boot il device rifara' il join.
+ */
+void serialMenuClearNvsComplete() {
+    Serial.print("Cancellazione NVS in corso... ");
+    if (prefs.begin(NVS_NAMESPACE, false)) {
+        prefs.clear();   // cancella TUTTO il namespace, nonces inclusi
+        prefs.end();
+        Serial.println("OK");
+    } else {
+        Serial.println("ERRORE (impossibile aprire NVS)");
+    }
+}
+
+/**
+ * @brief Legge una riga da seriale terminata da '\n' o timeout.
+ *
+ * IMPORTANTE per USB CDC di ESP32-S3: il timing puo' variare. Aspettiamo
+ * un po' che eventuali caratteri in transito arrivino prima di misurare
+ * "quanti byte c'e' nel buffer" per decidere se aspettare o meno.
+ *
+ * Usa readStringUntil('\n') e trima whitespace/CR/spazi. Ritorna la
+ * stringa pulita (puo' essere vuota se timeout). Il chiamante analizza
+ * il contenuto.
+ *
+ * @param timeoutMs timeout massimo per leggere la riga
+ * @return stringa letta e trimmed
+ */
+String serialMenuReadLine(uint32_t timeoutMs) {
+    // Piccola attesa per far arrivare eventuali char pendenti sul CDC
+    delay(30);
+    // Se ci sono caratteri residui che sono SOLO whitespace/CR/LF,
+    // scartiamoli per evitare che readStringUntil ritorni stringa vuota.
+    // Ma se c'e' anche un solo carattere significativo, lo lasciamo
+    // (potrebbe essere l'inizio dell'input dell'utente).
+    while (Serial.available()) {
+        int c = Serial.peek();
+        if (c == '\r' || c == '\n' || c == ' ' || c == '\t') {
+            Serial.read();   // scarta silenziosamente
+        } else {
+            break;
+        }
+    }
+
+    Serial.setTimeout(timeoutMs);
+    String s = Serial.readStringUntil('\n');
+    s.trim();   // rimuove eventuali CR o spazi residui
+    return s;
+}
+
+/**
+ * @brief Legge un intero da seriale. Ritorna il numero, o -1 se
+ *        l'utente ha annullato (input vuoto, Q, o non numerico).
+ *
+ * @param timeoutMs timeout massimo per completare l'input
+ */
+int serialMenuReadIntWithEnter(uint32_t timeoutMs) {
+    String s = serialMenuReadLine(timeoutMs);
+
+    if (s.length() == 0) {
+        Serial.println("(timeout o input vuoto)");
+        return -1;
+    }
+
+    // Q maiuscola o minuscola: annulla esplicitamente
+    if (s.charAt(0) == 'Q' || s.charAt(0) == 'q') {
+        Serial.println("Q (annullato)");
+        return -1;
+    }
+
+    // Verifica che ci siano solo cifre
+    for (unsigned i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (c < '0' || c > '9') {
+            Serial.printf("Input non numerico: '%s'\n", s.c_str());
+            return -1;
+        }
+    }
+
+    // Echo di quello che l'utente ha digitato (utile per conferma visiva)
+    Serial.printf("(letto: %s)\n", s.c_str());
+    return s.toInt();
+}
+
+/**
+ * @brief Gestisce il comando 'I' (Imposta TX interval) dal menu seriale.
+ *
+ * Stampa il preset corrente e la lista dei preset disponibili, poi
+ * chiede all'utente un numero (terminato da Invio). Se il numero e'
+ * valido applica la modifica (salva in NVS, imposta sendStateNext).
+ * Per il preset STORAGE (10) richiede conferma esplicita 'Y'.
+ */
+void serialMenuHandleInterval() {
+    Serial.println();
+    Serial.printf("Preset TX interval attuale: %u", cfgTxIntervalPreset);
+    if (cfgTxIntervalPreset == TX_PRESET_STORAGE) {
+        Serial.println(" (STORAGE MODE)");
+    } else {
+        Serial.printf(" (%u s)\n", TX_INTERVAL_SECONDS[cfgTxIntervalPreset]);
+    }
+    Serial.println("--------------------------------------------");
+    Serial.println("  0=10s     1=20s    2=1min    3=2min");
+    Serial.println("  4=5min    5=10min  6=30min   7=1h");
+    Serial.println("  8=1d      9=1w     10=STORAGE");
+    Serial.println("--------------------------------------------");
+    Serial.print("Digita numero (0-10) e Invio, o Q per annullare: ");
+
+    int preset = serialMenuReadIntWithEnter(15000);   // 15s per digitare
+
+    // Cancellazione o timeout
+    if (preset < 0) {
+        Serial.println("Annullato, nessuna modifica");
+        return;
+    }
+
+    // Range check
+    if (preset > TX_PRESET_MAX) {
+        Serial.printf("Valore non valido: %d (max %u). Annullato.\n",
+                      preset, TX_PRESET_MAX);
+        return;
+    }
+
+    // Preset STORAGE (10): richiedi conferma esplicita
+    if (preset == TX_PRESET_STORAGE) {
+        Serial.println();
+        Serial.println("*** ATTENZIONE: preset 10 = STORAGE MODE ***");
+        Serial.println("Il device entrera' in sleep INFINITO dopo il prossimo TX.");
+        Serial.println("Per riattivarlo:");
+        Serial.println("  - RST + USB collegato -> menu seriale -> W");
+        Serial.println("  - Oppure triplo RST (reset totale ai default)");
+        if (!serialMenuWaitConfirmation()) {
+            Serial.println("Annullato, nessuna modifica");
+            return;
+        }
+    }
+
+    // Applica: salva in NVS + aggiorna RAM + segnala per feedback state
+    cfgTxIntervalPreset = (uint8_t)preset;
+    saveConfigUChar(NVS_KEY_TX_INTERVAL, cfgTxIntervalPreset);
+    sendStateNext = true;
+    menuPresetChangedExplicitly = true;   // segnala al fallback VBAT-detect
+
+    if (preset == TX_PRESET_STORAGE) {
+        Serial.println("OK: STORAGE MODE impostato");
+        Serial.println("Il device andra' in sleep infinito dopo il prossimo TX");
+    } else {
+        Serial.printf("OK: TX interval a preset %u (%u s)\n",
+                      preset, TX_INTERVAL_SECONDS[preset]);
+        Serial.println("Applicato dal prossimo ciclo TX");
+    }
+}
+
+/**
+ * @brief Loop principale del menu seriale. Legge comandi e li esegue
+ *        finche' l'utente non decide di uscire o scade il timeout.
+ *
+ * @return Uno di SMR_CONTINUE_NORMAL_BOOT, SMR_FORCE_TX_NOW, SMR_REBOOT
+ */
+SerialMenuResult serialMenuLoop() {
+    uint32_t startMs = millis();
+    uint32_t lastHeartbeatMs = 0;
+    bool ledState = false;
+
+    while (true) {
+        // Timeout globale del menu
+        if (millis() - startMs >= SERIAL_MENU_TIMEOUT_MS) {
+            Serial.println();
+            Serial.println("(timeout - proseguo boot normale)");
+            return SMR_CONTINUE_NORMAL_BOOT;
+        }
+
+        // Heartbeat LED (blink lento per indicare "sto ascoltando")
+        if (millis() - lastHeartbeatMs >= SERIAL_MENU_HEARTBEAT_MS) {
+            lastHeartbeatMs = millis();
+            ledState = !ledState;
+            digitalWrite(PIN_LED, ledState ? HIGH : LOW);
+        }
+
+        // Nessun carattere disponibile: aspetta un po' e riprova
+        if (!Serial.available()) {
+            delay(50);
+            continue;
+        }
+
+        char c = Serial.read();
+
+        // Ignora whitespace e caratteri di controllo
+        if (c == '\r' || c == '\n' || c == ' ' || c == '\t') continue;
+
+        // Reset del timeout ad ogni comando valido
+        startMs = millis();
+        ledOff();
+
+        // Case-insensitive
+        if (c >= 'a' && c <= 'z') c -= ('a' - 'A');
+
+        Serial.println(c);   // echo
+
+        switch (c) {
+            case 'W': {
+                // Wake da storage: resetta solo cfgTxIntervalPreset
+                if (cfgTxIntervalPreset == TX_PRESET_STORAGE) {
+                    cfgTxIntervalPreset = TX_INTERVAL_PRESET;
+                    saveConfigUChar(NVS_KEY_TX_INTERVAL, cfgTxIntervalPreset);
+                    Serial.printf("OK: uscito da STORAGE, TX interval a preset %u (%u s)\n",
+                                  TX_INTERVAL_PRESET,
+                                  TX_INTERVAL_SECONDS[TX_INTERVAL_PRESET]);
+                    sendStateNext = true;
+                    menuPresetChangedExplicitly = true;   // segnala al fallback
+                } else {
+                    Serial.printf("OK: device gia' operativo (preset TX=%u, %u s). Nessuna azione.\n",
+                                  cfgTxIntervalPreset,
+                                  TX_INTERVAL_SECONDS[cfgTxIntervalPreset]);
+                }
+                Serial.print("> ");
+                break;
+            }
+
+            case 'R': {
+                // Reset totale ai default di fabbrica
+                Serial.println("*** RESET config runtime ai default ***");
+                if (serialMenuWaitConfirmation()) {
+                    clearRuntimeConfigToDefaults();
+                    Serial.println("OK: config resettata (nonces OTAA preservati)");
+                    sendStateNext = true;
+                }
+                Serial.print("> ");
+                break;
+            }
+
+            case 'I': {
+                // Imposta TX interval: chiede numero (0-10), Invio per confermare
+                serialMenuHandleInterval();
+                Serial.print("> ");
+                break;
+            }
+
+            case 'S': {
+                // Status dump
+                serialMenuPrintStatus();
+                Serial.print("> ");
+                break;
+            }
+
+            case 'T': {
+                // Force TX now: esci dal menu ed esegui ciclo TX
+                Serial.println("Force TX: esco dal menu e trasmetto");
+                ledOff();
+                return SMR_FORCE_TX_NOW;
+            }
+
+            case 'C': {
+                // Clear NVS completa (nonces OTAA inclusi)
+                Serial.println("*** CLEAR NVS COMPLETA (include nonces OTAA) ***");
+                Serial.println("Al prossimo boot il device rifara' il join LoRaWAN");
+                if (serialMenuWaitConfirmation()) {
+                    serialMenuClearNvsComplete();
+                    Serial.println("Riavvio in corso...");
+                    delay(500);
+                    return SMR_REBOOT;
+                }
+                Serial.print("> ");
+                break;
+            }
+
+            case 'N': {
+                // Continue Normal boot
+                Serial.println("Proseguo boot normale");
+                ledOff();
+                return SMR_CONTINUE_NORMAL_BOOT;
+            }
+
+            case '?':
+            case 'H':
+                serialMenuPrintBanner();
+                break;
+
+            default:
+                Serial.printf("Comando sconosciuto: '%c' (digita ? per help)\n", c);
+                Serial.print("> ");
+                break;
+        }
+    }
+}
+
+/**
+ * @brief Entry point del modulo, chiamato dal setup() al boot.
+ *
+ * Decide se aprire il menu in base al reset reason e a VBAT. Se il menu
+ * si apre, ritorna il SerialMenuResult del comando eseguito (o del
+ * timeout). Se il menu NON si apre, ritorna SMR_CONTINUE_NORMAL_BOOT.
+ *
+ * @param vbat_mv tensione batteria letta al boot (per USB detect)
+ * @return SerialMenuResult da usare per decidere il flusso successivo
+ */
+SerialMenuResult checkAndRunSerialMenu(uint16_t vbat_mv) {
+    esp_reset_reason_t reason = esp_reset_reason();
+
+    // Condizione 1: solo dopo reset hardware / power-on / USB
+    // ESP_RST_USB (11) e' comune sull'ESP32-S3 quando:
+    //   - Hai appena caricato firmware via Arduino IDE (l'IDE fa reset USB)
+    //   - Colleghi il cavo USB e c'e' un reset di enumerazione
+    //   - L'host USB fa un auto-reset del device
+    // Senza includerlo, il menu non si apre mai dopo un upload firmware.
+    bool isEligibleReset = (reason == ESP_RST_EXT     ||
+                            reason == ESP_RST_POWERON ||
+                            reason == ESP_RST_USB);
+    if (!isEligibleReset) {
+        Serial.printf("[MENU] Non apro (reset_reason=%d, non e' EXT/POWERON/USB)\n", (int)reason);
+        return SMR_CONTINUE_NORMAL_BOOT;
+    }
+
+    // Condizione 2: USB collegato (VBAT alto)
+    if (vbat_mv <= VBAT_USB_DETECT_MV) {
+        Serial.printf("[MENU] Non apro (VBAT=%u <= soglia=%u, USB probabilmente scollegato)\n",
+                      vbat_mv, VBAT_USB_DETECT_MV);
+        return SMR_CONTINUE_NORMAL_BOOT;
+    }
+
+    // Entrambe le condizioni soddisfatte: apri il menu
+    Serial.println("[MENU] Condizioni OK, apro menu tra 1.5s (attesa enum USB)");
+    // Attendi enumerazione USB dell'host (~1-2 s dopo il reset)
+    delay(SERIAL_MENU_ENUM_DELAY_MS);
+
+    serialMenuPrintBanner();
+    return serialMenuLoop();
+}
+
+#endif  // ENABLE_SERIAL_MENU
+
+
+// ===================================================================
+// MODULO: LONG_PRESS_STORAGE (BOOT premuto al setup dopo RST)
+// ===================================================================
+//
+// COS'E'
+// ------
+// Permette di mettere il device in STORAGE MODE premendo il pulsante
+// BOOT (GPIO 0) SUBITO DOPO un reset RST, e tenendolo premuto per
+// LONG_PRESS_STORAGE_MS millisecondi (3 secondi).
+//
+// PATTERN OPERATIVO
+// -----------------
+//   1. Utente preme RST (senza toccare BOOT)
+//   2. Il firmware parte
+//   3. All'inizio del setup, il firmware legge GPIO 0
+//   4. Se GPIO 0 = LOW (BOOT premuto ora):
+//      - Accende LED fisso
+//      - Loop di polling per 3 secondi
+//      - Se BOOT resta LOW per 3s: salva preset=10 (STORAGE), 3 lampi lunghi,
+//        enterStorageDeepSleep()
+//      - Se BOOT rilasciato prima: annulla, prosegui boot normale
+//   5. Se GPIO 0 = HIGH (BOOT non premuto): esce subito
+//
+// PERCHE' NON RST+BOOT INSIEME
+// ----------------------------
+// Sull'ESP32-S3, se GPIO 0 e' LOW AL MOMENTO del reset, il chip
+// entra in ROM bootloader mode (aspetta comandi USB per flash).
+// Il firmware NON parte. Quindi il pattern corretto e':
+//   - Premi RST (BOOT non premuto)
+//   - Attendi ~1 secondo che il firmware parta
+//   - Premi e tieni BOOT per 3 secondi
+//
+// PERCHE' NON DURANTE IL CICLO ATTIVO
+// -----------------------------------
+// Durante il deep sleep normale, il firmware non gira, quindi non
+// puo' rilevare GPIO 0. L'utente dovrebbe premere BOOT nella
+// piccolissima finestra del ciclo attivo (~15s ogni minuto),
+// scomodo. Il pattern "RST + BOOT" e' sempre disponibile senza
+// aspettare la finestra utile.
+//
+// COSTO ENERGETICO
+// ----------------
+// Trascurabile. Un digitalRead() e' quasi gratuito. Se BOOT non
+// e' premuto (99% dei casi), il polling termina in pochi
+// microsecondi. Il boot prosegue senza ritardi.
+//
+// CONFLITTI CON UPLOAD FIRMWARE
+// -----------------------------
+// Nessuno. Arduino IDE fa upload con RST+BOOT insieme, portando
+// il chip in bootloader ROM. Il firmware NON parte, questo polling
+// NON viene eseguito. Il flash avviene normalmente.
+// -------------------------------------------------------------------
+
+#if ENABLE_LONG_PRESS_STORAGE
+
+#define PIN_BOOT                    0       // GPIO 0 = pulsante BOOT sulla Heltec V4
+#define LONG_PRESS_STORAGE_MS       3000    // 3 secondi di pressione = attiva storage
+#define LONG_PRESS_POLL_MS          50      // periodo di polling del pin
+
+/**
+ * @brief Controlla se BOOT e' premuto all'inizio del setup e attiva
+ *        storage mode se resta premuto per LONG_PRESS_STORAGE_MS.
+ *
+ * Deve essere chiamata UNA VOLTA all'inizio del setup, dopo aver
+ * gestito il triplo RST ma prima del resto delle inizializzazioni.
+ *
+ * Comportamento:
+ *   - Se BOOT non premuto: ritorna subito (99% dei casi, zero costo)
+ *   - Se BOOT premuto: LED fisso + polling per 3s
+ *   - Se BOOT rilasciato prima: annulla, ritorna
+ *   - Se BOOT tenuto per 3s: salva preset=10 (STORAGE), feedback visivo,
+ *     entra in storage sleep infinito (non ritorna mai)
+ */
+void checkLongPressBootAtSetup() {
+    // FIX B: attivo LONG_PRESS solo dopo reset MANUALE dell'utente.
+    // Se il boot avviene per wake da deep sleep (timer o GPIO), NON
+    // apriamo la finestra di attesa: l'utente non sta interagendo
+    // con il device, sprecheremmo 3s ad ogni ciclo TX.
+    // Reset "manuali" riconosciuti:
+    //   ESP_RST_EXT     = pulsante RST premuto
+    //   ESP_RST_POWERON = alimentazione appena collegata
+    //   ESP_RST_USB     = auto-reset da IDE dopo upload firmware
+    esp_reset_reason_t reason = esp_reset_reason();
+    bool isManualReset = (reason == ESP_RST_EXT ||
+                          reason == ESP_RST_POWERON ||
+                          reason == ESP_RST_USB);
+    if (!isManualReset) {
+        // Wake da deep sleep normale: nessun check LONG_PRESS,
+        // il boot prosegue subito verso il ciclo TX.
+        return;
+    }
+
+    // Configura GPIO 0 come input con pull-up interno
+    pinMode(PIN_BOOT, INPUT_PULLUP);
+    delay(5);   // stabilizzazione pull-up
+
+    // FINESTRA DI ATTESA: diamo 3 secondi all'utente per iniziare a
+    // premere BOOT dopo i 3 blink veloci di segnalazione "pronto".
+    // Se durante questi 3 secondi BOOT viene premuto, entriamo nella
+    // fase di conteggio 3s per storage. Altrimenti proseguiamo boot normale.
+    Serial.println("[LONG_PRESS] Finestra 3s per premere BOOT (attiva storage)");
+    uint32_t waitStart = millis();
+    bool bootPressed = false;
+    while (millis() - waitStart < 3000) {
+        if (digitalRead(PIN_BOOT) == LOW) {
+            bootPressed = true;
+            break;
+        }
+        delay(10);
+    }
+
+    if (!bootPressed) {
+        Serial.println("[LONG_PRESS] BOOT non premuto, proseguo boot normale");
+        return;   // finestra scaduta senza pressione BOOT
+    }
+
+    // BOOT premuto durante la finestra: entra in modalita' conteggio
+    Serial.println();
+    Serial.println("[LONG_PRESS] BOOT premuto! Inizio conteggio 3s per STORAGE...");
+    Serial.println("[LONG_PRESS] Rilascia BOOT ora per annullare");
+    Serial.println("[LONG_PRESS] Tieni premuto BOOT per 3s per attivare STORAGE");
+
+    // Assicura che il LED possa essere pilotato (non in hold da sleep precedente)
+    gpio_deep_sleep_hold_dis();
+    gpio_hold_dis((gpio_num_t)PIN_LED);
+    pinMode(PIN_LED, OUTPUT);
+    ledOn();   // LED fisso come feedback "sto contando"
+
+    uint32_t startMs = millis();
+    while (digitalRead(PIN_BOOT) == LOW) {
+        uint32_t elapsed = millis() - startMs;
+        if (elapsed >= LONG_PRESS_STORAGE_MS) {
+            // Raggiunta la soglia: attiva storage mode
+            Serial.println();
+            Serial.println("========================================");
+            Serial.println("*** LONG PRESS BOOT DETECTED ***");
+            Serial.println("*** STORAGE MODE ATTIVATO ***");
+            Serial.println("========================================");
+            ledOff();
+            delay(200);
+
+            // Salva preset storage in NVS (persistente)
+            cfgTxIntervalPreset = TX_PRESET_STORAGE;
+            saveConfigUChar(NVS_KEY_TX_INTERVAL, TX_PRESET_STORAGE);
+
+            // Feedback visivo di conferma: 3 lampi lunghi
+            for (uint8_t i = 0; i < 3; i++) {
+                Serial.printf("[LONG_PRESS] Lampo %u/3\n", i+1);
+                ledOn();  delay(1000);
+                ledOff(); delay(300);
+            }
+
+            // NON chiamiamo sendStatePayload() qui perche' LoRaWAN NON e'
+            // ancora inizializzato in questa fase del setup (radio.begin,
+            // OTAA join, ecc. avvengono piu' tardi). Se lo facessimo,
+            // sendReceive() fallirebbe silenziosamente.
+            //
+            // Impostiamo invece sendStateNext = true: il flusso normale
+            // del setup completera' tutte le init (GPS, SCD, LoRaWAN),
+            // mandera' il payload di misure standard, poi vedra' il flag
+            // sendStateNext e mandera' anche il payload state 0x43 con
+            // cfgTxIntervalPreset = TX_PRESET_STORAGE. Cosi' la webapp
+            // riceve il feedback "device andato in storage".
+            //
+            // Alla fine del ciclo, il check isStorageMode() nel calcolo
+            // del sleep finale vede preset=TX_PRESET_STORAGE ed entra
+            // in enterStorageDeepSleep() automaticamente.
+            sendStateNext = true;
+
+            Serial.println("[LONG_PRESS] Preset salvato. Proseguo boot per");
+            Serial.println("[LONG_PRESS] fare TX misure + TX state, poi storage sleep.");
+            return;   // esce dalla funzione, ma il setup prosegue normalmente
+        }
+        delay(LONG_PRESS_POLL_MS);
+    }
+
+    // Se siamo qui, BOOT e' stato rilasciato PRIMA della soglia. Annulla.
+    ledOff();
+    uint32_t held = millis() - startMs;
+    Serial.printf("[LONG_PRESS] BOOT rilasciato dopo %u ms (serviva %u ms)\n",
+                  held, LONG_PRESS_STORAGE_MS);
+    Serial.println("[LONG_PRESS] Annullato, proseguo boot normale");
+}
+
+#endif  // ENABLE_LONG_PRESS_STORAGE
+
+
+
 //
 // Chiamato da initLoRaWAN() quando sendReceive ha ricevuto un downlink.
 // Dispatch per FPort:
@@ -951,12 +2266,16 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 // corrispondente. La modifica viene applicata subito (nella variabile cfg*)
 // e persiste attraverso deep sleep, restart, power-off.
 // Al boot successivo, loadRuntimeConfig() rilegge da NVS il valore aggiornato.
-#define CFG_SET_TX_INTERVAL   0x11   // 1 byte, preset 0-5 -> NVS "tx_int"
+#define CFG_SET_TX_INTERVAL   0x11   // 1 byte, preset 0-10 (10=STORAGE) -> NVS "tx_int"
 #define CFG_SET_LORAWAN_SF    0x12   // 1 byte, SF 7-12 -> NVS "lora_sf"
 #define CFG_SET_TX_POWER      0x13   // 1 byte, dBm 2-14 -> NVS "tx_pow"
 #define CFG_SET_GPS_TIMEOUT   0x14   // 2 byte LE, secondi 10-300 -> NVS "gps_t"
 #define CFG_SET_BATT_THRESH   0x15   // 4 byte (2xuint16 LE), mV -> NVS "vbat_em"/"vbat_rc"
 #define CFG_SET_ADR_ENABLED   0x16   // 1 byte, 0/1 -> NVS "adr" (effettivo solo in OTAA)
+// ---- Nuovi comandi features di risparmio energetico ----
+#define CFG_SET_GPS_SKIP      0x17   // 1 byte, N=fix ogni N+1 cicli (modulo GPS SKIP)
+#define CFG_SET_GPS_ENABLED   0x18   // 1 byte, 0/1 (modulo SENSOR DISABLE)
+#define CFG_SET_SCD_ENABLED   0x19   // 1 byte, 0/1 (modulo SENSOR DISABLE)
 
 // Fa lampeggiare il LED N volte per identificare visivamente il device.
 // NOTA: durante il ciclo il LED e' gia' acceso (ledOn() nel setup), quindi
@@ -1069,14 +2388,21 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
     switch (cmd) {
 
         case CFG_SET_TX_INTERVAL:
-            if (len < 2 || buf[1] > 5) {
-                Serial.println("[DOWNLINK] SET_TX_INTERVAL: preset non valido");
+            if (len < 2 || buf[1] > TX_PRESET_MAX) {
+                Serial.printf("[DOWNLINK] SET_TX_INTERVAL: preset non valido (max %u)\n",
+                              TX_PRESET_MAX);
                 return;
             }
             if (saveConfigUChar(NVS_KEY_TX_INTERVAL, buf[1])) {
                 cfgTxIntervalPreset = buf[1];
-                Serial.printf("[DOWNLINK] SET_TX_INTERVAL: preset=%u (%us)\n",
-                              buf[1], TX_INTERVAL_SECONDS[buf[1]]);
+                if (buf[1] == TX_PRESET_STORAGE) {
+                    Serial.printf("[DOWNLINK] SET_TX_INTERVAL: preset=%u (STORAGE MODE)\n",
+                                  TX_PRESET_STORAGE);
+                    Serial.println("           il device entrera' in sleep INFINITO dopo questo TX");
+                } else {
+                    Serial.printf("[DOWNLINK] SET_TX_INTERVAL: preset=%u (%us)\n",
+                                  buf[1], TX_INTERVAL_SECONDS[buf[1]]);
+                }
                 sendStateNext = true;   // feedback state al prossimo TX
             }
             break;
@@ -1168,6 +2494,58 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
             }
             break;
         }
+
+#if ENABLE_GPS_SKIP
+        case CFG_SET_GPS_SKIP: {
+            if (len < 2) {
+                Serial.println("[DOWNLINK] SET_GPS_SKIP: manca il valore");
+                return;
+            }
+            // Nessun sanity check sul valore: 0-255 sono tutti validi
+            if (saveConfigUChar(NVS_KEY_GPS_SKIP, buf[1])) {
+                cfgGpsSkipCycles = buf[1];
+                rtcGpsSkipCounter = 0;   // resetta il contatore
+                if (buf[1] == 0) {
+                    Serial.println("[DOWNLINK] SET_GPS_SKIP: 0 (fix GPS ogni ciclo)");
+                } else {
+                    Serial.printf("[DOWNLINK] SET_GPS_SKIP: %u (fix GPS ogni %u cicli)\n",
+                                  buf[1], (unsigned)(buf[1] + 1));
+                }
+                sendStateNext = true;
+            }
+            break;
+        }
+#endif
+
+#if ENABLE_SENSOR_DISABLE
+        case CFG_SET_GPS_ENABLED: {
+            if (len < 2 || (buf[1] != 0 && buf[1] != 1)) {
+                Serial.println("[DOWNLINK] SET_GPS_ENABLED: valore deve essere 0 o 1");
+                return;
+            }
+            if (saveConfigUChar(NVS_KEY_GPS_ENABLED, buf[1])) {
+                cfgGpsEnabled = (buf[1] != 0);
+                Serial.printf("[DOWNLINK] SET_GPS_ENABLED: %s\n",
+                              cfgGpsEnabled ? "GPS attivo" : "GPS disattivato");
+                sendStateNext = true;
+            }
+            break;
+        }
+
+        case CFG_SET_SCD_ENABLED: {
+            if (len < 2 || (buf[1] != 0 && buf[1] != 1)) {
+                Serial.println("[DOWNLINK] SET_SCD_ENABLED: valore deve essere 0 o 1");
+                return;
+            }
+            if (saveConfigUChar(NVS_KEY_SCD_ENABLED, buf[1])) {
+                cfgScdEnabled = (buf[1] != 0);
+                Serial.printf("[DOWNLINK] SET_SCD_ENABLED: %s\n",
+                              cfgScdEnabled ? "SCD41 attivo" : "SCD41 disattivato");
+                sendStateNext = true;
+            }
+            break;
+        }
+#endif
 
         default:
             Serial.printf("[DOWNLINK] Comando FPort 20 sconosciuto: 0x%02X\n", cmd);
@@ -1635,6 +3013,12 @@ uint8_t buildFeatureFlags() {
 #if DEBUG_NO_DEEP_SLEEP
     flags |= (1 << 5);
 #endif
+#if ENABLE_STORAGE_MODE
+    flags |= (1 << 6);
+#endif
+#if ENABLE_TRIPLE_RST_RESET
+    flags |= (1 << 7);
+#endif
     return flags;
 }
 
@@ -1680,6 +3064,10 @@ bool sendStatePayload() {
     state.featureFlags        = buildFeatureFlags();
     state.fwVersion           = FW_VERSION;
     state.resetReason         = getResetReasonByte();
+    // ---- Estensione v2: features risparmio energetico ----
+    state.cfgGpsEnabled       = cfgGpsEnabled ? 1 : 0;
+    state.cfgGpsSkipCycles    = cfgGpsSkipCycles;
+    state.cfgScdEnabled       = cfgScdEnabled ? 1 : 0;
 
     Serial.printf("TX STATE %u byte su FPort %u: ",
                   (unsigned)sizeof(state), LORAWAN_FPORT_STATE);
@@ -1900,7 +3288,32 @@ void enterDeepSleep(uint32_t seconds) {
 
 void setup() {
     Serial.begin(115200);
+#if ENABLE_TRIPLE_RST_RESET
+    checkTripleResetToDefaults();
+#endif
+
     delay(2000);   // tempo per USB CDC di stabilizzarsi e Monitor Seriale di connettersi
+
+    // ---- FEEDBACK "PRONTO PER BOOT" ----
+    // 3 blink veloci per segnalare all'utente che il device e' pronto
+    // e sta per fare il check LONG_PRESS. Dopo questi 3 blink hai
+    // 3 secondi per tenere premuto BOOT per attivare storage mode.
+    gpio_deep_sleep_hold_dis();
+    gpio_hold_dis((gpio_num_t)PIN_LED);
+    pinMode(PIN_LED, OUTPUT);
+    for (int i = 0; i < 3; i++) {
+        digitalWrite(PIN_LED, HIGH); delay(80);
+        digitalWrite(PIN_LED, LOW);  delay(80);
+    }
+
+    // ---- LONG PRESS BOOT: check se BOOT premuto ora ----
+    // Se BOOT non e' premuto la funzione esce subito senza costo.
+    // Se BOOT premuto: LED fisso + polling 3s, poi entra in storage.
+    // NOTA: c'e' una finestra di 3s dai blink per iniziare a premere BOOT.
+    // Se lo tieni premuto durante i blink stessi, viene rilevato subito.
+#if ENABLE_LONG_PRESS_STORAGE
+    checkLongPressBootAtSetup();
+#endif
 
     // Disabilita WiFi e Bluetooth: non li usiamo e consumano corrente + generano rumore
     // (importante specialmente per la ricezione LoRa e per l'alimentazione a batteria)
@@ -1937,8 +3350,75 @@ void setup() {
         sendStateNext = true;
     }
 
+    // ---- TRIPLE RST SAFETY NET ----
+    // DEVE essere chiamata PRIMA di loadRuntimeConfig(), perche' se rileva
+    // la sequenza di 3 reset consecutivi, cancella le config da NVS e la
+    // successiva loadRuntimeConfig() carichera' i default di fabbrica.
+//#if ENABLE_TRIPLE_RST_RESET
+//   checkTripleResetToDefaults();
+//#endif
+
     // Carica config runtime da NVS (o default se assenti)
     loadRuntimeConfig();
+
+    // ============================================================
+    // GESTIONE INTERAZIONE AL BOOT (moduli SERIAL_MENU + STORAGE)
+    // ============================================================
+    // Priorita' dei meccanismi di interazione dopo reset:
+    //   1. SERIAL_MENU (se USB collegato dopo reset HW / power-on):
+    //      apre un menu interattivo per comandi di manutenzione
+    //   2. STORAGE VBAT-DETECT (fallback silenzioso del menu):
+    //      se il menu va in timeout ma eravamo in storage con USB,
+    //      esce automaticamente da storage (comportamento "legacy")
+    // Entrambi i meccanismi sono no-op se USB non e' collegato o
+    // se il reset e' un normale wake da deep sleep.
+    // Il TRIPLE_RST_RESET (safety net offline) e' gia' stato gestito
+    // sopra, prima di loadRuntimeConfig().
+
+    uint16_t vbat_boot = readBatteryMv();
+    bool doForceTxAfterMenu = false;
+
+    // ---- DEBUG: log dettagliato per diagnosticare menu seriale ----
+    // Utile per capire se il menu non si apre per VBAT bassa o per
+    // reset reason non riconosciuto
+    Serial.printf("[BOOT-DEBUG] VBAT=%u mV (soglia USB=%u mV)\n",
+                  vbat_boot, VBAT_USB_DETECT_MV);
+    Serial.printf("[BOOT-DEBUG] reset_reason=%d (POWERON=1, EXT=2, DEEPSLEEP=8)\n",
+                  (int)esp_reset_reason());
+
+#if ENABLE_SERIAL_MENU
+    SerialMenuResult smr = checkAndRunSerialMenu(vbat_boot);
+    if (smr == SMR_REBOOT) {
+        // Clear NVS eseguito, riavvio immediato per applicare
+        delay(200);
+        ESP.restart();
+    }
+    doForceTxAfterMenu = (smr == SMR_FORCE_TX_NOW);
+#endif
+
+#if ENABLE_STORAGE_MODE
+    // Fallback silenzioso: se il menu seriale non ha agito (o non si e'
+    // aperto) E il device e' ancora in storage E VBAT indica USB,
+    // eseguiamo il classico wake-from-storage (comportamento legacy).
+    //
+    // IMPORTANTE: skippiamo il fallback se l'utente ha modificato
+    // esplicitamente il preset via menu (comando W o I). In quel caso
+    // la sua scelta e' definitiva, non va sovrascritta.
+    if (isStorageMode() && !menuPresetChangedExplicitly) {
+        Serial.printf("STORAGE MODE ancora attivo dopo menu (nessuna azione utente), VBAT=%u mV\n",
+                      vbat_boot);
+        checkUsbWakeupAndReset(vbat_boot);
+    } else if (isStorageMode() && menuPresetChangedExplicitly) {
+        Serial.println("STORAGE MODE confermato dall'utente via menu, nessun fallback VBAT");
+    }
+#endif
+
+    // Se l'utente ha scelto "T" (force TX) dal menu, saltiamo tutta
+    // l'attesa GPS del ciclo normale e forziamo un TX quasi immediato
+    if (doForceTxAfterMenu) {
+        forceTxNow = true;
+    }
+    // ============================================================
 
     Serial.println();
     Serial.println("===================================================");
@@ -2002,33 +3482,64 @@ void setup() {
     }
     delay(100);   // stabilizzazione alimentazioni
 
-    // --- 2) Init GPS (solo se non in identify) ---
-    if (!skipGps) {
+    // --- Feature: decidi se fare fix GPS questo ciclo ---
+    // Combina tre check: identify mode (skip), sensor disable, gps skip
+    bool doGpsThisCycle = !skipGps;
+#if ENABLE_SENSOR_DISABLE
+    if (!cfgGpsEnabled) {
+        doGpsThisCycle = false;
+        Serial.println("GPS DISABLED: salto init e fix");
+    }
+#endif
+#if ENABLE_GPS_SKIP
+    // shouldDoGpsFix() considera cfgGpsEnabled internamente,
+    // ma qui lo teniamo separato per il log piu' chiaro sopra.
+    if (doGpsThisCycle && !shouldDoGpsFix()) {
+        doGpsThisCycle = false;
+        // Log gia' stampato dentro shouldDoGpsFix / useLastKnownPosition
+    }
+#endif
+
+    // --- 2) Init GPS (solo se serve questo ciclo) ---
+    if (doGpsThisCycle) {
         initGps();
     }
 
-    // --- 3) Init SCD41 ---
-    if (!initScd41()) {
-        Serial.println("SCD41 init fallito, procedo con valori nulli");
+    // --- 3) Init SCD41 (solo se abilitato) ---
+    bool doScdThisCycle = true;
+#if ENABLE_SENSOR_DISABLE
+    if (!cfgScdEnabled) {
+        doScdThisCycle = false;
+        Serial.println("SCD41 DISABLED: salto init e lettura");
+    }
+#endif
+    if (doScdThisCycle) {
+        if (!initScd41()) {
+            Serial.println("SCD41 init fallito, procedo con valori nulli");
+        }
     }
 
-    // --- 4) Attendi fix GPS (saltato in identify) ---
+    // --- 4) Attendi fix GPS (solo se doGpsThisCycle) ---
     bool gpsOk = false;
-    if (!skipGps) {
+    if (doGpsThisCycle) {
         // Il primo dato SCD41 arriva dopo ~5 s, il fix GPS 30-90 s.
         uint32_t gpsTimeout = hasWarmData ? GPS_FIX_TIMEOUT_WARM_S : cfgGpsTimeoutS;
         gpsOk = waitForGpsFix(gpsTimeout);
-    } else {
+    } else if (skipGps) {
         Serial.println("[IDENTIFY] GPS saltato");
     }
+    // (per GPS DISABLED o GPS SKIP, il log e' gia' stato stampato sopra)
 
-    // --- 5) Leggi SCD41 ---
+    // --- 5) Leggi SCD41 (solo se abilitato questo ciclo) ---
     uint16_t co2 = 0;
     float tempC = 0, humRH = 0;
-    bool scdOk = readScd41(co2, tempC, humRH);
-    if (scdOk) {
-        Serial.printf("SCD41: CO2=%u ppm  T=%.2f °C  RH=%.1f %%\n",
-                      co2, tempC, humRH);
+    bool scdOk = false;
+    if (doScdThisCycle) {
+        scdOk = readScd41(co2, tempC, humRH);
+        if (scdOk) {
+            Serial.printf("SCD41: CO2=%u ppm  T=%.2f °C  RH=%.1f %%\n",
+                          co2, tempC, humRH);
+        }
     }
 
     // --- 6) Leggi batteria ---
@@ -2085,26 +3596,58 @@ void setup() {
         payload.timestamp = (uint64_t)(millis() / 1000);
     }
 
-    payload.co2_ppm    = scdOk ? co2 : 0;
-    payload.temp_c100  = scdOk ? (int16_t)(tempC * 100.0f) : 0;
-    payload.hum_pct100 = scdOk ? (uint16_t)(humRH * 100.0f) : 0;
     payload.vbat_mv    = vbat_mv;
 
+    // ---- Popolamento campi SCD41 ----
+#if ENABLE_SENSOR_DISABLE
+    if (!cfgScdEnabled) {
+        // SCD41 disattivato via downlink: valori placeholder invalidi
+        useScdDisabledPayload(&payload);
+    } else
+#endif
+    if (scdOk) {
+        payload.co2_ppm    = co2;
+        payload.temp_c100  = (int16_t)(tempC * 100.0f);
+        payload.hum_pct100 = (uint16_t)(humRH * 100.0f);
+    } else {
+        // Lettura fallita ma sensore abilitato: 0 (legacy)
+        payload.co2_ppm    = 0;
+        payload.temp_c100  = 0;
+        payload.hum_pct100 = 0;
+    }
+
+    // ---- Popolamento campi GPS ----
+#if ENABLE_SENSOR_DISABLE
+    if (!cfgGpsEnabled) {
+        // GPS disattivato via downlink: valori placeholder invalidi
+        useGpsDisabledPayload(&payload);
+    } else
+#endif
     if (gpsOk) {
         payload.lat_e7    = (int32_t)(gps.location.lat() * 10000000.0);
         payload.lon_e7    = (int32_t)(gps.location.lng() * 10000000.0);
         payload.alt_m     = (int16_t)gps.altitude.meters();
         payload.hdop_x100 = (uint16_t)(gps.hdop.hdop() * 100.0);
-        // Aggiorna cache RTC per il prossimo "warm start"
-        lastLat_e7 = payload.lat_e7;
-        lastLon_e7 = payload.lon_e7;
+        // Aggiorna cache RTC per il prossimo "warm start" e per GPS SKIP
+        lastLat_e7  = payload.lat_e7;
+        lastLon_e7  = payload.lon_e7;
         hasWarmData = true;
-    } else if (hasWarmData) {
-        // Usa l'ultima posizione valida come fallback
+#if ENABLE_GPS_SKIP
+        saveGpsFixToRTC(payload.lat_e7, payload.lon_e7, payload.alt_m);
+#endif
+    }
+#if ENABLE_GPS_SKIP
+    else if (!doGpsThisCycle) {
+        // Ciclo di GPS SKIP: usa ultima posizione nota
+        useLastKnownPosition(&payload);
+    }
+#endif
+    else if (hasWarmData) {
+        // Fix fallito ma abbiamo posizione valida in RTC (fallback storico)
         payload.lat_e7    = lastLat_e7;
         payload.lon_e7    = lastLon_e7;
         payload.alt_m     = 0;
-        payload.hdop_x100 = 9999;   // marker di "posizione stale"
+        payload.hdop_x100 = 9999;   // marker "posizione stale"
     }
 
     // --- 8) Init LoRaWAN e trasmetti ---
@@ -2201,6 +3744,18 @@ void setup() {
         enterDeepSleep(2);   // dormi 2 secondi e poi trasmetti ancora
         return;
     }
+
+    // ---- STORAGE MODE: sleep infinito senza timer wake ----
+    // Se il preset TX corrente e' STORAGE (10), non usiamo il timer di wake:
+    // il device si sveglia solo su reset hardware. Fondamentale che questo
+    // check sia PRIMA del calcolo di sleep_s: TX_INTERVAL_SECONDS[10] = 0
+    // farebbe scattare il fallback sleep_s=1 -> loop di TX continui!
+#if ENABLE_STORAGE_MODE
+    if (isStorageMode()) {
+        enterStorageDeepSleep();
+        // Non ritorna mai: sleep infinito
+    }
+#endif
 
     uint32_t txIntervalS = TX_INTERVAL_SECONDS[cfgTxIntervalPreset];
     if (cycleElapsed_s >= txIntervalS) {
