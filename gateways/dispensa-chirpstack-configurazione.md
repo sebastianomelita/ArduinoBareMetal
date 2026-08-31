@@ -14,12 +14,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 
 ## Indice
 
-1. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)
-2. [Setup del gateway con ChirpStack Gateway OS](#setup-del-gateway-con-chirpstack-gateway-os)
-3. [La gerarchia degli oggetti ChirpStack v4](#la-gerarchia-degli-oggetti-chirpstack-v4)
-4. [I concetti crittografici di LoRaWAN](#i-concetti-crittografici-di-lorawan)
-5. [Setup di un device in modalità ABP](#setup-di-un-device-in-modalità-abp)
-6. [Setup di un device in modalità OTAA](#setup-di-un-device-in-modalità-otaa)
+1. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)mosquitto-configurazioni.md10
 7. [Confronto operativo: ABP vs OTAA](#confronto-operativo-abp-vs-otaa)
 8. [Il codec JavaScript per uplink e downlink](#il-codec-javascript-per-uplink-e-downlink)
 9. [Il flusso MQTT lato ChirpStack](#il-flusso-mqtt-lato-chirpstack)
@@ -927,6 +922,8 @@ Senza bridge, per inviare un downlink devi:
 Con il bridge, puoi pubblicare da qualsiasi macchina che vede il broker centrale. Un'infrastruttura seria ha bridge da ogni gateway RPi verso un broker centrale accessibile a dashboard, orchestrators, script.
 
 ---
+
+[Esempi di configurazione del brifge in vari scenari](mosquitto-configurazioni.md)
 
 ## La coda downlink: come funziona
 
