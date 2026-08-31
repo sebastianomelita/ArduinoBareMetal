@@ -921,7 +921,7 @@ Senza bridge, per inviare un downlink devi:
 
 Con il bridge, puoi pubblicare da qualsiasi macchina che vede il broker centrale. Un'infrastruttura seria ha bridge da ogni gateway RPi verso un broker centrale accessibile a dashboard, orchestrators, script.
 
-[Esempi di configurazione del brifge in vari scenari](mosquitto-configurazioni.md)
+[Esempi di configurazione del bridge MQTT in vari scenari](mosquitto-configurazioni.md)
 
 ---
 
