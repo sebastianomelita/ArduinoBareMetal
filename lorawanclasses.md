@@ -376,7 +376,7 @@ dispositivo e del relativo owner, e ogni device, per ogni sessione, ha **un solo
 titolare della decifratura.
 
 
-#### **Esempio: ChirpStack**, multi-tenant, e lo è nativamente.
+### **Esempio: ChirpStack**
 
 Nella versione attuale (v4) il concetto di **tenant** è centrale nel modello dati. Ogni tenant ha i propri utenti (con ruoli come tenant admin, device admin o gateway admin), le proprie applicazioni, i device profile, i device e i gateway. Un utente vede e gestisce solo le risorse dei tenant a cui appartiene. Sopra tutti c'è l'amministratore globale dell'istanza, che crea i tenant e ne definisce i limiti.
 
