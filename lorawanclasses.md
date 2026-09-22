@@ -375,6 +375,21 @@ norma, la separazione è gestita **per applicazione** tramite l'identità del
 dispositivo e del relativo owner, e ogni device, per ogni sessione, ha **un solo AS**
 titolare della decifratura.
 
+
+#### **Esempio: ChirpStack**, multi-tenant, e lo è nativamente.
+
+Nella versione attuale (v4) il concetto di **tenant** è centrale nel modello dati. Ogni tenant ha i propri utenti (con ruoli come tenant admin, device admin o gateway admin), le proprie applicazioni, i device profile, i device e i gateway. Un utente vede e gestisce solo le risorse dei tenant a cui appartiene. Sopra tutti c'è l'amministratore globale dell'istanza, che crea i tenant e ne definisce i limiti.
+
+Per ogni tenant l'amministratore può impostare alcune regole, tra cui:
+
+- **Limiti di risorse**: numero massimo di device e di gateway.
+- **Possibilità di registrare gateway propri**: un tenant può essere solo "consumatore" della rete, senza gateway propri.
+- **Gateway privati**: di default i gateway di un tenant possono ricevere anche i pacchetti dei device di altri tenant, come in una rete condivisa. È possibile renderli privati, in uplink e/o in downlink, così che servano solo i device del proprio tenant.
+
+Nella versione precedente (v3) lo stesso ruolo era svolto dalle **organizzazioni**, con i *service profile* che definivano cosa ogni organizzazione poteva fare sulla rete. Con la v4 il modello è stato semplificato attorno ai tenant.
+
+Un aspetto utile per il discorso fatto prima: in ChirpStack v4 Network Server e Application Server sono stati **unificati in un unico servizio**, mentre nella v3 erano componenti separati. Un'installazione tipica è quindi un unico processo multi-tenant che fa sia la parte NS sia la decifratura del payload, da cui partono poi le integrazioni (MQTT, HTTP, InfluxDB, ecc.) di ciascuna applicazione.
+
 ### Cifratura e integrità: la sicurezza a due livelli
 
 LoRaWAN implementa un modello di sicurezza basato su **due chiavi di sessione
