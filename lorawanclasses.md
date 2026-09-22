@@ -343,20 +343,37 @@ Nello stack LoRaWAN la specifica distingue con precisione i ruoli funzionali dei
 componenti server. Mentre il **Network Server** gestisce la sessione MAC, la
 deduplicazione dei pacchetti ricevuti da più gateway e l'Adaptive Data Rate (ADR),
 è l'**Application Server** il componente responsabile dell'ultimo e fondamentale
-passo: la **decifratura** e la **decodifica del payload applicativo**. È quindi
-l'Application Server il nodo in cui il dato grezzo trasmesso dal sensore diventa
-informazione interpretabile, e di conseguenza il primo punto della catena in cui
-può essere applicata una logica di business o decisionale.
+passo: la **decifratura** (tramite l'AppSKey, di cui è l'unico detentore) e la
+**decodifica del payload applicativo**. È quindi l'Application Server il nodo in cui
+il dato grezzo trasmesso dal sensore diventa informazione interpretabile, e di
+conseguenza il primo punto della catena in cui può essere applicata una logica di
+business o decisionale.
 
-Potrebbero anche esserci più applicazioni e più owner sullo stesso NS. Ci sono quindi due **dimensioni di "molteplicità"**:
+Sullo stesso NS possono coesistere più applicazioni e più owner. Ci sono quindi due
+**dimensioni di "molteplicità"**:
 
-1. **Più AS per più applicazioni** — è il caso tipico: un NS con decine di applicazioni, ognuna che punta a un proprio AS (magari di clienti o reparti diversi). Ogni device manda i suoi dati a un solo AS, ma il sistema nel complesso ne ha molti.
+1. **Più applicazioni, con uno o più AS** — è il caso tipico: un NS con decine di
+   applicazioni, magari di clienti o reparti diversi. Nei deployment più comuni
+   (ChirpStack, The Things Stack) sono gestite da un unico AS multi-tenant con
+   separazione logica; in architetture distribuite possono puntare ad AS fisicamente
+   distinti. In ogni caso ogni device manda i suoi dati a un solo AS.
 
-2. **Più destinazioni per la stessa applicazione** — molti NS (ChirpStack, The Things Stack, Actility ThingPark, ecc.) permettono il *fan-out*: la stessa applicazione invia i dati contemporaneamente a più integrazioni/AS (es. un broker MQTT, un webhook HTTP, un connettore cloud), per duplicare i flussi verso sistemi diversi.
+2. **Più destinazioni per la stessa applicazione** — molti stack (ChirpStack, The
+   Things Stack, Actility ThingPark, ecc.) permettono il *fan-out*: la stessa
+   applicazione inoltra i dati contemporaneamente a più integrazioni (es. un broker
+   MQTT, un webhook HTTP, un connettore cloud), per duplicare i flussi verso sistemi
+   diversi. Il fan-out avviene **a valle della decifratura**: le integrazioni
+   ricevono dati già in chiaro dall'unico AS e non sono a loro volta Application
+   Server.
 
-Un caso a parte è il **roaming**, dove l'uplink di un device può transitare per più Network Server (fNS/sNS/hNS), ma l'Application Server resta quello associato alla rete "home" del device: la molteplicità lì è lato NS, non lato AS.
+Un caso a parte è il **roaming**, dove l'uplink di un device può transitare per più
+Network Server (fNS/sNS/hNS), ma l'Application Server resta quello associato alla
+rete "home" del device: la molteplicità lì è lato NS, non lato AS.
 
-Quindi, in sintesi: un NS → molti AS è la norma, e la separazione è gestita **per applicazione** tramite l'identità del dispositivo e del relativo owner. 
+Quindi, in sintesi: un NS → molte applicazioni (e potenzialmente molti AS) è la
+norma, la separazione è gestita **per applicazione** tramite l'identità del
+dispositivo e del relativo owner, e ogni device, per ogni sessione, ha **un solo AS**
+titolare della decifratura.
 
 ### Cifratura e integrità: la sicurezza a due livelli
 
