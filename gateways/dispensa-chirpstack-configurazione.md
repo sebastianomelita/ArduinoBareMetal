@@ -14,7 +14,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 
 ## Indice
 
-1. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)mosquitto-configurazioni.md10
+1. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)
 7. [Confronto operativo: ABP vs OTAA](#confronto-operativo-abp-vs-otaa)
 8. [Il codec JavaScript per uplink e downlink](#il-codec-javascript-per-uplink-e-downlink)
 9. [Il flusso MQTT lato ChirpStack](#il-flusso-mqtt-lato-chirpstack)
@@ -23,6 +23,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 12. [Gotcha comuni e come evitarli](#gotcha-comuni-e-come-evitarli)
 13. [Diagnostica: LoRaWAN frames, events, log](#diagnostica-lorawan-frames-events-log)
 14. [Riferimenti](#riferimenti)
+15. [Cos'è ChirpStack e come si integra](#cos-è-chirpstack-e-come-si-integra)
 
 ---
 
