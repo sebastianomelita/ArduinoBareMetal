@@ -1,0 +1,313 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1060" width="1200" height="1060" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpjNjMyZTliZC0wMmE4LTQ5ZmYtYjlhMC1mNTc4ZDFkNTMyZmQAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaMugeTfLZVqxNqAfKzpSkGwAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDplYmRmOTg0NS02ZTVlLTQ3OGUtOGUzNS0zYTI1MmI2YmY0NWRscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoqJS0hvZ2F317fgsT/9BHyQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggwOIwcHLZtXuXbNsE+pXH54PLyFAYbmkTT9Jew6hkhoSkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaK/aKZSdayIf8xBDZQ3y0BUAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCB2irrmdEQZmYbowzs0seJgbynJv5lTUUWylr4NPfVGmGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBjYZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmM2MzJlOWJkLTAyYTgtNDlmZi1iOWEwLWY1NzhkMWQ1MzJmZC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmY5ZDhhNTg0LTkyZWEtNGVjYi05NzE2LTg4MDE1NzFlOWVlY3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDA4jBwctm1e5ds2wT6lcfng8vIUBhuaRNP0l7DqGSGhKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggleREAT++AU1uFW9Gpm7Y/4jFIBZsGJ2GJ6ghvbWZ5aSiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggtGZ44fH/C10pN6WJn8oiP4AclRTenZWMYCa34vZQKbR0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQGbtflqvOAaOf+OCe8zU2BMEE39YvHUxh0EURCtHgNHWc3GD8o+bvG0zpw4O/HF04wtwwwnSsPNKhOyH8CsI8/U=</c2pa:manifest></metadata>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.10"/>
+    </filter>
+    <linearGradient id="serverGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e3a5f"/>
+      <stop offset="1" stop-color="#132a45"/>
+    </linearGradient>
+    <marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b5bdb"/>
+    </marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f8a6b"/>
+    </marker>
+    <marker id="arrGrey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrUdp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c98a0b"/>
+    </marker>
+    <marker id="arrMqtt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7048e8"/>
+    </marker>
+    <marker id="arrLight" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c7d6ea"/>
+    </marker>
+    <g id="waves">
+      <path d="M-7,-6 a9,9 0 0 1 0,12" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M-3,-3 a4.5,4.5 0 0 1 0,6" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- Sfondo -->
+  <rect width="1200" height="1060" fill="#f6f8fb"/>
+
+  <!-- Titolo -->
+  <text x="600" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="#0f172a">Tenant, gateway, forwarder e device in ChirpStack v4</text>
+  <text x="600" y="72" text-anchor="middle" font-size="14" fill="#475569">Ogni gateway appartiene a un solo tenant, ma per impostazione predefinita il suo traffico radio è condiviso con tutti</text>
+
+  <!-- ================= SERVER ================= -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="96" width="800" height="160" rx="18" fill="url(#serverGrad)"/>
+  </g>
+  <text x="224" y="127" font-size="18" font-weight="700" fill="#ffffff">Server ChirpStack</text>
+  <text x="976" y="127" text-anchor="end" font-size="12" fill="#8fa8c8">Un'unica installazione, con database PostgreSQL e Redis</text>
+
+  <!-- Gateway Bridge -->
+  <rect x="225" y="148" width="210" height="92" rx="12" fill="#fff7e3" stroke="#c98a0b" stroke-width="2"/>
+  <text x="330" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#6b4a00">Gateway Bridge</text>
+  <text x="330" y="197" text-anchor="middle" font-size="11.5" fill="#6b5a30">riceve UDP Semtech</text>
+  <text x="330" y="214" text-anchor="middle" font-size="11.5" fill="#6b5a30">e lo converte in MQTT</text>
+  <text x="330" y="231" text-anchor="middle" font-size="11" font-weight="600" fill="#a06e00">porta UDP 1700</text>
+
+  <!-- Broker MQTT -->
+  <rect x="515" y="148" width="210" height="92" rx="12" fill="#f2edff" stroke="#7048e8" stroke-width="2"/>
+  <text x="620" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#3f2596">Broker MQTT</text>
+  <text x="620" y="197" text-anchor="middle" font-size="11.5" fill="#56478a">Mosquitto, smista</text>
+  <text x="620" y="214" text-anchor="middle" font-size="11.5" fill="#56478a">eventi e comandi</text>
+  <text x="620" y="231" text-anchor="middle" font-size="11" font-weight="600" fill="#5b3ad0">porta TCP 1883, o 8883 con TLS</text>
+
+  <!-- ChirpStack core -->
+  <rect x="800" y="148" width="176" height="92" rx="12" fill="#e8eef7" stroke="#8fa8c8" stroke-width="2"/>
+  <text x="888" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a5f">ChirpStack</text>
+  <text x="888" y="197" text-anchor="middle" font-size="11.5" fill="#3d5475">network server e</text>
+  <text x="888" y="214" text-anchor="middle" font-size="11.5" fill="#3d5475">application server</text>
+  <text x="888" y="231" text-anchor="middle" font-size="11" font-weight="600" fill="#3d5475">tenant, gateway, device</text>
+
+  <!-- Frecce interne al server -->
+  <line x1="438" y1="194" x2="509" y2="194" stroke="#c7d6ea" stroke-width="2.2" marker-end="url(#arrLight)"/>
+  <text x="474" y="186" text-anchor="middle" font-size="11" font-weight="600" fill="#c7d6ea">MQTT</text>
+  <line x1="731" y1="194" x2="794" y2="194" stroke="#c7d6ea" stroke-width="2.2" marker-start="url(#arrLight)" marker-end="url(#arrLight)"/>
+  <text x="762" y="186" text-anchor="middle" font-size="11" font-weight="600" fill="#c7d6ea">MQTT</text>
+
+  <!-- Box esplicativi laterali -->
+  <rect x="30" y="96" width="156" height="160" rx="14" fill="#fff7e3" stroke="#e6c57a"/>
+  <rect x="30" y="96" width="156" height="8" rx="4" fill="#c98a0b"/>
+  <text x="46" y="128" font-size="14" font-weight="700" fill="#6b4a00">UDP Forwarder</text>
+  <g font-size="11.5" fill="#5a4a24">
+    <text x="46" y="150">Invia i pacchetti con il</text>
+    <text x="46" y="166">protocollo UDP Semtech</text>
+    <text x="46" y="182">al Gateway Bridge, che</text>
+    <text x="46" y="198">li traduce in MQTT.</text>
+    <text x="46" y="220">Semplice, ma senza</text>
+    <text x="46" y="236">cifratura né password.</text>
+  </g>
+
+  <rect x="1014" y="96" width="156" height="160" rx="14" fill="#f2edff" stroke="#b9a6f2"/>
+  <rect x="1014" y="96" width="156" height="8" rx="4" fill="#7048e8"/>
+  <text x="1030" y="128" font-size="14" font-weight="700" fill="#3f2596">MQTT Forwarder</text>
+  <g font-size="11.5" fill="#4a3f75">
+    <text x="1030" y="150">Si collega direttamente</text>
+    <text x="1030" y="166">al broker MQTT, senza</text>
+    <text x="1030" y="182">Gateway Bridge.</text>
+    <text x="1030" y="204">Supporta TLS e</text>
+    <text x="1030" y="220">autenticazione. È il</text>
+    <text x="1030" y="236">default in Gateway OS.</text>
+  </g>
+
+  <!-- ================= COLLEGAMENTI GATEWAY → SERVER ================= -->
+  <!-- UDP: gateway A1 e A2 → Gateway Bridge -->
+  <g fill="none" stroke="#c98a0b" stroke-width="2.6" marker-end="url(#arrUdp)">
+    <path d="M260 396 C260 330 290 320 290 246"/>
+    <path d="M460 396 C460 330 370 320 370 246"/>
+  </g>
+  <rect x="266" y="310" width="178" height="26" rx="13" fill="#ffffff" stroke="#c98a0b" stroke-width="1.5"/>
+  <text x="355" y="327" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a5d00">UDP Semtech, porta 1700</text>
+
+  <!-- MQTT: gateway B1 e B2 → Broker -->
+  <g fill="none" stroke="#7048e8" stroke-width="2.6" marker-end="url(#arrMqtt)">
+    <path d="M840 396 C840 320 610 330 610 246"/>
+    <path d="M1040 396 C1040 310 670 330 670 246"/>
+  </g>
+  <rect x="728" y="310" width="196" height="26" rx="13" fill="#ffffff" stroke="#7048e8" stroke-width="1.5"/>
+  <text x="826" y="327" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4b2cc0">MQTT, porta 1883 o 8883</text>
+
+  <!-- ================= TENANT (spostati in basso di 120) ================= -->
+  <g transform="translate(0,120)">
+
+    <!-- ===== TENANT A ===== -->
+    <rect x="40" y="250" width="540" height="500" rx="22" fill="#eef2fd" stroke="#bfccf5" stroke-width="1.5"/>
+    <text x="68" y="290" font-size="21" font-weight="700" fill="#2b3f9e">Tenant A</text>
+
+    <!-- Gateway A1 -->
+    <line x1="260" y1="300" x2="260" y2="310" stroke="#c98a0b" stroke-width="2.6"/>
+    <g filter="url(#shadow)">
+      <rect x="185" y="310" width="150" height="80" rx="12" fill="#ffffff" stroke="#3b5bdb" stroke-width="2"/>
+    </g>
+    <rect x="198" y="276" width="124" height="24" rx="12" fill="#c98a0b"/>
+    <text x="260" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">UDP Forwarder</text>
+    <text x="260" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Gateway A1</text>
+    <text x="260" y="358" text-anchor="middle" font-size="11" fill="#64748b">EUI 0016c001ff10a235</text>
+
+    <!-- Gateway A2 -->
+    <line x1="460" y1="300" x2="460" y2="310" stroke="#c98a0b" stroke-width="2.6"/>
+    <g filter="url(#shadow)">
+      <rect x="385" y="310" width="150" height="80" rx="12" fill="#ffffff" stroke="#3b5bdb" stroke-width="2"/>
+    </g>
+    <rect x="398" y="276" width="124" height="24" rx="12" fill="#c98a0b"/>
+    <text x="460" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">UDP Forwarder</text>
+    <text x="460" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Gateway A2</text>
+    <text x="460" y="358" text-anchor="middle" font-size="11" fill="#64748b">EUI 0016c001ff10b871</text>
+    <text x="460" y="377" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">condiviso (default)</text>
+
+    <!-- Applicazione A -->
+    <rect x="68" y="440" width="484" height="224" rx="14" fill="#ffffff" stroke="#bfccf5" stroke-width="1.5"/>
+    <g font-size="13">
+      <rect x="87" y="470" width="96" height="80" rx="10" fill="#eef2fd" stroke="#9fb1ee"/>
+      <circle cx="135" cy="492" r="8" fill="#3b5bdb"/>
+      <use href="#waves" x="152" y="492" stroke="#3b5bdb"/>
+      <text x="135" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device A1</text>
+      <text x="135" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+
+      <rect x="207" y="470" width="96" height="80" rx="10" fill="#eef2fd" stroke="#9fb1ee"/>
+      <circle cx="255" cy="492" r="8" fill="#3b5bdb"/>
+      <use href="#waves" x="272" y="492" stroke="#3b5bdb"/>
+      <text x="255" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device A2</text>
+      <text x="255" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+
+      <rect x="327" y="470" width="96" height="80" rx="10" fill="#eef2fd" stroke="#9fb1ee"/>
+      <circle cx="375" cy="492" r="8" fill="#3b5bdb"/>
+      <use href="#waves" x="392" y="492" stroke="#3b5bdb"/>
+      <text x="375" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device A3</text>
+      <text x="375" y="538" text-anchor="middle" font-size="11" fill="#64748b">ABP</text>
+
+      <rect x="447" y="470" width="96" height="80" rx="10" fill="#eef2fd" stroke="#9fb1ee"/>
+      <circle cx="495" cy="492" r="8" fill="#3b5bdb"/>
+      <use href="#waves" x="512" y="492" stroke="#3b5bdb"/>
+      <text x="495" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device A4</text>
+      <text x="495" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+    </g>
+    <text x="88" y="590" font-size="14" font-weight="700" fill="#2b3f9e">Applicazione «Sensori ambientali»</text>
+    <text x="88" y="612" font-size="12" fill="#475569">Device profile: EU868, LoRaWAN 1.0.3, codec JavaScript</text>
+    <text x="88" y="632" font-size="12" fill="#475569">Integrazioni: MQTT, HTTP, InfluxDB</text>
+
+    <g font-size="12" fill="#2b3f9e">
+      <rect x="68" y="686" width="128" height="30" rx="15" fill="#ffffff" stroke="#bfccf5"/>
+      <text x="132" y="705" text-anchor="middle">Utenti e ruoli</text>
+      <rect x="206" y="686" width="92" height="30" rx="15" fill="#ffffff" stroke="#bfccf5"/>
+      <text x="252" y="705" text-anchor="middle">API key</text>
+      <rect x="308" y="686" width="244" height="30" rx="15" fill="#ffffff" stroke="#bfccf5"/>
+      <text x="430" y="705" text-anchor="middle">Limiti: max gateway e max device</text>
+    </g>
+
+    <g fill="none" stroke="#3b5bdb" stroke-width="2.2" marker-end="url(#arrA)">
+      <path d="M135 470 Q150 410 238 394"/>
+      <path d="M255 470 Q258 430 260 396"/>
+      <path d="M375 470 Q395 420 440 395"/>
+      <path d="M495 470 Q482 425 470 396"/>
+    </g>
+
+    <!-- ===== TENANT B ===== -->
+    <rect x="620" y="250" width="540" height="500" rx="22" fill="#eaf7f2" stroke="#a8dcc8" stroke-width="1.5"/>
+    <text x="648" y="290" font-size="21" font-weight="700" fill="#0b6b53">Tenant B</text>
+
+    <!-- Gateway B1 -->
+    <line x1="840" y1="300" x2="840" y2="310" stroke="#7048e8" stroke-width="2.6"/>
+    <g filter="url(#shadow)">
+      <rect x="765" y="310" width="150" height="80" rx="12" fill="#ffffff" stroke="#0f8a6b" stroke-width="2"/>
+    </g>
+    <rect x="775" y="276" width="130" height="24" rx="12" fill="#7048e8"/>
+    <text x="840" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">MQTT Forwarder</text>
+    <text x="840" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Gateway B1</text>
+    <text x="840" y="358" text-anchor="middle" font-size="11" fill="#64748b">EUI 7276ff000b0310c4</text>
+
+    <!-- Gateway B2 (privato) -->
+    <line x1="1040" y1="300" x2="1040" y2="310" stroke="#7048e8" stroke-width="2.6"/>
+    <g filter="url(#shadow)">
+      <rect x="965" y="310" width="150" height="80" rx="12" fill="#ffffff" stroke="#0f8a6b" stroke-width="2"/>
+    </g>
+    <rect x="975" y="276" width="130" height="24" rx="12" fill="#7048e8"/>
+    <text x="1040" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">MQTT Forwarder</text>
+    <text x="1040" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Gateway B2</text>
+    <text x="1040" y="358" text-anchor="middle" font-size="11" fill="#64748b">EUI 7276ff000b0322a9</text>
+    <text x="1040" y="377" text-anchor="middle" font-size="11" font-weight="600" fill="#b42318">Private gateways attivo</text>
+    <g>
+      <circle cx="1113" cy="324" r="14" fill="#b42318" stroke="#ffffff" stroke-width="2.5"/>
+      <path d="M1109 323 v-3.5 a4 4 0 0 1 8 0 v3.5" fill="none" stroke="#ffffff" stroke-width="2"/>
+      <rect x="1106.5" y="322.5" width="13" height="9.5" rx="2" fill="#ffffff"/>
+    </g>
+
+    <!-- Applicazione B -->
+    <rect x="648" y="440" width="484" height="224" rx="14" fill="#ffffff" stroke="#a8dcc8" stroke-width="1.5"/>
+    <g font-size="13">
+      <rect x="667" y="470" width="96" height="80" rx="10" fill="#eaf7f2" stroke="#8fcfb7"/>
+      <circle cx="715" cy="492" r="8" fill="#0f8a6b"/>
+      <use href="#waves" x="732" y="492" stroke="#0f8a6b"/>
+      <text x="715" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device B1</text>
+      <text x="715" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+
+      <rect x="787" y="470" width="96" height="80" rx="10" fill="#eaf7f2" stroke="#8fcfb7"/>
+      <circle cx="835" cy="492" r="8" fill="#0f8a6b"/>
+      <use href="#waves" x="852" y="492" stroke="#0f8a6b"/>
+      <text x="835" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device B2</text>
+      <text x="835" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+
+      <rect x="907" y="470" width="96" height="80" rx="10" fill="#eaf7f2" stroke="#8fcfb7"/>
+      <circle cx="955" cy="492" r="8" fill="#0f8a6b"/>
+      <use href="#waves" x="972" y="492" stroke="#0f8a6b"/>
+      <text x="955" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device B3</text>
+      <text x="955" y="538" text-anchor="middle" font-size="11" fill="#64748b">Classe C</text>
+
+      <rect x="1027" y="470" width="96" height="80" rx="10" fill="#eaf7f2" stroke="#8fcfb7"/>
+      <circle cx="1075" cy="492" r="8" fill="#0f8a6b"/>
+      <use href="#waves" x="1092" y="492" stroke="#0f8a6b"/>
+      <text x="1075" y="520" text-anchor="middle" font-weight="700" fill="#0f172a">Device B4</text>
+      <text x="1075" y="538" text-anchor="middle" font-size="11" fill="#64748b">OTAA</text>
+    </g>
+    <text x="668" y="590" font-size="14" font-weight="700" fill="#0b6b53">Applicazione «Contatori»</text>
+    <text x="668" y="612" font-size="12" fill="#475569">Device profile: EU868, LoRaWAN 1.0.4, codec JavaScript</text>
+    <text x="668" y="632" font-size="12" fill="#475569">Integrazioni: MQTT, HTTP</text>
+
+    <g font-size="12" fill="#0b6b53">
+      <rect x="648" y="686" width="128" height="30" rx="15" fill="#ffffff" stroke="#a8dcc8"/>
+      <text x="712" y="705" text-anchor="middle">Utenti e ruoli</text>
+      <rect x="786" y="686" width="92" height="30" rx="15" fill="#ffffff" stroke="#a8dcc8"/>
+      <text x="832" y="705" text-anchor="middle">API key</text>
+      <rect x="888" y="686" width="244" height="30" rx="15" fill="#ffffff" stroke="#a8dcc8"/>
+      <text x="1010" y="705" text-anchor="middle">Limiti: max gateway e max device</text>
+    </g>
+
+    <g fill="none" stroke="#0f8a6b" stroke-width="2.2" marker-end="url(#arrB)">
+      <path d="M715 470 Q745 415 818 395"/>
+      <path d="M835 470 Q838 430 840 396"/>
+      <path d="M955 470 Q985 415 1020 395"/>
+      <path d="M1075 470 Q1062 425 1050 396"/>
+    </g>
+
+    <!-- ===== TRAFFICO TRA TENANT ===== -->
+    <path d="M715 470 Q575 420 478 396" fill="none" stroke="#64748b" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#arrGrey)"/>
+    <rect x="556" y="404" width="88" height="22" rx="11" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="600" y="419" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">condiviso</text>
+
+    <path d="M495 470 Q720 452 928 408" fill="none" stroke="#b42318" stroke-width="2.2" stroke-dasharray="7 5"/>
+    <g stroke="#b42318" stroke-width="3" stroke-linecap="round">
+      <line x1="934" y1="396" x2="950" y2="412"/>
+      <line x1="950" y1="396" x2="934" y2="412"/>
+    </g>
+    <text x="942" y="432" text-anchor="middle" font-size="11" font-weight="600" fill="#b42318">bloccato</text>
+  </g>
+
+  <!-- ================= LEGENDA ================= -->
+  <rect x="40" y="890" width="1120" height="152" rx="16" fill="#ffffff" stroke="#dbe2ec"/>
+  <text x="68" y="920" font-size="14" font-weight="700" fill="#0f172a">Legenda</text>
+  <text x="1140" y="920" text-anchor="end" font-size="11.5" fill="#64748b">Gli identificativi EUI sono di esempio. Il Gateway ID è unico in tutta l'installazione</text>
+
+  <g font-size="12.5" fill="#334155">
+    <!-- riga 1 -->
+    <line x1="68" y1="944" x2="118" y2="944" stroke="#3b5bdb" stroke-width="2.4"/>
+    <line x1="68" y1="951" x2="118" y2="951" stroke="#0f8a6b" stroke-width="2.4"/>
+    <text x="130" y="952">Radio: device verso un gateway del proprio tenant</text>
+
+    <line x1="590" y1="948" x2="640" y2="948" stroke="#64748b" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#arrGrey)"/>
+    <text x="652" y="952">Gateway condiviso: riceve anche i device di altri tenant</text>
+
+    <!-- riga 2 -->
+    <line x1="68" y1="976" x2="118" y2="976" stroke="#b42318" stroke-width="2.4" stroke-dasharray="7 5"/>
+    <text x="130" y="980">Traffico bloccato dall'opzione Private gateways</text>
+
+    <circle cx="615" cy="975" r="11" fill="#b42318"/>
+    <path d="M612 974.5 v-3 a3 3 0 0 1 6 0 v3" fill="none" stroke="#ffffff" stroke-width="1.7"/>
+    <rect x="610" y="973.5" width="10" height="7.5" rx="1.5" fill="#ffffff"/>
+    <text x="652" y="980">Gateway privato: serve solo i device del proprio tenant</text>
+
+    <!-- riga 3 -->
+    <line x1="68" y1="1004" x2="118" y2="1004" stroke="#c98a0b" stroke-width="2.6" marker-end="url(#arrUdp)"/>
+    <text x="130" y="1008">UDP Forwarder: UDP Semtech verso il Gateway Bridge</text>
+
+    <line x1="590" y1="1004" x2="640" y2="1004" stroke="#7048e8" stroke-width="2.6" marker-end="url(#arrMqtt)"/>
+    <text x="652" y="1008">MQTT Forwarder: direttamente al broker MQTT</text>
+  </g>
+  <text x="68" y="1030" font-size="11.5" font-style="italic" fill="#64748b">Il forwarder si sceglie per ogni gateway, non per tenant: qui il tenant A usa UDP e il tenant B usa MQTT solo per rendere lo schema più leggibile.</text>
+</svg>
