@@ -483,7 +483,9 @@ Il gateway deve avere accesso a Internet per scaricare i pacchetti.
 
 ## 12. Collegare e condividere i gateway
 
-![Relazione tra tenant, gateway e device](chirpstack_tenant_gateway_device.svg)
+<p align="center">
+  <img src="img/chirpstack_tenant_gateway_device.svg" alt="Architettura ChirpStack: componenti e loro relazioni" width="1000">
+</p>
 
 *La figura è nel file `chirpstack_tenant_gateway_device.svg`, che va tenuto nella stessa cartella della dispensa.*
 
