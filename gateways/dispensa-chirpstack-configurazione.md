@@ -23,7 +23,7 @@ Codici e commenti sono stati tutti realizzati in collaborazione con l'AI Claude 
 12. [Gotcha comuni e come evitarli](#gotcha-comuni-e-come-evitarli)
 13. [Diagnostica: LoRaWAN frames, events, log](#diagnostica-lorawan-frames-events-log)
 14. [Riferimenti](#riferimenti)
-15. [Dispensa_chirpstack.md](#dispensa_chirpstack.md)
+15. [Dispensa_chirpstack.md](dispensa_chirpstack.md)
 
 ---
 
