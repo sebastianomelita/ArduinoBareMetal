@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="font-family:Arial,Helvetica,sans-serif">
+<title>Multiplazione nella rete di accesso GPON e nella dorsale DWDM</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="context-stroke"/></marker></defs>
+<rect x="0" y="0" width="1600" height="1000" rx="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<rect x="20" y="20" width="1560" height="500" rx="12" fill="#FAEEDA" stroke="#BA7517" stroke-width="1"/>
+<rect x="20" y="20" width="1560" height="500" rx="12" fill="#ffffff" fill-opacity="0.55"/>
+<text x="40" y="46" font-size="17" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">A · Tratta di accesso GPON: una fibra, due λ, TDM ↓ / TDMA ↑, VLAN dentro gli slot</text>
+<text x="40" y="70" font-size="12.5" text-anchor="start" font-weight="normal" fill="#854F0B" dominant-baseline="central">Lo splitter è passivo (non alimentato): copia la luce verso le ONT e somma la luce delle ONT. La multiplazione la fanno gli estremi attivi: OLT e ONT.</text>
+<rect x="40" y="175" width="130" height="130" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="105.0" y="231.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">OLT</text>
+<text x="105.0" y="250.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">attivo · centrale</text>
+<text x="105" y="325" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">decide i tempi:</text>
+<text x="105" y="341" font-size="11" text-anchor="middle" font-weight="bold" fill="#534AB7" dominant-baseline="central">DBA + ranging</text>
+<rect x="170" y="190" width="650" height="100" rx="6" fill="#FAC775" stroke="#BA7517" stroke-width="0.8"/>
+<rect x="170" y="190" width="650" height="100" rx="6" fill="#ffffff" fill-opacity="0.6"/>
+<text x="495" y="240" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" font-style="italic" dominant-baseline="central">fibra di feeder (una sola)</text>
+<rect x="200" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="227" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="258" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="285" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="316" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="343" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<rect x="374" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="401" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="432" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="459" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="490" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="517" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<rect x="548" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="575" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="606" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="633" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="664" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="691" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<rect x="722" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="749" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<line x1="200" y1="232" x2="780" y2="232" stroke="#633806" stroke-width="1.2" stroke-linecap="butt"/>
+<line x1="760" y1="232" x2="785" y2="232" stroke="#633806" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="200" y="168" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↓ λ 1490 nm · TDM: un flusso continuo composto dall'OLT, uno slot per ONT (in broadcast)</text>
+<rect x="205" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="229" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="269" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="293" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="333" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="357" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<rect x="397" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="421" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="461" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="485" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="525" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="549" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<rect x="589" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="613" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="653" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="677" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="717" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="741" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<line x1="785" y1="248" x2="200" y2="248" stroke="#633806" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="200" y="312" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↑ λ 1310 nm · TDMA: burst delle ONT in fila, con piccoli intervalli di guardia, nei tempi assegnati dall'OLT</text>
+<polygon points="820,240 900,204 900,276" fill="#FAC775" stroke="#854F0B"/>
+<text x="856" y="296" font-size="13" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:N</text>
+<text x="856" y="313" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">passivo</text>
+<path d="M900 216 C 980 216, 980 120, 1060 120" fill="none" stroke="#BA7517" stroke-width="3"/>
+<rect x="1070" y="100" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="1"/>
+<rect x="1100" y="100" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="0.22"/>
+<rect x="1130" y="100" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="0.22"/>
+<rect x="1160" y="100" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="1"/>
+<rect x="1190" y="100" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="0.22"/>
+<rect x="1220" y="100" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="0.22"/>
+<rect x="1070" y="124" width="26" height="14" rx="2" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="1106" y="131" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">← solo i suoi burst</text>
+<rect x="1300" y="90" width="120" height="60" rx="8" fill="#ffffff" stroke="#378ADD" stroke-width="1"/>
+<text x="1360.0" y="111.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">ONT 1</text>
+<text x="1360.0" y="130.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">attiva · casa</text>
+<line x1="1060" y1="120" x2="1298" y2="120" stroke="#BA7517" stroke-width="3" stroke-linecap="butt"/>
+<path d="M900 240 C 980 240, 980 240, 1060 240" fill="none" stroke="#BA7517" stroke-width="3"/>
+<rect x="1070" y="220" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="0.22"/>
+<rect x="1100" y="220" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="1"/>
+<rect x="1130" y="220" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="0.22"/>
+<rect x="1160" y="220" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="0.22"/>
+<rect x="1190" y="220" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="1"/>
+<rect x="1220" y="220" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="0.22"/>
+<rect x="1070" y="244" width="26" height="14" rx="2" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="1106" y="251" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">← solo i suoi burst</text>
+<rect x="1300" y="210" width="120" height="60" rx="8" fill="#ffffff" stroke="#7F77DD" stroke-width="1"/>
+<text x="1360.0" y="231.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">ONT 2</text>
+<text x="1360.0" y="250.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">attiva · casa</text>
+<line x1="1060" y1="240" x2="1298" y2="240" stroke="#BA7517" stroke-width="3" stroke-linecap="butt"/>
+<path d="M900 264 C 980 264, 980 360, 1060 360" fill="none" stroke="#BA7517" stroke-width="3"/>
+<rect x="1070" y="340" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="0.22"/>
+<rect x="1100" y="340" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="0.22"/>
+<rect x="1130" y="340" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="1"/>
+<rect x="1160" y="340" width="26" height="14" rx="2" fill="#378ADD" fill-opacity="0.22"/>
+<rect x="1190" y="340" width="26" height="14" rx="2" fill="#7F77DD" fill-opacity="0.22"/>
+<rect x="1220" y="340" width="26" height="14" rx="2" fill="#D4537E" fill-opacity="1"/>
+<rect x="1070" y="364" width="26" height="14" rx="2" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="1106" y="371" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">← solo i suoi burst</text>
+<rect x="1300" y="330" width="120" height="60" rx="8" fill="#ffffff" stroke="#D4537E" stroke-width="1"/>
+<text x="1360.0" y="351.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">ONT 3</text>
+<text x="1360.0" y="370.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">attiva · casa</text>
+<line x1="1060" y1="360" x2="1298" y2="360" stroke="#BA7517" stroke-width="3" stroke-linecap="butt"/>
+<text x="1110" y="445" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">↓ ogni ONT riceve la copia di tutto il flusso e tiene solo i suoi slot (gli altri sono cifrati)</text>
+<text x="1110" y="463" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">↑ ogni ONT trasmette solo quando l'OLT glielo concede: altrimenti i segnali si sommerebbero nello splitter</text>
+<line x1="227" y1="224" x2="230" y2="385" stroke="#5F5E5A" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="3 3"/>
+<rect x="200" y="385" width="560" height="92" rx="8" fill="#ffffff" stroke="#5F5E5A" stroke-width="0.8"/>
+<text x="214" y="403" font-size="12" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Dentro gli slot della ONT 1: trame Ethernet etichettate (multiplazione statistica, non TDM)</text>
+<rect x="214" y="423" width="150" height="26" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="289.0" y="436" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">VLAN 835 · dati</text>
+<rect x="370" y="423" width="120" height="26" rx="3" fill="#D85A30" stroke="none" stroke-width="1"/>
+<text x="430.0" y="436" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">VLAN 836 · voce</text>
+<rect x="496" y="423" width="110" height="26" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="551.0" y="436" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">VLAN 835 · dati</text>
+<rect x="612" y="423" width="50" height="26" rx="3" fill="#D85A30" stroke="none" stroke-width="1"/>
+<text x="637.0" y="436" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">836</text>
+<rect x="668" y="423" width="80" height="26" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="708.0" y="436" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">VLAN 835</text>
+<text x="214" y="463" font-size="10.5" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">le trame si alternano in base al traffico; il tag VLAN (in GPON mappato su GEM port) indica il servizio</text>
+<rect x="20" y="540" width="1560" height="440" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<rect x="20" y="540" width="1560" height="440" rx="12" fill="#ffffff" fill-opacity="0.55"/>
+<text x="40" y="566" font-size="17" text-anchor="start" font-weight="bold" fill="#3C3489" dominant-baseline="central">B · Dorsale DWDM: ogni λ è un link punto-punto tra due nodi (un "tubo" separato), non un utente né un servizio</text>
+<text x="40" y="590" font-size="12.5" text-anchor="start" font-weight="normal" fill="#534AB7" dominant-baseline="central">I mux/demux e i ROADM sono componenti ottici; le λ le generano e le ricevono i transponder attivi dei nodi. Una λ porta il traffico già aggregato di migliaia di utenti.</text>
+<rect x="30" y="650" width="160" height="80" rx="8" fill="#ffffff" stroke="#534AB7" stroke-width="1"/>
+<text x="110.0" y="681.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">PoP nazionale</text>
+<text x="110.0" y="700.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">OLT / aggregazione</text>
+<rect x="520" y="650" width="160" height="80" rx="8" fill="#ffffff" stroke="#534AB7" stroke-width="1"/>
+<text x="600.0" y="681.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">Nodo A</text>
+<text x="600.0" y="700.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">ROADM + router MPLS</text>
+<rect x="1010" y="650" width="160" height="80" rx="8" fill="#ffffff" stroke="#534AB7" stroke-width="1"/>
+<text x="1090.0" y="681.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">Nodo B</text>
+<text x="1090.0" y="700.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">ROADM + router MPLS</text>
+<rect x="1410" y="650" width="160" height="80" rx="8" fill="#ffffff" stroke="#534AB7" stroke-width="1"/>
+<text x="1490.0" y="681.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">PoP regionale</text>
+<text x="1490.0" y="700.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">BNG / server PPPoE</text>
+<rect x="192" y="660" width="326" height="60" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.8"/>
+<rect x="682" y="660" width="326" height="60" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.8"/>
+<rect x="1172" y="660" width="236" height="60" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.8"/>
+<line x1="192" y1="672" x2="518" y2="672" stroke="#3C3489" stroke-width="3.5" stroke-linecap="butt"/>
+<line x1="682" y1="684" x2="1008" y2="684" stroke="#534AB7" stroke-width="3.5" stroke-linecap="butt"/>
+<line x1="192" y1="696" x2="518" y2="696" stroke="#7F77DD" stroke-width="3.5" stroke-linecap="butt"/>
+<line x1="682" y1="696" x2="1008" y2="696" stroke="#7F77DD" stroke-width="3.5" stroke-linecap="butt"/>
+<line x1="1172" y1="696" x2="1408" y2="696" stroke="#7F77DD" stroke-width="3.5" stroke-linecap="butt"/>
+<line x1="1172" y1="708" x2="1408" y2="708" stroke="#AFA9EC" stroke-width="3.5" stroke-linecap="butt"/>
+<text x="355" y="640" font-size="12" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">λ1</text>
+<text x="845" y="640" font-size="12" text-anchor="middle" font-weight="bold" fill="#534AB7" dominant-baseline="central">λ2</text>
+<text x="1290" y="640" font-size="12" text-anchor="middle" font-weight="bold" fill="#AFA9EC" dominant-baseline="central">λ4</text>
+<line x1="40" y1="765" x2="70" y2="765" stroke="#3C3489" stroke-width="3.5" stroke-linecap="butt"/>
+<text x="78" y="765" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">λ1 · PoP ↔ A</text>
+<line x1="600" y1="765" x2="630" y2="765" stroke="#534AB7" stroke-width="3.5" stroke-linecap="butt"/>
+<text x="638" y="765" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">λ2 · A ↔ B</text>
+<line x1="40" y1="785" x2="70" y2="785" stroke="#7F77DD" stroke-width="3.5" stroke-linecap="butt"/>
+<text x="78" y="785" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">λ3 · PoP ↔ PoP regionale (passa otticamente nei ROADM)</text>
+<line x1="600" y1="785" x2="630" y2="785" stroke="#AFA9EC" stroke-width="3.5" stroke-linecap="butt"/>
+<text x="638" y="785" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">λ4 · B ↔ PoP regionale</text>
+<text x="1180" y="765" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">Stessa fibra, frequenze diverse (griglia ITU, banda C ~1530–1565 nm)</text>
+<text x="1180" y="785" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">→ come avere tante fibre separate in un solo cavo</text>
+<text x="40" y="820" font-size="13" text-anchor="start" font-weight="bold" fill="#3C3489" dominant-baseline="central">Dentro una λ (es. λ1 a 100 Gbit/s) il contenuto lo decidono i nodi agli estremi:</text>
+<text x="40" y="852" font-size="12.5" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">OTN / SDH</text>
+<text x="40" y="870" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">TDM vero: slot fissi</text>
+<rect x="190" y="846" width="48" height="30" rx="3" fill="#534AB7" stroke="none" stroke-width="1"/>
+<text x="214" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="242" y="846" width="48" height="30" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="266" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="294" y="846" width="48" height="30" rx="3" fill="#534AB7" stroke="none" stroke-width="1"/>
+<text x="318" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="346" y="846" width="48" height="30" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="370" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="398" y="846" width="48" height="30" rx="3" fill="#534AB7" stroke="none" stroke-width="1"/>
+<text x="422" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="450" y="846" width="48" height="30" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="474" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="502" y="846" width="48" height="30" rx="3" fill="#534AB7" stroke="none" stroke-width="1"/>
+<text x="526" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="554" y="846" width="48" height="30" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="578" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="606" y="846" width="48" height="30" rx="3" fill="#534AB7" stroke="none" stroke-width="1"/>
+<text x="630" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<rect x="658" y="846" width="48" height="30" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="682" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">10G</text>
+<text x="190" y="892" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">10 sotto-canali da 10G, ognuno con il suo slot di tempo ricorrente</text>
+<text x="780" y="852" font-size="12.5" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Ethernet / MPLS</text>
+<text x="780" y="870" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">statistico: etichette</text>
+<rect x="930" y="846" width="110" height="30" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="985.0" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">MPLS · dati</text>
+<rect x="1045" y="846" width="95" height="30" rx="3" fill="#D85A30" stroke="none" stroke-width="1"/>
+<text x="1092.5" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">MPLS · voce</text>
+<rect x="1145" y="846" width="140" height="30" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="1215.0" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">MPLS · dati</text>
+<rect x="1290" y="846" width="55" height="30" rx="3" fill="#D85A30" stroke="none" stroke-width="1"/>
+<text x="1317.5" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">voce</text>
+<rect x="1350" y="846" width="120" height="30" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
+<text x="1410.0" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">MPLS · dati</text>
+<rect x="1475" y="846" width="60" height="30" rx="3" fill="#888780" stroke="none" stroke-width="1"/>
+<text x="1505.0" y="861" font-size="11" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">altro</text>
+<text x="930" y="892" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">voce e dati mescolati nello stesso tubo, separati dalle etichette MPLS</text>
+<text x="800" y="930" font-size="13" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">Gerarchia: fibra → λ (frequenza) → trame nella λ (TDM o statistico) → etichette (VLAN, MPLS) → sessioni (PPPoE, IP)</text>
+</svg>

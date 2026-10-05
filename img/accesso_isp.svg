@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1000" width="1800" height="1000" style="font-family:Arial,Helvetica,sans-serif">
+<title>Accesso a un ISP: FTTH/GPON, VLAN 835/836, MPLS su DWDM, tunnel PPPoE</title>
+<rect width="1800" height="1000" fill="#ffffff"/>
+<rect x="20" y="20" width="310" height="725" rx="10" fill="#E6F1FB" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="175.0" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Sede utente</text>
+<text x="175.0" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">router voce · router dati · switch</text>
+<line x1="32" y1="80" x2="318" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="345" y="20" width="225" height="725" rx="10" fill="#FAEEDA" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="457.5" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Rete di accesso</text>
+<text x="457.5" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">FTTH · GPON passiva</text>
+<line x1="357" y1="80" x2="558" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="585" y="20" width="320" height="725" rx="10" fill="#EEEDFE" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="745.0" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">PoP centrale ISP nazionale</text>
+<text x="745.0" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">(Open Fiber) · OLT + aggregazione</text>
+<line x1="597" y1="80" x2="893" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="920" y="20" width="410" height="725" rx="10" fill="#E1F5EE" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="1125.0" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Rete carrier nazionale</text>
+<text x="1125.0" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">MPLS su trasporto ottico DWDM</text>
+<line x1="932" y1="80" x2="1318" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="1345" y="20" width="185" height="725" rx="10" fill="#FAECE7" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="1437.5" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">PoP ISP regionale</text>
+<text x="1437.5" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">(Active Network)</text>
+<line x1="1357" y1="80" x2="1518" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="1545" y="20" width="235" height="725" rx="10" fill="#F1EFE8" fill-opacity="0.45" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+<text x="1662.5" y="44" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Interconnessione</text>
+<text x="1662.5" y="64" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">PSTN · Internet</text>
+<line x1="1557" y1="80" x2="1768" y2="80" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="40" y="105" width="272" height="250" rx="14" fill="#ffffff" stroke="#444441" stroke-width="1.2"/>
+<text x="58" y="125" font-size="14" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Router utente 1</text>
+<text x="70" y="171" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Telefoni</text>
+<text x="70" y="185" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">/ PBX</text>
+<line x1="98" y1="175" x2="120" y2="175" stroke="#D85A30" stroke-width="1.5"/>
+<text x="70" y="301" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">LAN</text>
+<text x="70" y="315" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">dati</text>
+<line x1="98" y1="305" x2="120" y2="305" stroke="#1D9E75" stroke-width="1.5"/>
+<path d="M178 175 L262 175 L262 224" fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M178 305 L262 305 L262 256" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linejoin="round"/>
+<rect x="122.0" y="167.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="150" cy="183.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="150" cy="167.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M136 163 L164 171 M136 171 L164 163" stroke="#fff" stroke-width="1.6"/>
+<text x="150" y="145" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router voce</text>
+<rect x="122.0" y="297.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="150" cy="313.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="150" cy="297.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M136 293 L164 301 M136 301 L164 293" stroke="#fff" stroke-width="1.6"/>
+<text x="150" y="335" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router dati</text>
+<text x="256" y="201.5" font-size="11" text-anchor="end" font-weight="normal" fill="#D85A30" dominant-baseline="central">VLAN 836</text>
+<text x="256" y="278.5" font-size="11" text-anchor="end" font-weight="normal" fill="#1D9E75" dominant-baseline="central">VLAN 835</text>
+<text x="184" y="163" font-size="11" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.1</text>
+<text x="184" y="293" font-size="11" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.1</text>
+<rect x="238" y="224" width="48" height="32" rx="4" fill="#378ADD" stroke="#185FA5"/>
+<path d="M248 234 h28 M248 246 h28" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="228" y="216" font-size="11" text-anchor="end" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Switch utente</text>
+<text x="292" y="222" font-size="12" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">T</text>
+<rect x="40" y="470" width="272" height="250" rx="14" fill="#ffffff" stroke="#444441" stroke-width="1.2"/>
+<text x="58" y="490" font-size="14" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Router utente 2</text>
+<text x="70" y="536" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Telefoni</text>
+<text x="70" y="550" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">/ PBX</text>
+<line x1="98" y1="540" x2="120" y2="540" stroke="#D85A30" stroke-width="1.5"/>
+<text x="70" y="666" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">LAN</text>
+<text x="70" y="680" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">dati</text>
+<line x1="98" y1="670" x2="120" y2="670" stroke="#1D9E75" stroke-width="1.5"/>
+<path d="M178 540 L262 540 L262 589" fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M178 670 L262 670 L262 621" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linejoin="round"/>
+<rect x="122.0" y="532.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="150" cy="548.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="150" cy="532.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M136 528 L164 536 M136 536 L164 528" stroke="#fff" stroke-width="1.6"/>
+<text x="150" y="510" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router voce</text>
+<rect x="122.0" y="662.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="150" cy="678.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="150" cy="662.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M136 658 L164 666 M136 666 L164 658" stroke="#fff" stroke-width="1.6"/>
+<text x="175" y="700" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router dati · <tspan fill='#D62828' font-weight='bold'>Client PPPoE</tspan></text>
+<text x="256" y="566.5" font-size="11" text-anchor="end" font-weight="normal" fill="#D85A30" dominant-baseline="central">VLAN 836</text>
+<text x="256" y="643.5" font-size="11" text-anchor="end" font-weight="normal" fill="#1D9E75" dominant-baseline="central">VLAN 835</text>
+<text x="184" y="528" font-size="11" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.17</text>
+<text x="184" y="658" font-size="11" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.17</text>
+<rect x="238" y="589" width="48" height="32" rx="4" fill="#378ADD" stroke="#185FA5"/>
+<path d="M248 599 h28 M248 611 h28" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="228" y="581" font-size="11" text-anchor="end" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Switch utente</text>
+<text x="292" y="587" font-size="12" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">T</text>
+<line x1="286" y1="237" x2="386" y2="237" stroke="#D85A30" stroke-width="2"/>
+<line x1="286" y1="243" x2="386" y2="243" stroke="#1D9E75" stroke-width="2"/>
+<line x1="286" y1="602" x2="386" y2="602" stroke="#D85A30" stroke-width="2"/>
+<line x1="286" y1="608" x2="386" y2="608" stroke="#1D9E75" stroke-width="2"/>
+<rect x="386" y="218" width="68" height="44" rx="6" fill="#ffffff" stroke="#854F0B" stroke-width="1"/>
+<text x="420.0" y="232.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">ONT</text>
+<text x="420.0" y="249.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">borchia</text>
+<rect x="386" y="583" width="68" height="44" rx="6" fill="#ffffff" stroke="#854F0B" stroke-width="1"/>
+<text x="420.0" y="597.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">ONT</text>
+<text x="420.0" y="614.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">borchia</text>
+<path d="M454 240 L455 240 L455 412 L489 412" fill="none" stroke="#BA7517" stroke-width="3" stroke-linejoin="round"/>
+<path d="M454 605 L455 605 L455 412 L489 412" fill="none" stroke="#BA7517" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="489,388 541,412 489,436" fill="#FAC775" stroke="#854F0B"/>
+<text x="515" y="454" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:N</text>
+<text x="515" y="470" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">passivo</text>
+<rect x="463" y="282" width="100" height="62" rx="6" fill="#ffffff" stroke="#BA7517" stroke-width="0.8"/>
+<text x="513" y="296" font-size="11" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">una fibra, 2 λ</text>
+<text x="513" y="314" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">↓ 1490 nm · TDM</text>
+<text x="513" y="331" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">↑ 1310 nm · TDMA</text>
+<line x1="541" y1="412" x2="610" y2="412" stroke="#BA7517" stroke-width="3"/>
+<rect x="610" y="380" width="80" height="64" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="650.0" y="404.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">OLT</text>
+<text x="650.0" y="421.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">termina PON</text>
+<line x1="690" y1="408" x2="749" y2="408" stroke="#D85A30" stroke-width="2"/>
+<line x1="690" y1="416" x2="749" y2="416" stroke="#1D9E75" stroke-width="2"/>
+<rect x="749" y="394" width="52" height="36" rx="4" fill="#378ADD" stroke="#185FA5"/>
+<path d="M760 405 h30 M760 419 h30" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="741" y="386" font-size="12" text-anchor="end" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">T</text>
+<text x="775" y="446" font-size="12" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Switch di</text>
+<text x="775" y="462" font-size="12" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">aggregazione</text>
+<path d="M775 394 L775 250 L832 250" fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M775 470 L775 560 L832 560" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linejoin="round"/>
+<text x="783" y="330" font-size="11" text-anchor="start" font-weight="normal" fill="#D85A30" dominant-baseline="central">VLAN 836</text>
+<text x="783" y="500" font-size="11" text-anchor="start" font-weight="normal" fill="#1D9E75" dominant-baseline="central">VLAN 835</text>
+<rect x="832.0" y="242.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="860" cy="258.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="860" cy="242.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M846 238 L874 246 M846 246 L874 238" stroke="#fff" stroke-width="1.6"/>
+<text x="860" y="220" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router voce</text>
+<rect x="832.0" y="552.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="860" cy="568.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="860" cy="552.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M846 548 L874 556 M846 556 L874 548" stroke="#fff" stroke-width="1.6"/>
+<text x="860" y="600" font-size="12" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Router dati</text>
+<text x="826" y="268" font-size="11" text-anchor="end" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.14</text>
+<text x="826" y="542" font-size="11" text-anchor="end" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.14</text>
+<rect x="940" y="100" width="370" height="245" rx="40" fill="#ffffff" stroke="#D85A30" stroke-width="1.2"/>
+<line x1="985" y1="250" x2="1065" y2="175" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1065" y1="175" x2="1185" y2="175" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1185" y1="175" x2="1265" y2="250" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1265" y1="250" x2="1125" y2="275" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1125" y1="275" x2="985" y2="250" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1065" y1="175" x2="1125" y2="275" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1185" y1="175" x2="1125" y2="275" stroke="#2C2C2A" stroke-width="1.4"/>
+<rect x="957.0" y="246.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="985" cy="262.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="985" cy="246.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M971 242 L999 250 M971 250 L999 242" stroke="#fff" stroke-width="1.6"/>
+<rect x="1037.0" y="171.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1065" cy="187.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1065" cy="171.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1051 167 L1079 175 M1051 175 L1079 167" stroke="#fff" stroke-width="1.6"/>
+<rect x="1157.0" y="171.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1185" cy="187.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1185" cy="171.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1171 167 L1199 175 M1171 175 L1199 167" stroke="#fff" stroke-width="1.6"/>
+<rect x="1237.0" y="246.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1265" cy="262.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1265" cy="246.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1251 242 L1279 250 M1251 250 L1279 242" stroke="#fff" stroke-width="1.6"/>
+<rect x="1097.0" y="271.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1125" cy="287.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1125" cy="271.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1111 267 L1139 275 M1111 275 L1139 267" stroke="#fff" stroke-width="1.6"/>
+<text x="1125" y="327" font-size="13" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">MPLS voce ISP nazionale</text>
+<rect x="1095" y="110" width="140" height="34" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+<text x="1165.0" y="127.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#712B13" dominant-baseline="central">SBC / IMS core</text>
+<line x1="1165" y1="144" x2="1185" y2="162" stroke="#993C1D" stroke-width="1.2"/>
+<rect x="940" y="480" width="370" height="255" rx="40" fill="#ffffff" stroke="#1D9E75" stroke-width="1.2"/>
+<line x1="985" y1="560" x2="1065" y2="515" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1065" y1="515" x2="1185" y2="515" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1185" y1="515" x2="1265" y2="560" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1265" y1="560" x2="1125" y2="620" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1125" y1="620" x2="985" y2="560" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1065" y1="515" x2="1125" y2="620" stroke="#2C2C2A" stroke-width="1.4"/>
+<line x1="1185" y1="515" x2="1125" y2="620" stroke="#2C2C2A" stroke-width="1.4"/>
+<rect x="957.0" y="556.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="985" cy="572.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="985" cy="556.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M971 552 L999 560 M971 560 L999 552" stroke="#fff" stroke-width="1.6"/>
+<rect x="1037.0" y="511.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1065" cy="527.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1065" cy="511.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1051 507 L1079 515 M1051 515 L1079 507" stroke="#fff" stroke-width="1.6"/>
+<rect x="1157.0" y="511.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1185" cy="527.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1185" cy="511.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1171 507 L1199 515 M1171 515 L1199 507" stroke="#fff" stroke-width="1.6"/>
+<rect x="1237.0" y="556.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1265" cy="572.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1265" cy="556.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1251 552 L1279 560 M1251 560 L1279 552" stroke="#fff" stroke-width="1.6"/>
+<rect x="1097.0" y="616.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1125" cy="632.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1125" cy="616.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1111 612 L1139 620 M1111 620 L1139 612" stroke="#fff" stroke-width="1.6"/>
+<text x="1125" y="717" font-size="13" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">MPLS dati ISP nazionale</text>
+<rect x="950" y="372" width="70" height="72" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="985.0" y="400.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">Mux</text>
+<text x="985.0" y="417.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">DWDM</text>
+<rect x="1230" y="372" width="70" height="72" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="1265.0" y="400.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">Demux</text>
+<text x="1265.0" y="417.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">DWDM</text>
+<line x1="1020" y1="398" x2="1230" y2="398" stroke="#534AB7" stroke-width="3"/>
+<text x="1125" y="397" font-size="10" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central"></text>
+<line x1="1020" y1="410" x2="1230" y2="410" stroke="#7F77DD" stroke-width="3"/>
+<text x="1125" y="409" font-size="10" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central"></text>
+<line x1="1020" y1="422" x2="1230" y2="422" stroke="#AFA9EC" stroke-width="2"/>
+<text x="1125" y="421" font-size="10" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central"></text>
+<text x="1125" y="381" font-size="11" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">ogni λ = un link tra due nodi</text>
+<text x="1125" y="437" font-size="11" text-anchor="middle" font-weight="normal" fill="#3C3489" dominant-baseline="central">λ1 PoP↔A · λ2 A↔B · λn altri link</text>
+<line x1="1040" y1="345" x2="1040" y2="370" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1040" y1="446" x2="1040" y2="480" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1210" y1="345" x2="1210" y2="370" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1210" y1="446" x2="1210" y2="480" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1125" y="462" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" font-style="italic" dominant-baseline="central">voce + dati insieme su MPLS</text>
+<line x1="888" y1="254" x2="957" y2="254" stroke="#D85A30" stroke-width="2.5"/>
+<line x1="888" y1="564" x2="957" y2="564" stroke="#1D9E75" stroke-width="2.5"/>
+<rect x="1365" y="470" width="150" height="190" rx="14" fill="#ffffff" stroke="#444441" stroke-width="1.2"/>
+<line x1="1293" y1="564" x2="1412" y2="564" stroke="#1D9E75" stroke-width="2.5"/>
+<rect x="1412.0" y="552.0" width="56" height="16" fill="#185FA5"/>
+<ellipse cx="1440" cy="568.0" rx="28.0" ry="8" fill="#185FA5"/>
+<ellipse cx="1440" cy="552.0" rx="28.0" ry="8" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+<path d="M1426 548 L1454 556 M1426 556 L1454 548" stroke="#fff" stroke-width="1.6"/>
+<text x="1440" y="505" font-size="12" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Router dati</text>
+<text x="1440" y="521" font-size="12" text-anchor="middle" font-weight="bold" fill="#D62828" dominant-baseline="central">Server PPPoE</text>
+<text x="1440" y="600" font-size="11" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">.0.30</text>
+<text x="1440" y="620" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">termina il tunnel</text>
+<text x="1440" y="636" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">e instrada</text>
+<line x1="1293" y1="254" x2="1576" y2="254" stroke="#D85A30" stroke-width="2.5"/>
+<rect x="1576" y="234" width="48" height="40" rx="6" fill="#378ADD" stroke="#185FA5"/>
+<text x="1600" y="254" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">GW</text>
+<text x="1600" y="290" font-size="12" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">VoIP gateway</text>
+<text x="1600" y="306" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">SIP ↔ TDM/SS7</text>
+<ellipse cx="1705" cy="254" rx="62" ry="40" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="1705" y="254" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">PSTN</text>
+<line x1="1624" y1="254" x2="1643" y2="254" stroke="#D85A30" stroke-width="2.5"/>
+<ellipse cx="1690" cy="564" rx="78" ry="44" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="1690" y="564" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Internet</text>
+<line x1="1468" y1="564" x2="1612" y2="564" stroke="#1D9E75" stroke-width="2.5"/>
+<text x="1555" y="640" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Punto di spillamento</text>
+<text x="1555" y="656" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Internet dell'ISP regionale</text>
+<path d="M178 682 L300 682 L300 640 L470 640 L470 432 L720 432 L720 580 L1200 580 Q1240 580 1270 588 L1412 588" fill="none" stroke="#D62828" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<text x="640" y="462" font-size="11" text-anchor="middle" font-weight="bold" fill="#D62828" dominant-baseline="central">Tunnel PPPoE 10.100.0.16/28</text>
+<rect x="575" y="650" width="200" height="40" rx="6" fill="#ffffff" stroke="#1D9E75"/>
+<text x="675" y="662" font-size="12" text-anchor="middle" font-weight="bold" fill="#085041" dominant-baseline="central">10.100.0.0/28</text>
+<text x="675" y="679" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#0F6E56" dominant-baseline="central">subnet di accesso dati (link fisico)</text>
+<text x="20" y="772" font-size="15" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Che tecnologia lavora in ogni tratta</text>
+<rect x="20" y="800" width="310" height="32" rx="6" fill="#F1EFE8" stroke="#444441" stroke-width="0.8"/>
+<text x="175.0" y="816" font-size="12" text-anchor="middle" font-weight="normal" fill="#444441" dominant-baseline="central">rame / Ethernet</text>
+<rect x="345" y="800" width="225" height="32" rx="6" fill="#FAEEDA" stroke="#633806" stroke-width="0.8"/>
+<text x="457.5" y="816" font-size="12" text-anchor="middle" font-weight="normal" fill="#633806" dominant-baseline="central">↓1490 nm TDM · ↑1310 nm TDMA</text>
+<rect x="585" y="800" width="320" height="32" rx="6" fill="#F1EFE8" stroke="#444441" stroke-width="0.8"/>
+<text x="745.0" y="816" font-size="12" text-anchor="middle" font-weight="normal" fill="#444441" dominant-baseline="central">fibra · Ethernet</text>
+<rect x="920" y="800" width="410" height="32" rx="6" fill="#EEEDFE" stroke="#3C3489" stroke-width="0.8"/>
+<text x="1125.0" y="816" font-size="12" text-anchor="middle" font-weight="normal" fill="#3C3489" dominant-baseline="central">DWDM: ogni λ è un link punto‑punto tra nodi (non un utente)</text>
+<rect x="1345" y="800" width="435" height="32" rx="6" fill="#F1EFE8" stroke="#444441" stroke-width="0.8"/>
+<text x="1562.5" y="816" font-size="12" text-anchor="middle" font-weight="normal" fill="#444441" dominant-baseline="central">Ethernet / interconnessioni</text>
+<rect x="20" y="842" width="885" height="32" rx="6" fill="#E1F5EE" stroke="#085041" stroke-width="0.8"/>
+<text x="462.5" y="858" font-size="12" text-anchor="middle" font-weight="normal" fill="#085041" dominant-baseline="central">VLAN 835 dati · VLAN 836 voce — trunk 802.1Q (T) dallo switch utente allo switch di aggregazione</text>
+<rect x="920" y="842" width="410" height="32" rx="6" fill="#E1F5EE" stroke="#085041" stroke-width="0.8"/>
+<text x="1125.0" y="858" font-size="12" text-anchor="middle" font-weight="normal" fill="#085041" dominant-baseline="central">MPLS (L2.5): percorsi separati voce / dati</text>
+<rect x="160" y="884" width="1370" height="32" rx="6" fill="#FCEBEB" stroke="#791F1F" stroke-width="0.8"/>
+<text x="845.0" y="900" font-size="12" text-anchor="middle" font-weight="normal" fill="#791F1F" dominant-baseline="central">Tunnel PPPoE (utente 2): client sul router dati → server PPPoE dell'ISP regionale, dentro la VLAN 835 e sopra MPLS</text>
+<rect x="20" y="926" width="885" height="32" rx="6" fill="#E6F1FB" stroke="#0C447C" stroke-width="0.8"/>
+<text x="462.5" y="942" font-size="12" text-anchor="middle" font-weight="normal" fill="#0C447C" dominant-baseline="central">Utente 1: link L3 diretto, subnet 10.100.0.0/28 terminata sul router dati del PoP (.0.14)</text>
+<rect x="1345" y="926" width="435" height="32" rx="6" fill="#E6F1FB" stroke="#0C447C" stroke-width="0.8"/>
+<text x="1562.5" y="942" font-size="12" text-anchor="middle" font-weight="normal" fill="#0C447C" dominant-baseline="central">IP pubblico · SIP verso PSTN</text>
+<line x1="20" y1="978" x2="54" y2="978" stroke="#1D9E75" stroke-width="3"/>
+<text x="62" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">VLAN 835 dati</text>
+<line x1="190" y1="978" x2="224" y2="978" stroke="#D85A30" stroke-width="3"/>
+<text x="232" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">VLAN 836 voce</text>
+<line x1="360" y1="978" x2="394" y2="978" stroke="#BA7517" stroke-width="3"/>
+<text x="402" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">fibra ottica (835 + 836 insieme)</text>
+<line x1="640" y1="978" x2="674" y2="978" stroke="#D62828" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="682" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">tunnel PPPoE</text>
+</svg>
