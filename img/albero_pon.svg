@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" width="1600" height="760" style="font-family:Arial,Helvetica,sans-serif">
+<title>Albero PON e domini TDM sul territorio</title>
+<rect x="0" y="0" width="1600" height="760" rx="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<rect x="20" y="20" width="280" height="54" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<text x="160.0" y="38" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Centrale</text>
+<text x="160.0" y="58" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">OLT con N porte PON</text>
+<rect x="320" y="20" width="500" height="54" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<text x="570.0" y="38" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Rete di distribuzione</text>
+<text x="570.0" y="58" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">fibra di feeder (km) · armadio stradale</text>
+<rect x="840" y="20" width="460" height="54" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<text x="1070.0" y="38" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Edificio</text>
+<text x="1070.0" y="58" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">ROE / PTE · splitter secondario</text>
+<rect x="1320" y="20" width="260" height="54" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<text x="1450.0" y="38" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Abitazioni</text>
+<text x="1450.0" y="58" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">drop (decine di m) · ONT</text>
+<rect x="320" y="92" width="1260" height="330" rx="12" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.2" stroke-dasharray="8 5"/>
+<text x="340" y="112" font-size="14" text-anchor="start" font-weight="bold" fill="#0C447C" dominant-baseline="central">Dominio TDM 1 = albero della porta PON 1</text>
+<text x="340" y="131" font-size="12" text-anchor="start" font-weight="normal" fill="#0C447C" dominant-baseline="central">fino a 64 ONT si alternano nel tempo su 2,5 Gbit/s ↓ e 1,25 Gbit/s ↑ (GPON)</text>
+<rect x="320" y="440" width="1260" height="190" rx="12" fill="#FBEAF0" stroke="#D4537E" stroke-width="1.2" stroke-dasharray="8 5"/>
+<text x="340" y="460" font-size="14" text-anchor="start" font-weight="bold" fill="#72243E" dominant-baseline="central">Dominio TDM 2 = albero della porta PON 2 (altro quartiere)</text>
+<text x="340" y="479" font-size="12" text-anchor="start" font-weight="normal" fill="#72243E" dominant-baseline="central">banda propria e indipendente: nessun TDM con il dominio 1</text>
+<rect x="140" y="150" width="140" height="500" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.2"/>
+<text x="210" y="175" font-size="15" text-anchor="middle" font-weight="bold" fill="#3C3489" dominant-baseline="central">OLT</text>
+<text x="210" y="195" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">attivo</text>
+<rect x="256" y="258" width="24" height="24" rx="3" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="244" y="270" font-size="11" text-anchor="end" font-weight="bold" fill="#3C3489" dominant-baseline="central">PON 1</text>
+<rect x="256" y="528" width="24" height="24" rx="3" fill="#ffffff" stroke="#D4537E" stroke-width="1.5"/>
+<text x="244" y="540" font-size="11" text-anchor="end" font-weight="bold" fill="#3C3489" dominant-baseline="central">PON 2</text>
+<rect x="256" y="598" width="24" height="24" rx="3" fill="#ffffff" stroke="#888780" stroke-width="1.5"/>
+<text x="244" y="610" font-size="11" text-anchor="end" font-weight="bold" fill="#3C3489" dominant-baseline="central">PON 3</text>
+<text x="210" y="632" font-size="11" text-anchor="middle" font-weight="normal" fill="#534AB7" dominant-baseline="central">… altre porte</text>
+<line x1="140" y1="400" x2="60" y2="400" stroke="#5F5E5A" stroke-width="2"/>
+<text x="80" y="422" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">verso switch</text>
+<text x="80" y="438" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">di aggregazione</text>
+<text x="100" y="384" font-size="11" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">uplink</text>
+<line x1="280" y1="270" x2="678" y2="270" stroke="#BA7517" stroke-width="3"/>
+<polygon points="678,270 722,248 722,292" fill="#FAC775" stroke="#854F0B"/>
+<text x="700" y="306" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:8</text>
+<text x="700" y="322" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">armadio stradale</text>
+<text x="500" y="255" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" font-style="italic" dominant-baseline="central">fibra di feeder</text>
+<path d="M722 260 C 880.0 260, 880.0 190, 1038 190" fill="none" stroke="#BA7517" stroke-width="3"/>
+<polygon points="1038,190 1082,168 1082,212" fill="#FAC775" stroke="#854F0B"/>
+<text x="1060" y="226" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:8</text>
+<text x="1060" y="242" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">edificio 1</text>
+<path d="M1082 180 C 1251.0 180, 1251.0 150, 1420 150" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="136" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="150" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<line x1="1082" y1="190" x2="1420" y2="190" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="176" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="190" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<path d="M1082 200 C 1251.0 200, 1251.0 230, 1420 230" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="216" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="230" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<text x="1520" y="190" font-size="11" text-anchor="start" font-weight="normal" fill="#0C447C" dominant-baseline="central">… fino a 8</text>
+<path d="M722 280 C 880.0 280, 880.0 350, 1038 350" fill="none" stroke="#BA7517" stroke-width="3"/>
+<polygon points="1038,350 1082,328 1082,372" fill="#FAC775" stroke="#854F0B"/>
+<text x="1060" y="386" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:8</text>
+<text x="1060" y="402" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">edificio 2</text>
+<path d="M1082 340 C 1251.0 340, 1251.0 310, 1420 310" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="296" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="310" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<line x1="1082" y1="350" x2="1420" y2="350" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="336" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="350" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<path d="M1082 360 C 1251.0 360, 1251.0 390, 1420 390" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="376" width="52" height="28" rx="5" fill="#ffffff" stroke="#378ADD" stroke-width="1.5"/>
+<text x="1446" y="390" font-size="11" text-anchor="middle" font-weight="bold" fill="#378ADD" dominant-baseline="central">ONT</text>
+<text x="1520" y="350" font-size="11" text-anchor="start" font-weight="normal" fill="#0C447C" dominant-baseline="central">… fino a 8</text>
+<text x="880" y="270" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" font-style="italic" dominant-baseline="central">… altri 6 rami</text>
+<line x1="280" y1="540" x2="678" y2="540" stroke="#BA7517" stroke-width="3"/>
+<polygon points="678,540 722,518 722,562" fill="#FAC775" stroke="#854F0B"/>
+<text x="700" y="576" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:8</text>
+<text x="700" y="592" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">armadio stradale</text>
+<path d="M722 540 C 880.0 540, 880.0 550, 1038 550" fill="none" stroke="#BA7517" stroke-width="3"/>
+<polygon points="1038,550 1082,528 1082,572" fill="#FAC775" stroke="#854F0B"/>
+<text x="1060" y="586" font-size="12" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:8</text>
+<text x="1060" y="602" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">edificio 3</text>
+<path d="M1082 540 C 1251.0 540, 1251.0 510, 1420 510" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="496" width="52" height="28" rx="5" fill="#ffffff" stroke="#D4537E" stroke-width="1.5"/>
+<text x="1446" y="510" font-size="11" text-anchor="middle" font-weight="bold" fill="#D4537E" dominant-baseline="central">ONT</text>
+<line x1="1082" y1="550" x2="1420" y2="550" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="536" width="52" height="28" rx="5" fill="#ffffff" stroke="#D4537E" stroke-width="1.5"/>
+<text x="1446" y="550" font-size="11" text-anchor="middle" font-weight="bold" fill="#D4537E" dominant-baseline="central">ONT</text>
+<path d="M1082 560 C 1251.0 560, 1251.0 590, 1420 590" fill="none" stroke="#BA7517" stroke-width="2"/>
+<rect x="1420" y="576" width="52" height="28" rx="5" fill="#ffffff" stroke="#D4537E" stroke-width="1.5"/>
+<text x="1446" y="590" font-size="11" text-anchor="middle" font-weight="bold" fill="#D4537E" dominant-baseline="central">ONT</text>
+<text x="1520" y="550" font-size="11" text-anchor="start" font-weight="normal" fill="#72243E" dominant-baseline="central">… fino a 8</text>
+<text x="880" y="600" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" font-style="italic" dominant-baseline="central">… altri rami</text>
+<line x1="280" y1="610" x2="312" y2="610" stroke="#BA7517" stroke-width="3"/>
+<text x="350" y="652" font-size="1" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central"></text>
+<text x="800" y="668" font-size="14" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter in cascata si moltiplicano: 1:8 × 1:8 = 1:64 ONT per porta PON</text>
+<text x="800" y="694" font-size="12.5" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">Tra porte PON diverse: separazione spaziale (fibre diverse) · tra ONT dello stesso albero: TDM ↓ / TDMA ↑ gestito dall'OLT · tra servizi della stessa ONT: VLAN</text>
+<text x="800" y="718" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Dentro un albero gli slot non sono fissi né legati alla posizione: l'OLT li assegna con la DBA (in base al traffico in coda) a ONT identificate da ONU-ID / Alloc-ID;</text>
+<text x="800" y="736" font-size="12" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">la distanza conta solo per il ranging, che compensa i ritardi diversi perché i burst arrivino allo splitter senza sovrapporsi.</text>
+</svg>
