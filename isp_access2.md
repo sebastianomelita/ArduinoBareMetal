@@ -41,6 +41,29 @@ Fa eccezione lo standard **NG-PON2 (TWDM-PON)**, che usa più λ anche nella ret
 
 ![Multiplazione nella rete di accesso GPON e nella dorsale DWDM](img/multiplazione_gpon_dwdm.svg)
 
+#### **Come è ripartito il TDM sul territorio: l'albero PON**
+
+Il TDM non è unico per tutta la centrale: vale **per gruppi di ONT**, e il gruppo è definito dalla geografia della fibra. Ogni gruppo è un **albero PON**, cioè l'insieme delle ONT collegate agli stessi splitter, alla stessa fibra di feeder e quindi alla **stessa porta PON** dell'OLT. **Ogni albero è un dominio TDM a sé.**
+
+Nell'architettura tipica italiana un albero si sviluppa così:
+
+- **Centrale**: l'OLT dispone di decine di porte PON; da ciascuna parte una **fibra di feeder**, lunga anche diversi km (fino a circa 20 km).
+- **Armadio stradale** (punto di flessibilità primario): spesso ospita un primo splitter, ad esempio **1:8**, che serve un quartiere o un gruppo di vie.
+- **Edificio** (ROE, ripartitore ottico di edificio, oppure PTE in strada): un secondo splitter, ad esempio **1:8**, distribuisce la fibra agli appartamenti.
+- **Abitazione**: la borchia ottica (PTO) e l'ONT, raggiunte da un breve tratto di fibra (drop).
+
+Gli splitter in cascata si moltiplicano: **1:8 × 1:8 = 1:64**. Un albero copre quindi in genere un isolato o alcuni edifici, con tipicamente **32 o 64 ONT** (al massimo 128), che condividono la banda della porta: circa **2,5 Gbit/s in discesa e 1,25 Gbit/s in salita** in GPON, **10/10 Gbit/s** in XGS-PON.
+
+La ripartizione avviene quindi su tre livelli:
+
+- **tra porte PON diverse** la separazione è **spaziale**: due quartieri serviti da porte diverse usano fibre diverse e hanno ciascuno la propria banda, senza alcun TDM tra loro. L'OLT aggrega poi tutte le porte verso lo switch di centrale;
+- **tra ONT dello stesso albero** la separazione è **temporale** (TDM in discesa, TDMA in salita), gestita dall'OLT;
+- **tra servizi della stessa ONT** la separazione è **logica**, tramite le VLAN.
+
+Dentro un albero gli slot **non sono fissi né legati alla posizione**: la ONT del primo piano non ha uno slot "suo". L'OLT identifica ogni ONT con un identificativo logico (**ONU-ID**, **Alloc-ID**) e con la **DBA** assegna gli slot dinamicamente, in base al traffico in coda e alla classe di servizio. La geografia conta solo per il **ranging**, che compensa la diversa distanza delle ONT dall'OLT, in modo che i burst arrivino allo splitter senza sovrapporsi.
+
+![Albero PON e domini TDM sul territorio](img/albero_pon.svg)
+
 ### **Multiplazione nella dorsale: il ruolo del DWDM**
 
 A monte dell'OLT, i collegamenti tra il PoP di centrale e i nodi della rete carrier nazionale viaggiano su sistemi **DWDM** (Dense Wavelength Division Multiplexing). Su una sola fibra vengono trasmesse decine di lunghezze d'onda (tipicamente da 40 a 96, nella **banda C** intorno a 1530–1565 nm, su una griglia ITU-T con canali spaziati di 50 o 100 GHz).
