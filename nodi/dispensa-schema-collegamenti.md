@@ -48,6 +48,25 @@ Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
   <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
 </p>
 
+Ecco l'immagine `pinout_heltec_v4_antenna.png` con il cerchio rosso sul connettore antenna LoRa.
+
+## Come riconoscerlo nel pinout
+
+Il connettore antenna LoRa è il piccolo **IPEX U.FL** che vedi in alto al centro della scheda. È facile riconoscerlo per due dettagli:
+
+- **Posizione**: estremità superiore della scheda, al centro, sopra il display OLED
+- **Etichette "915" e "898"**: ai lati del connettore sono stampate le due frequenze LoRa supportate (915 MHz per US/AU, 898 MHz per EU — in realtà 868 MHz) a seconda della versione della scheda
+
+Il connettore stesso è un piccolo quadrato con un cerchio al centro: è la montatura femmina IPEX 1.0 (chiamata anche U.FL). Ci si collega un pigtail IPEX → SMA (o IPEX → antenna fissa) per portare fuori il segnale LoRa verso un'antenna esterna.
+
+## Attenzione: non confonderlo con l'antenna 2.4 GHz
+
+Sulla V4 **non c'è** un secondo connettore IPEX sulla scheda per il WiFi/Bluetooth: la 2.4 GHz usa un'antenna FPC integrata nel bracket di protezione plastico dell'OLED (quella piccola striscia flessibile ramata che vedi se smonti la cornice). Quindi se vedi un solo connettore IPEX, quello è sicuramente **LoRa**.
+
+## Nota operativa
+
+Non alimentare mai la radio LoRa **senza antenna collegata** al connettore IPEX: il mismatch di impedenza con il circuito aperto può danneggiare il PA del chip SX1262 dopo trasmissioni ripetute, specialmente a potenza alta (+22 dBm). Collega sempre l'antenna prima di flashare o avviare il firmware.
+
 <p align="center">
   <img src="img/nodo_wiring_diagram.svg" alt="Schema di collegamento del nodo Heltec V4 con SCD41, GPS L76K, batteria e pannello solare" width="1100">
 </p>
