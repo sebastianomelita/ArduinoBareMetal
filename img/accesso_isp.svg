@@ -256,7 +256,7 @@
 <rect x="160" y="884" width="1370" height="32" rx="6" fill="#FCEBEB" stroke="#791F1F" stroke-width="0.8"/>
 <text x="845.0" y="900" font-size="12" text-anchor="middle" font-weight="normal" fill="#791F1F" dominant-baseline="central">Tunnel PPPoE (utente 2): client sul router dati → server PPPoE dell'ISP regionale, dentro la VLAN 835 e sopra MPLS</text>
 <rect x="20" y="926" width="885" height="32" rx="6" fill="#E6F1FB" stroke="#0C447C" stroke-width="0.8"/>
-<text x="462.5" y="942" font-size="12" text-anchor="middle" font-weight="normal" fill="#0C447C" dominant-baseline="central">Utente 1: link L3 diretto, subnet 10.100.0.0/28 terminata sul router dati del PoP (.0.14)</text>
+<text x="462.5" y="942" font-size="12" text-anchor="middle" font-weight="normal" fill="#0C447C" dominant-baseline="central">Utente 1: link L3 diretto (10.100.0.0/28), autenticato in centrale dal router dati del PoP (.0.14) + RADIUS</text>
 <rect x="1345" y="926" width="435" height="32" rx="6" fill="#E6F1FB" stroke="#0C447C" stroke-width="0.8"/>
 <text x="1562.5" y="942" font-size="12" text-anchor="middle" font-weight="normal" fill="#0C447C" dominant-baseline="central">IP pubblico · SIP verso PSTN</text>
 <line x1="20" y1="978" x2="54" y2="978" stroke="#1D9E75" stroke-width="3"/>
@@ -273,6 +273,10 @@
 <text x="1338" y="538" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">2</text>
 <circle cx="1497" cy="546" r="11" fill="#2C2C2A"/>
 <text x="1497" y="546" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
+<circle cx="902" cy="532" r="11" fill="#2C2C2A"/>
+<text x="902" y="532" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
+<text x="840" y="616" font-size="11" text-anchor="middle" font-weight="bold" fill="#0F6E56" dominant-baseline="central">BNG locale (utente 1)</text>
+<text x="1440" y="650" font-size="1" text-anchor="middle" font-weight="normal" fill="#2C2C2A" dominant-baseline="central"></text>
 <circle cx="1580" cy="538" r="11" fill="#2C2C2A"/>
 <text x="1580" y="538" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">4</text>
 <circle cx="850" cy="978" r="11" fill="#2C2C2A"/>
@@ -283,8 +287,8 @@
 <text x="995" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">consegna wholesale</text>
 <circle cx="1139" cy="978" r="11" fill="#2C2C2A"/>
 <text x="1139" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
-<text x="1157" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">autenticazione (BNG + RADIUS)</text>
-<circle cx="1378" cy="978" r="11" fill="#2C2C2A"/>
-<text x="1378" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">4</text>
-<text x="1396" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">spillamento Internet</text>
+<text x="1157" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">autenticazione (utente 1 in centrale, utente 2 al PoP regionale)</text>
+<circle cx="1623" cy="978" r="11" fill="#2C2C2A"/>
+<text x="1623" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">4</text>
+<text x="1641" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">spillamento Internet</text>
 </svg>
