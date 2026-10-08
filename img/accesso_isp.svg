@@ -231,7 +231,7 @@
 <ellipse cx="1690" cy="564" rx="78" ry="44" fill="#F1EFE8" stroke="#5F5E5A"/>
 <text x="1690" y="564" font-size="15" text-anchor="middle" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Internet</text>
 <line x1="1468" y1="564" x2="1612" y2="564" stroke="#1D9E75" stroke-width="2.5"/>
-<text x="1555" y="640" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Punto di spillamento</text>
+<text x="1555" y="640" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Punto di spillamento (4)</text>
 <text x="1555" y="656" font-size="11" text-anchor="start" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">Internet dell'ISP regionale</text>
 <path d="M178 682 L300 682 L300 640 L470 640 L470 432 L720 432 L720 580 L1200 580 Q1240 580 1270 588 L1412 588" fill="none" stroke="#D62828" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round"/>
 <text x="640" y="462" font-size="11" text-anchor="middle" font-weight="bold" fill="#D62828" dominant-baseline="central">Tunnel PPPoE 10.100.0.16/28</text>
@@ -267,4 +267,24 @@
 <text x="402" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">fibra ottica (835 + 836 insieme)</text>
 <line x1="640" y1="978" x2="674" y2="978" stroke="#D62828" stroke-width="3" stroke-dasharray="7 5"/>
 <text x="682" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">tunnel PPPoE</text>
+<circle cx="620" cy="366" r="11" fill="#2C2C2A"/>
+<text x="620" y="366" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">1</text>
+<circle cx="1338" cy="538" r="11" fill="#2C2C2A"/>
+<text x="1338" y="538" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">2</text>
+<circle cx="1497" cy="546" r="11" fill="#2C2C2A"/>
+<text x="1497" y="546" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
+<circle cx="1580" cy="538" r="11" fill="#2C2C2A"/>
+<text x="1580" y="538" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">4</text>
+<circle cx="850" cy="978" r="11" fill="#2C2C2A"/>
+<text x="850" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">1</text>
+<text x="868" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">accesso (OLT)</text>
+<circle cx="977" cy="978" r="11" fill="#2C2C2A"/>
+<text x="977" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">2</text>
+<text x="995" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">consegna wholesale</text>
+<circle cx="1139" cy="978" r="11" fill="#2C2C2A"/>
+<text x="1139" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
+<text x="1157" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">autenticazione (BNG + RADIUS)</text>
+<circle cx="1378" cy="978" r="11" fill="#2C2C2A"/>
+<text x="1378" y="978" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">4</text>
+<text x="1396" y="978" font-size="12" text-anchor="start" font-weight="normal" fill="#2C2C2A" dominant-baseline="central">spillamento Internet</text>
 </svg>
