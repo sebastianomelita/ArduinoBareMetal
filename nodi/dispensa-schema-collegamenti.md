@@ -42,6 +42,12 @@ Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SC
 
 ## Schema visuale
 
+Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
+
+<p align="center">
+  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
+</p>
+
 <p align="center">
   <img src="img/nodo_wiring_diagram.svg" alt="Schema di collegamento del nodo Heltec V4 con SCD41, GPS L76K, batteria e pannello solare" width="1100">
 </p>
@@ -59,12 +65,6 @@ Il costo totale del nodo si aggira intorno ai **€60-80** (Heltec V4 ~€25, SC
 Il WiFi non è utile per il nostro progetto per cui è stato disattivato via FW per evitare un inutile spreco di energia. Però, qualora lo si volesse utilizzare, magari accendendolo da remoto via LoRaWAN con un comando in dowlink, l'antenna è stata cablata ugualmente. 
 
 L'antenna del GNSS è incorporata nel modulo stesso.
-
-Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
-
-<p align="center">
-  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
-</p>
 
 ---
 
