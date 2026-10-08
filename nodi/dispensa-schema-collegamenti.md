@@ -50,7 +50,7 @@ Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
 
 Ecco l'immagine `pinout_heltec_v4_antenna.png` con il cerchio rosso sul connettore antenna LoRa.
 
-## Come riconoscerlo nel pinout
+## Come riconoscere il connettore d'antenna LoraWAN
 
 Il connettore antenna LoRa è il piccolo **IPEX U.FL** che vedi in alto al centro della scheda. È facile riconoscerlo per due dettagli:
 
