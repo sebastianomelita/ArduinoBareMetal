@@ -41,6 +41,24 @@
     <text x="42" y="84" font-size="10" fill="#424242">Controllo (enable, ADC)</text>
   </g>
 
+  <!-- Nota: VEXT_CTRL vs VEXT -->
+  <g transform="translate(250, 70)">
+    <rect x="0" y="0" width="320" height="90" rx="6" fill="#fff8e1" stroke="#ffa000" stroke-width="1.2"/>
+    <text x="10" y="18" font-size="11" font-weight="bold" fill="#e65100">⚠ Attenzione: VEXT_CTRL ≠ VEXT</text>
+    <text x="10" y="34" font-size="9" fill="#5d4037">
+      <tspan font-weight="bold">GPIO 36 (VEXT_CTRL)</tspan> = pin di CONTROLLO (segnale 3.3V, pochi mA)
+    </text>
+    <text x="10" y="48" font-size="9" fill="#5d4037">
+      <tspan font-weight="bold">Pin 3 e 4 (VEXT)</tspan> = USCITE di alimentazione 3.3V (fino a ~500 mA)
+    </text>
+    <text x="10" y="64" font-size="9" fill="#5d4037" font-style="italic">
+      Il GPIO 36 pilota il regolatore interno che eroga 3.3V sui pin VEXT.
+    </text>
+    <text x="10" y="78" font-size="9" fill="#5d4037" font-style="italic">
+      I sensori (SCD41 VDD, L76K VCC) vanno alimentati dai pin VEXT, NON dal GPIO 36.
+    </text>
+  </g>
+
   <!-- ================================================================ -->
   <!-- SCHEDA CENTRALE: Heltec WiFi LoRa 32 V4                          -->
   <!-- ================================================================ -->
@@ -68,23 +86,28 @@
     <circle cx="400" cy="352" r="4" fill="#1976d2"/>
     <text x="418" y="356" font-size="10" fill="#0d47a1"><tspan font-weight="bold">6</tspan> — SCL (I²C clock)</text>
 
-    <!-- Pin: GPIO 36 VEXT_CTRL -->
+    <!-- Pin: GPIO 36 VEXT_CTRL (solo controllo, non eroga potenza) -->
     <circle cx="400" cy="378" r="4" fill="#f57c00"/>
-    <text x="418" y="382" font-size="10" fill="#e65100"><tspan font-weight="bold">36</tspan> — VEXT_CTRL</text>
-    <text x="418" y="394" font-size="8" fill="#8d6e63" font-style="italic">LOW = Vext ON (3.3V ai sensori)</text>
+    <text x="418" y="382" font-size="10" fill="#e65100"><tspan font-weight="bold">36</tspan> — VEXT_CTRL <tspan font-size="8" fill="#8d6e63" font-style="italic">(solo controllo)</tspan></text>
+    <text x="418" y="394" font-size="8" fill="#8d6e63" font-style="italic">LOW = accende Vext → 3.3V su pin 3,4</text>
+
+    <!-- Pin: VEXT (3 e 4) - uscita alimentazione per sensori -->
+    <circle cx="400" cy="412" r="4" fill="#d32f2f"/>
+    <text x="418" y="416" font-size="10" fill="#b71c1c"><tspan font-weight="bold">3, 4</tspan> — VEXT (3.3V OUT per sensori)</text>
+    <text x="418" y="428" font-size="8" fill="#8d6e63" font-style="italic">abilitato da GPIO 36 LOW, ~500 mA max</text>
 
     <!-- Pin: GPIO 38 GPS RX (ESP TX) -->
-    <circle cx="400" cy="416" r="4" fill="#1976d2"/>
-    <text x="418" y="420" font-size="10" fill="#0d47a1"><tspan font-weight="bold">38</tspan> — GPS_TX (ESP→GPS)</text>
+    <circle cx="400" cy="450" r="4" fill="#1976d2"/>
+    <text x="418" y="454" font-size="10" fill="#0d47a1"><tspan font-weight="bold">38</tspan> — GPS_TX (ESP→GPS)</text>
 
     <!-- Pin: GPIO 39 GPS TX (ESP RX) -->
-    <circle cx="400" cy="436" r="4" fill="#1976d2"/>
-    <text x="418" y="440" font-size="10" fill="#0d47a1"><tspan font-weight="bold">39</tspan> — GPS_RX (ESP←GPS)</text>
+    <circle cx="400" cy="470" r="4" fill="#1976d2"/>
+    <text x="418" y="474" font-size="10" fill="#0d47a1"><tspan font-weight="bold">39</tspan> — GPS_RX (ESP←GPS)</text>
 
     <!-- Pin: GPIO 34 VGNSS_CTRL -->
-    <circle cx="400" cy="462" r="4" fill="#f57c00"/>
-    <text x="418" y="466" font-size="10" fill="#e65100"><tspan font-weight="bold">34</tspan> — VGNSS_CTRL</text>
-    <text x="418" y="478" font-size="8" fill="#8d6e63" font-style="italic">LOW = GPS ON, HIGH = OFF</text>
+    <circle cx="400" cy="492" r="4" fill="#f57c00"/>
+    <text x="418" y="496" font-size="10" fill="#e65100"><tspan font-weight="bold">34</tspan> — VGNSS_CTRL</text>
+    <text x="418" y="508" font-size="8" fill="#8d6e63" font-style="italic">LOW = GPS ON, HIGH = OFF</text>
 
     <!-- Divisore -->
     <line x1="415" y1="495" x2="685" y2="495" stroke="#90a4ae" stroke-width="1"/>
@@ -163,7 +186,7 @@
 
     <!-- Pinout SCD41 -->
     <circle cx="80" cy="264" r="4" fill="#d32f2f"/>
-    <text x="90" y="268" font-size="10" fill="#263238"><tspan font-weight="bold">VDD</tspan> — 3.3V (da Vext)</text>
+    <text x="90" y="268" font-size="10" fill="#263238"><tspan font-weight="bold">VDD</tspan> — 3.3V da pin VEXT (3,4)</text>
 
     <circle cx="80" cy="284" r="4" fill="#212121"/>
     <text x="90" y="288" font-size="10" fill="#263238"><tspan font-weight="bold">GND</tspan></text>
@@ -176,10 +199,19 @@
   </g>
 
   <!-- Fili SCD41 → V4 -->
-  <!-- VDD (rosso) da SCD41 al Vext (che è controllato da GPIO36) -->
-  <path d="M 260 264 L 340 264 L 340 378 L 400 378"
-        fill="none" stroke="#d32f2f" stroke-width="2" stroke-dasharray="4,3"/>
-  <text x="345" y="260" font-size="8" fill="#d32f2f" font-style="italic">3.3V da Vext</text>
+  <!-- VDD (rosso, continuo = alimentazione reale) da SCD41 ai pin VEXT 3,4 -->
+  <!-- NOTA: il pin VEXT è l'uscita 3.3V del regolatore interno, NON è GPIO 36.
+       GPIO 36 (VEXT_CTRL) è solo il segnale logico che accende il regolatore,
+       NON eroga corrente per i sensori. -->
+  <path d="M 260 264 L 340 264 L 340 412 L 400 412"
+        fill="none" stroke="#d32f2f" stroke-width="2.5"/>
+  <text x="345" y="260" font-size="8" fill="#d32f2f" font-style="italic" font-weight="bold">3.3V dai pin VEXT (3,4)</text>
+
+  <!-- Freccia tratteggiata: GPIO 36 → "accende" il regolatore VEXT -->
+  <!-- Mostra la relazione di CONTROLLO (non alimentazione) -->
+  <path d="M 395 378 Q 380 395 395 408"
+        fill="none" stroke="#f57c00" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <text x="340" y="395" font-size="7" fill="#e65100" font-style="italic">controlla ↓</text>
 
   <!-- GND (nero) -->
   <path d="M 260 284 L 355 284 L 355 700 L 550 700 L 550 680"
@@ -227,8 +259,11 @@
   </g>
 
   <!-- Fili L76K → V4 -->
-  <!-- VCC (rosso) -->
-  <path d="M 260 472 L 335 472 L 335 462 L 400 462"
+  <!-- VCC GPS (rosso tratteggiato): controllato da VGNSS_CTRL = GPIO 34 -->
+  <!-- NOTA: analogamente a VEXT, la V4 ha un pin VGNSS dedicato per
+       l'alimentazione del GPS, controllato dal GPIO 34. L'alimentazione
+       del L76K prende dal pin VGNSS, non direttamente dal GPIO 34. -->
+  <path d="M 260 472 L 335 472 L 335 492 L 400 492"
         fill="none" stroke="#d32f2f" stroke-width="2" stroke-dasharray="4,3"/>
 
   <!-- GND (nero) -->
@@ -237,13 +272,13 @@
 
   <!-- TX GPS -> RX ESP (blu, GPIO 39) -->
   <line x1="260" y1="508" x2="325" y2="508" stroke="#1976d2" stroke-width="2"/>
-  <line x1="325" y1="508" x2="325" y2="436" stroke="#1976d2" stroke-width="2"/>
-  <line x1="325" y1="436" x2="400" y2="436" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <line x1="325" y1="508" x2="325" y2="470" stroke="#1976d2" stroke-width="2"/>
+  <line x1="325" y1="470" x2="400" y2="470" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
 
   <!-- RX GPS -> TX ESP (blu, GPIO 38) -->
   <line x1="260" y1="526" x2="315" y2="526" stroke="#1976d2" stroke-width="2"/>
-  <line x1="315" y1="526" x2="315" y2="416" stroke="#1976d2" stroke-width="2"/>
-  <line x1="315" y1="416" x2="400" y2="416" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <line x1="315" y1="526" x2="315" y2="450" stroke="#1976d2" stroke-width="2"/>
+  <line x1="315" y1="450" x2="400" y2="450" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowGray)"/>
 
   <!-- ================================================================ -->
   <!-- ANTENNA LoRa (in alto a destra)                                   -->
