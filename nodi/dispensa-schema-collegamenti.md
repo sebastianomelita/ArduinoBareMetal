@@ -60,6 +60,12 @@ Il WiFi non è utile per il nostro progetto per cui è stato disattivato via FW 
 
 L'antenna del GNSS è incorporata nel modulo stesso.
 
+Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
+
+<p align="center">
+  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="900">
+</p>
+
 ---
 
 ## Le particolarità della Heltec V4
