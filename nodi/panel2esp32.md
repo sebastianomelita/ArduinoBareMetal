@@ -9,6 +9,11 @@ Il progetto parte dal tutorial di Random Nerd Tutorials [*Power ESP32/ESP8266 wi
 - il regolatore **HT7833** (500 mA) al posto dell'MCP1700 (250 mA), più adatto ai picchi del WiFi;
 - un partitore **100k/100k**, che porta la lettura nella zona più lineare dell'ADC.
 
+Altre guide in questo repository:
+
+- **[HELTEC.md](HELTEC.md)**: come usare il progetto con le schede Heltec WiFi Kit 32 V3 e Wireless Stick Lite V3;
+- **[Sensore pesante: SDS011](#sensore-pesante-sds011)**: come alimentare e collegare un sensore di particolato SDS011.
+
 ---
 
 ## Schema
@@ -245,6 +250,206 @@ void loop() {}
 **Note sulla lettura**
 - Durante la carica leggerai la tensione di carica (fino a circa 4,2 V), più alta di quella reale a riposo. Considera la percentuale affidabile solo senza alimentazione esterna.
 - Per una lettura più precisa, misura VBAT con il tester e correggi `DIVIDER` di conseguenza (le resistenze hanno una tolleranza dell'1–5 %).
+
+---
+
+## Variante: partitore attivabile (consumo zero a riposo)
+
+Il partitore R1/R2 dello schema base è sempre collegato alla batteria e consuma circa **21 µA**, giorno e notte. È poco, circa 0,5 mAh al giorno, ma se punti a mesi di autonomia conviene alimentarlo **solo nel momento della lettura**. Lo stesso principio è usato da schede come le Heltec, che hanno un pin `ADC_Ctrl` per attivare la lettura.
+
+<p align="center">
+  <img src="img/schema_partitore_attivabile.svg" alt="Partitore attivabile" width="100%">
+</p>
+
+### Componenti aggiuntivi
+
+| Rif. | Componente | Note |
+|---|---|---|
+| Q2 | P-MOSFET **AO3401A** | Interruttore tra VBAT e R1 |
+| Q3 | N-MOSFET **2N7002** o **BSS138** | Comandato dall'ESP32, pilota il gate di Q2 |
+| R4 | Resistenza **100 kΩ** | Tra gate e source di Q2: tiene Q2 spento |
+| R5 | Resistenza **100 kΩ** | Tra gate di Q3 e GND: tiene Q3 spento quando il GPIO è flottante (deep sleep, reset) |
+
+### Come funziona
+
+- **GPIO25 basso, oppure ESP32 in deep sleep o in reset:** R5 tiene spento Q3, R4 tiene il gate di Q2 a VBAT e quindi anche Q2 è spento. Il partitore è scollegato dalla batteria e consuma **praticamente zero**. GPIO33 resta a 0 V grazie a R2.
+- **GPIO25 alto:** Q3 si accende e porta a GND il gate di Q2. V<sub>GS</sub> di Q2 diventa ≈ –VBAT e Q2 si accende: il partitore è alimentato e GPIO33 legge VBAT/2. Durante la lettura R4 consuma circa 42 µA, ma solo per qualche decina di millisecondi.
+- Il body diode di Q2 è orientato in modo da non far passare corrente dalla batteria al partitore quando Q2 è spento.
+
+> ⚠️ **Perché l'interruttore è sul lato batteria e non verso massa.** Verrebbe spontaneo mettere un solo N-MOSFET tra R2 e GND. Ma quando è spento il partitore resta "appeso" a VBAT attraverso R1, e su GPIO33 arriverebbero fino a **4,2 V**, oltre il massimo dell'ESP32. Con l'interruttore sul lato alto, a riposo GPIO33 è sempre a 0 V.
+
+### Codice
+
+Al posto della funzione `readBatteryVoltage()` dell'esempio precedente:
+
+```cpp
+const int PIN_BATT_EN = 25;   // comando del partitore (Q3)
+
+float readBatteryVoltage() {
+  pinMode(PIN_BATT_EN, OUTPUT);
+  digitalWrite(PIN_BATT_EN, HIGH);   // accende il partitore
+  delay(30);                          // attende che C5 si carichi (τ ≈ 5 ms)
+
+  uint32_t sum = 0;
+  for (int i = 0; i < 16; i++) {
+    sum += analogReadMilliVolts(PIN_BATT);
+    delay(2);
+  }
+
+  digitalWrite(PIN_BATT_EN, LOW);    // spegne il partitore
+  return (sum / 16.0f) * DIVIDER / 1000.0f;
+}
+```
+
+Al posto di GPIO25 puoi usare qualsiasi GPIO di uscita libero. Evita i pin di strapping (GPIO0, 2, 5, 12, 15) e quelli solo di ingresso (GPIO34–39).
+
+---
+
+## Sensore pesante: SDS011
+
+L'SDS011 (sensore di particolato PM2.5/PM10) è "pesante" per un sistema a batteria per tre motivi:
+
+1. **Vuole 5 V** (circa 4,7–5,3 V), mentre la batteria ne dà 3,0–4,2.
+2. **Assorbe circa 70 mA** con ventola e laser accesi. Anche in modalità sleep consuma ancora qualche mA.
+3. **Ha bisogno di circa 30 s di ventola** prima di dare letture affidabili.
+
+Per questo il sensore va alimentato con un **boost 5 V** e **scollegato del tutto** tra una misura e l'altra.
+
+<p align="center">
+  <img src="img/sds011.svg" alt="Schema di collegamento SDS011" width="100%">
+</p>
+
+### Componenti aggiuntivi
+
+| Rif. | Componente | Note |
+|---|---|---|
+| — | Modulo **boost 5 V**, ≥ 500 mA | Va bene il classico modulo da power bank con USB-A (ingresso 0,9–5 V), o un MT3608 tarato a 5,0 V. **Togli il LED** se c'è |
+| Q4 | P-MOSFET **AO3401A** | Interruttore tra VBAT e l'ingresso del boost |
+| Q5 | N-MOSFET **2N7002** o **BSS138** | Comandato da GPIO26 |
+| R6 | Resistenza **100 kΩ** | Tra gate e source di Q4: tiene Q4 spento |
+| R7 | Resistenza **100 kΩ** | Tra gate di Q5 e GND: tiene Q5 spento in deep sleep |
+| C6 | Elettrolitico **470–1000 µF**, ≥ 10 V | Sui 5 V, vicino al sensore: assorbe lo spunto della ventola |
+
+### Collegamenti
+
+1. **VBAT (OUT+ del TP4056)** → source di **Q4**. Drain di Q4 → **IN+** del boost. IN– del boost → GND.
+2. **Comando:** GPIO26 → gate di **Q5**, con **R7** verso GND. Drain di Q5 → gate di Q4, con **R6** verso VBAT. Source di Q5 → GND.
+3. **Uscita 5 V del boost** → pin **5V** dell'SDS011, con **C6** verso GND. Se il modulo ha l'USB-A, salda i fili sulle piazzole del connettore (i due pin esterni: VBUS e GND) o sui terminali del condensatore d'uscita.
+4. **GND** dell'SDS011 → massa comune.
+5. **Seriale** (livelli a 3,3 V, collegamento diretto):
+   - **TXD** dell'SDS011 → **GPIO16** (RX dell'ESP32)
+   - **RXD** dell'SDS011 ← **GPIO17** (TX dell'ESP32)
+
+I nomi dei pin sono stampati sul connettore dell'SDS011: controlla la serigrafia del tuo esemplare.
+
+> ⚠️ **Il boost va alimentato da VBAT, non da VLOAD.** Con il pannello al sole VLOAD arriva a circa 6 V. Un boost con l'ingresso più alto dell'uscita lascia passare quasi tutta la tensione, e l'SDS011 riceverebbe circa 5,6 V, oltre il suo massimo.
+
+> ℹ️ Mentre l'SDS011 è acceso, il TP4056 vede un carico sulla batteria (come nel caso senza load sharing). Dura solo circa 40 s per misura, quindi non disturba la terminazione della carica.
+
+### Bilancio energetico
+
+Dalla batteria l'SDS011 con il boost assorbe circa **110 mA** (70 mA a 5 V con un'efficienza di circa l'85 %). Con circa 40 s di accensione per misura:
+
+| Intervallo tra le misure | Consumo medio | Al giorno | Autonomia senza sole (2000 mAh, solo SDS011) |
+|---|---|---|---|
+| 10 min | ~7 mA | ~180 mAh | ~10 giorni |
+| 30 min | ~2,5 mA | ~60 mAh | ~1 mese |
+| 60 min | ~1,2 mA | ~30 mAh | ~2 mesi |
+
+A questi valori va aggiunto il consumo dell'ESP32 (WiFi, invio dei dati).
+
+- **Pannello:** con misure ogni 10 minuti, il pannello da 2–3 W d'inverno non basta: servono **5–6 W**. Con misure ogni 30–60 minuti il pannello da 2–3 W è in genere sufficiente.
+- **Durata del laser:** il produttore indica circa 8000 ore di funzionamento. Accenderlo solo per le misure, come qui, ne allunga molto la vita.
+
+### Codice di esempio
+
+Accende il sensore, attende 30 s, legge e fa la media di alcuni pacchetti, spegne il sensore e manda l'ESP32 in deep sleep.
+
+```cpp
+#include <Arduino.h>
+
+const int SDS_EN_PIN = 26;   // comando del boost (Q5)
+const int SDS_RX_PIN = 16;   // RX dell'ESP32  <- TXD dell'SDS011
+const int SDS_TX_PIN = 17;   // TX dell'ESP32  -> RXD dell'SDS011
+const uint32_t WARMUP_MS = 30000;
+const uint64_t SLEEP_US  = 30ULL * 60ULL * 1000000ULL;   // 30 minuti
+
+HardwareSerial sds(2);
+
+// Legge un pacchetto SDS011 (10 byte: AA C0 ... AB). Restituisce true se valido.
+bool readSdsFrame(float &pm25, float &pm10, uint32_t timeoutMs = 2000) {
+  uint8_t buf[10];
+  uint32_t t0 = millis();
+  int idx = 0;
+
+  while (millis() - t0 < timeoutMs) {
+    if (!sds.available()) { delay(5); continue; }
+    uint8_t b = sds.read();
+
+    if (idx == 0 && b != 0xAA) continue;          // attende l'header
+    if (idx == 1 && b != 0xC0) { idx = 0; continue; }
+    buf[idx++] = b;
+
+    if (idx == 10) {
+      uint8_t sum = 0;
+      for (int i = 2; i <= 7; i++) sum += buf[i];
+      if (buf[9] != 0xAB || buf[8] != sum) { idx = 0; continue; }
+      pm25 = ((buf[3] << 8) | buf[2]) / 10.0f;
+      pm10 = ((buf[5] << 8) | buf[4]) / 10.0f;
+      return true;
+    }
+  }
+  return false;
+}
+
+void sdsPowerOn() {
+  pinMode(SDS_EN_PIN, OUTPUT);
+  digitalWrite(SDS_EN_PIN, HIGH);
+  sds.begin(9600, SERIAL_8N1, SDS_RX_PIN, SDS_TX_PIN);
+}
+
+void sdsPowerOff() {
+  sds.end();
+  pinMode(SDS_TX_PIN, INPUT);       // non alimentare il sensore spento dalla linea TX
+  digitalWrite(SDS_EN_PIN, LOW);
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  sdsPowerOn();
+  delay(WARMUP_MS);                 // ventola accesa: lascia stabilizzare il flusso d'aria
+  while (sds.available()) sds.read();   // scarta i pacchetti del riscaldamento
+
+  float pm25Sum = 0, pm10Sum = 0;
+  int n = 0;
+  for (int i = 0; i < 5; i++) {     // l'SDS011 invia un pacchetto al secondo
+    float pm25, pm10;
+    if (readSdsFrame(pm25, pm10)) { pm25Sum += pm25; pm10Sum += pm10; n++; }
+  }
+  sdsPowerOff();
+
+  if (n > 0) {
+    Serial.printf("PM2.5: %.1f µg/m³  PM10: %.1f µg/m³  (%d letture)\n",
+                  pm25Sum / n, pm10Sum / n, n);
+  } else {
+    Serial.println("SDS011: nessuna lettura valida");
+  }
+
+  // ... lettura batteria, WiFi, invio dati ...
+
+  esp_sleep_enable_timer_wakeup(SLEEP_US);
+  esp_deep_sleep_start();
+}
+
+void loop() {}
+```
+
+### Consigli per l'installazione all'esterno
+
+- **Umidità:** sopra circa il 70 % di umidità relativa l'SDS011 tende a **sovrastimare** il particolato, perché le goccioline vengono contate come particelle. Affiancagli un sensore di umidità (per esempio un BME280) per scartare o correggere le letture nelle giornate umide.
+- **Contenitore:** riparato da pioggia e sole diretto, ma con aria che circola. Il tubetto di aspirazione dell'SDS011 non deve essere ostruito.
+- **Alimentazione:** il picco di corrente all'avvio della ventola è il momento critico. Se l'ESP32 si resetta quando accendi il sensore, aumenta C6 o il condensatore C3 sui 3,3 V.
 
 ---
 
