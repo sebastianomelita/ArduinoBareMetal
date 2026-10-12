@@ -13,7 +13,7 @@
     <g id="gnd"><path class="w gnd" d="M0 0V12M-12 12H12M-8 17H8M-4 22H4"/></g>
   </defs>
 
-  <rect width="1280" height="700" fill="#ffffff"/>
+  <rect width="1180" height="700" fill="#ffffff"/>
   <text x="40" y="40" font-size="22" font-weight="bold" fill="#1d3557">MOSFET come interruttori: le due configurazioni di base</text>
 
   <rect x="20" y="58" width="560" height="430" rx="10" fill="#f7f9fc" stroke="#d5deea"/>
