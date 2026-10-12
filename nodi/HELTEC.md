@@ -161,6 +161,23 @@ Per convertire la tensione in percentuale puoi riusare la funzione `batteryPerce
 
 ---
 
+## Protezione dalla scarica profonda con le Heltec
+
+La protezione software descritta nel README (sezione [Protezione dalla scarica profonda](README.md#protezione-dalla-scarica-profonda)) funziona allo stesso modo: basta usare la `readBatteryVoltage()` di questa guida. Cambia invece la parte hardware:
+
+- **Opzione A:** la scheda dichiara una protezione dalla sovraccarica, ma una protezione dalla **sovrascarica** del carico non è documentata. Usa una cella LiPo **con PCM integrato** (la piccola scheda di protezione sotto la guaina) oppure aggiungi una **BMS 1S** tra cella e connettore: B+/B– verso la cella, P+/P– verso la scheda.
+
+<p align="center">
+  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
+</p>
+
+<p align="center"><em>Scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B– (verso la cella), P+ e P– (verso il carico).</em></p>
+- **Opzione B:** la batteria è sul TP4056, quindi la protezione DW01 + 8205A c'è già, come nel README.
+
+Per le soglie software tieni un margine in più: il partitore della scheda ha resistenze con una tolleranza tipica del 5 %. Confronta la lettura con un tester e, se serve, correggi `DIVIDER`.
+
+---
+
 ## SDS011 con le schede Heltec
 
 Vale tutto quanto descritto nella sezione [SDS011](README.md#sensore-pesante-sds011) del README. Ci sono solo due differenze:
