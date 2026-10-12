@@ -120,7 +120,8 @@
   <!-- Formule -->
   <rect x="20" y="505" width="1140" height="175" rx="10" fill="#f8f9fa" stroke="#ccc"/>
   <text x="40" y="533" class="lblb" font-size="16">Le formule da ricordare</text>
-  <text x="40" y="562" class="leg">• Caduta di tensione:  ΔV = I_carico × R_DS(on)          • Potenza dissipata:  P = I_carico² × R_DS(on)</text>
+  <text x="40" y="562" class="leg">• Caduta di tensione:  ΔV = I_carico × R_DS(on)</text>
+  <text x="40" y="562" class="leg">• Potenza dissipata:  P = I_carico² × R_DS(on)</text>
   <text x="40" y="588" class="leg">• Accensione piena:  |V_GS| ≥ 2–2,5 × |V_GS(th)|  e R_DS(on) letta sul datasheet alla |V_GS| che hai davvero</text>
   <text x="40" y="614" class="leg">• Margini:  V_DS(max) ≥ 2 × tensione di alimentazione,  I_D ≥ 2–3 × corrente del carico (picchi compresi)</text>
   <text x="40" y="640" class="leg">• Consumo delle resistenze di gate:  I = V / R  (100 kΩ a 4,2 V → 42 µA, solo mentre il driver è acceso)</text>
