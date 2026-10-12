@@ -112,7 +112,27 @@ L'HT7833 porta VLOAD (da circa 3,3 a 6,5 V) a 3,3 V stabili per il pin **3V3** d
 
 ### 4. Lettura della batteria (R1, R2, C5)
 
-Il partitore 100k/100k dimezza la tensione della batteria: a 4,2 V corrispondono 2,1 V sull'ADC, nella zona in cui l'ADC dell'ESP32 è più lineare. Il consumo continuo del partitore è di circa 21 µA. Si usa **GPIO33**, che fa parte dell'ADC1: i pin ADC2 non funzionano quando il WiFi è attivo.
+**A cosa serve.** La tensione di una LiPo indica, in modo approssimato, quanta carica le resta: circa 4,2 V da carica, circa 3,7 V a metà, sotto i 3,4 V quasi scarica. Leggendola, l'ESP32 può:
+
+- inviare il livello della batteria insieme agli altri dati, così lo controlli da remoto;
+- **risparmiare energia quando la batteria è bassa**, per esempio allungando il deep sleep, saltando il WiFi o non accendendo i sensori pesanti come l'SDS011;
+- avvisarti se il pannello non riesce più a tenere carica la batteria (pannello sporco, ombreggiato, guasto).
+
+**Perché serve un partitore.** L'ADC dell'ESP32 misura al massimo circa 3,1 V, e i pin reggono al massimo circa 3,6 V. La batteria arriva a 4,2 V: collegata direttamente, la lettura andrebbe fuori scala e il pin rischierebbe di danneggiarsi. Le due resistenze uguali R1 e R2 **dimezzano** la tensione:
+
+```
+V_ADC = VBAT × R2 / (R1 + R2) = VBAT / 2        →   VBAT = V_ADC × 2
+```
+
+A 4,2 V corrispondono 2,1 V sull'ADC, nella zona in cui l'ADC dell'ESP32 è più lineare e preciso.
+
+**Perché si legge VBAT e non un altro punto.** Il partitore è collegato a **OUT+**, che sui moduli protetti coincide con B+, cioè con la batteria. Non avrebbe senso misurare il 3,3 V, che è regolato e resta fisso finché la batteria non è quasi vuota, né VLOAD, che con il sole riflette la tensione del pannello e non quella della batteria.
+
+**Perché 100 kΩ.** Il partitore è sempre collegato alla batteria, quindi le resistenze devono essere alte per consumare poco: circa **21 µA** in modo continuo, circa 0,5 mAh al giorno. Valori ancora più alti renderebbero la lettura instabile, perché l'ADC durante la misura assorbe brevi impulsi di corrente. Il condensatore **C5** (100 nF) fa da serbatoio per quegli impulsi e stabilizza la lettura. Se vuoi azzerare anche quei 21 µA, vedi la [variante con partitore attivabile](#variante-partitore-attivabile-consumo-zero-a-riposo).
+
+**Quale pin.** Si usa **GPIO33**, che fa parte dell'ADC1. I pin dell'ADC2 non funzionano quando il WiFi è attivo.
+
+> ℹ️ Durante la carica il partitore legge la tensione imposta dal caricatore (fino a 4,2 V), più alta della tensione reale della batteria a riposo. La percentuale è affidabile solo quando non c'è alimentazione esterna.
 
 ---
 
@@ -450,6 +470,99 @@ void loop() {}
 - **Umidità:** sopra circa il 70 % di umidità relativa l'SDS011 tende a **sovrastimare** il particolato, perché le goccioline vengono contate come particelle. Affiancagli un sensore di umidità (per esempio un BME280) per scartare o correggere le letture nelle giornate umide.
 - **Contenitore:** riparato da pioggia e sole diretto, ma con aria che circola. Il tubetto di aspirazione dell'SDS011 non deve essere ostruito.
 - **Alimentazione:** il picco di corrente all'avvio della ventola è il momento critico. Se l'ESP32 si resetta quando accendi il sensore, aumenta C6 o il condensatore C3 sui 3,3 V.
+
+---
+
+## Protezione dalla scarica profonda
+
+Una cella LiPo scaricata sotto circa **2,5 V** si danneggia in modo **irreversibile**: perde capacità, può non accettare più la carica e, nei casi peggiori, gonfiarsi alla ricarica successiva. In un'installazione all'aperto, dove nessuno vede il dispositivo, questa protezione è fondamentale.
+
+La protezione lavora su **due livelli**.
+
+### 1. Protezione hardware (già presente)
+
+Il modulo **TP4056 con DW01 + 8205A** è già un PCM (Protection Circuit Module). Il DW01 controlla la tensione della cella e, tramite i MOSFET 8205A sul negativo (B– → OUT–), **stacca fisicamente il carico**:
+
+- per **sovrascarica**: sotto circa **2,4 V** (valore tipico del DW01);
+- per **sovracorrente e cortocircuito**: interviene in microsecondi.
+
+Interviene anche se il firmware è bloccato, e quando la batteria riceve di nuovo carica (dal sole o dall'USB) **si ricollega da solo**.
+
+Questa protezione è l'ultima difesa, e la sua soglia è bassa: protegge la cella dalla distruzione, non dall'usura. Esistono moduli con l'**FS312F** al posto del DW01, compatibile pin a pin, che stacca a circa **2,9 V** ed è preferibile. Molte celle LiPo hanno inoltre un loro PCM integrato nella guaina.
+
+> ℹ️ Una DevKit consuma qualche mA anche in deep sleep, per il LED e il convertitore USB-seriale. In un lungo periodo senza sole è il DW01 a salvare la cella, non il firmware.
+
+### 2. Protezione software
+
+Il firmware legge la batteria **come prima cosa** al risveglio, prima di WiFi e sensori. Se la tensione è troppo bassa, entra in **modalità di emergenza**: niente trasmissioni, niente sensori, deep sleep lungo. Si ferma così molto prima che intervenga il DW01, e si evita il caso peggiore: ogni tentativo di trasmissione fa crollare la tensione, l'ESP32 si resetta, riprova, si resetta di nuovo, e la cella si scarica sempre più in fretta senza che arrivi nessun dato.
+
+**Soglie per questo circuito**
+
+| Soglia | Valore | Perché |
+|---|---|---|
+| Ingresso in emergenza | **3,30 V** | Sotto circa 3,4 V l'HT7833 non riesce più a tenere i 3,3 V e i picchi del WiFi rischiano il brown-out. A 3,3 V una LiPo ha ancora circa il 5 % di carica |
+| Uscita dall'emergenza | **3,50 V** | 200 mV di **isteresi**: evitano che il dispositivo entri ed esca continuamente dall'emergenza quando la tensione è vicina alla soglia |
+| Minimo per l'SDS011 | **3,50 V** | Il sensore assorbe circa 110 mA dalla batteria per 40 s: sotto questa soglia si salta la misura e si fa il resto |
+| Sleep di emergenza | **6 ore** | Compromesso tra risparmio e ripresa rapida: se il pannello ricarica durante il giorno, il dispositivo torna operativo entro poche ore |
+
+Se usi celle di qualità incerta o di recupero, alza le soglie di 0,1–0,2 V.
+
+**Codice**
+
+Lo stato di emergenza va **ricordato tra un risveglio e l'altro**, altrimenti l'isteresi non funziona. Si usa una variabile in memoria RTC (`RTC_DATA_ATTR`), che sopravvive al deep sleep:
+
+```cpp
+const uint32_t VBAT_EMERGENCY_MV  = 3300;   // sotto: emergenza
+const uint32_t VBAT_RECOVERY_MV   = 3500;   // sopra: ripresa normale (isteresi 200 mV)
+const uint32_t VBAT_SDS011_MIN_MV = 3500;   // sotto: niente misura SDS011
+const uint64_t EMERGENCY_SLEEP_US = 6ULL * 3600ULL * 1000000ULL;   // 6 ore
+
+RTC_DATA_ATTR bool emergency = false;       // conservata durante il deep sleep
+
+void goToSleep(uint64_t us) {
+  esp_sleep_enable_timer_wakeup(us);
+  esp_deep_sleep_start();
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  // 1) Batteria come PRIMA cosa, prima di WiFi e sensori
+  uint32_t vbat_mv = readBatteryVoltage() * 1000;
+
+  if (vbat_mv > 500) {                      // ignora letture nulle o errate
+    if (emergency && vbat_mv < VBAT_RECOVERY_MV) {
+      Serial.printf("Emergenza: %u mV, torno a dormire\n", vbat_mv);
+      goToSleep(EMERGENCY_SLEEP_US);
+    }
+    if (!emergency && vbat_mv < VBAT_EMERGENCY_MV) {
+      Serial.printf("BATTERIA CRITICA: %u mV\n", vbat_mv);
+      emergency = true;
+      goToSleep(EMERGENCY_SLEEP_US);
+    }
+    emergency = false;                      // tensione sopra la soglia di ripresa
+  }
+
+  // 2) Sensori pesanti solo con la batteria in buone condizioni
+  if (vbat_mv >= VBAT_SDS011_MIN_MV) {
+    // ... misura SDS011 (vedi sezione SDS011) ...
+  }
+
+  // 3) WiFi, invio dati (incluso vbat_mv), deep sleep normale
+  // ...
+  goToSleep(SLEEP_US);
+}
+```
+
+> ℹ️ **Interazione con il load sharing.** Con il sole o l'USB presenti, il partitore legge la tensione di carica (più alta di quella reale) e il dispositivo può uscire prima dall'emergenza. Non è un problema: in quella situazione l'ESP32 è alimentato da VIN_EXT tramite D3 e non preleva dalla batteria.
+
+### Cosa resta scoperto
+
+- **Firmware bloccato o con errori:** la protezione software non interviene, ma il DW01 sì.
+- **Cortocircuito:** il firmware è troppo lento (millisecondi contro microsecondi). Interviene il DW01.
+- **Batteria già troppo scarica al risveglio:** se l'ESP32 va in brown-out prima di leggere la batteria, il firmware non può fare nulla. Leggere la batteria come prima istruzione riduce molto questo rischio, e in ultima istanza stacca il DW01.
+
+Per un'installazione permanente all'aperto le due protezioni vanno usate **insieme**: quella software allunga la vita della cella, quella hardware evita il peggio.
 
 ---
 
