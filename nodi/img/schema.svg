@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1540 860" width="1540" height="860" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .w{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+      .vin{stroke:#e07a00}.vbat{stroke:#c1121f}.vload{stroke:#7b2cbf}.v33{stroke:#2a9d8f}.adc{stroke:#d63384}.gnd{stroke:#444}.blk{stroke:#555}
+      .c{fill:none;stroke:#222;stroke-width:2.2;stroke-linecap:round}
+      .lbl{font-size:14px;fill:#222}
+      .lblb{font-size:14px;fill:#222;font-weight:bold}
+      .net{font-size:14px;font-weight:bold}
+      .wt{fill:#fff;font-size:14px}
+      .wtb{fill:#fff;font-size:18px;font-weight:bold}
+      .leg{font-size:15px;fill:#222}
+    </style>
+    <g id="gnd"><path class="w gnd" d="M0 0V12M-12 12H12M-8 17H8M-4 22H4"/></g>
+  </defs>
+
+  <rect width="1540" height="860" fill="#ffffff"/>
+  <text x="40" y="40" font-size="24" font-weight="bold" fill="#1d3557">ESP32 alimentato da pannello solare + USB + LiPo (TP4056 con load sharing)</text>
+
+  <g transform="translate(0,70)">
+    <!-- ===== Pannello solare ===== -->
+    <rect x="40" y="60" width="140" height="100" rx="6" fill="#e8f0fb" stroke="#1d3557" stroke-width="2"/>
+    <path d="M75 60V160M110 60V160M145 60V160M40 110H180" stroke="#9db4d6" stroke-width="1.5"/>
+    <text x="110" y="95" text-anchor="middle" class="lblb">Pannello solare</text>
+    <text x="110" y="135" text-anchor="middle" class="lbl">6 V · 2–3 W</text>
+    <text x="170" y="96" class="lblb" text-anchor="end">+</text>
+    <text x="170" y="146" class="lblb" text-anchor="end">–</text>
+    <path class="w vin" d="M180 100H220"/>
+    <path class="w vin" d="M280 100H340"/>
+    <path class="w gnd" d="M180 140H200"/><use href="#gnd" x="200" y="140"/>
+
+    <!-- D1 -->
+    <path class="c" d="M220 100H235M265 100H280"/>
+    <polygon points="235,88 235,112 265,100" fill="#222"/>
+    <path class="c" d="M265 88V112"/>
+    <text x="250" y="80" text-anchor="middle" class="lbl">D1 1N5819</text>
+
+    <!-- ===== Ingresso USB ===== -->
+    <rect x="40" y="230" width="140" height="100" rx="6" fill="#f1f1f1" stroke="#333" stroke-width="2"/>
+    <text x="110" y="262" text-anchor="middle" class="lblb">Ingresso USB 5 V</text>
+    <text x="110" y="284" text-anchor="middle" class="lbl">cavo tagliato:</text>
+    <text x="110" y="302" text-anchor="middle" class="lbl">rosso +, nero –</text>
+    <text x="176" y="256" class="lblb" text-anchor="end">+</text>
+    <text x="176" y="320" class="lblb" text-anchor="end">–</text>
+    <path class="w vin" d="M180 260H220"/>
+    <path class="w vin" d="M280 260H340"/>
+    <path class="w gnd" d="M180 300H200"/><use href="#gnd" x="200" y="300"/>
+
+    <!-- D2 -->
+    <path class="c" d="M220 260H235M265 260H280"/>
+    <polygon points="235,248 235,272 265,260" fill="#222"/>
+    <path class="c" d="M265 248V272"/>
+    <text x="250" y="240" text-anchor="middle" class="lbl">D2 1N5819</text>
+
+    <!-- ===== Nodo VIN_EXT ===== -->
+    <path class="w vin" d="M340 60V260"/>
+    <path class="w vin" d="M340 190H420"/>
+    <circle cx="340" cy="100" r="4.5" fill="#e07a00"/>
+    <circle cx="340" cy="190" r="4.5" fill="#e07a00"/>
+    <text x="350" y="182" class="net" fill="#e07a00">VIN_EXT</text>
+
+    <!-- linea superiore VIN_EXT verso D3 -->
+    <path class="w vin" d="M340 60H860"/>
+    <circle cx="760" cy="60" r="4.5" fill="#e07a00"/>
+
+    <!-- D3 -->
+    <path class="c" d="M860 60H875M905 60H920"/>
+    <polygon points="875,48 875,72 905,60" fill="#222"/>
+    <path class="c" d="M905 48V72"/>
+    <text x="890" y="38" text-anchor="middle" class="lbl">D3 1N5819</text>
+    <path class="w vload" d="M920 60H980V190"/>
+
+    <!-- ===== TP4056 ===== -->
+    <rect x="420" y="150" width="200" height="180" rx="6" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+    <text x="520" y="235" text-anchor="middle" class="wtb">TP4056</text>
+    <text x="520" y="256" text-anchor="middle" class="wt">con protezione</text>
+    <text x="520" y="273" text-anchor="middle" class="wt">DW01 + 8205A</text>
+    <text x="428" y="195" class="wt">IN+</text>
+    <text x="428" y="295" class="wt">IN–</text>
+    <text x="612" y="195" class="wt" text-anchor="end">OUT+</text>
+    <text x="612" y="295" class="wt" text-anchor="end">OUT–</text>
+    <text x="480" y="322" class="wt" text-anchor="middle">B+</text>
+    <text x="560" y="322" class="wt" text-anchor="middle">B–</text>
+    <path class="w gnd" d="M420 290H395"/><use href="#gnd" x="395" y="290"/>
+    <path class="w gnd" d="M620 290H635"/><use href="#gnd" x="635" y="290"/>
+
+    <!-- Batteria -->
+    <path class="w vbat" d="M480 330V390"/>
+    <path class="w blk" d="M560 330V390"/>
+    <rect x="440" y="390" width="160" height="70" rx="8" fill="#fff3d6" stroke="#333" stroke-width="2"/>
+    <text x="480" y="410" text-anchor="middle" class="lblb">+</text>
+    <text x="560" y="410" text-anchor="middle" class="lblb">–</text>
+    <text x="520" y="428" text-anchor="middle" class="lblb">LiPo 3,7 V</text>
+    <text x="520" y="448" text-anchor="middle" class="lbl">2000 mAh</text>
+
+    <!-- ===== VBAT e Q1 ===== -->
+    <path class="w vbat" d="M620 190H700"/>
+    <circle cx="660" cy="190" r="4.5" fill="#c1121f"/>
+    <text x="628" y="180" class="net" fill="#c1121f">VBAT</text>
+
+    <!-- P-MOSFET AO3401A -->
+    <path class="c" d="M700 190H740V172"/>
+    <path class="c" d="M780 172V190H820"/>
+    <path d="M735 172H750M753 172H767M770 172H785" stroke="#222" stroke-width="3.2"/>
+    <path d="M735 160H785" stroke="#222" stroke-width="3.2"/>
+    <path class="c" d="M760 172V190H780"/>
+    <polygon points="760,188 754,178 766,178" fill="#222"/>
+    <!-- diodo di body -->
+    <path d="M740 190V215H748M772 215H780V190" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <polygon points="748,207 748,223 764,215" fill="#888"/>
+    <path d="M764 207V223" stroke="#888" stroke-width="1.8"/>
+    <text x="718" y="184" class="lbl">D</text>
+    <text x="795" y="184" class="lbl">S</text>
+    <text x="767" y="152" class="lbl">G</text>
+    <text x="760" y="245" text-anchor="middle" class="lblb">Q1 AO3401A</text>
+    <text x="760" y="262" text-anchor="middle" class="lbl">P-MOSFET</text>
+
+    <!-- gate e pull-down -->
+    <path class="w vin" d="M760 60V160"/>
+    <circle cx="760" cy="110" r="4.5" fill="#e07a00"/>
+    <path class="w vin" d="M760 110H785"/>
+    <rect x="785" y="101" width="60" height="18" fill="#fff" stroke="#222" stroke-width="2.2"/>
+    <path class="w gnd" d="M845 110H870"/><use href="#gnd" x="870" y="110"/>
+    <text x="815" y="94" text-anchor="middle" class="lbl">R3 100k</text>
+
+    <!-- ===== VLOAD ===== -->
+    <path class="w vload" d="M820 190H1050"/>
+    <circle cx="980" cy="190" r="4.5" fill="#7b2cbf"/>
+    <text x="900" y="182" class="net" fill="#7b2cbf">VLOAD</text>
+
+    <!-- C1 -->
+    <circle cx="1010" cy="190" r="4.5" fill="#7b2cbf"/>
+    <path class="w vload" d="M1010 190V222"/>
+    <path class="c" d="M998 222H1022M998 230H1022"/>
+    <path class="w gnd" d="M1010 230V242"/><use href="#gnd" x="1010" y="242"/>
+    <text x="1010" y="285" text-anchor="middle" class="lbl">C1</text>
+    <text x="1010" y="301" text-anchor="middle" class="lbl">10 µF</text>
+
+    <!-- ===== HT7833 ===== -->
+    <rect x="1050" y="160" width="120" height="70" rx="5" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+    <text x="1110" y="190" text-anchor="middle" class="lblb">HT7833</text>
+    <text x="1110" y="207" text-anchor="middle" class="lbl">LDO 3,3 V</text>
+    <text x="1056" y="176" class="lbl" font-size="12">IN</text>
+    <text x="1164" y="176" class="lbl" font-size="12" text-anchor="end">OUT</text>
+    <text x="1110" y="225" text-anchor="middle" class="lbl" font-size="12">GND</text>
+    <path class="w gnd" d="M1110 230V245"/><use href="#gnd" x="1110" y="245"/>
+
+    <!-- ===== 3V3 ===== -->
+    <path class="w v33" d="M1170 190H1380"/>
+    <text x="1178" y="182" class="net" fill="#2a9d8f">3V3</text>
+
+    <!-- C2 -->
+    <circle cx="1210" cy="190" r="4.5" fill="#2a9d8f"/>
+    <path class="w v33" d="M1210 190V222"/>
+    <path class="c" d="M1198 222H1222M1198 230H1222"/>
+    <path class="w gnd" d="M1210 230V242"/><use href="#gnd" x="1210" y="242"/>
+    <text x="1210" y="285" text-anchor="middle" class="lbl">C2</text>
+    <text x="1210" y="301" text-anchor="middle" class="lbl">10 µF</text>
+
+    <!-- C3 elettrolitico -->
+    <circle cx="1270" cy="190" r="4.5" fill="#2a9d8f"/>
+    <path class="w v33" d="M1270 190V222"/>
+    <path class="c" d="M1258 222H1282"/>
+    <path class="c" d="M1258 234Q1270 226 1282 234"/>
+    <text x="1250" y="220" class="lblb">+</text>
+    <path class="w gnd" d="M1270 230V242"/><use href="#gnd" x="1270" y="242"/>
+    <text x="1270" y="285" text-anchor="middle" class="lbl">C3</text>
+    <text x="1270" y="301" text-anchor="middle" class="lbl">470 µF</text>
+
+    <!-- C4 -->
+    <circle cx="1330" cy="190" r="4.5" fill="#2a9d8f"/>
+    <path class="w v33" d="M1330 190V222"/>
+    <path class="c" d="M1318 222H1342M1318 230H1342"/>
+    <path class="w gnd" d="M1330 230V242"/><use href="#gnd" x="1330" y="242"/>
+    <text x="1330" y="285" text-anchor="middle" class="lbl">C4</text>
+    <text x="1330" y="301" text-anchor="middle" class="lbl">100 nF</text>
+
+    <!-- ===== ESP32 ===== -->
+    <rect x="1380" y="140" width="130" height="390" rx="8" fill="#222" stroke="#000" stroke-width="2"/>
+    <text x="1460" y="300" text-anchor="middle" class="wtb">ESP32</text>
+    <text x="1460" y="322" text-anchor="middle" class="wt">DevKit</text>
+    <text x="1388" y="195" class="wt">3V3</text>
+    <text x="1388" y="365" class="wt">GND</text>
+    <text x="1388" y="455" class="wt">GPIO33</text>
+    <path class="w gnd" d="M1380 360H1355"/><use href="#gnd" x="1355" y="360"/>
+
+    <!-- ===== Partitore batteria ===== -->
+    <path class="w vbat" d="M660 190V330"/>
+    <rect x="651" y="330" width="18" height="60" fill="#fff" stroke="#222" stroke-width="2.2"/>
+    <text x="678" y="365" class="lbl">R1 100k</text>
+    <path class="w adc" d="M660 390V480"/>
+    <circle cx="660" cy="450" r="4.5" fill="#d63384"/>
+    <rect x="651" y="480" width="18" height="60" fill="#fff" stroke="#222" stroke-width="2.2"/>
+    <text x="678" y="515" class="lbl">R2 100k</text>
+    <path class="w gnd" d="M660 540V555"/><use href="#gnd" x="660" y="555"/>
+
+    <path class="w adc" d="M660 450H1380"/>
+    <text x="900" y="440" class="net" fill="#d63384">ADC ≈ VBAT / 2</text>
+
+    <!-- C5 -->
+    <circle cx="740" cy="450" r="4.5" fill="#d63384"/>
+    <path class="w adc" d="M740 450V478"/>
+    <path class="c" d="M728 478H752M728 486H752"/>
+    <path class="w gnd" d="M740 486V498"/><use href="#gnd" x="740" y="498"/>
+    <text x="758" y="490" class="lbl">C5 100nF</text>
+
+    <!-- ===== Legenda ===== -->
+    <rect x="40" y="590" width="1470" height="190" rx="8" fill="#f8f9fa" stroke="#ccc"/>
+    <text x="60" y="618" class="lblb" font-size="16">Legenda</text>
+
+    <path class="w vin" d="M60 645H95"/><text x="102" y="650" class="leg">VIN_EXT (pannello / USB)</text>
+    <path class="w vbat" d="M330 645H365"/><text x="372" y="650" class="leg">VBAT (OUT+ = B+)</text>
+    <path class="w vload" d="M560 645H595"/><text x="602" y="650" class="leg">VLOAD (ingresso regolatore)</text>
+    <path class="w v33" d="M840 645H875"/><text x="882" y="650" class="leg">3V3</text>
+    <path class="w adc" d="M960 645H995"/><text x="1002" y="650" class="leg">ADC</text>
+    <use href="#gnd" x="1090" y="635"/><text x="1112" y="650" class="leg">massa comune = IN– / OUT– del TP4056</text>
+
+    <text x="60" y="682" class="leg">• Il polo – della batteria va SOLO su B–. Non collegare la massa del circuito a B–, altrimenti si bypassa la protezione.</text>
+    <text x="60" y="706" class="leg">• D1 + D2 uniscono pannello e USB senza che si alimentino a vicenda. D3 alimenta il carico direttamente da VIN_EXT.</text>
+    <text x="60" y="730" class="leg">• Q1: con VIN_EXT presente il gate è alto e Q1 è spento, quindi la batteria si carica senza carico. Senza VIN_EXT, R3 porta il gate a GND,</text>
+    <text x="74" y="750" class="leg">Q1 si accende e l'ESP32 passa sulla batteria senza interruzioni.</text>
+    <text x="60" y="772" class="leg">• R1 = R2 = 100 kΩ → Vadc = VBAT / 2 (max 2,1 V, zona lineare dell'ADC). C5 stabilizza la lettura.</text>
+  </g>
+</svg>
