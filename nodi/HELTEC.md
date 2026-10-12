@@ -1,0 +1,157 @@
+# Uso con schede Heltec (WiFi Kit 32 V3, Wireless Stick Lite V3)
+
+Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [README](README.md).
+
+<p align="center">
+  <img src="img/heltec_opzioni.svg" alt="Opzioni di alimentazione per schede Heltec" width="100%">
+</p>
+
+---
+
+## Cosa c'è già sulle schede Heltec
+
+Dai datasheet e dalle schede tecniche risulta questo:
+
+| | WiFi Kit 32 V3 | Wireless Stick Lite V3 |
+|---|---|---|
+| Caricatore LiPo integrato | Sì (chip non indicato nel datasheet) | Sì, **TP4054** |
+| Connettore batteria | SH1.25, 2 pin | SH1.25, 2 pin |
+| Lettura batteria | **GPIO1** (ADC1_CH0), partitore **390k/100k** | **GPIO1**, partitore **390k/100k** |
+| Attivazione partitore | **GPIO37** (`ADC_Ctrl`) | **GPIO37** (`ADC_Ctrl`), attivo **basso** secondo la scheda tecnica |
+| Uscita Vext comandata | **GPIO36** (Vext, 350 mA) | — |
+| Ingresso pannello solare | **No** | **No** |
+| Load sharing documentato | **No** | **No** |
+
+In pratica queste schede hanno già il **partitore attivabile**: consumo zero a riposo, come la variante descritta nel README. Non hanno invece un ingresso solare dedicato né un load sharing documentato. Il TP4054 della Wireless Stick Lite, come il TP4056, da solo non separa il carico dalla batteria.
+
+> ℹ️ Per la WiFi Kit 32 V3 il datasheet nomina `ADC_Ctrl` ma non indica a quale livello attiva la lettura. Se leggi sempre 0 V, inverti il livello (vedi il codice più sotto).
+
+---
+
+## Opzione A: usare il caricatore della scheda
+
+È la soluzione più **semplice**: uni pannello e USB con i diodi D1 e D2 e mandi il risultato al **pin 5V** della scheda. Ricarica e lettura della batteria sono affidate alla Heltec.
+
+### Collegamenti
+
+1. **Batteria:** LiPo da una cella **con protezione** (PCM) sul connettore SH1.25 della scheda.
+2. **Pannello:** + all'anodo di **D1** (1N5819).
+3. **USB:** + del cavo tagliato all'anodo di **D2** (1N5819).
+4. **Catodi di D1 e D2** uniti, collegati al **pin 5V** della Heltec.
+5. **Masse** (– del pannello, – dell'USB) al **GND** della scheda.
+
+### Regole importanti
+
+- **Non usare insieme l'USB-C della scheda e il pin 5V.** Heltec li considera ingressi alternativi. L'USB deve entrare solo tramite D2. Per programmare la scheda scollega pannello e USB esterno.
+- **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Per la WiFi LoRa 32 V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 verificalo sullo schema della tua revisione. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V.
+- **Polarità del connettore batteria.** I cavetti SH1.25 in commercio non sono tutti uguali: controlla che il rosso arrivi sul + della scheda prima di collegare.
+
+### Limiti
+
+- **Niente load sharing.** Mentre la batteria è in carica, l'ESP32 assorbe dalla stessa linea. Con l'ESP32 quasi sempre in deep sleep il problema è trascurabile. Con il WiFi sempre acceso la carica potrebbe non terminare mai e la batteria resterebbe a 4,2 V a lungo.
+- **Corrente di carica fissa**, decisa dalla scheda e non documentata per queste versioni, quindi non regolabile.
+
+---
+
+## Opzione B: circuito esterno completo
+
+Si usa **tutto il circuito del README** (TP4056 + D1/D2 + load sharing + HT7833) e si alimenta la Heltec dal **pin 3V3**. Il connettore batteria della scheda resta **vuoto**.
+
+### Collegamenti
+
+1. Monta il circuito del README fino all'uscita dell'**HT7833**.
+2. Uscita HT7833 al **pin 3V3** della Heltec, massa al **GND**.
+3. **Connettore batteria della Heltec: vuoto.** La batteria va solo su **B+/B–** del TP4056.
+4. **Lettura batteria:** il partitore della scheda (GPIO1) è collegato al suo connettore, che è vuoto, quindi non serve. Usa il **partitore attivabile esterno** del README (Q2, Q3) su un pin ADC1 libero dell'ESP32-S3 (GPIO1–GPIO10). Controlla sul pinout della tua scheda quali sono davvero liberi: alcuni sono usati da display o radio.
+
+### Vantaggi e limiti
+
+- ✅ Load sharing vero, corrente di carica regolabile, pannelli da 6 V senza problemi.
+- ✅ Funziona anche con schede ESP32 diverse, senza dipendere dai dettagli della Heltec.
+- ⚠️ Il pin 3V3 viene usato come **ingresso**: per la V4 Heltec dichiara 2,7–3,5 V in ingresso sul pin 3V3. Per la tua scheda verifica sul datasheet o sullo schema.
+- ⚠️ Mentre programmi via USB-C, il regolatore della scheda e l'HT7833 si trovano in parallelo sulla linea 3V3: per sicurezza scollega il filo dell'HT7833.
+
+---
+
+## A o B?
+
+| | Opzione A | Opzione B |
+|---|---|---|
+| Componenti esterni | 2 diodi | Circuito completo del README |
+| Load sharing | No | Sì |
+| Pannello | 5 V nominali (verificare il massimo del pin 5V) | 6 V |
+| Corrente di carica | Fissa, decisa dalla scheda | Regolabile (R_PROG) |
+| Lettura batteria | Partitore interno (GPIO1 + GPIO37) | Partitore attivabile esterno |
+| Adatto a | ESP32 quasi sempre in deep sleep, montaggio rapido | Uso 24/7, sensori pesanti, massimo controllo |
+
+---
+
+## Codice per l'opzione A (Arduino IDE, ESP32-S3)
+
+```cpp
+#include <Arduino.h>
+
+const int   VBAT_PIN      = 1;      // ADC1_CH0: lettura batteria
+const int   ADC_CTRL_PIN  = 37;     // attiva il partitore interno
+const int   ADC_CTRL_ON   = LOW;    // Stick Lite V3: LOW. Se leggi 0 V, prova HIGH
+const int   VEXT_PIN      = 36;     // alimentazione Vext (display, periferiche)
+const float DIVIDER       = 4.9;    // (390k + 100k) / 100k
+const uint64_t SLEEP_US   = 10ULL * 60ULL * 1000000ULL;   // 10 minuti
+
+float readBatteryVoltage() {
+  pinMode(ADC_CTRL_PIN, OUTPUT);
+  digitalWrite(ADC_CTRL_PIN, ADC_CTRL_ON);    // collega il partitore
+  delay(20);
+
+  uint32_t sum = 0;
+  for (int i = 0; i < 16; i++) {
+    sum += analogReadMilliVolts(VBAT_PIN);
+    delay(2);
+  }
+
+  digitalWrite(ADC_CTRL_PIN, !ADC_CTRL_ON);   // scollega il partitore
+  return (sum / 16.0f) * DIVIDER / 1000.0f;
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(200);
+
+  float vbat = readBatteryVoltage();
+  Serial.printf("Batteria: %.2f V\n", vbat);
+
+  // ... sensori, WiFi, invio dati ...
+
+  // Prima del deep sleep: spegni Vext (secondo Heltec si attiva con LOW)
+  pinMode(VEXT_PIN, OUTPUT);
+  digitalWrite(VEXT_PIN, HIGH);
+
+  esp_sleep_enable_timer_wakeup(SLEEP_US);
+  esp_deep_sleep_start();
+}
+
+void loop() {}
+```
+
+Per convertire la tensione in percentuale puoi riusare la funzione `batteryPercent()` del README.
+
+> 💡 Con l'ESP32 in deep sleep i GPIO restano flottanti. Se misurando il consumo vedi che il partitore resta collegato, mantieni il livello di `ADC_CTRL_PIN` durante il sonno con `gpio_hold_en((gpio_num_t)ADC_CTRL_PIN)` e `gpio_deep_sleep_hold_en()`.
+
+---
+
+## SDS011 con le schede Heltec
+
+Vale tutto quanto descritto nella sezione [SDS011](README.md#sensore-pesante-sds011) del README. Ci sono solo due differenze:
+
+- **Da dove prendere i 5 V.** Il pin 5V della Heltec ha tensione solo con l'USB collegato, e Vext dà 3,3 V, non 5 V. Il boost dell'SDS011 va quindi alimentato da **VBAT**:
+  - **opzione A:** derivala dai fili della batteria, prima del connettore SH1.25 (oppure dalle piazzole del connettore sulla scheda);
+  - **opzione B:** usa **OUT+** del TP4056, come nel README.
+- **Pin.** Sull'ESP32-S3 l'UART si può assegnare a quasi tutti i GPIO: scegli due pin liberi della tua scheda per RX e TX e un terzo per il comando del boost, poi aggiorna le costanti nel codice.
+
+---
+
+## Fonti
+
+- [Heltec WiFi Kit 32 V3, datasheet Rev1.1](https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WiFi%20kit32_V3(Rev1.1).pdf)
+- [ESPBoards: Heltec Wireless Stick Lite (V3)](https://www.espboards.dev/esp32/heltec-wireless-stick-lite-v3/)
+- [Heltec WiFi LoRa 32 V4.2.0, datasheet](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf) (per i valori di riferimento del pin 5V e del pin 3V3)
