@@ -12,7 +12,8 @@ Il progetto parte dal tutorial di Random Nerd Tutorials [*Power ESP32/ESP8266 wi
 Altre guide in questo repository:
 
 - **[HELTEC.md](HELTEC.md)**: come usare il progetto con le schede Heltec WiFi Kit 32 V3 e Wireless Stick Lite V3;
-- **[Sensore pesante: SDS011](#sensore-pesante-sds011)**: come alimentare e collegare un sensore di particolato SDS011.
+- **[Sensore pesante: SDS011](#sensore-pesante-sds011)**: come alimentare e collegare un sensore di particolato SDS011;
+- **[MOSFET.md](MOSFET.md)**: dispensa su come scegliere e dimensionare P-MOSFET e N-MOSFET usati come interruttori.
 
 ---
 
