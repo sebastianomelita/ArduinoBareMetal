@@ -570,17 +570,45 @@ Per un'installazione permanente all'aperto le due protezioni vanno usate **insie
 
 ### Corrente di carica del TP4056
 
-Di default il modulo carica a **1 A** (resistenza di programmazione R_PROG da 1,2 kΩ, siglata spesso "122"). Con un pannello piccolo conviene impostare una corrente vicina a quella che il pannello riesce davvero a dare:
+La corrente di carica del TP4056 dipende da una sola resistenza, **R_PROG**. Di fabbrica vale **1,2 kΩ**, cioè circa **1 A**.
 
-| R_PROG | Corrente di carica |
-|---|---|
-| 1,2 kΩ | 1000 mA (default) |
-| 2 kΩ | ~580 mA |
-| 3 kΩ | ~400 mA |
-| 5 kΩ | ~250 mA |
-| 10 kΩ | ~130 mA |
+#### Dove si trova
 
-Per una LiPo da 2000 mAh, 400–1000 mA va bene.
+- Sui moduli blu con protezione (serigrafia "03962A") è la resistenza SMD siglata **R3**, vicina al chip TP4056.
+- Sul componente è stampato **122**, cioè 1,2 kΩ.
+- È collegata tra il pin **PROG** (pin 2 del TP4056) e GND.
+
+Per esserne certo, a modulo scollegato misura col tester la resistenza tra il pin 2 del TP4056 e GND: devi leggere circa 1,2 kΩ. Su alcune varianti del modulo la numerazione delle resistenze cambia, quindi la misura vale più della sigla.
+
+#### Come si calcola
+
+Dal datasheet: **I_carica ≈ 1200 / R_PROG** (corrente in A, resistenza in Ω).
+
+| R_PROG | Sigla SMD | Corrente di carica |
+|---|---|---|
+| 1,2 kΩ | 122 | ~1000 mA (default) |
+| 2 kΩ | 202 | ~600 mA |
+| 3 kΩ | 302 | ~400 mA |
+| 4,7 kΩ | 472 | ~250 mA |
+| 10 kΩ | 103 | ~120 mA |
+
+#### Quale valore scegliere
+
+- **Adatta la corrente al pannello.** Un pannello da 2–3 W a 6 V dà al massimo circa 330–500 mA in pieno sole. Se il TP4056 chiede 1 A, la tensione del pannello crolla e il caricatore lavora fuori specifica. Con questi pannelli un buon valore è **3 kΩ (circa 400 mA)**.
+- **Meno calore.** A 1 A il TP4056 dissipa più di 1 W: in una scatola chiusa al sole d'estate diventa bollente ed entra in limitazione termica. A 400 mA il problema quasi scompare.
+- **Più vita alla batteria.** Per una LiPo da 2000 mAh, 400 mA corrispondono a 0,2 C, una carica dolce. Fino a 1 A (0,5 C) va comunque bene.
+- **Con l'USB.** Se ricarichi spesso da USB e vuoi fare in fretta, puoi lasciare 1,2 kΩ o scendere a 2 kΩ: è un compromesso tra velocità con l'USB e comportamento con il pannello.
+
+#### Come si sostituisce
+
+1. Scollega batteria, pannello e USB.
+2. **Dissalda R3.** Metti un po' di stagno fresco su entrambi i lati, poi scaldali insieme con una punta larga, oppure alternando velocemente, e sposta la resistenza con una pinzetta. Con l'aria calda è ancora più semplice.
+3. Pulisci le piazzole con la treccia dissaldante.
+4. **Salda la nuova resistenza**, di solito formato 0603. Se non hai SMD, va bene anche una resistenza a filo saldata tra le due piazzole con reofori corti, oppure tra il pin 2 del TP4056 e un punto di GND.
+5. Misura di nuovo col tester tra il pin 2 e GND per verificare il valore.
+6. **Prova:** con la batteria parzialmente scarica, misura la corrente di carica con il tester in serie sul filo B+. Deve essere vicina al valore della tabella.
+
+> ⚠️ **Non mettere una resistenza in parallelo a R3.** Due resistenze in parallelo hanno un valore **più basso**, quindi la corrente **aumenta**. Per ridurre la corrente R3 va sostituita, non affiancata.
 
 ### Stato di carica sull'ESP32
 
