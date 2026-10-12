@@ -64,6 +64,28 @@ Si usa **tutto il circuito del README** (TP4056 + D1/D2 + load sharing + HT7833)
 3. **Connettore batteria della Heltec: vuoto.** La batteria va solo su **B+/B–** del TP4056.
 4. **Lettura batteria:** il partitore della scheda (GPIO1) è collegato al suo connettore, che è vuoto, quindi non serve. Usa il **partitore attivabile esterno** del README (Q2, Q3) su un pin ADC1 libero dell'ESP32-S3 (GPIO1–GPIO10). Controlla sul pinout della tua scheda quali sono davvero liberi: alcuni sono usati da display o radio.
 
+### Perché non si può usare il partitore interno della scheda
+
+Il partitore interno (390k/100k su GPIO1) non è un ingresso separato: è collegato **in modo fisso alla linea batteria della scheda**, la stessa a cui arrivano il caricatore e il percorso di alimentazione verso il regolatore a 3,3 V:
+
+```
+connettore batteria ──┬── caricatore della scheda (TP4054 o simile)
+       (VBAT)         ├── passaggio automatico USB/batteria ──► regolatore 3,3 V ──► ESP32
+                      └── partitore 390k/100k ──► GPIO1   (attivato da GPIO37)
+```
+
+Per farlo funzionare bisognerebbe collegare la batteria **anche** al connettore della Heltec. Così però:
+
+1. **Il load sharing viene scavalcato.** Il regolatore interno della scheda comincia a prendere corrente direttamente dalla batteria, anche con il pannello al sole. Il TP4056 torna a vedere il carico durante la carica, cioè il problema che il load sharing doveva risolvere.
+2. **Ci sono due regolatori sulla stessa linea 3,3 V.** L'HT7833 alimenta il pin 3V3 e il regolatore interno, alimentato dalla batteria, alimenta la stessa linea dall'altra parte. Quale dei due eroghi la corrente non è prevedibile e cambia con la temperatura e la tensione della batteria.
+3. **Ci sono due caricatori sulla stessa cella.** Se colleghi l'USB-C per programmare, il caricatore della Heltec si aggiunge al TP4056. Con le LiPo è una situazione da evitare.
+
+Partitore e alimentazione della scheda condividono lo stesso nodo, quindi non esiste un punto in cui collegare "solo il partitore". Per questo nell'opzione B il connettore batteria della Heltec resta **vuoto** e la batteria si legge con il **partitore attivabile esterno**.
+
+> ℹ️ Se lo schema elettrico della tua revisione mostrasse che il regolatore interno viene staccato dalla batteria quando c'è tensione sul pin 3V3, la cosa si potrebbe rivalutare. Non è documentato: senza schema non darlo per scontato.
+
+Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: la batteria sta sul connettore della Heltec, ma rinunci al load sharing esterno.
+
 ### Vantaggi e limiti
 
 - ✅ Load sharing vero, corrente di carica regolabile, pannelli da 6 V senza problemi.
