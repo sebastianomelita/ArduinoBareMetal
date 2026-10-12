@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 720" width="1120" height="720" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .w{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+      .vbat{stroke:#c1121f}.v5{stroke:#b5179e}.gnd{stroke:#444}.ctl{stroke:#1d70b8}.sw{stroke:#e07a00}.uart{stroke:#2a9d8f}
+      .c{fill:none;stroke:#222;stroke-width:2.2;stroke-linecap:round}
+      .lbl{font-size:14px;fill:#222}
+      .lblb{font-size:14px;fill:#222;font-weight:bold}
+      .net{font-size:14px;font-weight:bold}
+      .wt{fill:#fff;font-size:14px}
+      .wtb{fill:#fff;font-size:17px;font-weight:bold}
+      .leg{font-size:15px;fill:#222}
+    </style>
+    <g id="gnd"><path class="w gnd" d="M0 0V12M-12 12H12M-8 17H8M-4 22H4"/></g>
+  </defs>
+
+  <rect width="1120" height="720" fill="#ffffff"/>
+  <text x="40" y="40" font-size="22" font-weight="bold" fill="#1d3557">SDS011: alimentazione 5 V commutata da GPIO + collegamento seriale</text>
+
+  <g transform="translate(0,40)">
+    <!-- VBAT -->
+    <path class="w vbat" d="M60 80H400"/>
+    <text x="60" y="70" class="net" fill="#c1121f">VBAT (OUT+ del TP4056)</text>
+    <circle cx="300" cy="80" r="4.5" fill="#c1121f"/>
+
+    <!-- R6 -->
+    <path class="w vbat" d="M300 80V95"/>
+    <rect x="291" y="95" width="18" height="50" fill="#fff" stroke="#222" stroke-width="2.2"/>
+    <text x="230" y="125" class="lbl">R6 100k</text>
+    <path class="w sw" d="M300 145V230"/>
+    <circle cx="300" cy="160" r="4.5" fill="#e07a00"/>
+    <path class="w sw" d="M300 160H378"/>
+
+    <!-- Q4 P-MOSFET -->
+    <path class="c" d="M400 80V145H390"/>
+    <path class="c" d="M390 175H400V240"/>
+    <path d="M390 138V152M390 153V167M390 168V182" stroke="#222" stroke-width="3.2"/>
+    <path d="M378 138V182" stroke="#222" stroke-width="3.2"/>
+    <path class="c" d="M390 160H400V145"/>
+    <polygon points="400,160 391,155 391,165" fill="#222"/>
+    <text x="408" y="125" class="lbl">S</text>
+    <text x="408" y="200" class="lbl">D</text>
+    <text x="360" y="152" class="lbl">G</text>
+    <text x="420" y="160" class="lblb">Q4 AO3401A</text>
+
+    <!-- Q5 N-MOSFET -->
+    <path class="c" d="M300 230V265H290"/>
+    <path class="c" d="M290 295H300V330"/>
+    <path d="M290 258V272M290 273V287M290 288V302" stroke="#222" stroke-width="3.2"/>
+    <path d="M278 258V302" stroke="#222" stroke-width="3.2"/>
+    <path class="c" d="M300 280H290M300 280V295"/>
+    <polygon points="291,280 299,275 299,285" fill="#222"/>
+    <text x="308" y="252" class="lbl">D</text>
+    <text x="308" y="322" class="lbl">S</text>
+    <text x="264" y="272" class="lbl">G</text>
+    <text x="320" y="300" class="lblb">Q5 2N7002</text>
+    <use href="#gnd" x="300" y="330"/>
+
+    <!-- GPIO26 -->
+    <path class="w ctl" d="M120 280H278"/>
+    <circle cx="200" cy="280" r="4.5" fill="#1d70b8"/>
+    <text x="40" y="276" class="net" fill="#1d70b8">GPIO26</text>
+    <text x="40" y="294" class="lbl">(ESP32)</text>
+    <path class="w ctl" d="M200 280V300"/>
+    <rect x="191" y="300" width="18" height="50" fill="#fff" stroke="#222" stroke-width="2.2"/>
+    <text x="130" y="330" class="lbl">R7 100k</text>
+    <path class="w gnd" d="M200 350V362"/><use href="#gnd" x="200" y="362"/>
+
+    <!-- uscita Q4 verso boost -->
+    <path class="w vbat" d="M400 240H520"/>
+    <text x="430" y="232" class="lbl">VBAT commutata</text>
+
+    <!-- Boost -->
+    <rect x="520" y="200" width="180" height="120" rx="6" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+    <text x="610" y="268" text-anchor="middle" class="wtb">Boost 5 V</text>
+    <text x="610" y="288" text-anchor="middle" class="wt">≥ 500 mA</text>
+    <text x="528" y="245" class="wt">IN+</text>
+    <text x="528" y="305" class="wt">IN–</text>
+    <text x="692" y="245" class="wt" text-anchor="end">OUT+</text>
+    <text x="692" y="305" class="wt" text-anchor="end">OUT–</text>
+    <path class="w gnd" d="M520 300H500"/><use href="#gnd" x="500" y="300"/>
+    <path class="w gnd" d="M700 300H720"/><use href="#gnd" x="720" y="300"/>
+
+    <!-- 5V -->
+    <path class="w v5" d="M700 240H900"/>
+    <text x="740" y="232" class="net" fill="#b5179e">5 V</text>
+    <circle cx="820" cy="240" r="4.5" fill="#b5179e"/>
+    <path class="w v5" d="M820 240V272"/>
+    <path class="c" d="M808 272H832"/>
+    <path class="c" d="M808 284Q820 276 832 284"/>
+    <text x="799" y="270" class="lblb">+</text>
+    <path class="w gnd" d="M820 280V292"/><use href="#gnd" x="820" y="292"/>
+    <text x="840" y="290" class="lbl">C6</text>
+    <text x="840" y="306" class="lbl">470–1000 µF</text>
+
+    <!-- SDS011 -->
+    <rect x="900" y="180" width="170" height="260" rx="8" fill="#2b2d42" stroke="#000" stroke-width="2"/>
+    <text x="985" y="215" text-anchor="middle" class="wtb">SDS011</text>
+    <text x="908" y="245" class="wt">5V</text>
+    <text x="908" y="345" class="wt">GND</text>
+    <text x="908" y="385" class="wt">TXD</text>
+    <text x="908" y="425" class="wt">RXD</text>
+    <path class="w gnd" d="M900 340H880"/><use href="#gnd" x="880" y="340"/>
+
+    <!-- UART -->
+    <path class="w uart" d="M900 380H600"/>
+    <polygon points="600,380 612,374 612,386" fill="#2a9d8f"/>
+    <text x="440" y="385" class="net" fill="#2a9d8f">GPIO16 (RX ESP32)</text>
+    <path class="w uart" d="M600 420H888"/>
+    <polygon points="900,420 888,414 888,426" fill="#2a9d8f"/>
+    <text x="440" y="425" class="net" fill="#2a9d8f">GPIO17 (TX ESP32)</text>
+
+    <!-- Legenda -->
+    <rect x="40" y="480" width="1040" height="180" rx="8" fill="#f8f9fa" stroke="#ccc"/>
+    <text x="60" y="508" class="lblb" font-size="16">Come funziona</text>
+    <text x="60" y="536" class="leg">• GPIO26 HIGH → Q5 acceso → gate di Q4 a GND → Q4 acceso: il boost riceve la batteria e l'SDS011 si accende.</text>
+    <text x="60" y="560" class="leg">• GPIO26 LOW o deep sleep → R7 spegne Q5, R6 spegne Q4: boost e sensore sono scollegati, consumo ≈ 0.</text>
+    <text x="60" y="584" class="leg">• Il boost si alimenta da VBAT, non da VLOAD: con il pannello al sole VLOAD arriva a ~6 V e il boost lascerebbe passare</text>
+    <text x="74" y="604" class="leg">quasi tutta la tensione verso l'SDS011 (massimo ~5,3 V).</text>
+    <text x="60" y="628" class="leg">• L'UART dell'SDS011 è a 3,3 V: collegamento diretto. Prima di spegnere il sensore, rilascia il pin TX (GPIO17) in ingresso.</text>
+    <text x="60" y="650" class="leg">• Tutte le masse in comune con quella del circuito principale (IN– / OUT– del TP4056).</text>
+  </g>
+</svg>

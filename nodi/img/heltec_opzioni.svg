@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .t{font-size:14px;fill:#222}
+      .tb{font-size:14px;fill:#222;font-weight:bold}
+      .h{font-size:20px;font-weight:bold;fill:#1d3557}
+      .s{font-size:12.5px;fill:#444}
+      .wt{font-size:14px;fill:#fff}
+      .wtb{font-size:15px;fill:#fff;font-weight:bold}
+      .ws{font-size:12.5px;fill:#dfe7f2}
+      .vin{stroke:#e07a00}.vbat{stroke:#c1121f}.v33{stroke:#2a9d8f}.adc{stroke:#d63384}
+      .w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+    <marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e07a00"/></marker>
+    <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c1121f"/></marker>
+    <marker id="a3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a9d8f"/></marker>
+  </defs>
+
+  <rect width="1200" height="820" fill="#fff"/>
+  <text x="40" y="42" font-size="24" font-weight="bold" fill="#1d3557">Heltec WiFi Kit 32 V3 / Wireless Stick Lite V3 con pannello solare + USB</text>
+
+  <!-- ================= OPZIONE A ================= -->
+  <rect x="20" y="70" width="560" height="560" rx="12" fill="#fbfbf7" stroke="#d9d4c0"/>
+  <text x="40" y="104" class="h">A · Caricatore della scheda</text>
+  <text x="40" y="126" class="s">Semplice. Usa caricatore e partitore attivabile della Heltec. Niente load sharing.</text>
+
+  <!-- sorgenti -->
+  <rect x="40" y="160" width="130" height="64" rx="6" fill="#e8f0fb" stroke="#1d3557"/>
+  <text x="105" y="188" text-anchor="middle" class="tb">Pannello</text>
+  <text x="105" y="207" text-anchor="middle" class="s">5 V nominali*</text>
+  <rect x="40" y="250" width="130" height="64" rx="6" fill="#f1f1f1" stroke="#333"/>
+  <text x="105" y="278" text-anchor="middle" class="tb">USB 5 V</text>
+  <text x="105" y="297" text-anchor="middle" class="s">cavo tagliato</text>
+
+  <rect x="200" y="176" width="54" height="32" rx="4" fill="#fff" stroke="#222"/>
+  <text x="227" y="197" text-anchor="middle" class="tb">D1</text>
+  <rect x="200" y="266" width="54" height="32" rx="4" fill="#fff" stroke="#222"/>
+  <text x="227" y="287" text-anchor="middle" class="tb">D2</text>
+
+  <path class="w vin" d="M170 192H200M170 282H200"/>
+  <path class="w vin" d="M254 192H285V282H254"/>
+  <path class="w vin" d="M285 237H345" marker-end="url(#a1)"/>
+  <text x="290" y="228" class="tb" fill="#e07a00">VIN_EXT</text>
+
+  <!-- scheda heltec -->
+  <rect x="350" y="150" width="210" height="330" rx="10" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+  <text x="455" y="176" text-anchor="middle" class="wtb">Scheda Heltec</text>
+  <text x="362" y="242" class="wt">pin 5V</text>
+  <rect x="372" y="262" width="166" height="46" rx="5" fill="#2c6bb3"/>
+  <text x="455" y="282" text-anchor="middle" class="wt">caricatore</text>
+  <text x="455" y="299" text-anchor="middle" class="ws">(TP4054 o simile)</text>
+  <rect x="372" y="322" width="166" height="46" rx="5" fill="#2c6bb3"/>
+  <text x="455" y="342" text-anchor="middle" class="wt">partitore 390k/100k</text>
+  <text x="455" y="359" text-anchor="middle" class="ws">GPIO37 ADC_Ctrl → GPIO1</text>
+  <rect x="372" y="382" width="166" height="40" rx="5" fill="#2c6bb3"/>
+  <text x="455" y="407" text-anchor="middle" class="wt">ESP32-S3 + 3,3 V</text>
+  <text x="362" y="458" class="wt">conn. batteria SH1.25</text>
+
+  <!-- batteria -->
+  <rect x="380" y="530" width="150" height="64" rx="8" fill="#fff3d6" stroke="#333"/>
+  <text x="455" y="558" text-anchor="middle" class="tb">LiPo 1S</text>
+  <text x="455" y="577" text-anchor="middle" class="s">con protezione (PCM)</text>
+  <path class="w vbat" d="M455 530V482" marker-end="url(#a2)"/>
+  <text x="40" y="560" class="s">* tensione a vuoto del pannello – 0,4 V</text>
+  <text x="40" y="577" class="s">  deve restare entro il massimo del pin 5V</text>
+  <text x="40" y="594" class="s">  (verifica sullo schema della tua revisione)</text>
+
+  <!-- ================= OPZIONE B ================= -->
+  <rect x="620" y="70" width="560" height="560" rx="12" fill="#f7fbfa" stroke="#c4ddd8"/>
+  <text x="640" y="104" class="h">B · Circuito esterno completo</text>
+  <text x="640" y="126" class="s">TP4056 + load sharing + HT7833 alimentano il pin 3V3. Massimo controllo.</text>
+
+  <rect x="640" y="160" width="120" height="64" rx="6" fill="#e8f0fb" stroke="#1d3557"/>
+  <text x="700" y="188" text-anchor="middle" class="tb">Pannello</text>
+  <text x="700" y="207" text-anchor="middle" class="s">6 V</text>
+  <rect x="640" y="250" width="120" height="64" rx="6" fill="#f1f1f1" stroke="#333"/>
+  <text x="700" y="278" text-anchor="middle" class="tb">USB 5 V</text>
+
+  <rect x="782" y="176" width="46" height="32" rx="4" fill="#fff" stroke="#222"/>
+  <text x="805" y="197" text-anchor="middle" class="tb">D1</text>
+  <rect x="782" y="266" width="46" height="32" rx="4" fill="#fff" stroke="#222"/>
+  <text x="805" y="287" text-anchor="middle" class="tb">D2</text>
+  <path class="w vin" d="M760 192H782M760 282H782"/>
+  <path class="w vin" d="M828 192H850V282H828"/>
+  <path class="w vin" d="M850 237H872" marker-end="url(#a1)"/>
+
+  <rect x="876" y="160" width="140" height="160" rx="8" fill="#1d4e89" stroke="#0b2545"/>
+  <text x="946" y="190" text-anchor="middle" class="wtb">TP4056</text>
+  <text x="946" y="212" text-anchor="middle" class="ws">+ load sharing</text>
+  <text x="946" y="229" text-anchor="middle" class="ws">(Q1, D3, R3)</text>
+  <text x="946" y="260" text-anchor="middle" class="ws">vedi README</text>
+
+  <rect x="1046" y="200" width="114" height="72" rx="6" fill="#f4f4f4" stroke="#222"/>
+  <text x="1103" y="230" text-anchor="middle" class="tb">HT7833</text>
+  <text x="1103" y="250" text-anchor="middle" class="s">3,3 V</text>
+  <path class="w" d="M1016 236H1042" stroke="#7b2cbf" marker-end="url(#a3)"/>
+
+  <rect x="876" y="530" width="140" height="64" rx="8" fill="#fff3d6" stroke="#333"/>
+  <text x="946" y="558" text-anchor="middle" class="tb">LiPo 1S</text>
+  <text x="946" y="577" text-anchor="middle" class="s">su B+ / B–</text>
+  <path class="w vbat" d="M946 530V324" marker-end="url(#a2)"/>
+
+  <rect x="1046" y="330" width="114" height="150" rx="10" fill="#1d4e89" stroke="#0b2545"/>
+  <text x="1103" y="356" text-anchor="middle" class="wtb">Heltec</text>
+  <text x="1056" y="384" class="wt">pin 3V3</text>
+  <text x="1056" y="420" class="wt">GPIO ADC</text>
+  <text x="1056" y="438" class="ws">libero</text>
+  <text x="1056" y="466" class="ws">batt.: vuoto</text>
+  <path class="w v33" d="M1103 272V326" marker-end="url(#a3)"/>
+
+  <rect x="660" y="400" width="190" height="64" rx="6" fill="#fdeef5" stroke="#d63384"/>
+  <text x="755" y="426" text-anchor="middle" class="tb">Partitore attivabile</text>
+  <text x="755" y="445" text-anchor="middle" class="s">esterno (Q2, Q3)</text>
+  <path class="w vbat" d="M946 420H854" marker-end="url(#a2)"/>
+  <path class="w adc" d="M755 464V495H1100V484"/>
+  <circle cx="946" cy="420" r="4.5" fill="#c1121f"/>
+
+  <!-- Note -->
+  <rect x="20" y="650" width="1160" height="150" rx="10" fill="#f8f9fa" stroke="#ccc"/>
+  <text x="40" y="678" class="tb" font-size="15">Regole comuni</text>
+  <text x="40" y="704" class="t">• Non collegare mai insieme USB-C della scheda e pin 5V: la Heltec li considera alternativi. In A l'USB entra solo tramite D2.</text>
+  <text x="40" y="728" class="t">• Controlla la polarità del connettore batteria SH1.25: i cavetti in commercio non sono tutti uguali. Rosso su + della scheda.</text>
+  <text x="40" y="752" class="t">• In B il connettore batteria della Heltec resta vuoto e il partitore interno non serve: si legge la batteria col partitore esterno.</text>
+  <text x="40" y="776" class="t">• Prima del deep sleep spegni Vext (GPIO36) per togliere l'alimentazione a display e periferiche.</text>
+</svg>
