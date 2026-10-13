@@ -1,6 +1,6 @@
 # Dispensa: dimensionare P-MOSFET e N-MOSFET come interruttori
 
-Questa dispensa riassume come scegliere e dimensionare un MOSFET usato come **interruttore** comandato da un microcontrollore (ESP32 a 3,3 V) in un circuito a batteria. Gli esempi numerici sono presi dal progetto descritto nel [panel2esp32.md](panel2esp32.md): load sharing (Q1), partitore attivabile (Q2, Q3), alimentazione dell'SDS011 (Q4, Q5).
+Questa dispensa riassume come scegliere e dimensionare un MOSFET usato come **interruttore** comandato da un microcontrollore (ESP32 a 3,3 V) in un circuito a batteria. Gli esempi numerici sono presi dal progetto descritto nel [README](README.md): load sharing (Q1), partitore attivabile (Q2, Q3), alimentazione dell'SDS011 (Q4, Q5).
 
 <p align="center">
   <img src="img/mosfet_interruttori.svg" alt="MOSFET come interruttori: low-side e high-side" width="100%">
@@ -364,3 +364,95 @@ Valori **indicativi**: verifica sempre sul datasheet del produttore esatto, perc
 9. **Pull-down / pull-up** sul gate da 100 kΩ, per uno stato definito in reset e deep sleep.
 10. **Picco di accensione:** se il carico ha grossi condensatori, valuta il soft-start.
 11. **Linee di segnale:** prima di spegnere un carico, metti in ingresso (alta impedenza) i GPIO collegati a lui, per non alimentarlo attraverso i segnali.
+
+---
+
+## 9. Esercizi svolti
+
+Due esercizi complementari, uno per configurazione. Ognuno contiene una **trappola** che costringe a ragionare invece di applicare le formule a memoria. La sola consegna, da distribuire senza soluzioni, è in [ESERCIZI_MOSFET.md](ESERCIZI_MOSFET.md).
+
+I valori dei MOSFET sono **indicativi**: in un'esercitazione vera vanno ricavati dal datasheet del produttore, e questo fa parte dell'esercizio.
+
+### Esercizio 1 · Low-side: pompa per irrigazione a 12 V
+
+<p align="center">
+  <img src="img/es1_lowside_pompa.svg" alt="Esercizio 1: N-MOSFET lato basso per pompa 12 V" width="100%">
+</p>
+
+**Dati**
+
+| Dato | Valore |
+|---|---|
+| Alimentazione della pompa | 12 V (alimentatore separato, masse in comune) |
+| Corrente a regime | 1,2 A |
+| Spunto all'avvio | 3 A per 100 ms |
+| Comando | GPIO a 3,3 V |
+| Temperatura ambiente massima | 40 °C |
+| Caduta ammessa sul MOSFET | 0,2 V |
+
+**Svolgimento**
+
+| Passo | Calcolo | Esito |
+|---|---|---|
+| 1 · Topologia | La pompa non ha linee di segnale verso l'ESP32 → **N-MOSFET lato basso**, gate pilotato direttamente dal GPIO | — |
+| 2 · Tensione | V<sub>DS(max)</sub> ≥ 2 × 12 = 24 V → MOSFET da 30 V | ✅ |
+| 3 · Gate | V<sub>GS</sub> = 3,3 V → serve un logic level con V<sub>GS(th),max</sub> ≤ 1,5 V e R<sub>DS(on)</sub> garantita a 2,5 V. Scelta: **AO3400A** (indicativi: 30 V, V<sub>GS(th),max</sub> 1,45 V, R<sub>DS(on)</sub> ≈ 50 mΩ a 2,5 V). Rapporto 3,3 / 1,45 = 2,3 | ✅ |
+| 4 · Conduzione | Caso peggiore R = 50 × 1,5 = 75 mΩ. ΔV = 1,2 × 0,075 = 90 mV. P = 1,2² × 0,075 = **108 mW** | ✅ |
+| 5 · Temperatura | T<sub>j</sub> = 40 + 0,108 × 200 = **62 °C** | ✅ |
+| 6 · Spunto | P = 3² × 0,075 = 0,68 W per 100 ms (68 mJ) → verifica sul grafico SOA o sull'impedenza termica transitoria per impulsi da 100 ms | ⚠️ al limite, in genere accettabile |
+| 7 · Resistenze | R<sub>G</sub> = 220 Ω (picco dal GPIO: 3,3 / 220 = 15 mA). R<sub>PD</sub> = 100 kΩ, per tenere la pompa spenta al boot | ✅ |
+| 8 · **Trappola** | Il carico è **induttivo**: allo spegnimento il motore genera una sovratensione che può superare i 30 V di Q1 e distruggerlo. Serve un **diodo di ricircolo** in antiparallelo alla pompa: Schottky da 3 A (SS34), catodo su +12 V. Con il diodo V<sub>DS</sub> resta a circa 12,5 V | ✅ con D1 |
+| 9 · Cablaggio | I 3 A di spunto non devono passare per i fili di massa dell'ESP32 → **massa a stella** vicino al source di Q1 | — |
+
+**Risultato:** AO3400A, R<sub>G</sub> 220 Ω, R<sub>PD</sub> 100 kΩ, diodo SS34 in antiparallelo alla pompa.
+
+**Variante: velocità regolata in PWM a 20 kHz.** Ora contano anche le perdite di commutazione:
+
+- tempo di commutazione: t ≈ Q<sub>g</sub> / I<sub>G</sub> ≈ 6 nC / [(3,3 – 2) V / 220 Ω] ≈ **1 µs** per fronte (Q<sub>g</sub> indicativa)
+- P<sub>sw</sub> = ½ × 12 V × 1,2 A × 2 µs × 20 000 Hz ≈ **0,29 W**
+- totale con la conduzione ≈ 0,4 W → T<sub>j</sub> ≈ 40 + 0,4 × 200 ≈ **120 °C** ❌
+
+Le soluzioni sono due: abbassare la frequenza a circa 1 kHz (P<sub>sw</sub> ≈ 14 mW, ma il motore può fischiare), oppure aggiungere un **gate driver** che carichi il gate con correnti di centinaia di mA. È il caso in cui le formule in commutazione diventano indispensabili.
+
+### Esercizio 2 · High-side: modulo GSM SIM800L a batteria
+
+<p align="center">
+  <img src="img/es2_highside_sim800l.svg" alt="Esercizio 2: P-MOSFET lato alto con soft-start per SIM800L" width="100%">
+</p>
+
+**Dati**
+
+| Dato | Valore |
+|---|---|
+| Alimentazione | LiPo 3,6–4,2 V (sotto 3,6 V il firmware non usa il GSM) |
+| Tensione minima del SIM800L | 3,4 V ai suoi pin |
+| Corrente | Picchi di 2 A per 577 µs ogni 4,6 ms in trasmissione (ciclo di lavoro circa 1/8), circa 100 mA a riposo |
+| Condensatore sul modulo | C<sub>L</sub> = 1000 µF |
+| Linee di segnale | UART verso l'ESP32 |
+| Temperatura ambiente massima | 40 °C |
+| Inrush ammesso | 0,3 A |
+
+**Svolgimento**
+
+| Passo | Calcolo | Esito |
+|---|---|---|
+| 1 · Topologia | C'è l'UART → **P-MOSFET lato alto + driver N** (2N7002). Il P non si pilota direttamente dal GPIO, perché 4,2 V > 3,3 V | — |
+| 2 · Tensione | 2 × 4,2 = 8,4 V → P da 20–30 V. V<sub>GS(max)</sub> ±12 V ≥ 1,5 × 4,2 V | ✅ |
+| 3 · Gate | Per sfruttare la R<sub>DS(on)</sub> a 2,5 V: 3,6 × R<sub>GS</sub> / (R<sub>GS</sub> + R<sub>S</sub>) ≥ 2,5 → R<sub>S</sub> ≤ 0,44 × R<sub>GS</sub>. Con 100 kΩ e 10 kΩ: \|V<sub>GS,min</sub>\| = **3,27 V** | ✅ |
+| 4 · **Trappola** | Budget: 3,6 – 3,4 = **0,2 V con 2 A** → resistenza totale ≤ 0,1 Ω, fili compresi. Al MOSFET si lasciano circa 40 mΩ. **Primo tentativo, AO3401A** (≈ 0,1 Ω a –2,5 V): ΔV = 0,2 V, che da sola esaurisce il budget | ❌ |
+| 4 · Iterazione A | Si sceglie a catalogo un P con R<sub>DS(on),max</sub> ≤ 40 mΩ a V<sub>GS</sub> = –2,5 V → ΔV ≈ 2 × 0,04 = 80 mV | ✅ |
+| 4 · Iterazione B | In alternativa si **rinegozia un dato**: soglia software da 3,6 a 3,75 V → budget 0,35 V, e l'AO3401A torna accettabile, al prezzo di sfruttare meno la batteria | ✅ |
+| 5 · Temperatura | I<sub>rms</sub> ≈ 2 × √(1/8) ≈ 0,71 A → P ≈ 0,71² × 0,04 ≈ **20 mW** → T<sub>j</sub> ≈ 44 °C. A questa temperatura il fattore reale è circa 1,05: usare 1,5 alla cieca porterebbe a sovradimensionare | ✅ |
+| 6 · Resistenze | R<sub>GS</sub> consuma 42 µA solo durante la sessione GSM; perdite del gate trascurabili | ✅ |
+| 7 · Inrush | dV/dt = 0,3 A / 1000 µF = 0,3 V/ms. I<sub>G</sub> ≈ (4,2 – 1,5)/10 k – 1,5/100 k ≈ 0,26 mA → C<sub>GD</sub> = 0,26 / 0,3 ≈ 0,87 µF → **1 µF**, salita in circa 16 ms. E = ½ × 1000 µF × 4,2² ≈ 8,8 mJ → circa 0,55 W per 16 ms | ✅ da verificare sul grafico SOA |
+| 8 · Spegnimento | t<sub>off</sub> ≈ 1 µF × 4,2 × 100 kΩ / 1,5 ≈ 0,3 s → spegnere prima il modulo con il comando AT di power-off, e mettere il TX dell'ESP32 in alta impedenza | ⚠️ vincolo sul software |
+
+**Risultato:** P-MOSFET con R<sub>DS(on)</sub> ≤ 40 mΩ a –2,5 V (oppure AO3401A con soglia software a 3,75 V), driver 2N7002, R<sub>GS</sub> 100 kΩ, R<sub>S</sub> 10 kΩ, C<sub>GD</sub> 1 µF, R<sub>PD</sub> 100 kΩ.
+
+### Cosa mettono a confronto i due esercizi
+
+| | Esercizio 1 (low-side) | Esercizio 2 (high-side) |
+|---|---|---|
+| Passo critico | Temperatura e spunto, sovratensione induttiva | Caduta di tensione e inrush |
+| Trappola | Il diodo di ricircolo; il PWM fa esplodere le perdite | Il primo MOSFET non basta; il fattore termico 1,5 è eccessivo |
+| Lezione | Le formule in commutazione servono solo con il PWM | La procedura è un ciclo, e anche i dati di progetto si possono rinegoziare |
