@@ -95,7 +95,13 @@ Da R<sub>DS(on)</sub> ricavi:
 - **la caduta di tensione:** ΔV = I × R<sub>DS(on)</sub>
 - **la potenza dissipata:** P = I² × R<sub>DS(on)</sub>
 
-Tieni conto che R<sub>DS(on)</sub> **aumenta con la temperatura**: a 100 °C è circa 1,5 volte il valore a 25 °C.
+**R<sub>DS(on)</sub> aumenta con la temperatura.** Il valore in tabella sul datasheet è misurato con la **giunzione a 25 °C**, una condizione di laboratorio: in funzione il MOSFET si scalda e la sua resistenza sale. Di quanto lo dice il grafico *"Normalized On-Resistance vs. Junction Temperature"*, che riporta il fattore k<sub>T</sub> = R<sub>DS(on)</sub>(T<sub>j</sub>) / R<sub>DS(on)</sub>(25 °C). Per i MOSFET a bassa tensione la curva tipica è:
+
+| T<sub>j</sub> | 25 °C | 75 °C | 100 °C | 125 °C |
+|---|---|---|---|---|
+| k<sub>T</sub> | 1,0 | ~1,25 | ~1,35 | ~1,5 |
+
+In prima approssimazione la crescita è lineare, circa **+0,5 % ogni °C**: k<sub>T</sub> ≈ 1 + α · (T<sub>j</sub> – 25 °C), con α ≈ 0,005 /°C. Per il tuo MOSFET leggi il grafico del suo datasheet: la pendenza cambia da modello a modello. Come si usa questo fattore nei calcoli è spiegato nel [capitolo 5](#5-procedura-di-dimensionamento).
 
 ### 3.5 Potenza e temperatura
 
@@ -187,9 +193,20 @@ Nel dimensionamento le grandezze non sono tutte sullo stesso piano. Conviene div
 
 Il dimensionamento quindi **non è un calcolo diretto** dai dati al componente, ma un ciclo **scegli → verifica → correggi**. Dai dati si ricavano dei **limiti** sui parametri (per esempio "R<sub>DS(on)</sub> al massimo 0,3 Ω a V<sub>GS</sub> = –2,5 V"), si sceglie un MOSFET dal catalogo che li rispetti, e poi si verificano le grandezze dipendenti. Se una verifica fallisce si torna indietro e si cambia una scelta.
 
-C'è un solo punto in cui due grandezze dipendenti si influenzano a vicenda: **R<sub>DS(on)</sub> cresce con la temperatura, e la temperatura cresce con la potenza**, che a sua volta dipende da R<sub>DS(on)</sub>. In pratica si risolve in uno dei due modi:
-- si usa subito il valore peggiore (R<sub>DS(on)</sub> a 25 °C × 1,5), oppure
-- si fa un'iterazione: si calcola T<sub>j</sub> con il valore a 25 °C, si corregge R<sub>DS(on)</sub> e si ricalcola. Di solito basta un passaggio.
+C'è un punto in cui due grandezze dipendenti si influenzano a vicenda, formando un **anello**:
+
+```
+R_DS(on) ──► potenza P = I² · R ──► temperatura T_j = T_a + P · R_θJA ──┐
+   ▲                                                                    │
+   └────────────── R_DS(on) cresce con T_j (fattore k_T) ◄──────────────┘
+```
+
+Per calcolare la potenza serve R<sub>DS(on)</sub>, che dipende dalla temperatura; ma la temperatura si conosce solo dopo aver calcolato la potenza. L'anello si spezza con un'**ipotesi iniziale**, che poi si **verifica a posteriori**:
+
+- si assume subito una giunzione molto calda, **T<sub>j</sub> ≈ 125 °C**, cioè **k<sub>T</sub> ≈ 1,5**. È l'ipotesi prudente: se il MOSFET va bene così, andrà bene anche nella realtà, dove scalderà meno;
+- dopo aver calcolato la temperatura, si controlla che l'ipotesi fosse davvero dalla parte della sicurezza, ed eventualmente si ricalcola.
+
+Il metodo è descritto in dettaglio al punto [5.4, "Verifica a posteriori delle ipotesi"](#verifica-a-posteriori-delle-ipotesi). Lo stesso schema (ipotizza, calcola, verifica) vale anche per altre grandezze che all'inizio non si conoscono, come la resistenza termica reale o la tensione di plateau.
 
 ### 5.2 Esistono procedure riconosciute?
 
@@ -211,62 +228,202 @@ Le formule in commutazione (perdite di switching, carica del gate) servono solo 
 
 ### 5.4 La procedura passo per passo
 
-**Passo 0 — Raccogli i dati di progetto** (tabella del punto 5.1), sempre nei valori peggiori.
+Per ogni passo trovi la regola o la formula, seguita dal **perché**: da dove viene il coefficiente e che cosa protegge.
 
-**Passo 1 — Scegli la topologia.**
-Il carico ha linee di segnale verso il microcontrollore? → P lato alto con driver N. Altrimenti → N lato basso.
+**Passo 0 — Raccogli i dati di progetto** (tabella del punto 5.1), sempre nei **valori peggiori**.
+
+> *Perché:* il circuito deve funzionare in tutte le condizioni, non solo in quelle medie. Ogni verifica ha il suo caso peggiore: la tensione **minima** della batteria dà la V<sub>GS</sub> più bassa (passo 3); la tensione **massima** sollecita di più il MOSFET da spento (passo 2); la corrente **massima** e la temperatura ambiente **massima** danno la giunzione più calda (passi 4–5).
+
+**Passo 1 — Scegli la topologia.** Il carico ha linee di segnale verso il microcontrollore? → P lato alto con driver N. Altrimenti → N lato basso.
+
+> *Perché:* un N lato basso interrompe la **massa** del carico. Se il carico è collegato all'ESP32 anche con UART, I²C o ADC, la corrente trova un'altra strada verso massa attraverso le linee di segnale e i diodi di protezione dei pin: letture sbagliate e pin a rischio. Il P lato alto interrompe invece il **positivo**, e la massa resta comune. Il driver N serve perché, se V+ supera i 3,3 V del GPIO, il gate del P non arriverebbe mai alla tensione del source: resterebbe una V<sub>GS</sub> di –(V+ – 3,3 V), sufficiente a lasciarlo mezzo acceso.
 
 **Passo 2 — Limiti di tensione** (vincoli sul MOSFET):
 
-- V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>
-- |V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|
+- **V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>**
+
+  > *Perché il fattore 1,5–2:* V<sub>DS(max)</sub> è un **limite assoluto**: superarlo anche per pochi microsecondi può danneggiare il MOSFET. Nel circuito reale la tensione supera spesso quella nominale: picchi allo spegnimento di carichi induttivi, induttanza dei fili, sovraelongazioni quando si collega un alimentatore, il pannello solare a vuoto che dà più della sua tensione nominale. Il fattore copre questi picchi **senza doverli calcolare uno per uno**. È anche una forma di *derating*: chi usa la regola "tensione di lavoro ≤ 75 % del massimo" ottiene circa 1,3×; 2× è la scelta prudente per prototipi su millefori, dove i fili sono lunghi.
+
+- **|V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|**
+
+  > *Perché il fattore 1,5:* l'isolante del gate è uno strato di ossido sottilissimo, e quando si rompe il danno è **irreversibile**. Sul gate arrivano disturbi e oscillazioni (*ringing*) dovuti ai fili e alle capacità interne. Il margine del 50 % li tiene lontani dal limite. Nel P lato alto la V<sub>GS</sub> applicata è l'intera tensione di alimentazione, perché il driver porta il gate a massa mentre il source è a V+.
 
 **Passo 3 — Pilotaggio del gate.** Calcola la |V<sub>GS</sub>| **minima** che il circuito garantisce:
 
-- N lato basso: V<sub>GS,min</sub> = V<sub>OH,min</sub> del GPIO. Per l'ESP32 vale almeno 0,8 × 3,3 ≈ 2,6 V con il pin sotto carico; con il solo gate da pilotare si resta vicini a 3,3 V.
+- N lato basso: V<sub>GS,min</sub> = V<sub>OH,min</sub> del GPIO.
+
+  > *Perché:* nell'N lato basso il source è a massa, quindi V<sub>GS</sub> coincide con la tensione d'uscita del pin. Il datasheet dell'ESP32 garantisce V<sub>OH</sub> ≥ 0,8 × 3,3 ≈ 2,6 V quando il pin eroga corrente. Il gate però, una volta carico, non assorbe corrente: in pratica il pin resta vicino a 3,3 V. Per un calcolo nel caso peggiore si usa 2,6 V.
+
 - P lato alto con driver e R<sub>S</sub>: |V<sub>GS,min</sub>| = V+<sub>min</sub> · R<sub>GS</sub> / (R<sub>GS</sub> + R<sub>S</sub>)
 
-Vincoli: |V<sub>GS,min</sub>| ≥ 2–2,5 × |V<sub>GS(th),max</sub>|, e il datasheet deve garantire la R<sub>DS(on)</sub> a una |V<sub>GS</sub>| **non superiore** a |V<sub>GS,min</sub>|.
+  > *Perché:* con il driver acceso, R<sub>GS</sub> (verso V+) e R<sub>S</sub> (verso massa) formano un **partitore** sul gate: la V<sub>GS</sub> è la quota di V+ che cade su R<sub>GS</sub>. Si usa V+<sub>min</sub> (batteria scarica) perché dà la V<sub>GS</sub> più bassa.
 
-**Passo 4 — Conduzione.** Dai dati ricavi il limite su R<sub>DS(on)</sub>:
+**Vincolo 1: |V<sub>GS,min</sub>| ≥ 2–2,5 × |V<sub>GS(th),max</sub>|**
 
-- dalla caduta ammessa: R<sub>DS(on)</sub> ≤ ΔV<sub>max</sub> / I<sub>pk</sub>
-- R<sub>DS(on)</sub> effettiva: R<sub>DS(on)</sub>(T<sub>j</sub>) ≈ R<sub>DS(on)</sub>(25 °C) × k<sub>T</sub>, con k<sub>T</sub> ≈ 1,3–1,5 a 100–125 °C (si legge sul grafico "R<sub>DS(on)</sub> normalizzata in funzione di T<sub>j</sub>")
-- potenza: P = I<sub>rms</sub>² × R<sub>DS(on)</sub>(T<sub>j</sub>). Per impulsi rettangolari di ampiezza I<sub>pk</sub> e ciclo di lavoro D: I<sub>rms</sub> = I<sub>pk</sub> × √D. Per un interruttore che resta acceso per decine di secondi, però, va considerato acceso in modo continuo: la temperatura fa in tempo ad andare a regime.
+> *Perché il fattore 2–2,5:* la soglia V<sub>GS(th)</sub> è definita a una corrente piccolissima, tipicamente **250 µA**: a V<sub>GS</sub> = V<sub>GS(th)</sub> il MOSFET conduce appena, non è un interruttore chiuso. Per arrivare alla zona in cui la resistenza è bassa e quasi costante serve una V<sub>GS</sub> di circa 2–3 volte la soglia; il valore preciso si vede sul grafico *"R<sub>DS(on)</sub> vs V<sub>GS</sub>"*. Si usa la soglia **massima** perché tra un esemplare e l'altro varia anche di un fattore 2–3, e il circuito deve funzionare con l'esemplare peggiore.
+
+**Vincolo 2: il datasheet deve garantire la R<sub>DS(on)</sub> a una |V<sub>GS</sub>| non superiore a |V<sub>GS,min</sub>|**
+
+> *Perché:* R<sub>DS(on)</sub> **diminuisce** quando V<sub>GS</sub> aumenta. Un valore garantito a una V<sub>GS</sub> più bassa della tua è quindi un **limite superiore sicuro**: nel tuo circuito la resistenza sarà uguale o minore. Un valore garantito a una V<sub>GS</sub> più alta (per esempio a 4,5 V quando ne hai 3,3) sarebbe invece **ottimistico**, e non si può usare.
+
+**Passo 4 — Conduzione.**
+
+- **Limite dalla caduta: R<sub>DS(on)</sub> ≤ ΔV<sub>max</sub> / I<sub>pk</sub>**
+
+  > *Perché I<sub>pk</sub> e non la corrente media:* è nel momento di picco che la caduta può far scendere la tensione sul carico sotto il suo minimo (brown-out). Il carico non "vede" la media, vede la tensione istante per istante.
+
+- **R<sub>DS(on)</sub> effettiva: R<sub>DS(on)</sub>(T<sub>j</sub>) = R<sub>DS(on)</sub>(25 °C) × k<sub>T</sub>**, con R<sub>DS(on)</sub>(25 °C) uguale al valore **massimo** in tabella alla V<sub>GS</sub> del passo 3.
+
+  > *Perché il valore massimo:* il valore tipico descrive l'esemplare medio; il massimo è quello che il produttore **garantisce** per tutti gli esemplari.
+
+- **Ipotesi iniziale: k<sub>T</sub> = 1,5**
+
+  > *Perché si moltiplica per 1,5:* il valore in tabella vale con la giunzione a **25 °C**, ma in funzione il MOSFET si scalda e la resistenza sale (circa +0,5 % ogni °C, capitolo 3.4). Al passo 4 la temperatura di giunzione **non è ancora nota**: si calcola al passo 5, a partire proprio dalla potenza che stiamo calcolando. Si spezza il cerchio assumendo una giunzione a **circa 125 °C**, dove k<sub>T</sub> ≈ 1,5.
+  >
+  > *Perché proprio 125 °C:* è una temperatura **più alta del limite di derating** che imporremo al passo 5 (100–110 °C). Quindi, se il progetto supera il passo 5, la giunzione reale sarà sotto i 110 °C, e la resistenza reale sarà **sicuramente minore** di quella ipotizzata. Un progetto accettato con k<sub>T</sub> = 1,5 è sempre dalla parte della sicurezza. Il prezzo è che a volte l'ipotesi è troppo pessimistica: per questo dopo il passo 5 la si **verifica a posteriori** (punto successivo).
+
+- **Potenza: P = I<sub>rms</sub>² × R<sub>DS(on)</sub>(T<sub>j</sub>)**
+
+  > *Perché la corrente efficace (rms):* il calore prodotto in una resistenza è proporzionale a i² istante per istante (effetto Joule), quindi la media del calore dipende dalla media di i², cioè da I<sub>rms</sub>². Usare la corrente media sottostimerebbe il riscaldamento.
+
+- **Per impulsi rettangolari: I<sub>rms</sub> = I<sub>pk</sub> × √D**
+
+  > *Perché la radice di D:* per una frazione D del tempo i² vale I<sub>pk</sub>², per il resto vale zero: la media di i² è D · I<sub>pk</sub>², e la radice dà I<sub>pk</sub> · √D. Si può usare solo se gli impulsi sono **molto più brevi della costante di tempo termica** del componente: il contenitore si comporta da "volano" e vede la media. Un SOT-23 su scheda ha costanti di tempo dell'ordine delle decine di secondi: impulsi di millisecondi vengono mediati, mentre un interruttore che resta acceso per decine di secondi fa in tempo ad andare a regime e va considerato **acceso in modo continuo**.
 
 **Passo 5 — Temperatura:**
 
-T<sub>j</sub> = T<sub>a</sub> + P × R<sub>θJA</sub> ≤ T<sub>j,derating</sub> (per esempio 100 °C)
+- **T<sub>j</sub> = T<sub>a</sub> + P × R<sub>θJA</sub>**
 
-R<sub>θJA</sub> è sul datasheet, ma è misurata su una scheda di prova standard. Su millefori con poco rame usa un valore prudente: per un SOT-23, **200–250 °C/W**. Al contrario, la potenza massima ammessa è P<sub>max</sub> = (T<sub>j,derating</sub> – T<sub>a</sub>) / R<sub>θJA</sub>.
+  > *Perché:* è la "legge di Ohm termica". La potenza P è il flusso di calore che esce dalla giunzione verso l'aria, come una corrente; R<sub>θJA</sub> è la resistenza che il calore incontra, e la differenza di temperatura T<sub>j</sub> – T<sub>a</sub> è come la tensione ai suoi capi.
+
+- **T<sub>j</sub> ≤ T<sub>j,derating</sub>, per esempio 100 °C** (anche se il datasheet ammette 150 °C)
+
+  > *Perché 100 °C e non 150 °C:* 150 °C è un limite assoluto, non una temperatura di lavoro. La vita dei semiconduttori si riduce rapidamente con la temperatura: come ordine di grandezza, si dimezza ogni 10 °C in più. In più R<sub>θJA</sub> è nota solo approssimativamente, e restando sotto i 100–110 °C si mantiene vera l'ipotesi del passo 4 (125 °C).
+
+- **R<sub>θJA</sub> = 200–250 °C/W per un SOT-23 su millefori**
+
+  > *Perché più alta del datasheet:* il produttore misura R<sub>θJA</sub> con il componente saldato su una scheda di prova con una piazzola di rame dedicata, che aiuta a disperdere il calore. Su millefori il rame attorno è quasi nullo e il calore esce peggio: si usa un valore più alto per restare prudenti.
+
+- **P<sub>max</sub> = (T<sub>j,derating</sub> – T<sub>a</sub>) / R<sub>θJA</sub>**
+
+  > *Perché:* è la stessa formula letta al contrario. Dice quanta potenza puoi dissipare al massimo, ed è utile per confrontare a colpo d'occhio la potenza calcolata con quella sopportabile.
+
+Subito dopo questo passo si **verifica l'ipotesi del passo 4** su T<sub>j</sub>: vedi più sotto, "Verifica a posteriori delle ipotesi".
 
 **Passo 6 — Resistenze di gate:**
 
-- limite inferiore, dal consumo: R<sub>GS</sub> ≥ V+<sub>max</sub> / I<sub>q,max</sub>, dove I<sub>q,max</sub> è il consumo ammesso **mentre il driver è acceso**. A interruttore spento R<sub>GS</sub> non consuma nulla;
-- limite superiore, dalle perdite del gate: I<sub>GSS,max</sub> × R<sub>GS</sub> ≪ |V<sub>GS(th),min</sub>|. Con I<sub>GSS</sub> = 100 nA e 100 kΩ si ha 10 mV: va bene. Con 10 MΩ si avrebbe 1 V: il MOSFET potrebbe accendersi da solo.
+- **Limite inferiore: R<sub>GS</sub> ≥ V+<sub>max</sub> / I<sub>q,max</sub>**
 
-In pratica restano valori tra **10 kΩ e 1 MΩ**, e 100 kΩ è il compromesso abituale.
+  > *Perché:* con il driver acceso, R<sub>GS</sub> si trova con un capo a V+ e l'altro quasi a massa: è attraversata da V+/R<sub>GS</sub> per tutto il tempo in cui l'interruttore è chiuso. È legge di Ohm applicata al consumo ammesso. A interruttore aperto R<sub>GS</sub> ha entrambi i capi a V+ e non consuma nulla.
+
+- **Limite superiore: I<sub>GSS,max</sub> × R<sub>GS</sub> ≪ |V<sub>GS(th),min</sub>|**
+
+  > *Perché:* il gate non è un isolante perfetto: assorbe una piccola corrente di perdita I<sub>GSS</sub>. Passando per R<sub>GS</sub>, questa corrente crea una tensione tra gate e source anche quando il MOSFET dovrebbe essere spento. Se quella tensione si avvicinasse alla soglia, il MOSFET si accenderebbe da solo. Si confronta con la soglia **minima** perché il caso peggiore è l'esemplare che si accende più facilmente. Una R<sub>GS</sub> molto alta rende il gate anche più sensibile ai disturbi, che si accoppiano attraverso le capacità interne.
+
+- **In pratica 10 kΩ – 1 MΩ, con 100 kΩ come compromesso**
+
+  > *Perché 100 kΩ:* consuma poco (42 µA a 4,2 V, e solo con l'interruttore chiuso), dà una tensione di perdita trascurabile (10 mV con 100 nA) e tiene il gate abbastanza "fermo" contro i disturbi.
 
 **Passo 7 — Transitori di accensione (inrush e SOA):**
 
-- corrente di inrush: I<sub>inrush</sub> = C<sub>L</sub> × dV/dt
-- fissata la corrente ammessa, la pendenza necessaria è dV/dt = I<sub>inrush,max</sub> / C<sub>L</sub>
-- con il condensatore gate-drain: dV/dt ≈ I<sub>G</sub> / C<sub>GD</sub>, dove la corrente del gate durante il plateau è
-  I<sub>G</sub> ≈ (V+ – |V<sub>pl</sub>|) / R<sub>S</sub> – |V<sub>pl</sub>| / R<sub>GS</sub>
-  e |V<sub>pl</sub>| (tensione di plateau) è poco sopra |V<sub>GS(th)</sub>|, circa 1,5–2 V per i MOSFET logic level
-- quindi C<sub>GD</sub> = I<sub>G</sub> / (dV/dt)
-- **energia dissipata nel MOSFET** durante la carica: E ≈ ½ × C<sub>L</sub> × V+². È un risultato generale: caricando un condensatore da una sorgente di tensione si dissipa sempre questa energia nel percorso resistivo, qualunque sia la velocità. La potenza media sul tempo di salita è P ≈ E / t<sub>salita</sub>: va confrontata con il grafico **SOA** del datasheet per impulsi di quella durata.
-- il condensatore rallenta anche lo **spegnimento**: t<sub>off</sub> ≈ C<sub>GD</sub> × V+ × R<sub>GS</sub> / |V<sub>pl</sub>|. Se in quel momento il carico assorbe ancora corrente, il MOSFET la porta in zona lineare e scalda: conviene **mettere a riposo il carico prima di togliergli l'alimentazione**.
+- **Corrente di inrush: I<sub>inrush</sub> = C<sub>L</sub> × dV/dt**
 
-**Passo 8 — Stato spento:**
+  > *Perché:* è la legge del condensatore, i = C · dv/dt. Più velocemente sale la tensione sul carico, più corrente serve per caricarne i condensatori.
 
-I<sub>off</sub> ≈ I<sub>DSS</sub> (perdita del MOSFET, tipicamente < 1 µA) più eventuali percorsi attraverso le linee di segnale, che vanno messe in alta impedenza.
+- **Pendenza necessaria: dV/dt = I<sub>inrush,max</sub> / C<sub>L</sub>**
 
-**Passo 9 — Verifica sul banco:**
+  > *Perché:* è la stessa formula usata al contrario. Fissata la corrente che la batteria può dare senza crollare (o senza far scattare la protezione), si ricava quanto lentamente deve salire la tensione.
+
+- **Con il condensatore gate-drain: dV/dt ≈ I<sub>G</sub> / C<sub>GD</sub>**
+
+  > *Perché:* durante l'accensione c'è una fase in cui la tensione tra gate e source resta quasi ferma al *plateau di Miller*, mentre il drain si muove. In quella fase tutta la corrente del gate va a caricare C<sub>GD</sub>, e un condensatore attraversato da una corrente I<sub>G</sub> varia la sua tensione con pendenza I<sub>G</sub>/C<sub>GD</sub>. Poiché il gate è "fermo", quella pendenza è proprio quella del drain, cioè della tensione sul carico.
+
+- **I<sub>G</sub> ≈ (V+ – |V<sub>pl</sub>|) / R<sub>S</sub> – |V<sub>pl</sub>| / R<sub>GS</sub>**
+
+  > *Perché:* durante il plateau il gate si trova a V+ – |V<sub>pl</sub>| rispetto a massa. R<sub>S</sub> (verso il driver, cioè verso massa) assorbe dal gate (V+ – |V<sub>pl</sub>|) / R<sub>S</sub>; R<sub>GS</sub> (verso V+) ne restituisce |V<sub>pl</sub>| / R<sub>GS</sub>. La differenza è la corrente netta che scorre in C<sub>GD</sub>.
+
+- **|V<sub>pl</sub>| ≈ 1,5–2 V per i MOSFET logic level**
+
+  > *Perché poco sopra la soglia:* durante il plateau il MOSFET sta conducendo la corrente di carica del condensatore, quindi serve una V<sub>GS</sub> un po' superiore alla soglia (definita a soli 250 µA). Il valore esatto dipende dalla corrente; per un calcolo di dimensionamento basta una stima, da verificare all'oscilloscopio (vedi la verifica a posteriori).
+
+- **C<sub>GD</sub> = I<sub>G</sub> / (dV/dt)**
+
+  > *Perché:* è la formula precedente risolta rispetto a C<sub>GD</sub>.
+
+- **Energia nel MOSFET: E ≈ ½ × C<sub>L</sub> × V+²**
+
+  > *Perché proprio metà:* per caricare un condensatore fino a V+ la sorgente eroga un'energia C<sub>L</sub> · V+²; il condensatore ne immagazzina ½ C<sub>L</sub> V+², e **l'altra metà si dissipa** nella resistenza in serie, qui il MOSFET. Il risultato non dipende dal valore della resistenza né dalla velocità: il soft-start riduce il picco di corrente, ma non l'energia dissipata, che si distribuisce su un tempo più lungo.
+
+- **P ≈ E / t<sub>salita</sub>, da confrontare con il grafico SOA**
+
+  > *Perché la SOA:* durante la salita il MOSFET lavora in **zona lineare**, con tensione e corrente contemporaneamente presenti, una condizione per cui un interruttore non è pensato. Il grafico *Safe Operating Area* del datasheet indica quale combinazione di tensione, corrente e durata dell'impulso il componente sopporta senza danni.
+
+- **Spegnimento: t<sub>off</sub> ≈ C<sub>GD</sub> × V+ × R<sub>GS</sub> / |V<sub>pl</sub>|**
+
+  > *Perché:* allo spegnimento il driver si apre e il gate risale verso V+ solo attraverso R<sub>GS</sub>, con una corrente di circa |V<sub>pl</sub>| / R<sub>GS</sub>. Per spegnere il MOSFET il drain deve percorrere tutta l'escursione V+, quindi C<sub>GD</sub> deve ricaricarsi di V+ con quella corrente: t = C<sub>GD</sub> · V+ / I. Poiché R<sub>GS</sub> è molto più grande di R<sub>S</sub>, lo spegnimento è molto più lento dell'accensione. Se intanto il carico assorbe corrente, il MOSFET la porta in zona lineare e scalda: per questo conviene mettere a riposo il carico prima.
+
+**Passo 8 — Stato spento: I<sub>off</sub> ≈ I<sub>DSS</sub> + percorsi attraverso le linee di segnale**
+
+> *Perché:* I<sub>DSS</sub> è la corrente di perdita del MOSFET spento; il datasheet la indica alla V<sub>DS</sub> massima, quindi alla tua tensione è in genere ancora minore. Il secondo termine è spesso più importante: se un GPIO collegato al carico spento resta a livello alto, alimenta il carico attraverso i suoi diodi di protezione. Per questo quelle linee vanno messe in alta impedenza (ingresso) prima di spegnere.
+
+**Passo 9 — Verifica sul banco**
 
 - ΔV misurata con il tester ai capi del MOSFET sotto carico;
-- temperatura al tatto o con una termocamera dopo qualche minuto;
+- temperatura al tatto o con una termocamera **dopo qualche minuto**;
 - con l'oscilloscopio, la forma della tensione sul carico all'accensione e la tensione della batteria, per vedere l'inrush.
+
+> *Perché misurare:* i parametri del datasheet hanno dispersioni ampie, e R<sub>θJA</sub> reale dipende dal montaggio. La caduta misurata dà la R<sub>DS(on)</sub> vera (ΔV / I); la temperatura va misurata dopo qualche minuto perché il contenitore ha una costante di tempo termica e all'inizio non è ancora a regime; l'inrush dura millisecondi, e un tester non lo vede: serve l'oscilloscopio. Le misure sono anche lo strumento per verificare a posteriori le ipotesi fatte nei passi precedenti.
+
+#### Verifica a posteriori delle ipotesi
+
+**Il principio.** Quando un calcolo richiede una grandezza che dipende dal risultato del calcolo stesso (come T<sub>j</sub> nell'anello del punto 5.1), si procede in quattro mosse:
+
+1. si fa un'**ipotesi** sulla grandezza mancante, scegliendola **prudente**, cioè dalla parte peggiore;
+2. si **calcola** il risultato con quell'ipotesi;
+3. si **confronta** il risultato con l'ipotesi: sono coerenti?
+4. si **decide**: accettare, ricalcolare o cambiare scelta.
+
+**Applicato alla temperatura.** L'ipotesi del passo 4 è T<sub>j,ip</sub> ≈ 125 °C (k<sub>T</sub> = 1,5). Il passo 5 dà una temperatura calcolata T<sub>j,calc</sub>. I casi possibili sono quattro:
+
+| Confronto | Verifiche dei passi 4–5 | Che cosa significa | Che cosa fare |
+|---|---|---|---|
+| T<sub>j,calc</sub> ≤ T<sub>j,ip</sub> | superate | L'ipotesi era prudente: nella realtà R<sub>DS(on)</sub>, ΔV e P sono **minori** di quelli calcolati | **Accettare.** Se servono i valori veri (per esempio per un bilancio energetico preciso), ricalcolare una volta con k<sub>T</sub> alla T<sub>j,calc</sub> |
+| T<sub>j,calc</sub> ≤ T<sub>j,ip</sub> | **non** superate | L'ipotesi pessimistica potrebbe aver "bocciato" un MOSFET adatto | **Non scartare subito:** ricalcolare con k<sub>T</sub> alla T<sub>j,calc</sub> e iterare. Se le verifiche continuano a fallire, cambiare MOSFET |
+| T<sub>j,calc</sub> > T<sub>j,ip</sub> | qualsiasi | L'ipotesi era **ottimistica**: il calcolo non vale | **Ricalcolare** con k<sub>T</sub> alla T<sub>j,calc</sub> (e cercare un MOSFET migliore: oltre 125 °C si è fuori dal derating) |
+| L'iterazione non converge: T<sub>j</sub> sale a ogni ripetizione | — | **Instabilità termica** (*thermal runaway*): più scalda, più la resistenza sale, più scalda | **Cambiare MOSFET** o migliorare la dissipazione. È il segnale più chiaro di un componente sottodimensionato |
+
+**L'iterazione, passo per passo.**
+
+1. Parti da T<sub>j,0</sub> = 125 °C.
+2. Calcola k<sub>T</sub> = 1 + α · (T<sub>j,0</sub> – 25), poi R = R<sub>25</sub> · k<sub>T</sub> e P = I<sup>2</sup> · R.
+3. Calcola T<sub>j,1</sub> = T<sub>a</sub> + P · R<sub>θJA</sub>.
+4. Se T<sub>j,1</sub> differisce da T<sub>j,0</sub> di pochi gradi (per esempio meno di 5 °C), ti fermi. Altrimenti poni T<sub>j,0</sub> = T<sub>j,1</sub> e torni al punto 2.
+
+Nei casi comuni bastano una o due ripetizioni.
+
+**La soluzione in forma chiusa.** Con il modello lineare di k<sub>T</sub> l'anello si risolve anche con una sola formula. Sostituendo P = I² · R<sub>25</sub> · [1 + α (T<sub>j</sub> – 25)] nella formula della temperatura e ricavando T<sub>j</sub>, con P<sub>25</sub> = I² · R<sub>25</sub> (potenza calcolata con la resistenza a 25 °C):
+
+T<sub>j</sub> = [T<sub>a</sub> + R<sub>θJA</sub> · P<sub>25</sub> · (1 – 25 α)] / (1 – α · R<sub>θJA</sub> · P<sub>25</sub>)
+
+La formula dice anche **quando l'anello è stabile**: il denominatore deve restare positivo e lontano da zero.
+
+- **α · R<sub>θJA</sub> · P<sub>25</sub> ≪ 1** (per esempio < 0,2): l'effetto della temperatura è piccolo, e l'iterazione converge in un passaggio;
+- **α · R<sub>θJA</sub> · P<sub>25</sub> → 1**: la temperatura tende all'infinito, cioè c'è instabilità termica.
+
+Con α ≈ 0,005 /°C, l'instabilità compare quando R<sub>θJA</sub> · P<sub>25</sub> si avvicina a 200 °C, cioè molto oltre qualsiasi limite di derating. Nella pratica l'anello è quasi sempre stabile: il vero limite resta la temperatura massima ammessa.
+
+**Le altre ipotesi della procedura** si verificano con lo stesso schema, alcune con il calcolo e altre solo con la misura sul prototipo:
+
+| Ipotesi iniziale | Passo | Come si verifica a posteriori |
+|---|---|---|
+| k<sub>T</sub> = 1,5 (T<sub>j</sub> ≈ 125 °C) | 4 | Con il calcolo: T<sub>j</sub> del passo 5 confrontata con 125 °C (tabella sopra) |
+| R<sub>θJA</sub> = 200 °C/W | 5 | Con la misura: si misura la temperatura del contenitore dopo qualche minuto a regime. R<sub>θJA,reale</sub> ≈ (T<sub>misurata</sub> – T<sub>a</sub>) / P |
+| R<sub>DS(on)</sub> al valore massimo del datasheet | 4 | Con la misura: R<sub>reale</sub> = ΔV<sub>misurata</sub> / I. Dal rapporto R<sub>reale</sub> / R<sub>25</sub> si ricava anche il k<sub>T</sub> effettivo, quindi una stima di T<sub>j</sub> |
+| \|V<sub>GS</sub>\| reale ≥ valore minimo calcolato | 3 | Con la misura: tester tra gate e source a MOSFET acceso, con la batteria al minimo |
+| \|V<sub>pl</sub>\| ≈ 1,5 V e I<sub>G</sub> calcolata | 7 | Con l'oscilloscopio: durata della salita misurata contro quella calcolata. Se differisce, si ritocca C<sub>GD</sub> in proporzione |
+| Corrente del carico e picchi | 0 | Con la misura: tester in serie per la corrente media, resistenza di shunt e oscilloscopio per i picchi |
+
+Se una misura smentisce un'ipotesi in senso **sfavorevole** (per esempio R<sub>θJA</sub> reale più alta di quella assunta), si rifanno i calcoli dal passo interessato in poi con il valore misurato.
 
 ### 5.5 Esempio completo: Q4 per l'SDS011, con soft-start
 
@@ -276,8 +433,9 @@ Valori dell'AO3401A **indicativi**, da verificare sul datasheet del produttore e
 |---|---|---|
 | 2 · Tensione | 30 V ≥ 2 × 4,2 V; 12 V ≥ 1,5 × 4,2 V | ✅ |
 | 3 · Gate | Con R<sub>GS</sub> = 100 kΩ e R<sub>S</sub> = 10 kΩ: \|V<sub>GS,min</sub>\| = 3,0 × 100/110 = 2,73 V. Rapporto 2,73 / 1,3 = 2,1; R<sub>DS(on)</sub> garantita a 2,5 V ≤ 2,73 V | ✅ (al limite inferiore della regola: accettabile perché la corrente è piccola) |
-| 4 · Conduzione | Progetto con I<sub>pk</sub> = 150 mA (margine sui 110 mA). R<sub>DS(on)</sub> nel caso peggiore = 0,1 × 1,5 = 0,15 Ω. ΔV = 0,15 × 0,15 = 22 mV ≤ 50 mV. P = 0,15² × 0,15 = 3,4 mW | ✅ |
-| 5 · Temperatura | T<sub>j</sub> = 60 + 0,0034 × 200 = 60,7 °C. Nessuna iterazione necessaria | ✅ ampio margine |
+| 4 · Conduzione | Progetto con I<sub>pk</sub> = 150 mA (margine sui 110 mA). Ipotesi iniziale T<sub>j</sub> ≈ 125 °C → k<sub>T</sub> = 1,5: R = 0,1 × 1,5 = 0,15 Ω. ΔV = 0,15 × 0,15 = 22 mV ≤ 50 mV. P = 0,15² × 0,15 = 3,4 mW | ✅ |
+| 5 · Temperatura | T<sub>j</sub> = 60 + 0,0034 × 200 = 60,7 °C | ✅ ampio margine |
+| 5 · Verifica a posteriori | 60,7 °C ≤ 125 °C ipotizzati e verifiche superate → **primo caso** della tabella: l'ipotesi era prudente, si accetta. Valori reali, con k<sub>T</sub> a 60,7 °C = 1 + 0,005 × 35,7 ≈ 1,18: R ≈ 0,118 Ω, ΔV ≈ 18 mV, P ≈ 2,7 mW | ✅ ipotesi confermata |
 | 6 · Resistenze | Consumo con il driver acceso: 4,2 V / 100 kΩ = 42 µA (solo per 40 s). Perdite gate: 100 nA × 100 kΩ = 10 mV ≪ 0,5 V | ✅ |
 | 7 · Inrush | Obiettivo I<sub>inrush</sub> ≤ 0,25 A con C<sub>L</sub> = 1000 µF → dV/dt = 0,25 V/ms. I<sub>G</sub> ≈ (4,2 – 1,5)/10 k – 1,5/100 k ≈ 0,26 mA. C<sub>GD</sub> = 0,26 mA / (0,25 V/ms) ≈ 1 µF. Salita in circa 17 ms. E = ½ × 1000 µF × 4,2² ≈ 8,8 mJ → P media ≈ 0,5 W per 17 ms | ✅ da verificare sul grafico SOA (curva 10 ms) |
 | 7 · Spegnimento | t<sub>off</sub> ≈ 1 µF × 4,2 V × 100 kΩ / 1,5 V ≈ 0,3 s | ⚠️ Lento: prima di spegnere, metti l'SDS011 in sleep con il comando seriale |
@@ -292,6 +450,8 @@ Valori dell'AO3401A **indicativi**, da verificare sul datasheet del produttore e
 ---
 
 ## 6. Esempi dal progetto
+
+Questi sono **controlli rapidi** con la R<sub>DS(on)</sub> a 25 °C. Sono legittimi perché i risultati sono lontanissimi dai limiti: anche moltiplicando per k<sub>T</sub> = 1,5 non cambierebbe nessuna conclusione (vedi il [punto 5.3](#53-formule-esatte-o-stime-a-occhio) sulle stime a occhio). Il calcolo completo di Q4, con ipotesi e verifica a posteriori, è al [punto 5.5](#55-esempio-completo-q4-per-lsds011-con-soft-start).
 
 ### Q4 + Q5: alimentazione dell'SDS011
 
@@ -397,8 +557,9 @@ I valori dei MOSFET sono **indicativi**: in un'esercitazione vera vanno ricavati
 | 1 · Topologia | La pompa non ha linee di segnale verso l'ESP32 → **N-MOSFET lato basso**, gate pilotato direttamente dal GPIO | — |
 | 2 · Tensione | V<sub>DS(max)</sub> ≥ 2 × 12 = 24 V → MOSFET da 30 V | ✅ |
 | 3 · Gate | V<sub>GS</sub> = 3,3 V → serve un logic level con V<sub>GS(th),max</sub> ≤ 1,5 V e R<sub>DS(on)</sub> garantita a 2,5 V. Scelta: **AO3400A** (indicativi: 30 V, V<sub>GS(th),max</sub> 1,45 V, R<sub>DS(on)</sub> ≈ 50 mΩ a 2,5 V). Rapporto 3,3 / 1,45 = 2,3 | ✅ |
-| 4 · Conduzione | Caso peggiore R = 50 × 1,5 = 75 mΩ. ΔV = 1,2 × 0,075 = 90 mV. P = 1,2² × 0,075 = **108 mW** | ✅ |
+| 4 · Conduzione | R<sub>25</sub> = 50 mΩ è il valore massimo a 2,5 V **e a 25 °C**. Ipotesi iniziale T<sub>j</sub> ≈ 125 °C → k<sub>T</sub> = 1,5: R = 50 × 1,5 = 75 mΩ. ΔV = 1,2 × 0,075 = 90 mV. P = 1,2² × 0,075 = **108 mW** | ✅ |
 | 5 · Temperatura | T<sub>j</sub> = 40 + 0,108 × 200 = **62 °C** | ✅ |
+| 5 · Verifica a posteriori | 62 °C ≤ 125 °C ipotizzati e verifiche superate → l'ipotesi era prudente, **si accetta**. Valori reali con un'iterazione: k<sub>T</sub>(62 °C) = 1 + 0,005 × 37 ≈ 1,18 → R ≈ 59 mΩ → P ≈ 85 mW → T<sub>j</sub> ≈ 57 °C; un secondo passaggio cambia meno di 1 °C. Controllo con la forma chiusa: P<sub>25</sub> = 1,2² × 0,05 = 72 mW, α · R<sub>θJA</sub> · P<sub>25</sub> = 0,005 × 200 × 0,072 = 0,07 ≪ 1 (anello stabile), T<sub>j</sub> = [40 + 200 × 0,072 × (1 – 0,125)] / (1 – 0,07) ≈ **57 °C**. Caduta reale ≈ 1,2 × 0,058 ≈ 70 mV | ✅ ipotesi confermata |
 | 6 · Spunto | P = 3² × 0,075 = 0,68 W per 100 ms (68 mJ) → verifica sul grafico SOA o sull'impedenza termica transitoria per impulsi da 100 ms | ⚠️ al limite, in genere accettabile |
 | 7 · Resistenze | R<sub>G</sub> = 220 Ω (picco dal GPIO: 3,3 / 220 = 15 mA). R<sub>PD</sub> = 100 kΩ, per tenere la pompa spenta al boot | ✅ |
 | 8 · **Trappola** | Il carico è **induttivo**: allo spegnimento il motore genera una sovratensione che può superare i 30 V di Q1 e distruggerlo. Serve un **diodo di ricircolo** in antiparallelo alla pompa: Schottky da 3 A (SS34), catodo su +12 V. Con il diodo V<sub>DS</sub> resta a circa 12,5 V | ✅ con D1 |
@@ -439,20 +600,22 @@ Le soluzioni sono due: abbassare la frequenza a circa 1 kHz (P<sub>sw</sub> ≈ 
 | 1 · Topologia | C'è l'UART → **P-MOSFET lato alto + driver N** (2N7002). Il P non si pilota direttamente dal GPIO, perché 4,2 V > 3,3 V | — |
 | 2 · Tensione | 2 × 4,2 = 8,4 V → P da 20–30 V. V<sub>GS(max)</sub> ±12 V ≥ 1,5 × 4,2 V | ✅ |
 | 3 · Gate | Per sfruttare la R<sub>DS(on)</sub> a 2,5 V: 3,6 × R<sub>GS</sub> / (R<sub>GS</sub> + R<sub>S</sub>) ≥ 2,5 → R<sub>S</sub> ≤ 0,44 × R<sub>GS</sub>. Con 100 kΩ e 10 kΩ: \|V<sub>GS,min</sub>\| = **3,27 V** | ✅ |
-| 4 · **Trappola** | Budget: 3,6 – 3,4 = **0,2 V con 2 A** → resistenza totale ≤ 0,1 Ω, fili compresi. Al MOSFET si lasciano circa 40 mΩ. **Primo tentativo, AO3401A** (≈ 0,1 Ω a –2,5 V): ΔV = 0,2 V, che da sola esaurisce il budget | ❌ |
-| 4 · Iterazione A | Si sceglie a catalogo un P con R<sub>DS(on),max</sub> ≤ 40 mΩ a V<sub>GS</sub> = –2,5 V → ΔV ≈ 2 × 0,04 = 80 mV | ✅ |
-| 4 · Iterazione B | In alternativa si **rinegozia un dato**: soglia software da 3,6 a 3,75 V → budget 0,35 V, e l'AO3401A torna accettabile, al prezzo di sfruttare meno la batteria | ✅ |
-| 5 · Temperatura | I<sub>rms</sub> ≈ 2 × √(1/8) ≈ 0,71 A → P ≈ 0,71² × 0,04 ≈ **20 mW** → T<sub>j</sub> ≈ 44 °C. A questa temperatura il fattore reale è circa 1,05: usare 1,5 alla cieca porterebbe a sovradimensionare | ✅ |
+| 4 · **Trappola** | Budget: 3,6 – 3,4 = **0,2 V con 2 A** → resistenza totale ≤ 0,1 Ω, fili compresi. Al MOSFET si lasciano circa **40 mΩ effettivi**, cioè alla temperatura di funzionamento. **Primo tentativo, AO3401A** (≈ 0,1 Ω a –2,5 V): ΔV = 0,2 V già a 25 °C, senza il fattore di temperatura: da sola esaurisce il budget | ❌ |
+| 4 · Iterazione A | Si cerca a catalogo un P più adatto. Con l'ipotesi iniziale k<sub>T</sub> = 1,5 servirebbe R<sub>25</sub> ≤ 40 / 1,5 ≈ **27 mΩ** a –2,5 V: un valore molto basso per un contenitore piccolo. Prima di restringere la scelta conviene verificare l'ipotesi (passo 5) | ⚠️ da verificare a posteriori |
+| 4 · Iterazione B | In alternativa si **rinegozia un dato**: soglia software da 3,6 a 3,75 V → budget 0,35 V. Con l'AO3401A: P ≈ 0,71² × 0,1 × 1,1 ≈ 55 mW → T<sub>j</sub> ≈ 51 °C → k<sub>T</sub> ≈ 1,13 → ΔV ≈ 2 × 0,113 ≈ 0,23 V, entro il budget con margine per i fili. Il prezzo è sfruttare meno la batteria | ✅ |
+| 5 · Temperatura | Per l'iterazione A si prova un MOSFET con R<sub>25</sub> = 36 mΩ. La temperatura dipende dalla corrente efficace: I<sub>rms</sub> ≈ 2 × √(1/8) ≈ 0,71 A → P ≈ 0,71² × 0,036 × 1,5 ≈ **27 mW** → T<sub>j</sub> ≈ 40 + 0,027 × 200 ≈ **45 °C** | ✅ |
+| 5 · Verifica a posteriori | 45 °C ≪ 125 °C ipotizzati: l'ipotesi era **molto** pessimistica (secondo caso della tabella: non scartare, ricalcolare). Con k<sub>T</sub>(45 °C) = 1 + 0,005 × 20 = 1,1: R ≈ 36 × 1,1 ≈ 40 mΩ → ΔV ≈ 2 × 0,040 = 80 mV ✅. Quindi basta **R<sub>25</sub> ≤ 36 mΩ**, non 27: con k<sub>T</sub> = 1,5 preso alla cieca si sarebbe scartato un MOSFET adatto | ✅ ipotesi corretta, scelta allargata |
 | 6 · Resistenze | R<sub>GS</sub> consuma 42 µA solo durante la sessione GSM; perdite del gate trascurabili | ✅ |
 | 7 · Inrush | dV/dt = 0,3 A / 1000 µF = 0,3 V/ms. I<sub>G</sub> ≈ (4,2 – 1,5)/10 k – 1,5/100 k ≈ 0,26 mA → C<sub>GD</sub> = 0,26 / 0,3 ≈ 0,87 µF → **1 µF**, salita in circa 16 ms. E = ½ × 1000 µF × 4,2² ≈ 8,8 mJ → circa 0,55 W per 16 ms | ✅ da verificare sul grafico SOA |
 | 8 · Spegnimento | t<sub>off</sub> ≈ 1 µF × 4,2 × 100 kΩ / 1,5 ≈ 0,3 s → spegnere prima il modulo con il comando AT di power-off, e mettere il TX dell'ESP32 in alta impedenza | ⚠️ vincolo sul software |
 
-**Risultato:** P-MOSFET con R<sub>DS(on)</sub> ≤ 40 mΩ a –2,5 V (oppure AO3401A con soglia software a 3,75 V), driver 2N7002, R<sub>GS</sub> 100 kΩ, R<sub>S</sub> 10 kΩ, C<sub>GD</sub> 1 µF, R<sub>PD</sub> 100 kΩ.
+**Risultato:** P-MOSFET con R<sub>DS(on)</sub> ≤ 36 mΩ a –2,5 V e 25 °C (oppure AO3401A con soglia software a 3,75 V), driver 2N7002, R<sub>GS</sub> 100 kΩ, R<sub>S</sub> 10 kΩ, C<sub>GD</sub> 1 µF, R<sub>PD</sub> 100 kΩ.
 
 ### Cosa mettono a confronto i due esercizi
 
 | | Esercizio 1 (low-side) | Esercizio 2 (high-side) |
 |---|---|---|
 | Passo critico | Temperatura e spunto, sovratensione induttiva | Caduta di tensione e inrush |
-| Trappola | Il diodo di ricircolo; il PWM fa esplodere le perdite | Il primo MOSFET non basta; il fattore termico 1,5 è eccessivo |
+| Trappola | Il diodo di ricircolo; il PWM fa esplodere le perdite | Il primo MOSFET non basta; l'ipotesi k<sub>T</sub> = 1,5, se non verificata a posteriori, fa scartare MOSFET adatti |
+| Verifica a posteriori | Conferma l'ipotesi (primo caso): si accetta | Smentisce l'ipotesi in senso favorevole (secondo caso): si ricalcola e la scelta si allarga |
 | Lezione | Le formule in commutazione servono solo con il PWM | La procedura è un ciclo, e anche i dati di progetto si possono rinegoziare |
