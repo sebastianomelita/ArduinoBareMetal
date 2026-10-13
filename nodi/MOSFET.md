@@ -126,7 +126,44 @@ Il valore in prima pagina del datasheet è misurato con il contenitore tenuto a 
 
 ⚠️ **Non è la tensione a cui il MOSFET è acceso del tutto.** A V<sub>GS(th)</sub> conduce appena. È l'errore più comune.
 
-**Regola:** la |V<sub>GS</sub>| disponibile deve essere almeno **2–2,5 ×** la |V<sub>GS(th)</sub>| **massima** (non quella tipica). Con il GPIO a 3,3 V, oppure con una LiPo quasi scarica a circa 3,0 V, servono MOSFET **logic level**, con V<sub>GS(th)</sub> massima intorno a 1–1,5 V.
+**Regola:** la |V<sub>GS</sub>| disponibile deve essere almeno **2–2,5 ×** la |V<sub>GS(th)</sub>| **massima** (non quella tipica). Con il GPIO a 3,3 V, oppure con una LiPo quasi scarica a circa 3,0 V, servono MOSFET **logic level**, con V<sub>GS(th)</sub> massima intorno a 1–1,5 V. Il perché teorico di questa regola è spiegato in [MOSFET_TRIODO.md](MOSFET_TRIODO.md).
+
+#### Dove si trovano soglia minima e massima
+
+Nel datasheet, nella tabella delle **caratteristiche elettriche** (*Electrical Characteristics*), di solito nella sezione *Static* o *Off/On Characteristics*. La riga ha questa forma (valori indicativi, del tipo AO3400A):
+
+| Parametro | Simbolo | Condizioni di prova | Min | Typ | Max | Unità |
+|---|---|---|---|---|---|---|
+| Gate Threshold Voltage | V<sub>GS(th)</sub> | V<sub>DS</sub> = V<sub>GS</sub>, I<sub>D</sub> = 250 µA | 0,65 | 1,05 | 1,45 | V |
+
+- **Min** e **Max** sono i limiti **garantiti** dal produttore su tutti gli esemplari: sono quelli da usare nelle verifiche, il massimo per "si accende bene" e il minimo per "resta spento".
+- **Typ** è il valore dell'esemplare medio: serve solo come riferimento, mai per il dimensionamento.
+- **Le condizioni di prova** definiscono la soglia: la V<sub>GS</sub> a cui passano appena 250 µA (a volte 1 mA), con il gate collegato al drain. Per questo alla soglia il MOSFET conduce appena.
+- **Per un P-MOSFET** i valori sono negativi (per esempio da –0,5 a –1,3 V): si ragiona sui valori assoluti.
+- **Se manca un valore** (alcuni datasheet danno solo Typ e Max, o solo Min e Max): se manca il minimo, conviene stimarlo in modo prudente come Typ – (Max – Typ), oppure scegliere un altro componente quando la verifica "resta spento" è critica.
+
+#### La soglia cambia con la temperatura
+
+I valori in tabella valgono a **25 °C**, ma la soglia **diminuisce quando la temperatura sale**. Quasi tutti i datasheet hanno il grafico *"Normalized Threshold Voltage vs. Junction Temperature"*. Tipicamente, rispetto a 25 °C, la soglia vale circa 1,1–1,2 volte a –40 °C e circa 0,7–0,8 volte a 125 °C; i valori precisi vanno letti sul grafico del componente scelto.
+
+I due casi peggiori stanno quindi a temperature opposte:
+
+| Verifica | Soglia da usare | Caso peggiore | Come si tiene conto |
+|---|---|---|---|
+| **Si accende bene** (stato acceso) | Massima | **Freddo**: la soglia è più alta | Alle temperature normali di esercizio la regola 2–2,5× copre già questo margine. Per usi sotto zero, moltiplica la soglia massima per il fattore del grafico a bassa temperatura |
+| **Resta spento** (stato spento) | Minima | **Caldo**: la soglia è più bassa | Moltiplica la soglia minima per il fattore del grafico alla temperatura massima. Esempio: 0,65 V × 0,75 ≈ 0,5 V a 125 °C. È questo il valore da confrontare con I<sub>GSS</sub> × R<sub>GS</sub> ([passo 6](#54-la-procedura-passo-per-passo)) |
+
+#### Misurare la soglia in laboratorio
+
+Si può misurare la soglia di un singolo esemplare con lo stesso metodo del datasheet:
+
+1. si collega il **gate al drain** (MOSFET "a diodo"), così V<sub>GS</sub> = V<sub>DS</sub>;
+2. si alimenta attraverso una resistenza che fissi una corrente di circa **250 µA**: per esempio 5 V con una resistenza da 15 kΩ dà (5 – 1,3) V / 15 kΩ ≈ 250 µA;
+3. si misura **V<sub>DS</sub>** con il tester: coincide con V<sub>GS(th)</sub>.
+
+Per un P-MOSFET il collegamento è lo stesso con le polarità invertite: source verso il positivo, gate e drain uniti verso la resistenza e da lì a massa.
+
+Scaldando il MOSFET (per esempio con un phon) si vede la soglia scendere, una verifica diretta del grafico in temperatura. La misura però dà la soglia di **quell'esemplare**, non i limiti minimo e massimo garantiti su tutta la produzione: per il dimensionamento restano quelli del datasheet.
 
 ### 3.4 R<sub>DS(on)</sub>: resistenza da acceso
 
