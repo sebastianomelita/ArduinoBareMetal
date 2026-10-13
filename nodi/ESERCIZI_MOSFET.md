@@ -26,7 +26,7 @@ Un ESP32 deve accendere e spegnere una pompa a 12 V DC per l'irrigazione.
 
 1. Scegli la topologia (lato basso o lato alto) e motiva la scelta.
 2. Ricava i limiti su V<sub>DS(max)</sub>, V<sub>GS(th)</sub> e R<sub>DS(on)</sub>, e scegli un MOSFET adatto.
-3. Calcola la caduta di tensione, la potenza dissipata e la temperatura di giunzione a regime, nel caso peggiore.
+3. Calcola la caduta di tensione, la potenza dissipata e la temperatura di giunzione a regime, nel caso peggiore. Dichiara l'ipotesi che fai sulla temperatura di giunzione per scegliere il fattore k<sub>T</sub>, e **verificala a posteriori**: l'ipotesi era prudente? Quali sono i valori reali di R<sub>DS(on)</sub>, caduta e temperatura?
 4. Valuta lo spunto all'avvio.
 5. Dimensiona le resistenze sul gate.
 6. Disegna lo schema completo. Quali componenti servono oltre al MOSFET e alle resistenze? Perché?
@@ -58,7 +58,7 @@ Un ESP32 alimentato da una LiPo deve spegnere del tutto un modulo GSM SIM800L tr
 2. Ricava i limiti di tensione e scegli i MOSFET necessari.
 3. Dimensiona le resistenze sul gate in modo che la |V<sub>GS</sub>| minima permetta di usare la R<sub>DS(on)</sub> garantita a 2,5 V.
 4. Calcola il budget di caduta di tensione disponibile e verifica il MOSFET scelto. Se la verifica fallisce, proponi **almeno due** strade diverse per risolvere il problema.
-5. Calcola la potenza dissipata e la temperatura di giunzione. Il fattore 1,5 sulla R<sub>DS(on)</sub> è giustificato in questo caso?
+5. Calcola la potenza dissipata e la temperatura di giunzione, partendo dall'ipotesi k<sub>T</sub> = 1,5. **Verifica a posteriori** l'ipotesi: è giustificata in questo caso? Che cosa cambia nel valore massimo di R<sub>DS(on)</sub> che puoi accettare, e quindi nella scelta del MOSFET?
 6. Dimensiona il soft-start per rispettare la corrente di inrush ammessa. Calcola l'energia dissipata nel MOSFET durante l'accensione.
 7. Quali conseguenze ha il soft-start sullo spegnimento? Che cosa deve fare il software prima di togliere l'alimentazione al modulo?
 8. Disegna lo schema completo.
