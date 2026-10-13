@@ -137,14 +137,161 @@ Per interruttori lenti (pochi cambi al secondo) e fili corti è **facoltativa**.
 
 ### Accensione lenta (soft-start)
 
-Se il carico ha grossi condensatori in ingresso (un boost, o C6 da 1000 µF per l'SDS011), all'accensione il MOSFET li carica con un picco di corrente che può far scendere la tensione della batteria e resettare l'ESP32. Per rallentare l'accensione:
+Se il carico ha grossi condensatori, all'accensione il MOSFET li carica con un picco di corrente (**inrush**) che può far scendere la tensione della batteria e resettare l'ESP32. Attenzione al caso del **boost**: tra ingresso e uscita c'è un percorso diretto attraverso induttore e diodo, quindi anche il condensatore d'uscita (C6 per l'SDS011) si carica di colpo attraverso il MOSFET.
 
-- aggiungi un condensatore da **10–100 nF tra gate e source del P**. Insieme a R<sub>GS</sub> rallenta la salita della tensione sul carico;
-- oppure scegli un MOSFET con I<sub>D</sub> abbondante, che regga il picco senza problemi.
+Il metodo classico per rallentare l'accensione nello schema high-side ha due componenti:
+
+- una resistenza **R<sub>S</sub>** (circa 10 kΩ) tra il drain del driver N e il gate del P, così il gate non viene scaricato di colpo;
+- un condensatore **C<sub>GD</sub>** tra **gate e drain** del P (non tra gate e source). Durante l'accensione la tensione del gate resta quasi ferma (il cosiddetto *plateau di Miller*) e la tensione sul carico sale con una pendenza fissata da R<sub>S</sub> e C<sub>GD</sub>.
+
+> ⚠️ Un condensatore tra gate e source **non** serve allo scopo: il driver N lo scarica in pochi microsecondi, e il P si accende di colpo lo stesso.
+
+Il calcolo dei valori è nella [procedura di dimensionamento](#5-procedura-di-dimensionamento), al passo 7. In alternativa esistono **load switch integrati** (per esempio la famiglia TPS22xxx di Texas Instruments): contengono MOSFET, driver e soft-start regolabile con un solo condensatore.
 
 ---
 
-## 5. Esempi dal progetto
+## 5. Procedura di dimensionamento
+
+### 5.1 Chi comanda e chi segue
+
+Nel dimensionamento le grandezze non sono tutte sullo stesso piano. Conviene dividerle in tre gruppi.
+
+**Dati di progetto (imposti dal problema, non si scelgono):**
+
+| Grandezza | Simbolo | Esempio (Q4, SDS011) |
+|---|---|---|
+| Tensione da commutare, minima e massima | V+<sub>min</sub>, V+<sub>max</sub> | 3,0–4,2 V (batteria) |
+| Corrente del carico: continua, di picco, ciclo di lavoro | I<sub>L</sub>, I<sub>pk</sub>, D | 110 mA, per 40 s ogni 30 min |
+| Tensione di comando disponibile | V<sub>drive</sub> | GPIO 3,3 V |
+| Temperatura ambiente massima | T<sub>a</sub> | 60 °C (scatola al sole) |
+| Caduta di tensione ammessa | ΔV<sub>max</sub> | 50 mV |
+| Capacità del carico | C<sub>L</sub> | ~1000 µF (C6 attraverso il boost) |
+| Consumo ammesso a riposo | I<sub>q,max</sub> | ~1 µA a interruttore spento |
+| Il carico ha linee di segnale? | — | Sì (UART) |
+
+**Variabili di progetto (le scegli tu: sono quelle che "comandano"):**
+
+- la **topologia** (N lato basso o P lato alto);
+- il **MOSFET**: scegliendo un modello scegli insieme *tutti* i suoi parametri (V<sub>DS(max)</sub>, V<sub>GS(th)</sub>, R<sub>DS(on)</sub>, R<sub>θJA</sub>, capacità…). Non li puoi regolare uno per uno: li prendi in blocco da un catalogo;
+- le **resistenze di gate** (R<sub>GS</sub> o R<sub>PD</sub>, R<sub>S</sub>);
+- l'eventuale **condensatore di soft-start** (C<sub>GD</sub>).
+
+**Grandezze dipendenti (si calcolano e si verificano, non si impongono):**
+
+- la V<sub>GS</sub> effettiva nel caso peggiore;
+- la R<sub>DS(on)</sub> effettiva, che dipende da V<sub>GS</sub> e dalla temperatura;
+- la caduta ΔV e la potenza dissipata P;
+- la temperatura di giunzione T<sub>j</sub>;
+- il consumo delle resistenze di gate, acceso e spento;
+- la velocità di accensione e spegnimento, e quindi la corrente di inrush.
+
+Il dimensionamento quindi **non è un calcolo diretto** dai dati al componente, ma un ciclo **scegli → verifica → correggi**. Dai dati si ricavano dei **limiti** sui parametri (per esempio "R<sub>DS(on)</sub> al massimo 0,3 Ω a V<sub>GS</sub> = –2,5 V"), si sceglie un MOSFET dal catalogo che li rispetti, e poi si verificano le grandezze dipendenti. Se una verifica fallisce si torna indietro e si cambia una scelta.
+
+C'è un solo punto in cui due grandezze dipendenti si influenzano a vicenda: **R<sub>DS(on)</sub> cresce con la temperatura, e la temperatura cresce con la potenza**, che a sua volta dipende da R<sub>DS(on)</sub>. In pratica si risolve in uno dei due modi:
+- si usa subito il valore peggiore (R<sub>DS(on)</sub> a 25 °C × 1,5), oppure
+- si fa un'iterazione: si calcola T<sub>j</sub> con il valore a 25 °C, si corregge R<sub>DS(on)</sub> e si ricalcola. Di solito basta un passaggio.
+
+### 5.2 Esistono procedure riconosciute?
+
+Sì. Le *application note* dei produttori di MOSFET (Infineon, Nexperia, onsemi, Texas Instruments, Vishay e altri) seguono tutte, con piccole differenze, la stessa sequenza: **tensione → pilotaggio del gate → conduzione → temperatura → transitori (SOA) → commutazione**. Nell'industria si aggiungono due pratiche:
+
+- il **derating**: non si usa mai un componente al suo limite. Per esempio si tiene la tensione sotto il 75–80 % di V<sub>DS(max)</sub> e la temperatura di giunzione sotto i 100–110 °C anche se il datasheet ammette 150 °C. Le percentuali precise variano da azienda ad azienda;
+- l'**analisi del caso peggiore** (*worst-case analysis*): si usano sempre i valori **massimi** o **minimi** del datasheet, mai quelli tipici, e si combinano con le condizioni peggiori del circuito (batteria scarica, temperatura massima).
+
+### 5.3 Formule esatte o stime a occhio?
+
+Per un **interruttore statico** (si accende e si spegne raramente, come tutti quelli del progetto) le formule sono **semplici e chiuse**, tutte in continua. Le trovi nei passi qui sotto.
+
+Il punto debole non sono le formule ma **i dati**: i parametri del datasheet hanno dispersioni ampie (V<sub>GS(th)</sub> può variare di un fattore 2–3 tra un esemplare e l'altro), e la resistenza termica dipende moltissimo da quanto rame c'è attorno al componente. Per questo:
+
+- **lontano dai limiti**, le stime "a occhio" con un margine generoso (le regole 2× e 2,5× del capitolo 3) sono legittime e sono quello che fanno anche i professionisti. Se la potenza calcolata è il 2 % di quella sopportabile, una precisione del 30 % non cambia nulla;
+- **vicino ai limiti** (potenza oltre un terzo del massimo, V<sub>GS</sub> appena sopra la soglia, grossi transitori) si fa il calcolo completo nel caso peggiore, si controllano i grafici del datasheet (R<sub>DS(on)</sub> in funzione di V<sub>GS</sub> e T<sub>j</sub>, SOA) e si **misura sul prototipo**. Per i transitori i produttori forniscono anche modelli SPICE.
+
+Le formule in commutazione (perdite di switching, carica del gate) servono solo con il PWM, cioè con migliaia di commutazioni al secondo. Per un interruttore che si accende ogni mezz'ora sono trascurabili: P<sub>sw</sub> ≈ ½ · V · I · (t<sub>r</sub> + t<sub>f</sub>) · f, con f di circa 0,0006 Hz, dà valori di nanowatt.
+
+### 5.4 La procedura passo per passo
+
+**Passo 0 — Raccogli i dati di progetto** (tabella del punto 5.1), sempre nei valori peggiori.
+
+**Passo 1 — Scegli la topologia.**
+Il carico ha linee di segnale verso il microcontrollore? → P lato alto con driver N. Altrimenti → N lato basso.
+
+**Passo 2 — Limiti di tensione** (vincoli sul MOSFET):
+
+- V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>
+- |V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|
+
+**Passo 3 — Pilotaggio del gate.** Calcola la |V<sub>GS</sub>| **minima** che il circuito garantisce:
+
+- N lato basso: V<sub>GS,min</sub> = V<sub>OH,min</sub> del GPIO. Per l'ESP32 vale almeno 0,8 × 3,3 ≈ 2,6 V con il pin sotto carico; con il solo gate da pilotare si resta vicini a 3,3 V.
+- P lato alto con driver e R<sub>S</sub>: |V<sub>GS,min</sub>| = V+<sub>min</sub> · R<sub>GS</sub> / (R<sub>GS</sub> + R<sub>S</sub>)
+
+Vincoli: |V<sub>GS,min</sub>| ≥ 2–2,5 × |V<sub>GS(th),max</sub>|, e il datasheet deve garantire la R<sub>DS(on)</sub> a una |V<sub>GS</sub>| **non superiore** a |V<sub>GS,min</sub>|.
+
+**Passo 4 — Conduzione.** Dai dati ricavi il limite su R<sub>DS(on)</sub>:
+
+- dalla caduta ammessa: R<sub>DS(on)</sub> ≤ ΔV<sub>max</sub> / I<sub>pk</sub>
+- R<sub>DS(on)</sub> effettiva: R<sub>DS(on)</sub>(T<sub>j</sub>) ≈ R<sub>DS(on)</sub>(25 °C) × k<sub>T</sub>, con k<sub>T</sub> ≈ 1,3–1,5 a 100–125 °C (si legge sul grafico "R<sub>DS(on)</sub> normalizzata in funzione di T<sub>j</sub>")
+- potenza: P = I<sub>rms</sub>² × R<sub>DS(on)</sub>(T<sub>j</sub>). Per impulsi rettangolari di ampiezza I<sub>pk</sub> e ciclo di lavoro D: I<sub>rms</sub> = I<sub>pk</sub> × √D. Per un interruttore che resta acceso per decine di secondi, però, va considerato acceso in modo continuo: la temperatura fa in tempo ad andare a regime.
+
+**Passo 5 — Temperatura:**
+
+T<sub>j</sub> = T<sub>a</sub> + P × R<sub>θJA</sub> ≤ T<sub>j,derating</sub> (per esempio 100 °C)
+
+R<sub>θJA</sub> è sul datasheet, ma è misurata su una scheda di prova standard. Su millefori con poco rame usa un valore prudente: per un SOT-23, **200–250 °C/W**. Al contrario, la potenza massima ammessa è P<sub>max</sub> = (T<sub>j,derating</sub> – T<sub>a</sub>) / R<sub>θJA</sub>.
+
+**Passo 6 — Resistenze di gate:**
+
+- limite inferiore, dal consumo: R<sub>GS</sub> ≥ V+<sub>max</sub> / I<sub>q,max</sub>, dove I<sub>q,max</sub> è il consumo ammesso **mentre il driver è acceso**. A interruttore spento R<sub>GS</sub> non consuma nulla;
+- limite superiore, dalle perdite del gate: I<sub>GSS,max</sub> × R<sub>GS</sub> ≪ |V<sub>GS(th),min</sub>|. Con I<sub>GSS</sub> = 100 nA e 100 kΩ si ha 10 mV: va bene. Con 10 MΩ si avrebbe 1 V: il MOSFET potrebbe accendersi da solo.
+
+In pratica restano valori tra **10 kΩ e 1 MΩ**, e 100 kΩ è il compromesso abituale.
+
+**Passo 7 — Transitori di accensione (inrush e SOA):**
+
+- corrente di inrush: I<sub>inrush</sub> = C<sub>L</sub> × dV/dt
+- fissata la corrente ammessa, la pendenza necessaria è dV/dt = I<sub>inrush,max</sub> / C<sub>L</sub>
+- con il condensatore gate-drain: dV/dt ≈ I<sub>G</sub> / C<sub>GD</sub>, dove la corrente del gate durante il plateau è
+  I<sub>G</sub> ≈ (V+ – |V<sub>pl</sub>|) / R<sub>S</sub> – |V<sub>pl</sub>| / R<sub>GS</sub>
+  e |V<sub>pl</sub>| (tensione di plateau) è poco sopra |V<sub>GS(th)</sub>|, circa 1,5–2 V per i MOSFET logic level
+- quindi C<sub>GD</sub> = I<sub>G</sub> / (dV/dt)
+- **energia dissipata nel MOSFET** durante la carica: E ≈ ½ × C<sub>L</sub> × V+². È un risultato generale: caricando un condensatore da una sorgente di tensione si dissipa sempre questa energia nel percorso resistivo, qualunque sia la velocità. La potenza media sul tempo di salita è P ≈ E / t<sub>salita</sub>: va confrontata con il grafico **SOA** del datasheet per impulsi di quella durata.
+- il condensatore rallenta anche lo **spegnimento**: t<sub>off</sub> ≈ C<sub>GD</sub> × V+ × R<sub>GS</sub> / |V<sub>pl</sub>|. Se in quel momento il carico assorbe ancora corrente, il MOSFET la porta in zona lineare e scalda: conviene **mettere a riposo il carico prima di togliergli l'alimentazione**.
+
+**Passo 8 — Stato spento:**
+
+I<sub>off</sub> ≈ I<sub>DSS</sub> (perdita del MOSFET, tipicamente < 1 µA) più eventuali percorsi attraverso le linee di segnale, che vanno messe in alta impedenza.
+
+**Passo 9 — Verifica sul banco:**
+
+- ΔV misurata con il tester ai capi del MOSFET sotto carico;
+- temperatura al tatto o con una termocamera dopo qualche minuto;
+- con l'oscilloscopio, la forma della tensione sul carico all'accensione e la tensione della batteria, per vedere l'inrush.
+
+### 5.5 Esempio completo: Q4 per l'SDS011, con soft-start
+
+Valori dell'AO3401A **indicativi**, da verificare sul datasheet del produttore esatto: V<sub>DS(max)</sub> = –30 V, V<sub>GS(max)</sub> = ±12 V, V<sub>GS(th),max</sub> = –1,3 V, R<sub>DS(on)</sub> ≈ 0,1 Ω a V<sub>GS</sub> = –2,5 V. R<sub>θJA</sub> = 200 °C/W (valore prudente su millefori).
+
+| Passo | Calcolo | Esito |
+|---|---|---|
+| 2 · Tensione | 30 V ≥ 2 × 4,2 V; 12 V ≥ 1,5 × 4,2 V | ✅ |
+| 3 · Gate | Con R<sub>GS</sub> = 100 kΩ e R<sub>S</sub> = 10 kΩ: \|V<sub>GS,min</sub>\| = 3,0 × 100/110 = 2,73 V. Rapporto 2,73 / 1,3 = 2,1; R<sub>DS(on)</sub> garantita a 2,5 V ≤ 2,73 V | ✅ (al limite inferiore della regola: accettabile perché la corrente è piccola) |
+| 4 · Conduzione | Progetto con I<sub>pk</sub> = 150 mA (margine sui 110 mA). R<sub>DS(on)</sub> nel caso peggiore = 0,1 × 1,5 = 0,15 Ω. ΔV = 0,15 × 0,15 = 22 mV ≤ 50 mV. P = 0,15² × 0,15 = 3,4 mW | ✅ |
+| 5 · Temperatura | T<sub>j</sub> = 60 + 0,0034 × 200 = 60,7 °C. Nessuna iterazione necessaria | ✅ ampio margine |
+| 6 · Resistenze | Consumo con il driver acceso: 4,2 V / 100 kΩ = 42 µA (solo per 40 s). Perdite gate: 100 nA × 100 kΩ = 10 mV ≪ 0,5 V | ✅ |
+| 7 · Inrush | Obiettivo I<sub>inrush</sub> ≤ 0,25 A con C<sub>L</sub> = 1000 µF → dV/dt = 0,25 V/ms. I<sub>G</sub> ≈ (4,2 – 1,5)/10 k – 1,5/100 k ≈ 0,26 mA. C<sub>GD</sub> = 0,26 mA / (0,25 V/ms) ≈ 1 µF. Salita in circa 17 ms. E = ½ × 1000 µF × 4,2² ≈ 8,8 mJ → P media ≈ 0,5 W per 17 ms | ✅ da verificare sul grafico SOA (curva 10 ms) |
+| 7 · Spegnimento | t<sub>off</sub> ≈ 1 µF × 4,2 V × 100 kΩ / 1,5 V ≈ 0,3 s | ⚠️ Lento: prima di spegnere, metti l'SDS011 in sleep con il comando seriale |
+| 8 · Spento | I<sub>DSS</sub> < 1 µA, linea TX in alta impedenza | ✅ |
+
+**Cosa insegna l'esempio:**
+
+- in **conduzione** l'AO3401A è sovradimensionato di due ordini di grandezza: qui la stima a occhio sarebbe bastata;
+- il passo che **decide davvero** è il 7, il transitorio di accensione. Senza soft-start la corrente di inrush, limitata solo da poche decine di milliohm, arriverebbe a qualche ampere;
+- ogni scelta ha un prezzo: C<sub>GD</sub> risolve l'inrush ma rallenta lo spegnimento, e quindi cambia il software (il sensore va messo in sleep prima di togliergli l'alimentazione).
+
+---
+
+## 6. Esempi dal progetto
 
 ### Q4 + Q5: alimentazione dell'SDS011
 
@@ -190,7 +337,7 @@ Qualsiasi P-MOSFET logic level va bene: ΔV = 21 µA × 0,1 Ω ≈ 2 µV, del tu
 
 ---
 
-## 6. MOSFET consigliati (SOT-23, logic level)
+## 7. MOSFET consigliati (SOT-23, logic level)
 
 Valori **indicativi**: verifica sempre sul datasheet del produttore esatto, perché lo stesso nome può avere specifiche leggermente diverse.
 
@@ -204,7 +351,7 @@ Valori **indicativi**: verifica sempre sul datasheet del produttore esatto, perc
 
 ---
 
-## 7. Checklist di dimensionamento
+## 8. Checklist di dimensionamento
 
 1. **Posizione:** il carico ha linee di segnale verso l'ESP32? → **P lato alto** con driver N. Altrimenti → **N lato basso**.
 2. **V<sub>DS(max)</sub>** ≥ 2 × la tensione massima del circuito.
