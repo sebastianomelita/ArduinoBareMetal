@@ -1,6 +1,6 @@
 # Dispensa: dimensionare P-MOSFET e N-MOSFET come interruttori
 
-Questa dispensa riassume come scegliere e dimensionare un MOSFET usato come **interruttore** comandato da un microcontrollore (ESP32 a 3,3 V) in un circuito a batteria. Gli esempi numerici sono presi dal progetto descritto nel [README](README.md): load sharing (Q1), partitore attivabile (Q2, Q3), alimentazione dell'SDS011 (Q4, Q5).
+Questa dispensa riassume come scegliere e dimensionare un MOSFET usato come **interruttore** comandato da un microcontrollore (ESP32 a 3,3 V) in un circuito a batteria. Gli esempi numerici sono presi dal progetto descritto nel panel2esp32.md](panel2esp32.md): load sharing (Q1), partitore attivabile (Q2, Q3), alimentazione dell'SDS011 (Q4, Q5).
 
 <p align="center">
   <img src="img/mosfet_interruttori.svg" alt="MOSFET come interruttori: low-side e high-side" width="100%">
