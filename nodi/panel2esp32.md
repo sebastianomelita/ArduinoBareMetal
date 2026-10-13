@@ -470,7 +470,7 @@ void loop() {}
 
 - **Umidità:** sopra circa il 70 % di umidità relativa l'SDS011 tende a **sovrastimare** il particolato, perché le goccioline vengono contate come particelle. Affiancagli un sensore di umidità (per esempio un BME280) per scartare o correggere le letture nelle giornate umide.
 - **Contenitore:** riparato da pioggia e sole diretto, ma con aria che circola. Il tubetto di aspirazione dell'SDS011 non deve essere ostruito.
-- **Alimentazione:** il picco di corrente all'avvio della ventola è il momento critico. Se l'ESP32 si resetta quando accendi il sensore, aumenta C6 o il condensatore C3 sui 3,3 V.
+- **Alimentazione:** il momento critico è l'accensione. Chiudendo Q4, C6 si carica di colpo attraverso il boost (che ha un percorso diretto tra ingresso e uscita), con un picco di corrente che può far scendere la batteria. Se l'ESP32 si resetta quando accendi il sensore, **non aumentare C6**, che peggiorerebbe il picco: aggiungi il soft-start su Q4 (R<sub>S</sub> 10 kΩ e C<sub>GD</sub> 1 µF), calcolato nella [dispensa MOSFET](MOSFET.md#55-esempio-completo-q4-per-lsds011-con-soft-start). Con il soft-start, prima di spegnere il sensore mettilo in sleep con il comando seriale.
 
 ---
 
