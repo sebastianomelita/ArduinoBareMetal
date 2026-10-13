@@ -53,7 +53,7 @@
     <text x="408" y="200" class="lbl">D</text>
     <text x="360" y="152" class="lbl">G</text>
     <text x="420" y="150" class="lblb">Q1 P-MOSFET</text>
-    <text x="420" y="168" class="lbl">R_DS(on) ≤ 40 mΩ a –2,5 V</text>
+    <text x="420" y="168" class="lbl">R_DS(on) ≤ 36 mΩ a –2,5 V (25 °C)</text>
 
     <!-- Q2 driver N -->
     <path class="c" d="M300 230V265H290"/>
