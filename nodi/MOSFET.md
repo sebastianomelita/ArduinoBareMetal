@@ -212,8 +212,27 @@ Il metodo è descritto in dettaglio al punto [5.4, "Verifica a posteriori delle 
 
 Sì. Le *application note* dei produttori di MOSFET (Infineon, Nexperia, onsemi, Texas Instruments, Vishay e altri) seguono tutte, con piccole differenze, la stessa sequenza: **tensione → pilotaggio del gate → conduzione → temperatura → transitori (SOA) → commutazione**. Nell'industria si aggiungono due pratiche:
 
-- il **derating**: non si usa mai un componente al suo limite. Per esempio si tiene la tensione sotto il 75–80 % di V<sub>DS(max)</sub> e la temperatura di giunzione sotto i 100–110 °C anche se il datasheet ammette 150 °C. Le percentuali precise variano da azienda ad azienda;
+- il **derating** (vedi il riquadro qui sotto): non si usa mai un componente al suo limite. Per esempio si tiene la tensione sotto il 75–80 % di V<sub>DS(max)</sub> e la temperatura di giunzione sotto i 100–110 °C anche se il datasheet ammette 150 °C. Le percentuali precise variano da azienda ad azienda;
 - l'**analisi del caso peggiore** (*worst-case analysis*): si usano sempre i valori **massimi** o **minimi** del datasheet, mai quelli tipici, e si combinano con le condizioni peggiori del circuito (batteria scarica, temperatura massima).
+
+#### Il derating: percentuale o fattore?
+
+*Derating* significa letteralmente "declassamento": usare un componente **sotto** il suo valore massimo nominale, lasciandogli un margine. Se un MOSFET è dichiarato per 30 V, con un derating al 75 % decidi di non farlo mai lavorare sopra 0,75 × 30 = 22,5 V.
+
+Lo stesso margine si può scrivere in due modi, uno l'inverso dell'altro:
+
+- come **percentuale massima di utilizzo**: "la tensione di lavoro non supera il 75 % di V<sub>DS(max)</sub>";
+- come **fattore di sicurezza**: "V<sub>DS(max)</sub> deve essere almeno k volte la tensione di lavoro", con **k = 1 / percentuale**.
+
+| Percentuale massima di utilizzo | Fattore k | Con 4,2 V di lavoro, V<sub>DS(max)</sub> almeno… | Quanto è cautelativo |
+|---|---|---|---|
+| 75 % | 1 / 0,75 ≈ **1,33** | 5,6 V | meno |
+| 67 % | **1,5** | 6,3 V | medio |
+| 50 % | **2** | 8,4 V | **più** |
+
+**Più alto è il fattore, più lontano si resta dal limite, e più si è cautelativi.** La regola del 75 % equivale a un fattore di circa 1,33; il fattore 2 usato in questa dispensa equivale a far lavorare il MOSFET al massimo al 50 % del suo limite.
+
+*Perché due livelli diversi:* il 75–80 % è tipico dei progetti industriali, con circuito stampato a piste corte, sovratensioni misurate e protezioni dedicate (diodi TVS, snubber): i picchi sono noti e il margine si può stringere. Su un prototipo su millefori i fili sono lunghi, i picchi non sono stati misurati e spesso mancano le protezioni: conviene il fattore 2. Con circuiti a 4,2 V non costa nulla, perché i MOSFET logic level partono comunque da 20–30 V.
 
 ### 5.3 Formule esatte o stime a occhio?
 
@@ -242,7 +261,7 @@ Per ogni passo trovi la regola o la formula, seguita dal **perché**: da dove vi
 
 - **V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>**
 
-  > *Perché il fattore 1,5–2:* V<sub>DS(max)</sub> è un **limite assoluto**: superarlo anche per pochi microsecondi può danneggiare il MOSFET. Nel circuito reale la tensione supera spesso quella nominale: picchi allo spegnimento di carichi induttivi, induttanza dei fili, sovraelongazioni quando si collega un alimentatore, il pannello solare a vuoto che dà più della sua tensione nominale. Il fattore copre questi picchi **senza doverli calcolare uno per uno**. È anche una forma di *derating*: chi usa la regola "tensione di lavoro ≤ 75 % del massimo" ottiene circa 1,3×; 2× è la scelta prudente per prototipi su millefori, dove i fili sono lunghi.
+  > *Perché il fattore 1,5–2:* V<sub>DS(max)</sub> è un **limite assoluto**: superarlo anche per pochi microsecondi può danneggiare il MOSFET. Nel circuito reale la tensione supera spesso quella nominale: picchi allo spegnimento di carichi induttivi, induttanza dei fili, sovraelongazioni quando si collega un alimentatore, il pannello solare a vuoto che dà più della sua tensione nominale. Il fattore copre questi picchi **senza doverli calcolare uno per uno**. Più è alto, più si è prudenti: 2× significa far lavorare il MOSFET al massimo alla metà del suo limite, la scelta adatta ai prototipi su millefori. Nei progetti industriali, con picchi misurati e protezioni dedicate, si scende verso 1,3×. La corrispondenza tra fattori e percentuali è spiegata nel riquadro ["Il derating: percentuale o fattore?"](#il-derating-percentuale-o-fattore) del punto 5.2.
 
 - **|V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|**
 
