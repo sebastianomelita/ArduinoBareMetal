@@ -349,15 +349,18 @@ Per questo il sensore va alimentato con un **boost 5 V** e **scollegato del tutt
 | Q5 | N-MOSFET **2N7002** o **BSS138** | Comandato da GPIO26 |
 | R6 | Resistenza **100 kΩ** | Tra gate e source di Q4: tiene Q4 spento |
 | R7 | Resistenza **100 kΩ** | Tra gate di Q5 e GND: tiene Q5 spento in deep sleep |
+| R_S | Resistenza **10 kΩ** | Tra drain di Q5 e gate di Q4: soft-start |
+| C_GD | Condensatore ceramico **1 µF**, ≥ 10 V | Tra gate e drain di Q4: soft-start, la tensione sul boost sale in circa 17 ms |
 | C6 | Elettrolitico **470–1000 µF**, ≥ 10 V | Sui 5 V, vicino al sensore: assorbe lo spunto della ventola |
 
 ### Collegamenti
 
 1. **VBAT (OUT+ del TP4056)** → source di **Q4**. Drain di Q4 → **IN+** del boost. IN– del boost → GND.
-2. **Comando:** GPIO26 → gate di **Q5**, con **R7** verso GND. Drain di Q5 → gate di Q4, con **R6** verso VBAT. Source di Q5 → GND.
-3. **Uscita 5 V del boost** → pin **5V** dell'SDS011, con **C6** verso GND. Se il modulo ha l'USB-A, salda i fili sulle piazzole del connettore (i due pin esterni: VBUS e GND) o sui terminali del condensatore d'uscita.
-4. **GND** dell'SDS011 → massa comune.
-5. **Seriale** (livelli a 3,3 V, collegamento diretto):
+2. **Comando:** GPIO26 → gate di **Q5**, con **R7** verso GND. Drain di Q5 → **R_S** → gate di Q4, con **R6** tra gate di Q4 e VBAT. Source di Q5 → GND.
+3. **Soft-start:** **C_GD** tra gate e drain di Q4. Il valore è calcolato nella [dispensa MOSFET](MOSFET.md#55-esempio-completo-q4-per-lsds011-con-soft-start).
+4. **Uscita 5 V del boost** → pin **5V** dell'SDS011, con **C6** verso GND. Se il modulo ha l'USB-A, salda i fili sulle piazzole del connettore (i due pin esterni: VBUS e GND) o sui terminali del condensatore d'uscita.
+5. **GND** dell'SDS011 → massa comune.
+6. **Seriale** (livelli a 3,3 V, collegamento diretto):
    - **TXD** dell'SDS011 → **GPIO16** (RX dell'ESP32)
    - **RXD** dell'SDS011 ← **GPIO17** (TX dell'ESP32)
 
@@ -429,10 +432,24 @@ void sdsPowerOn() {
   sds.begin(9600, SERIAL_8N1, SDS_RX_PIN, SDS_TX_PIN);
 }
 
+// Comando "sleep" dell'SDS011: ferma ventola e laser.
+// Con il soft-start Q4 si spegne lentamente (~0,3 s): il sensore a riposo
+// assorbe poco e Q4 non scalda durante lo spegnimento.
+void sdsSleep() {
+  const uint8_t cmd[19] = {0xAA, 0xB4, 0x06, 0x01, 0x00,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0xFF, 0xFF, 0x05, 0xAB};   // 0x05 = checksum
+  sds.write(cmd, sizeof(cmd));
+  sds.flush();
+  delay(200);
+}
+
 void sdsPowerOff() {
+  sdsSleep();                       // prima a riposo...
   sds.end();
   pinMode(SDS_TX_PIN, INPUT);       // non alimentare il sensore spento dalla linea TX
-  digitalWrite(SDS_EN_PIN, LOW);
+  digitalWrite(SDS_EN_PIN, LOW);    // ...poi via l'alimentazione
+  delay(500);                       // attende lo spegnimento lento di Q4
 }
 
 void setup() {
@@ -470,7 +487,7 @@ void loop() {}
 
 - **Umidità:** sopra circa il 70 % di umidità relativa l'SDS011 tende a **sovrastimare** il particolato, perché le goccioline vengono contate come particelle. Affiancagli un sensore di umidità (per esempio un BME280) per scartare o correggere le letture nelle giornate umide.
 - **Contenitore:** riparato da pioggia e sole diretto, ma con aria che circola. Il tubetto di aspirazione dell'SDS011 non deve essere ostruito.
-- **Alimentazione:** il momento critico è l'accensione. Chiudendo Q4, C6 si carica di colpo attraverso il boost (che ha un percorso diretto tra ingresso e uscita), con un picco di corrente che può far scendere la batteria. Se l'ESP32 si resetta quando accendi il sensore, **non aumentare C6**, che peggiorerebbe il picco: aggiungi il soft-start su Q4 (R<sub>S</sub> 10 kΩ e C<sub>GD</sub> 1 µF), calcolato nella [dispensa MOSFET](MOSFET.md#55-esempio-completo-q4-per-lsds011-con-soft-start). Con il soft-start, prima di spegnere il sensore mettilo in sleep con il comando seriale.
+- **Alimentazione:** il momento critico è l'accensione. Chiudendo Q4, C6 si carica di colpo attraverso il boost (che ha un percorso diretto tra ingresso e uscita), con un picco di corrente che può far scendere la batteria. Il soft-start (R_S e C_GD) serve proprio a questo. Se l'ESP32 si resetta comunque, **non aumentare C6**, che peggiorerebbe il picco: aumenta C_GD (per esempio a 2,2 µF), oppure riduci C6 a 220–470 µF.
 
 ---
 
