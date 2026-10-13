@@ -64,21 +64,65 @@ Si può pilotare il P direttamente dal GPIO solo se V+ ≤ 3,3 V, cioè se l'ali
 
 ## 3. I parametri del datasheet, uno per uno
 
+### 3.0 I tre stati dell'interruttore: quando si raggiungono i limiti
+
+Ogni parametro del datasheet è un limite che il MOSFET raggiunge **in uno stato preciso** di funzionamento. Prima di usare una formula bisogna chiedersi: *in quale stato si trova il MOSFET quando questa grandezza è massima?* La risposta dice quale tensione mettere nella formula e quale valore peggiore usare.
+
+#### La relazione di partenza
+
+Il MOSFET e il carico sono **in serie** sull'alimentazione. Per la legge delle tensioni di Kirchhoff:
+
+V+ = V<sub>DS</sub> + V<sub>carico</sub>
+
+e la stessa corrente I attraversa entrambi. Da qui si ricava tutto il resto:
+
+| Stato | Corrente I | V<sub>carico</sub> | V<sub>DS</sub> | Potenza nel MOSFET P = V<sub>DS</sub> · I |
+|---|---|---|---|---|
+| **Spento** | ≈ 0 (solo la perdita I<sub>DSS</sub>) | ≈ 0, perché senza corrente il carico non fa cadere tensione | **≈ V+** | ≈ 0 (tensione alta, corrente nulla) |
+| **Acceso** | Corrente del carico | ≈ V+ | **= I · R<sub>DS(on)</sub>**, piccola | **= I² · R<sub>DS(on)</sub>** (corrente alta, tensione piccola) |
+| **Transizione** | Da 0 alla corrente del carico, o viceversa | Da 0 a V+, o viceversa | Da V+ a quasi 0, o viceversa | **Alta**: tensione e corrente presenti insieme. Con un carico resistivo il massimo è V+ · I / 4, a metà della transizione |
+
+Da spento e da acceso il MOSFET dissipa poco, perché in ogni istante o la tensione o la corrente è quasi nulla. È per questo che funziona bene come interruttore. Il riscaldamento serio viene dalla R<sub>DS(on)</sub> da acceso, se è troppo alta, e soprattutto dalla **transizione**.
+
+#### Quale stato per quale parametro, e perché
+
+| Parametro o verifica | Stato critico | Perché proprio quello stato | Valore peggiore da usare |
+|---|---|---|---|
+| **V<sub>DS(max)</sub>** (3.1) | **Spento**, e il passaggio verso lo spento | Da spento V<sub>DS</sub> ≈ V+: è il momento in cui ai capi del MOSFET c'è tutta la tensione. Da acceso V<sub>DS</sub> è solo I · R<sub>DS(on)</sub>, pochi millivolt. **Allo spegnimento** di un carico induttivo la corrente non può annullarsi di colpo (V = L · di/dt), e sul drain compare un picco che si somma a V+ | V+ **massima** (batteria carica, pannello a vuoto) più i picchi |
+| **V<sub>GS(max)</sub>** (3.6) | **Acceso** | È il gate pilotato che porta V<sub>GS</sub> al massimo; da spento V<sub>GS</sub> = 0. Nell'N lato basso V<sub>GS</sub> = tensione del GPIO. Nel P lato alto il driver porta il gate a massa mentre il source è a V+: \|V<sub>GS</sub>\| = V+ | Nel P lato alto, V+ **massima** |
+| **V<sub>GS</sub> minima per la R<sub>DS(on)</sub>** (3.3, 3.4) | **Acceso** | La R<sub>DS(on)</sub> conta solo quando passa corrente, e diminuisce all'aumentare di V<sub>GS</sub>: la V<sub>GS</sub> più bassa dà la resistenza più alta | V+ **minima** (batteria scarica) nel P lato alto; V<sub>OH,min</sub> del GPIO nell'N lato basso |
+| **V<sub>GS(th),max</sub>** con la regola 2–2,5× (3.3) | **Acceso** | Serve ad accendere bene il MOSFET: l'esemplare con la soglia più alta è il più difficile da accendere | Soglia **massima** |
+| **V<sub>GS(th),min</sub>** nella verifica I<sub>GSS</sub> × R<sub>GS</sub> (passo 6) | **Spento** | Serve a garantire che il MOSFET **resti** spento: l'esemplare con la soglia più bassa è quello che si accende più facilmente per errore | Soglia **minima** |
+| **I<sub>D</sub>**, **R<sub>DS(on)</sub>**, ΔV, P, **T<sub>j</sub>** (3.2, 3.4, 3.5) | **Acceso** | È l'unico stato con corrente piena | Corrente **massima** (picchi compresi), temperatura ambiente **massima** |
+| **I<sub>DSS</sub>** (passo 8) | **Spento** | È la corrente che passa quando il MOSFET dovrebbe essere aperto, con tutta la tensione ai suoi capi | V<sub>DS</sub> = V+; il datasheet la dà alla V<sub>DS(max)</sub>, quindi è un limite superiore sicuro |
+| **SOA**, energia ½ C V², inrush (passo 7) | **Transizione** (accensione) | All'inizio dell'accensione su un carico capacitivo il condensatore è scarico: V<sub>DS</sub> ≈ V+ e intanto scorre la corrente di carica. Tensione e corrente alte insieme: zona lineare | V+ **massima**, capacità del carico **massima** |
+| Spegnimento lento con soft-start (passo 7) | **Transizione** (spegnimento) | Se il carico assorbe ancora corrente mentre V<sub>DS</sub> sale, il MOSFET dissipa V<sub>DS</sub> · I per tutta la durata dello spegnimento | Carico ancora attivo: per questo va messo a riposo prima |
+| Perdite di commutazione in PWM (esercizio 1) | **Transizione**, ripetuta a ogni periodo | Ogni accensione e ogni spegnimento costano un'energia ≈ ½ · V+ · I · t; moltiplicata per la frequenza diventa una potenza | V+ e corrente **massime**, frequenza di lavoro |
+
+#### La regola pratica
+
+- Per le verifiche sulle **tensioni ai capi del MOSFET** (V<sub>DS</sub>) pensa al MOSFET **spento**, e al momento in cui si spegne.
+- Per le verifiche su **corrente, resistenza e temperatura** pensa al MOSFET **acceso**.
+- Per le verifiche sul **gate**, chiediti se stai controllando che si **accenda bene** (stato acceso, valori che rendono difficile l'accensione: V<sub>GS</sub> minima, soglia massima) o che **resti spento** (stato spento, valori che favoriscono un'accensione indesiderata: soglia minima, perdite massime).
+- Per **SOA, inrush e PWM** pensa alla **transizione**, l'unico momento in cui tensione e corrente sono alte insieme.
+
+Lo stesso dato del circuito può quindi comparire con valori diversi in verifiche diverse. Con la batteria, per esempio, si usa **4,2 V** per V<sub>DS(max)</sub> e V<sub>GS(max)</sub>, e **3,0 V** per la R<sub>DS(on)</sub>. Per questo il passo 0 della procedura chiede sempre sia il minimo sia il massimo di ogni grandezza.
+
 ### 3.1 V<sub>DS(max)</sub>: tensione massima drain-source
 
-È la tensione massima che il MOSFET regge da spento.
+È la tensione massima che il MOSFET regge da spento (**stato critico: spento**, vedi [3.0](#30-i-tre-stati-dellinterruttore-quando-si-raggiungono-i-limiti)).
 **Regola:** V<sub>DS(max)</sub> ≥ **2 ×** la tensione più alta del circuito, per assorbire picchi e transitori.
 *Nel progetto:* al massimo circa 6,5 V (pannello a vuoto). Un MOSFET da 20–30 V va benissimo.
 
 ### 3.2 I<sub>D</sub>: corrente di drain
 
-È la corrente continua massima.
+È la corrente continua massima (**stato critico: acceso**, e i picchi all'accensione; vedi [3.0](#30-i-tre-stati-dellinterruttore-quando-si-raggiungono-i-limiti)).
 **Regola:** I<sub>D</sub> ≥ **2–3 ×** la corrente del carico, **picchi compresi** (spunto di motori e ventole, carica dei condensatori, picchi del WiFi).
 Il valore in prima pagina del datasheet è misurato con il contenitore tenuto a 25 °C. Su un SOT-23 saldato su millefori la corrente reale sostenibile è molto più bassa: conta la verifica della potenza (punto 3.5).
 
 ### 3.3 V<sub>GS(th)</sub>: tensione di soglia
 
-È la tensione a cui il MOSFET **comincia** a condurre, tipicamente con una corrente minima di 250 µA.
+È la tensione a cui il MOSFET **comincia** a condurre, tipicamente con una corrente minima di 250 µA. Si usa in due stati diversi (vedi [3.0](#30-i-tre-stati-dellinterruttore-quando-si-raggiungono-i-limiti)): la soglia **massima** per verificare che il MOSFET si accenda bene (stato acceso), la soglia **minima** per verificare che resti spento (stato spento).
 
 ⚠️ **Non è la tensione a cui il MOSFET è acceso del tutto.** A V<sub>GS(th)</sub> conduce appena. È l'errore più comune.
 
@@ -86,7 +130,7 @@ Il valore in prima pagina del datasheet è misurato con il contenitore tenuto a 
 
 ### 3.4 R<sub>DS(on)</sub>: resistenza da acceso
 
-È la resistenza tra drain e source con il MOSFET acceso. Il datasheet la riporta **a diverse V<sub>GS</sub>**, per esempio a 10 V, 4,5 V e 2,5 V.
+È la resistenza tra drain e source con il MOSFET acceso (**stato critico: acceso**, con la V<sub>GS</sub> più bassa che il circuito garantisce; vedi [3.0](#30-i-tre-stati-dellinterruttore-quando-si-raggiungono-i-limiti)). Il datasheet la riporta **a diverse V<sub>GS</sub>**, per esempio a 10 V, 4,5 V e 2,5 V.
 
 **Regola:** usa il valore misurato alla V<sub>GS</sub> **che hai davvero** nel circuito. Se il datasheet la specifica solo a 10 V, il MOSFET non è adatto a 3,3 V.
 
@@ -110,7 +154,7 @@ Un SOT-23 su una scheda senza grandi aree di rame dissipa senza problemi **qualc
 
 ### 3.6 V<sub>GS(max)</sub>: tensione massima gate-source
 
-Il gate è fragile: oltre questa tensione l'isolante si rompe. Tipicamente vale ±8, ±12 o ±20 V.
+Il gate è fragile: oltre questa tensione l'isolante si rompe. Tipicamente vale ±8, ±12 o ±20 V (**stato critico: acceso**, quando il gate è pilotato al massimo; vedi [3.0](#30-i-tre-stati-dellinterruttore-quando-si-raggiungono-i-limiti)).
 **Regola:** la |V<sub>GS</sub>| applicata, cioè la tensione di alimentazione nel caso del P lato alto, deve restare sotto V<sub>GS(max)</sub> con margine. Con la batteria a 4,2 V e il pannello a 6,5 V, ±12 V basta e avanza.
 
 ### 3.7 Body diode
@@ -259,15 +303,15 @@ Per ogni passo trovi la regola o la formula, seguita dal **perché**: da dove vi
 
 **Passo 2 — Limiti di tensione** (vincoli sul MOSFET):
 
-- **V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>**
+- **V<sub>DS(max)</sub> ≥ 1,5–2 × V+<sub>max</sub>** — *stato: spento*. Da spento il carico non fa cadere tensione, quindi V<sub>DS</sub> ≈ V+; si usa V+ **massima** perché è il caso peggiore.
 
   > *Perché il fattore 1,5–2:* V<sub>DS(max)</sub> è un **limite assoluto**: superarlo anche per pochi microsecondi può danneggiare il MOSFET. Nel circuito reale la tensione supera spesso quella nominale: picchi allo spegnimento di carichi induttivi, induttanza dei fili, sovraelongazioni quando si collega un alimentatore, il pannello solare a vuoto che dà più della sua tensione nominale. Il fattore copre questi picchi **senza doverli calcolare uno per uno**. Più è alto, più si è prudenti: 2× significa far lavorare il MOSFET al massimo alla metà del suo limite, la scelta adatta ai prototipi su millefori. Nei progetti industriali, con picchi misurati e protezioni dedicate, si scende verso 1,3×. La corrispondenza tra fattori e percentuali è spiegata nel riquadro ["Il derating: percentuale o fattore?"](#il-derating-percentuale-o-fattore) del punto 5.2.
 
-- **|V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|**
+- **|V<sub>GS(max)</sub>| ≥ 1,5 × |V<sub>GS</sub> applicata|** — *stato: acceso*. È il gate pilotato che porta V<sub>GS</sub> al massimo; nel P lato alto \|V<sub>GS</sub>\| = V+, quindi si usa V+ **massima**.
 
   > *Perché il fattore 1,5:* l'isolante del gate è uno strato di ossido sottilissimo, e quando si rompe il danno è **irreversibile**. Sul gate arrivano disturbi e oscillazioni (*ringing*) dovuti ai fili e alle capacità interne. Il margine del 50 % li tiene lontani dal limite. Nel P lato alto la V<sub>GS</sub> applicata è l'intera tensione di alimentazione, perché il driver porta il gate a massa mentre il source è a V+.
 
-**Passo 3 — Pilotaggio del gate.** Calcola la |V<sub>GS</sub>| **minima** che il circuito garantisce:
+**Passo 3 — Pilotaggio del gate.** *Stato: acceso.* Calcola la |V<sub>GS</sub>| **minima** che il circuito garantisce: è il caso peggiore perché la V<sub>GS</sub> più bassa dà la R<sub>DS(on)</sub> più alta. Per lo stesso motivo nel P lato alto si usa V+ **minima**, mentre al passo 2 si usava la massima.
 
 - N lato basso: V<sub>GS,min</sub> = V<sub>OH,min</sub> del GPIO.
 
@@ -285,7 +329,7 @@ Per ogni passo trovi la regola o la formula, seguita dal **perché**: da dove vi
 
 > *Perché:* R<sub>DS(on)</sub> **diminuisce** quando V<sub>GS</sub> aumenta. Un valore garantito a una V<sub>GS</sub> più bassa della tua è quindi un **limite superiore sicuro**: nel tuo circuito la resistenza sarà uguale o minore. Un valore garantito a una V<sub>GS</sub> più alta (per esempio a 4,5 V quando ne hai 3,3) sarebbe invece **ottimistico**, e non si può usare.
 
-**Passo 4 — Conduzione.**
+**Passo 4 — Conduzione.** *Stato: acceso*, l'unico con corrente piena (V<sub>DS</sub> = I · R<sub>DS(on)</sub>).
 
 - **Limite dalla caduta: R<sub>DS(on)</sub> ≤ ΔV<sub>max</sub> / I<sub>pk</sub>**
 
@@ -335,7 +379,7 @@ Subito dopo questo passo si **verifica l'ipotesi del passo 4** su T<sub>j</sub>:
 
   > *Perché:* con il driver acceso, R<sub>GS</sub> si trova con un capo a V+ e l'altro quasi a massa: è attraversata da V+/R<sub>GS</sub> per tutto il tempo in cui l'interruttore è chiuso. È legge di Ohm applicata al consumo ammesso. A interruttore aperto R<sub>GS</sub> ha entrambi i capi a V+ e non consuma nulla.
 
-- **Limite superiore: I<sub>GSS,max</sub> × R<sub>GS</sub> ≪ |V<sub>GS(th),min</sub>|**
+- **Limite superiore: I<sub>GSS,max</sub> × R<sub>GS</sub> ≪ |V<sub>GS(th),min</sub>|** — *stato: spento*. Si verifica che il MOSFET **resti** spento, quindi si usa la soglia **minima** (l'esemplare che si accende più facilmente), non la massima del passo 3.
 
   > *Perché:* il gate non è un isolante perfetto: assorbe una piccola corrente di perdita I<sub>GSS</sub>. Passando per R<sub>GS</sub>, questa corrente crea una tensione tra gate e source anche quando il MOSFET dovrebbe essere spento. Se quella tensione si avvicinasse alla soglia, il MOSFET si accenderebbe da solo. Si confronta con la soglia **minima** perché il caso peggiore è l'esemplare che si accende più facilmente. Una R<sub>GS</sub> molto alta rende il gate anche più sensibile ai disturbi, che si accoppiano attraverso le capacità interne.
 
@@ -343,7 +387,7 @@ Subito dopo questo passo si **verifica l'ipotesi del passo 4** su T<sub>j</sub>:
 
   > *Perché 100 kΩ:* consuma poco (42 µA a 4,2 V, e solo con l'interruttore chiuso), dà una tensione di perdita trascurabile (10 mV con 100 nA) e tiene il gate abbastanza "fermo" contro i disturbi.
 
-**Passo 7 — Transitori di accensione (inrush e SOA):**
+**Passo 7 — Transitori di accensione (inrush e SOA):** *stato: transizione*, l'unico in cui V<sub>DS</sub> e corrente sono alte insieme. All'inizio dell'accensione il condensatore del carico è scarico: V<sub>DS</sub> ≈ V+ mentre scorre la corrente di carica.
 
 - **Corrente di inrush: I<sub>inrush</sub> = C<sub>L</sub> × dV/dt**
 
@@ -381,7 +425,7 @@ Subito dopo questo passo si **verifica l'ipotesi del passo 4** su T<sub>j</sub>:
 
   > *Perché:* allo spegnimento il driver si apre e il gate risale verso V+ solo attraverso R<sub>GS</sub>, con una corrente di circa |V<sub>pl</sub>| / R<sub>GS</sub>. Per spegnere il MOSFET il drain deve percorrere tutta l'escursione V+, quindi C<sub>GD</sub> deve ricaricarsi di V+ con quella corrente: t = C<sub>GD</sub> · V+ / I. Poiché R<sub>GS</sub> è molto più grande di R<sub>S</sub>, lo spegnimento è molto più lento dell'accensione. Se intanto il carico assorbe corrente, il MOSFET la porta in zona lineare e scalda: per questo conviene mettere a riposo il carico prima.
 
-**Passo 8 — Stato spento: I<sub>off</sub> ≈ I<sub>DSS</sub> + percorsi attraverso le linee di segnale**
+**Passo 8 — Stato spento: I<sub>off</sub> ≈ I<sub>DSS</sub> + percorsi attraverso le linee di segnale** — *stato: spento*, con V<sub>DS</sub> ≈ V+.
 
 > *Perché:* I<sub>DSS</sub> è la corrente di perdita del MOSFET spento; il datasheet la indica alla V<sub>DS</sub> massima, quindi alla tua tensione è in genere ancora minore. Il secondo termine è spesso più importante: se un GPIO collegato al carico spento resta a livello alto, alimenta il carico attraverso i suoi diodi di protezione. Per questo quelle linee vanno messe in alta impedenza (ingresso) prima di spegnere.
 
