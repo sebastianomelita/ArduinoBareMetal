@@ -16,7 +16,7 @@ k = ½ · μ<sub>n</sub> · C<sub>ox</sub> · W / L   [A/V²]
 |---|---|---|---|
 | **Interdizione** | V<sub>GS</sub> < V<sub>T</sub> | I<sub>D</sub> ≈ 0 | **Spento** |
 | **Triodo** | V<sub>GS</sub> > V<sub>T</sub> e V<sub>DS</sub> < V<sub>ov</sub> | I<sub>D</sub> = k · (2 V<sub>ov</sub> V<sub>DS</sub> – V<sub>DS</sub>²) | **Acceso** (interruttore chiuso) |
-| **Saturazione** | V<sub>GS</sub> > V<sub>T</sub> e V<sub>DS</sub> ≥ V<sub>ov</sub> | I<sub>D</sub> = k · V<sub>ov</sub>² (non dipende da V<sub>DS</sub>) | **Transizione**, o MOSFET pilotato male |
+| **Saturazione** | V<sub>GS</sub> > V<sub>T</sub> e V<sub>DS</sub> ≥ V<sub>ov</sub> | I<sub>D</sub> = k · V<sub>ov</sub>² (non dipende da V<sub>DS</sub>) | **Transizione**, o MOSFET pilotato male. È invece la zona di lavoro degli **amplificatori** (vedi sotto) |
 
 Il confine tra triodo e saturazione è la curva **V<sub>DS,sat</sub> = V<sub>GS</sub> – V<sub>T</sub>**. Sostituita nella formula della saturazione, dà la parabola I<sub>D</sub> = k · V<sub>DS</sub>², tratteggiata nella figura.
 
@@ -29,6 +29,36 @@ Il confine tra triodo e saturazione è la curva **V<sub>DS,sat</sub> = V<sub>GS<
 > | — | — | **Saturazione** = interruttore **chiuso** |
 >
 > Un MOSFET "in saturazione" è quindi un interruttore **non** completamente chiuso, mentre un BJT "in saturazione" è un interruttore chiuso. Quando i datasheet parlano di *linear mode* (per esempio nelle curve SOA) intendono la saturazione della teoria.
+
+### Che cosa succede fisicamente in saturazione: il generatore di corrente
+
+**Il canale si strozza.** In triodo il canale invertito collega source e drain per tutta la sua lunghezza, e il MOSFET si comporta come una resistenza comandata da V<sub>GS</sub>. Quando V<sub>DS</sub> raggiunge V<sub>GS</sub> – V<sub>T</sub>, la tensione tra gate e drain scende alla soglia (V<sub>GD</sub> = V<sub>T</sub>): vicino al drain il canale non è più invertito e si **strozza** (*pinch-off*).
+
+**La tensione in più cade sulla zona di svuotamento.** Se V<sub>DS</sub> cresce ancora, l'aumento cade quasi tutto sulla piccola **zona di svuotamento** tra la fine del canale e il drain. Gli elettroni che arrivano al bordo del canale vengono trascinati al drain dal campo elettrico intenso di quella zona. La corrente è quindi fissata dalla carica che il gate induce nel canale, cioè da V<sub>GS</sub>, e quasi non dipende più da V<sub>DS</sub>: le curve della figura diventano orizzontali.
+
+**Il risultato è un generatore di corrente pilotato in tensione:**
+
+- per grandi segnali, I<sub>D</sub> = k · (V<sub>GS</sub> – V<sub>T</sub>)²;
+- per piccoli segnali attorno a un punto di lavoro, i<sub>d</sub> = g<sub>m</sub> · v<sub>gs</sub>, con **g<sub>m</sub> = 2k · V<sub>ov</sub>** (transconduttanza).
+
+È la zona usata negli **amplificatori**, analoga alla **zona attiva del BJT**, dove I<sub>C</sub> = β · I<sub>B</sub> è un generatore di corrente pilotato in corrente.
+
+**Il generatore non è ideale.** Aumentando V<sub>DS</sub>, la zona strozzata si allarga e il canale efficace si accorcia (*modulazione della lunghezza di canale*). La corrente cresce leggermente:
+
+I<sub>D</sub> ≈ k · V<sub>ov</sub>² · (1 + λ · V<sub>DS</sub>)
+
+con λ parametro del dispositivo. Ne risulta una resistenza d'uscita finita r<sub>o</sub> ≈ 1 / (λ · I<sub>D</sub>). È l'analogo dell'**effetto Early** nel BJT.
+
+**"Lineare" vale per i piccoli segnali.** Per grandi segnali la legge è quadratica, non lineare. Il nome *linear region* usato nei datasheet di potenza viene dall'impiego come amplificatore o come regolatore lineare, non da una proporzionalità tra V<sub>GS</sub> e I<sub>D</sub>.
+
+### Interruttore o amplificatore: le zone "incrociate"
+
+| | Funzionamento da amplificatore (generatore di corrente) | Funzionamento da interruttore chiuso |
+|---|---|---|
+| **BJT** | Zona attiva | **Saturazione** |
+| **MOSFET** | **Saturazione** | Triodo (*ohmic region*) |
+
+Per l'interruttore, la saturazione del MOSFET è la zona da **attraversare in fretta** (la transizione) o da **evitare** (V<sub>GS</sub> insufficiente, punto B della figura). Proprio perché lì il MOSFET si comporta da generatore di corrente, limita la corrente del carico e "assorbe" la differenza di tensione, dissipando V<sub>DS</sub> · I. Per l'amplificatore è invece la zona di lavoro, in cui si fissa il punto di riposo con la polarizzazione.
 
 ---
 
