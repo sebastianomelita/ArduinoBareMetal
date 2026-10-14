@@ -14,6 +14,7 @@ Altre guide in questo repository:
 - **[HELTEC.md](HELTEC.md)**: come usare il progetto con le schede Heltec WiFi Kit 32 V3 e Wireless Stick Lite V3;
 - **[Sensore pesante: SDS011](#sensore-pesante-sds011)**: come alimentare e collegare un sensore di particolato SDS011;
 - **[MOSFET.md](MOSFET.md)**: dispensa su come scegliere e dimensionare P-MOSFET e N-MOSFET usati come interruttori;
+- **[PCB.md](PCB.md)**: circuito stampato pronto da ordinare (Gerber in `pcb/gerber/`), configurabile per SDS011 o SCD41;
 - **[MOSFET_TRIODO.md](MOSFET_TRIODO.md)**: approfondimento teorico sul modello quadratico e sulla zona di triodo, cioè il perché della regola 2–2,5×.
 
 ---
