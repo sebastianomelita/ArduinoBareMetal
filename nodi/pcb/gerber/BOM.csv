@@ -1,0 +1,17 @@
+Riferimenti,Quantita,Valore / descrizione,Contenitore
+C1 C2 C7,3,10uF - Cond. ceramico X5R/X7R >= 10 V,0805
+C3 C6,2,"470uF - Cond. elettrolitico >= 10 V, D8 mm passo 3,5 mm",radiale
+C4 C5 C8,3,100nF - Cond. ceramico X7R,0805
+CGD,1,1uF - Cond. ceramico X7R >= 10 V,0805
+D1 D2 D3,3,SS34 - Diodo Schottky 3 A 40 V,SMA (DO-214AC)
+J1 J2,2,"Connettore a pettine 2,54 mm",1x2
+J3 J5,2,"Connettore a pettine 2,54 mm",1x4
+J4,1,"Connettore a pettine 2,54 mm",1x7
+JP1 J6 JP2,3,"Connettore a pettine 2,54 mm",1x3
+Q1 Q2 Q4,3,AO3401A - P-MOSFET -30 V logic level,SOT-23
+Q3 Q5,2,2N7002 - N-MOSFET 60 V (o BSS138),SOT-23
+R3 R4 R5 R1 R2 R6 R7,7,100k - Resistenza 1%,0805
+R8 R9,2,4k7* - Resistenza 1% - opzionale (pull-up I2C),0805
+RS,1,10k - Resistenza 1%,0805
+U1,1,"HT7833 - Regolatore LDO 3,3 V 500 mA",SOT-89-3
+(JP1 JP2),2,"Cappuccio per ponticello (jumper) 2,54 mm",-
