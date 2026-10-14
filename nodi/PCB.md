@@ -1,6 +1,6 @@
 # Circuito stampato: modulo di alimentazione ESP32 solare
 
-Stampato a due strati che raccoglie tutto il progetto del [README](README.md) su una scheda unica:
+Stampato a due strati che raccoglie tutto il progetto del [panel2esp32.md](panel2esp32.md) su una scheda unica:
 
 - ingressi da **pannello solare** e **USB**, uniti dai diodi D1 e D2;
 - collegamento al modulo **TP4056**;
