@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 830" width="1500" height="830" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .vin{stroke:#e07a00}.v5{stroke:#b5179e}.v33{stroke:#2a9d8f}.gnd{stroke:#444}.bat{stroke:#c1121f}.usb{stroke:#1d70b8}
+      .c{fill:none;stroke:#222;stroke-width:2.4;stroke-linecap:round}
+      .t{font-size:14px;fill:#222}
+      .tb{font-size:14px;fill:#222;font-weight:bold}
+      .s{font-size:12.5px;fill:#444}
+      .h{font-size:19px;fill:#1d3557;font-weight:bold}
+      .wt{font-size:14px;fill:#fff}
+      .wtb{font-size:16px;fill:#fff;font-weight:bold}
+      .ws{font-size:12.5px;fill:#dfe7f2}
+      .ok{font-size:13.5px;fill:#1b7a3a;font-weight:bold}
+      .no{font-size:13px;fill:#c1121f;font-weight:bold}
+      .leg{font-size:14.5px;fill:#222}
+    </style>
+    <g id="gnd"><path class="w gnd" d="M0 0V10M-11 10H11M-7 15H7M-3 20H3"/></g>
+    <!-- interruttore aperto con alone verde: centro dei contatti a (0,0) e (50,0) -->
+    <g id="sw">
+      <rect x="-22" y="-44" width="94" height="68" rx="10" fill="#e3f4e8" stroke="#1b7a3a" stroke-width="2" stroke-dasharray="6 4"/>
+      <circle cx="0" cy="0" r="4.5" fill="#fff" stroke="#222" stroke-width="2.4"/>
+      <circle cx="50" cy="0" r="4.5" fill="#fff" stroke="#222" stroke-width="2.4"/>
+      <path d="M4 -2L44 -24" stroke="#222" stroke-width="2.8" stroke-linecap="round"/>
+    </g>
+    <!-- segno "qui no" -->
+    <g id="no">
+      <circle r="11" fill="#fff" stroke="#c1121f" stroke-width="2.5"/>
+      <path d="M-5 -5L5 5M5 -5L-5 5" stroke="#c1121f" stroke-width="2.8" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <rect width="1500" height="830" fill="#ffffff"/>
+  <text x="40" y="42" font-size="23" font-weight="bold" fill="#1d3557">Heltec: dove mettere l'interruttore da aprire mentre si programma via USB-C</text>
+
+  <!-- separatore -->
+  <line x1="750" y1="70" x2="750" y2="560" stroke="#ddd" stroke-width="2"/>
+
+  <!-- =================================================== OPZIONE A -->
+  <text x="40" y="88" class="h">Opzione A: pannello e USB esterno sul pin 5V</text>
+
+  <!-- pannello -->
+  <rect x="40" y="120" width="120" height="64" rx="6" fill="#e8f0fb" stroke="#1d3557" stroke-width="2"/>
+  <text x="100" y="146" text-anchor="middle" class="tb">Pannello</text>
+  <text x="100" y="170" text-anchor="middle" class="s">5–6 V</text>
+  <path class="w vin" d="M160 140H230"/>
+  <use href="#no" x="195" y="140"/>
+  <text x="195" y="114" text-anchor="middle" class="no">qui no</text>
+
+  <!-- D1 / LTC4412 -->
+  <rect x="230" y="116" width="140" height="48" rx="6" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="300" y="137" text-anchor="middle" class="tb">D1</text>
+  <text x="300" y="155" text-anchor="middle" class="s">oppure LTC4412</text>
+  <path class="w vin" d="M370 140H440"/>
+
+  <!-- USB esterno + D2 -->
+  <rect x="40" y="226" width="120" height="64" rx="6" fill="#f1f1f1" stroke="#333" stroke-width="2"/>
+  <text x="100" y="252" text-anchor="middle" class="tb">USB esterno</text>
+  <text x="100" y="274" text-anchor="middle" class="s">5 V (cavo tagliato)</text>
+  <path class="w vin" d="M160 246H285"/>
+  <polygon points="285,234 285,258 311,246" fill="#222"/>
+  <path class="c" d="M311 234V258"/>
+  <text x="298" y="225" text-anchor="middle" class="tb">D2</text>
+  <path class="w vin" d="M311 246H440V140"/>
+  <circle cx="440" cy="140" r="5" fill="#e07a00"/>
+
+  <!-- interruttore A -->
+  <path class="w vin" d="M440 140H466"/>
+  <use href="#sw" x="470" y="140"/>
+  <path class="w vin" d="M524 140H600"/>
+  <text x="508" y="188" text-anchor="middle" class="ok">✓ interruttore qui</text>
+  <text x="512" y="206" text-anchor="middle" class="s">SW_PROG (o ponticello)</text>
+
+  <!-- Heltec A -->
+  <rect x="600" y="100" width="120" height="330" rx="10" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+  <text x="660" y="225" text-anchor="middle" class="wtb">Heltec</text>
+  <text x="660" y="245" text-anchor="middle" class="ws">Kit 32 V3</text>
+  <text x="660" y="261" text-anchor="middle" class="ws">Stick Lite V3</text>
+  <text x="608" y="145" class="wt">5V</text>
+  <text x="608" y="315" class="wt">BAT</text>
+  <text x="608" y="385" class="wt">GND</text>
+  <rect x="636" y="430" width="48" height="14" rx="4" fill="#9aa5b1" stroke="#555" stroke-width="1.5"/>
+  <text x="660" y="420" text-anchor="middle" class="ws">USB-C</text>
+
+  <!-- batteria A -->
+  <rect x="470" y="286" width="100" height="52" rx="8" fill="#fff3d6" stroke="#333" stroke-width="2"/>
+  <text x="520" y="308" text-anchor="middle" class="tb">LiPo</text>
+  <text x="520" y="326" text-anchor="middle" class="s">con PCM</text>
+  <path class="w bat" d="M570 310H600"/>
+  <text x="520" y="356" text-anchor="middle" class="s">connettore SH1.25</text>
+
+  <!-- PC A -->
+  <path class="w usb" d="M660 444V480"/>
+  <rect x="600" y="480" width="120" height="56" rx="6" fill="#eef4fb" stroke="#1d70b8" stroke-width="2"/>
+  <text x="660" y="504" text-anchor="middle" class="tb">PC</text>
+  <text x="660" y="524" text-anchor="middle" class="s">programmazione</text>
+
+  <!-- masse A -->
+  <path class="w gnd" d="M160 172H180V380"/>
+  <path class="w gnd" d="M160 278H180"/>
+  <path class="w gnd" d="M180 380H600"/>
+  <circle cx="180" cy="278" r="4.5" fill="#444"/>
+  <use href="#gnd" x="300" y="380"/>
+  <text x="390" y="372" text-anchor="middle" class="s">massa comune: resta sempre collegata</text>
+
+  <!-- =================================================== OPZIONE B -->
+  <text x="780" y="88" class="h">Opzione B: circuito del README sul pin 3V3</text>
+
+  <!-- pannello B -->
+  <rect x="780" y="120" width="120" height="64" rx="6" fill="#e8f0fb" stroke="#1d3557" stroke-width="2"/>
+  <text x="840" y="146" text-anchor="middle" class="tb">Pannello</text>
+  <text x="840" y="170" text-anchor="middle" class="s">6 V</text>
+  <path class="w vin" d="M900 140H970"/>
+  <use href="#no" x="935" y="140"/>
+  <text x="935" y="114" text-anchor="middle" class="no">qui no</text>
+
+  <!-- USB B -->
+  <rect x="780" y="226" width="120" height="64" rx="6" fill="#f1f1f1" stroke="#333" stroke-width="2"/>
+  <text x="840" y="252" text-anchor="middle" class="tb">USB esterno</text>
+  <text x="840" y="274" text-anchor="middle" class="s">5 V (cavo tagliato)</text>
+  <path class="w vin" d="M900 246H970"/>
+
+  <!-- blocco README -->
+  <rect x="970" y="110" width="200" height="200" rx="8" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="1070" y="136" text-anchor="middle" class="tb">Circuito del README</text>
+  <text x="984" y="164" class="s">• D1 / D2 (o LTC4412)</text>
+  <text x="984" y="186" class="s">• TP4056 + LiPo su B+/B–</text>
+  <text x="984" y="208" class="s">• load sharing Q1, D3</text>
+  <text x="984" y="230" class="s">• HT7833 → 3,3 V</text>
+  <text x="984" y="262" class="s">(sullo stampato:</text>
+  <text x="984" y="280" class="s">l'interruttore è JP3)</text>
+
+  <!-- interruttore B -->
+  <path class="w v33" d="M1170 190H1206"/>
+  <use href="#sw" x="1210" y="190"/>
+  <path class="w v33" d="M1264 190H1330"/>
+  <text x="1235" y="238" text-anchor="middle" class="ok">✓ interruttore qui</text>
+  <text x="1235" y="256" text-anchor="middle" class="s">JP3 / SW_PROG</text>
+
+  <!-- Heltec B -->
+  <rect x="1330" y="100" width="130" height="330" rx="10" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+  <text x="1395" y="255" text-anchor="middle" class="wtb">Heltec</text>
+  <text x="1395" y="275" text-anchor="middle" class="ws">qualsiasi</text>
+  <text x="1338" y="195" class="wt">3V3</text>
+  <text x="1338" y="315" class="wt">BAT</text>
+  <text x="1338" y="333" class="ws">vuoto</text>
+  <text x="1338" y="385" class="wt">GND</text>
+  <rect x="1371" y="430" width="48" height="14" rx="4" fill="#9aa5b1" stroke="#555" stroke-width="1.5"/>
+  <text x="1395" y="420" text-anchor="middle" class="ws">USB-C</text>
+
+  <!-- PC B -->
+  <path class="w usb" d="M1395 444V480"/>
+  <rect x="1335" y="480" width="120" height="56" rx="6" fill="#eef4fb" stroke="#1d70b8" stroke-width="2"/>
+  <text x="1395" y="504" text-anchor="middle" class="tb">PC</text>
+  <text x="1395" y="524" text-anchor="middle" class="s">programmazione</text>
+
+  <!-- masse B -->
+  <path class="w gnd" d="M900 172H920V380"/>
+  <path class="w gnd" d="M900 278H920"/>
+  <circle cx="920" cy="278" r="4.5" fill="#444"/>
+  <path class="w gnd" d="M920 380H1330"/>
+  <path class="w gnd" d="M1070 310V380"/>
+  <circle cx="1070" cy="380" r="4.5" fill="#444"/>
+  <use href="#gnd" x="1010" y="380"/>
+  <text x="1200" y="372" text-anchor="middle" class="s">massa comune: resta sempre collegata</text>
+
+  <!-- =================================================== LEGENDA -->
+  <rect x="30" y="575" width="1440" height="235" rx="10" fill="#f8f9fa" stroke="#ccc"/>
+  <text x="50" y="605" class="tb" font-size="15">Opzione A</text>
+  <text x="50" y="633" class="leg">• L'interruttore va <tspan font-weight="bold">dopo il nodo comune</tspan> di pannello e USB esterno,</text>
+  <text x="64" y="655" class="leg">sul filo che arriva al pin 5V: un solo contatto stacca entrambe le sorgenti.</text>
+  <text x="50" y="683" class="leg">• <tspan fill="#c1121f" font-weight="bold">Qui no:</tspan> sul solo filo del pannello l'USB esterno arriverebbe</text>
+  <text x="64" y="705" class="leg">ancora al pin 5V, insieme all'USB-C del PC.</text>
+  <text x="50" y="733" class="leg">• La LiPo sul connettore SH1.25 resta collegata: USB-C + batteria</text>
+  <text x="64" y="755" class="leg">è l'uso normale previsto da Heltec.</text>
+
+  <line x1="750" y1="590" x2="750" y2="765" stroke="#ddd" stroke-width="1.5"/>
+  <text x="780" y="605" class="tb" font-size="15">Opzione B</text>
+  <text x="780" y="633" class="leg">• L'interruttore va sulla linea <tspan font-weight="bold">3,3 V</tspan> tra l'HT7833 e il pin 3V3.</text>
+  <text x="780" y="661" class="leg">• <tspan fill="#c1121f" font-weight="bold">Qui no:</tspan> staccando il pannello la batteria continua ad</text>
+  <text x="794" y="683" class="leg">alimentare l'HT7833 tramite Q1: i due regolatori restano in parallelo.</text>
+  <text x="780" y="711" class="leg">• Connettore batteria della Heltec vuoto, come sempre nell'opzione B.</text>
+
+  <text x="50" y="790" class="leg"><tspan font-weight="bold">In entrambi i casi:</tspan> apri l'interruttore prima di collegare l'USB-C, richiudilo dopo averlo staccato. Il pannello può restare al sole e la massa resta collegata.</text>
+</svg>
