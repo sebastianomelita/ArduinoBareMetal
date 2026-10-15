@@ -12,6 +12,8 @@ Il progetto parte dal tutorial di Random Nerd Tutorials [*Power ESP32/ESP8266 wi
 Altre guide in questo repository:
 
 - **[HELTEC.md](HELTEC.md)**: come usare il progetto con le schede Heltec WiFi Kit 32 V3 e Wireless Stick Lite V3;
+- **[Variante con diodo ideale LTC4412](#variante-diodo-ideale-ltc4412-al-posto-di-d1)**: al posto di D1, meno caduta di tensione dal pannello e precedenza all'USB;
+- **[Programmare l'ESP32 collegato alla scheda](#programmare-lesp32-collegato-alla-scheda)**: quando staccare il 3V3 durante il caricamento del firmware;
 - **[Sensore pesante: SDS011](#sensore-pesante-sds011)**: come alimentare e collegare un sensore di particolato SDS011;
 - **[MOSFET.md](MOSFET.md)**: dispensa su come scegliere e dimensionare P-MOSFET e N-MOSFET usati come interruttori;
 - **[PCB.md](PCB.md)**: circuito stampato pronto da ordinare (Gerber in `pcb/gerber/`), configurabile per SDS011 o SCD41;
@@ -167,7 +169,21 @@ Se colleghi la massa del circuito a B–, scavalchi la protezione dalla sovrasca
 7. **ESP32.** OUT dell'HT7833 → pin **3V3**, massa → **GND**.
 8. **Partitore.** OUT+ → R1 (100k) → **GPIO33** → R2 (100k) → GND. C5 (100 nF) va tra GPIO33 e GND.
 
-> 💡 **Programmazione via USB dell'ESP32:** quando colleghi il cavo USB alla DevKit per caricare il firmware, il regolatore della scheda e l'HT7833 si trovano in parallelo sulla linea 3V3. Di solito non succede nulla, ma per sicurezza scollega il filo 3V3 dell'HT7833 mentre programmi.
+### Programmare l'ESP32 collegato alla scheda
+
+Quando colleghi il cavo USB alla DevKit per caricare il firmware, sulla linea 3V3 ci sono **due regolatori in parallelo**: quello della DevKit (alimentato dall'USB del PC) e l'HT7833. Cosa succede dipende dalla tensione all'ingresso dell'HT7833 (VLOAD):
+
+| Situazione | VLOAD | Cosa succede |
+|---|---|---|
+| Pannello o USB su J2 presenti, oppure batteria carica | > 3,5 V circa | **Nessun problema.** I due regolatori danno quasi la stessa tensione: quello leggermente più alto fornisce la corrente, l'altro smette di erogare. Un regolatore lineare non assorbe corrente dalla sua uscita, quindi non si "combattono". |
+| Batteria scarica (sotto 3,4–3,5 V), niente sole e niente USB su J2 | < 3,3 V | **Da evitare.** L'uscita dell'HT7833 (3,3 V, imposti dalla DevKit) è più alta del suo ingresso. In molti regolatori LDO, in questa condizione, la corrente torna indietro dall'uscita all'ingresso. Da VLOAD passa per Q1, che è acceso perché manca VIN_EXT, e arriva alla batteria: **la DevKit carica la batteria** senza il controllo del TP4056, con una corrente limitata solo dal suo regolatore. Non c'è rischio di sovraccarica (la tensione non supera 3,3 V), ma la corrente può essere di centinaia di mA e scalda i due regolatori e la porta USB del PC. D3 invece non conduce, perché è polarizzato al contrario. |
+
+**Cosa fare:**
+
+- **Soluzione consigliata:** mentre programmi **stacca il filo 3V3** tra l'HT7833 e l'ESP32 (sullo stampato basta togliere il cappuccio di **JP3**, vedi [PCB.md](PCB.md)). La massa resta collegata: l'ESP32 è alimentato solo dall'USB del PC e il resto del circuito continua a funzionare. Finito il caricamento, ricollega il filo.
+- **In alternativa:** collega il pannello al sole o l'USB a J2 mentre programmi. Con VIN_EXT presente Q1 è spento e VLOAD è circa 4,6 V, quindi si ricade nel primo caso della tabella.
+
+> 💡 **E un regolatore con protezione dalla corrente inversa?** Esistono regolatori LDO che dichiarano nel datasheet la *reverse current protection*: bloccano la corrente dall'uscita all'ingresso e risolverebbero il problema alla radice. Non ho però trovato un modello verificato con la **stessa piedinatura dell'HT7833 in SOT-89**, da montare sullo stampato senza modifiche. Anche l'HT78R33 ha la stessa piedinatura, ma il datasheet non parla di questa protezione. Per questo la soluzione proposta resta il ponticello: costa pochi centesimi e si capisce a colpo d'occhio. Se usi un regolatore diverso, cerca nel datasheet le voci *reverse current protection* o *reverse current blocking* e controlla la piedinatura.
 
 ---
 
@@ -273,6 +289,56 @@ void loop() {}
 **Note sulla lettura**
 - Durante la carica leggerai la tensione di carica (fino a circa 4,2 V), più alta di quella reale a riposo. Considera la percentuale affidabile solo senza alimentazione esterna.
 - Per una lettura più precisa, misura VBAT con il tester e correggi `DIVIDER` di conseguenza (le resistenze hanno una tolleranza dell'1–5 %).
+
+---
+
+## Variante: diodo ideale LTC4412 al posto di D1
+
+D1 ha due limiti:
+
+- **Caduta di tensione.** Uno Schottky perde 0,3–0,45 V. Con poco sole il pannello scende verso i 5 V e il TP4056, che vuole almeno 4,5 V all'ingresso, smette di caricare prima del necessario.
+- **Precedenza delle sorgenti.** Con i diodi vince la sorgente a tensione più alta. Quasi sempre è il pannello, che a vuoto arriva a 6–7 V: anche con l'USB collegato, la carica la fa il pannello. Se vuoi che **l'USB abbia la precedenza** e che il pannello venga staccato quando c'è l'USB, i diodi non bastano.
+
+Un **diodo ideale** risolve entrambi i problemi. Al posto di D1 si usano due P-MOSFET comandati da un piccolo integrato, l'**LTC4412** di Analog Devices.
+
+<p align="center">
+  <img src="img/schema_ltc4412.svg" alt="Variante con diodo ideale LTC4412 al posto di D1" width="100%">
+</p>
+
+### Componenti aggiuntivi
+
+| Rif. | Componente | Note |
+|---|---|---|
+| U2 | **LTC4412** | controllore di diodo ideale, contenitore TSOT-23-6 (ThinSOT) |
+| Q6, Q7 | **AO3401A** | P-MOSFET, gli stessi di Q1 |
+| R_CTL | 100 kΩ | dall'USB al pin CTL |
+
+D1 si toglie. D2 sull'USB resta com'è.
+
+### Come funziona
+
+**Diodo ideale.** L'LTC4412 confronta la tensione del pannello (pin **VIN**) con quella di VIN_EXT (pin **SENSE**):
+
+- se il pannello è più alto, abbassa il pin **GATE** e accende Q6 e Q7. Il pannello passa con una caduta di qualche decina di mV: l'integrato regola circa 20 mV a bassa corrente, e a correnti più alte la caduta è data dalla resistenza dei due MOSFET in serie (circa 0,1 Ω in tutto, quindi 50 mV a 0,5 A);
+- se VIN_EXT è più alto del pannello (di notte, o con l'USB a tensione maggiore), spegne i MOSFET: è la funzione di "diodo" che blocca la corrente all'indietro.
+
+**Perché due MOSFET contrapposti.** Ogni MOSFET ha un diodo interno (*body diode*) tra drain e source. Con un solo MOSFET quel diodo lascia comunque passare il pannello verso VIN_EXT anche a MOSFET spento. Con Q6 e Q7 montati **con le sorgenti in comune**, i due diodi interni sono in direzioni opposte: a MOSFET spenti la corrente non passa in nessuna delle due direzioni.
+
+**Precedenza all'USB (R_CTL).** Il pin **CTL** spegne i MOSFET quando è a livello alto. Collegandolo all'USB attraverso R_CTL:
+
+| Situazione | CTL | Q6, Q7 | Il TP4056 è alimentato da |
+|---|---|---|---|
+| Solo pannello | basso (pull-down interno) | accesi | pannello, con caduta di pochi mV |
+| USB presente (con o senza pannello) | alto | **spenti** | solo USB, tramite D2 |
+| Notte, nessuna sorgente | basso | spenti (VIN = 0) | nessuno: l'ESP32 va a batteria tramite Q1 |
+
+R_CTL limita la corrente nel pin: il pin ha un pull-down interno di pochi µA e riconosce il livello alto già sotto 1 V, quindi 100 kΩ vanno benissimo.
+
+**Consumo.** L'LTC4412 assorbe circa 11 µA, ma li prende dal pannello o da VIN_EXT, non dalla batteria: di notte è spento e non consuma nulla.
+
+**Il pin STAT** (uscita open drain che segnala quale sorgente è attiva) qui non serve e resta scollegato.
+
+> ⚠️ **Monta D1 oppure il gruppo LTC4412, non entrambi.** Con D1 montato il pannello passerebbe comunque, aggirando lo spegnimento comandato dall'USB. Lo stampato ([PCB.md](PCB.md)) ha le piazzole per tutte e due le soluzioni.
 
 ---
 
