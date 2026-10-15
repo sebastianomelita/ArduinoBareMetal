@@ -24,7 +24,7 @@ Dai datasheet e dagli schemi elettrici Heltec risulta questo:
 | Load sharing | **Sì** (AO3401 + Schottky 1N5817, revisione V3.2) | **Sì** (Q2 AO3401 + D2 1N5819) |
 | Pin 5V | Stesso nodo del VBUS dell'USB-C (dopo il fusibile) | Stesso nodo del VBUS dell'USB-C (dopo il fusibile) |
 
-In pratica queste schede hanno già il **partitore attivabile** (consumo zero a riposo, come la variante descritta nel README) e anche un **load sharing** uguale al nostro, con un P-MOSFET e uno Schottky. Non hanno invece un ingresso solare dedicato. Lo schema è spiegato nella sezione successiva.
+In pratica queste schede hanno già il **partitore attivabile** (consumo zero a riposo, come la variante descritta nel panel2esp32.md) e anche un **load sharing** uguale al nostro, con un P-MOSFET e uno Schottky. Non hanno invece un ingresso solare dedicato. Lo schema è spiegato nella sezione successiva.
 
 > ℹ️ Per la WiFi Kit 32 V3 il datasheet nomina `ADC_Ctrl` ma non indica a quale livello attiva la lettura. Se leggi sempre 0 V, inverti il livello (vedi il codice più sotto).
 
