@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" width="1200" height="730" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .v33{stroke:#2a9d8f}.v5{stroke:#b5179e}.gnd{stroke:#444}.uart{stroke:#1d70b8}.bat{stroke:#c1121f}.sol{stroke:#e07a00}
+      .t{font-size:14px;fill:#222}
+      .tb{font-size:14px;fill:#222;font-weight:bold}
+      .s{font-size:12.5px;fill:#444}
+      .wt{font-size:14px;fill:#fff}
+      .wtb{font-size:17px;fill:#fff;font-weight:bold}
+      .ws{font-size:12.5px;fill:#dfe7f2}
+      .leg{font-size:14.5px;fill:#222}
+    </style>
+    <marker id="au" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0L14 7L0 14z" fill="#1d70b8"/></marker>
+  </defs>
+
+  <rect width="1200" height="730" fill="#ffffff"/>
+  <text x="40" y="40" font-size="22" font-weight="bold" fill="#1d3557">Heltec WiFi LoRa 32 V4 + SDS011: alimentazione tramite Vext e boost 5 V</text>
+
+  <!-- ===== Pannello e batteria ===== -->
+  <rect x="40" y="90" width="130" height="60" rx="6" fill="#e8f0fb" stroke="#1d3557" stroke-width="2"/>
+  <text x="105" y="116" text-anchor="middle" class="tb">Pannello</text>
+  <text x="105" y="135" text-anchor="middle" class="s">4,7–6 V</text>
+  <rect x="40" y="200" width="130" height="60" rx="8" fill="#fff3d6" stroke="#333" stroke-width="2"/>
+  <text x="105" y="226" text-anchor="middle" class="tb">LiPo 1S</text>
+  <text x="105" y="245" text-anchor="middle" class="s">con protezione</text>
+  <path class="w sol" d="M170 120H250"/>
+  <path class="w bat" d="M170 230H250"/>
+
+  <!-- ===== Heltec V4 ===== -->
+  <rect x="250" y="70" width="330" height="440" rx="12" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+  <text x="415" y="100" text-anchor="middle" class="wtb">Heltec WiFi LoRa 32 V4</text>
+  <text x="262" y="125" class="ws">SOLAR</text>
+  <text x="262" y="235" class="ws">BAT</text>
+  <rect x="320" y="140" width="150" height="52" rx="6" fill="#2c6bb3"/>
+  <text x="395" y="162" text-anchor="middle" class="wt">caricatore +</text>
+  <text x="395" y="180" text-anchor="middle" class="wt">gestione batteria</text>
+  <rect x="320" y="220" width="150" height="46" rx="6" fill="#2c6bb3"/>
+  <text x="395" y="248" text-anchor="middle" class="wt">regolatore 3,3 V</text>
+  <path d="M395 192V220" stroke="#dfe7f2" stroke-width="2.5"/>
+  <rect x="320" y="310" width="150" height="70" rx="6" fill="#2c6bb3"/>
+  <text x="395" y="338" text-anchor="middle" class="wt">ESP32-S3</text>
+  <text x="395" y="358" text-anchor="middle" class="ws">+ LoRa + display</text>
+  <path d="M395 266V310" stroke="#dfe7f2" stroke-width="2.5"/>
+
+  <!-- interruttore Vext interno, comandato da GPIO36 -->
+  <path d="M470 243H500" stroke="#dfe7f2" stroke-width="2.5"/>
+  <circle cx="503" cy="243" r="3.5" fill="#dfe7f2"/>
+  <path d="M506 243L536 228" stroke="#dfe7f2" stroke-width="2.5"/>
+  <circle cx="540" cy="243" r="3.5" fill="#dfe7f2"/>
+  <text x="522" y="200" text-anchor="middle" class="ws">interruttore</text>
+  <text x="522" y="216" text-anchor="middle" class="ws">Vext</text>
+  <path d="M470 330H520V238" fill="none" stroke="#dfe7f2" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="526" y="288" class="ws">GPIO36</text>
+  <text x="526" y="304" class="ws">LOW=ON</text>
+  <path d="M543 243H580" stroke="#dfe7f2" stroke-width="2.5"/>
+  <text x="572" y="236" class="wt" text-anchor="end">Ve</text>
+
+  <!-- pin UART e massa -->
+  <path d="M470 360H500V400H580M470 370H490V430H580" fill="none" stroke="#dfe7f2" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="572" y="393" class="wt" text-anchor="end">GPIO RX</text>
+  <text x="572" y="423" class="wt" text-anchor="end">GPIO TX</text>
+  <text x="572" y="465" class="wt" text-anchor="end">GND</text>
+
+  <!-- ===== Vext -> boost ===== -->
+  <path class="w v33" d="M580 243H700"/>
+  <text x="598" y="233" class="tb" fill="#2a9d8f">Vext 3,3 V</text>
+  <text x="598" y="266" class="s">~125 mA</text>
+
+  <!-- ===== Boost ===== -->
+  <rect x="700" y="200" width="170" height="110" rx="8" fill="#5a189a" stroke="#3c096c" stroke-width="2"/>
+  <text x="785" y="226" text-anchor="middle" class="wtb">Boost 5 V</text>
+  <text x="708" y="248" class="wt">IN+</text>
+  <text x="862" y="248" class="wt" text-anchor="end">OUT+</text>
+  <text x="785" y="278" text-anchor="middle" class="ws">es. Pololu U1V11F5</text>
+  <text x="708" y="302" class="wt">IN–</text>
+  <text x="862" y="302" class="wt" text-anchor="end">OUT–</text>
+
+  <!-- ===== 5 V -> SDS011 con condensatore ===== -->
+  <path class="w v5" d="M870 243H990"/>
+  <text x="884" y="233" class="tb" fill="#b5179e">5 V</text>
+  <circle cx="930" cy="243" r="4.5" fill="#b5179e"/>
+  <path class="w v5" d="M930 243V275"/>
+  <path d="M918 275H942" stroke="#222" stroke-width="2.4"/>
+  <path d="M918 287Q930 279 942 287" fill="none" stroke="#222" stroke-width="2.4"/>
+  <text x="908" y="273" class="tb">+</text>
+  <path class="w gnd" d="M930 283V460"/>
+  <text x="938" y="330" class="s">C</text>
+  <text x="938" y="346" class="s">100–220</text>
+  <text x="938" y="362" class="s">µF</text>
+
+  <!-- ===== SDS011 ===== -->
+  <rect x="990" y="190" width="170" height="300" rx="8" fill="#2b2d42" stroke="#000" stroke-width="2"/>
+  <text x="1075" y="222" text-anchor="middle" class="wtb">SDS011</text>
+  <text x="998" y="248" class="wt">5V</text>
+  <text x="998" y="400" class="wt">TXD</text>
+  <text x="998" y="430" class="wt">RXD</text>
+  <text x="998" y="465" class="wt">GND</text>
+  <text x="1090" y="300" text-anchor="middle" class="ws">~70 mA a 5 V</text>
+  <text x="1090" y="318" text-anchor="middle" class="ws">logica 3,3 V</text>
+
+  <!-- ===== UART ===== -->
+  <path class="w uart" d="M990 395H586" marker-end="url(#au)"/>
+  <path class="w uart" d="M580 425H984" marker-end="url(#au)"/>
+  <text x="600" y="383" class="t" fill="#1d70b8">TXD del sensore → RX dell'ESP32</text>
+  <text x="600" y="447" class="t" fill="#1d70b8">TX dell'ESP32 → RXD del sensore (9600 baud)</text>
+
+  <!-- ===== Massa comune ===== -->
+  <path class="w gnd" d="M580 470H990"/>
+  <path class="w gnd" d="M712 310V470"/>
+  <path class="w gnd" d="M858 310V470"/>
+  <path class="w gnd" d="M930 460V470"/>
+  <circle cx="712" cy="470" r="4.5" fill="#444"/>
+  <circle cx="858" cy="470" r="4.5" fill="#444"/>
+  <circle cx="930" cy="470" r="4.5" fill="#444"/>
+  <text x="760" y="492" class="s">massa comune</text>
+
+  <!-- ===== Legenda ===== -->
+  <rect x="40" y="540" width="1120" height="170" rx="10" fill="#f8f9fa" stroke="#ccc"/>
+  <text x="60" y="566" class="tb" font-size="15">Sequenza per ogni misura</text>
+  <text x="60" y="592" class="leg">1. GPIO36 LOW → Vext acceso: boost e SDS011 si accendono  ·  2. 30 s di ventola, poi lettura di 3–5 pacchetti</text>
+  <text x="60" y="616" class="leg">3. comando di sleep all'SDS011  ·  4. TX dell'ESP32 in ingresso  ·  5. GPIO36 HIGH → Vext spento  ·  6. deep sleep con GPIO36 bloccato alto</text>
+  <text x="60" y="646" class="leg">• Il condensatore d'uscita del boost va tenuto piccolo: all'accensione si carica attraverso Vext, che è la stessa linea a 3,3 V dell'ESP32.</text>
+  <text x="60" y="670" class="leg">• Il pin 5V della scheda ha tensione solo con l'USB collegato: a batteria i 5 V per l'SDS011 vengono dal boost.</text>
+  <text x="60" y="694" class="leg">• Vext alimenta anche il display: quando il sensore è acceso, lo è anche il display.</text>
+</svg>
