@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" width="1200" height="730" font-family="Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 790" width="1200" height="790" font-family="Helvetica, Arial, sans-serif">
   <defs>
     <style>
       .w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
@@ -14,7 +14,7 @@
     <marker id="au" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0 0L14 7L0 14z" fill="#1d70b8"/></marker>
   </defs>
 
-  <rect width="1200" height="730" fill="#ffffff"/>
+  <rect width="1200" height="790" fill="#ffffff"/>
   <text x="40" y="40" font-size="22" font-weight="bold" fill="#1d3557">Heltec WiFi LoRa 32 V4 + SDS011: alimentazione tramite Vext e boost 5 V</text>
 
   <!-- ===== Pannello e batteria ===== -->
@@ -116,11 +116,21 @@
   <text x="760" y="492" class="s">massa comune</text>
 
   <!-- ===== Legenda ===== -->
-  <rect x="40" y="540" width="1120" height="170" rx="10" fill="#f8f9fa" stroke="#ccc"/>
-  <text x="60" y="566" class="tb" font-size="15">Sequenza per ogni misura</text>
-  <text x="60" y="592" class="leg">1. GPIO36 LOW → Vext acceso: boost e SDS011 si accendono  ·  2. 30 s di ventola, poi lettura di 3–5 pacchetti</text>
-  <text x="60" y="616" class="leg">3. comando di sleep all'SDS011  ·  4. TX dell'ESP32 in ingresso  ·  5. GPIO36 HIGH → Vext spento  ·  6. deep sleep con GPIO36 bloccato alto</text>
-  <text x="60" y="646" class="leg">• Il condensatore d'uscita del boost va tenuto piccolo: all'accensione si carica attraverso Vext, che è la stessa linea a 3,3 V dell'ESP32.</text>
-  <text x="60" y="670" class="leg">• Il pin 5V della scheda ha tensione solo con l'USB collegato: a batteria i 5 V per l'SDS011 vengono dal boost.</text>
-  <text x="60" y="694" class="leg">• Vext alimenta anche il display: quando il sensore è acceso, lo è anche il display.</text>
+  <rect x="40" y="530" width="1120" height="240" rx="10" fill="#f8f9fa" stroke="#ccc"/>
+  <text x="60" y="560" class="tb" font-size="15">Sequenza per ogni misura</text>
+  <text x="60" y="588" class="leg"><tspan font-weight="bold">1.</tspan> GPIO36 LOW → Vext acceso: boost e SDS011 si accendono</text>
+  <text x="60" y="614" class="leg"><tspan font-weight="bold">2.</tspan> 30 s di ventola, poi lettura di 3–5 pacchetti</text>
+  <text x="60" y="640" class="leg"><tspan font-weight="bold">3.</tspan> comando di sleep all'SDS011 (ventola e laser fermi)</text>
+  <text x="60" y="666" class="leg"><tspan font-weight="bold">4.</tspan> pin TX dell'ESP32 in ingresso</text>
+  <text x="60" y="692" class="leg"><tspan font-weight="bold">5.</tspan> GPIO36 HIGH → Vext spento</text>
+  <text x="60" y="718" class="leg"><tspan font-weight="bold">6.</tspan> deep sleep con GPIO36 bloccato alto</text>
+  <line x1="610" y1="550" x2="610" y2="750" stroke="#ddd" stroke-width="1.5"/>
+  <text x="640" y="560" class="tb" font-size="15">Note</text>
+  <text x="640" y="588" class="leg">• Condensatore d'uscita del boost piccolo: all'accensione</text>
+  <text x="654" y="610" class="leg">si carica attraverso Vext, la stessa linea a 3,3 V</text>
+  <text x="654" y="632" class="leg">dell'ESP32.</text>
+  <text x="640" y="662" class="leg">• Il pin 5V della scheda ha tensione solo con l'USB:</text>
+  <text x="654" y="684" class="leg">a batteria i 5 V per l'SDS011 vengono dal boost.</text>
+  <text x="640" y="714" class="leg">• Vext alimenta anche il display: con il sensore</text>
+  <text x="654" y="736" class="leg">acceso si accende anche quello.</text>
 </svg>
