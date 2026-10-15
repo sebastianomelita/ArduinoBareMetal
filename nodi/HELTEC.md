@@ -71,7 +71,7 @@ In sintesi: con queste schede l'**opzione A** fa quasi tutto quello che fa l'opz
 
 ## Opzione A: usare il caricatore della scheda
 
-È la soluzione più **semplice**: uni pannello e USB con i diodi D1 e D2 e mandi il risultato al **pin 5V** della scheda. Ricarica e lettura della batteria sono affidate alla Heltec.
+È la soluzione più **semplice**: pannello e USB si collegano ciascuno a un diodo (D1 e D2), i due catodi si uniscono in un solo punto e da lì un filo va al **pin 5V** della scheda. Ricarica e lettura della batteria le fa la Heltec.
 
 ### Collegamenti
 
