@@ -1,6 +1,6 @@
 # Uso con schede Heltec (WiFi Kit 32 V3, Wireless Stick Lite V3, WiFi LoRa 32 V4)
 
-Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [panel2esp32.md](panel2esp32.md).
+Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [README](README.md).
 
 <p align="center">
   <img src="img/heltec_opzioni.svg" alt="Opzioni di alimentazione per schede Heltec" width="100%">
@@ -43,7 +43,7 @@ In pratica queste schede hanno già il **partitore attivabile**: consumo zero a 
 ### Regole importanti
 
 - **Non usare insieme l'USB-C della scheda e il pin 5V.** Heltec li considera ingressi alternativi. L'USB deve entrare solo tramite D2. Per programmare la scheda scollega pannello e USB esterno.
-- **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Per la WiFi LoRa 32 V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 verificalo sullo schema della tua revisione. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V.
+- **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Per la WiFi LoRa 32 V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 verificalo sullo schema della tua revisione. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V. Se al posto di D1 usi il diodo ideale LTC4412, i requisiti diventano più stretti: vedi [Diodo ideale LTC4412 al posto di D1](#diodo-ideale-ltc4412-al-posto-di-d1).
 - **Polarità del connettore batteria.** I cavetti SH1.25 in commercio non sono tutti uguali: controlla che il rosso arrivi sul + della scheda prima di collegare.
 
 ### Limiti
@@ -105,6 +105,86 @@ Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: l
 | Corrente di carica | Fissa, decisa dalla scheda | Regolabile (R_PROG) |
 | Lettura batteria | Partitore interno (GPIO1 + GPIO37) | Partitore attivabile esterno |
 | Adatto a | ESP32 quasi sempre in deep sleep, montaggio rapido | Uso 24/7, sensori pesanti, massimo controllo |
+
+---
+
+## Diodo ideale LTC4412 al posto di D1
+
+La variante del [README](README.md#variante-diodo-ideale-ltc4412-al-posto-di-d1) (U2 LTC4412 con Q6 e Q7 contrapposti e R_CTL) si può usare anche con la WiFi Kit 32 V3 e la Wireless Stick Lite V3. Il risultato però cambia molto tra le due opzioni.
+
+### Con l'opzione B: nessun problema
+
+L'LTC4412 sta prima del TP4056 esterno, che accetta fino a 8 V. La Heltec riceve solo i 3,3 V dell'HT7833 e non si accorge di nulla. Hai tutti i vantaggi descritti nel README: caduta di poche decine di mV invece di 0,3–0,45 V, quindi più carica con poco sole, e precedenza all'USB tramite R_CTL. Anche lo stampato ([PCB.md](PCB.md)) va bene così com'è.
+
+### Con l'opzione A: attenzione alla tensione sul pin 5V
+
+Nell'opzione A l'uscita del diodo ideale va al **pin 5V** della scheda, che ha un **massimo** (per la V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 cercalo sullo schema della tua revisione). Con D1 una parte della tensione del pannello si perdeva sul diodo. Con il diodo ideale quella caduta sparisce e **sul pin arriva quasi tutta la tensione a vuoto del pannello**, cioè quella che c'è quando la scheda assorbe poco: batteria carica, carica terminata, ESP32 in deep sleep. Un pannello da "5 V" che al sole a vuoto dà 6,2–6,5 V passa da "al limite" a "oltre il limite".
+
+Con l'opzione A hai quindi due strade:
+
+1. **Pannello che non supera mai il massimo del pin**, senza altri componenti (vedi i requisiti più sotto);
+2. **Zener di protezione** in parallelo al pannello, se il pannello può superarlo.
+
+Restano le regole dell'opzione A: R_CTL vede solo l'USB esterno che entra da D2, non l'USB-C della scheda, quindi **mentre programmi stacca pannello e USB esterno**.
+
+#### Perché una resistenza in serie non basta
+
+Viene spontaneo pensare di "far cadere" la tensione in eccesso con una resistenza. Non funziona, perché la caduta su una resistenza è **V = R · I** e dipende dalla corrente:
+
+- quando la scheda assorbe poco, cioè proprio nel momento pericoloso, la corrente è quasi zero, la caduta è quasi zero e sul pin arriva tutta la tensione a vuoto;
+- quando la batteria si carica e la corrente è alta, la resistenza fa cadere tensione proprio quando servirebbe al caricatore, e spreca potenza.
+
+La resistenza protegge quando non serve e toglie tensione quando serve: il contrario di quello che vogliamo. Lo stesso ragionamento vale, in piccolo, anche per D1: a correnti molto basse uno Schottky fa cadere solo 0,15–0,2 V, non 0,4 V.
+
+#### Lo zener di protezione
+
+Uno zener in parallelo al pannello, con il catodo sul + e l'anodo su GND, limita la tensione. Funziona perché **un pannello solare si comporta come una sorgente di corrente**: non può dare più della sua corrente di cortocircuito I<sub>SC</sub>. Quando la tensione arriva a V<sub>Z</sub>, lo zener comincia a condurre e assorbe la corrente che la scheda non usa. La tensione resta così ferma poco sopra V<sub>Z</sub>.
+
+```
+pannello + ──┬──────► VIN di U2 / drain di Q6 ──► ... ──► pin 5V della Heltec
+             │
+            ─┴─  DZ  (catodo in alto)
+            ─┬─  1N5338B, 5,1 V 5 W
+             │
+pannello – ──┴──────► GND
+```
+
+**Dove metterlo: ai capi del pannello, prima di Q6.** Perché:
+
+- assorbe solo la corrente del pannello, mai quella dell'USB o della batteria;
+- di notte il pannello è a 0 V: lo zener non conduce e non consuma nulla;
+- protegge anche l'LTC4412, che così vede al massimo 5,6 V circa sul pin VIN.
+
+**Componente consigliato: 1N5338B** (zener da 5 W, contenitore assiale). Dati dal datasheet:
+
+| Grandezza | Valore |
+|---|---|
+| V<sub>Z</sub> | 5,1 V nominali, da 4,8 a 5,4 V (tolleranza ±5 %) a I<sub>ZT</sub> = 240 mA |
+| Resistenza dinamica Z<sub>ZT</sub> | 1,5 Ω |
+| Potenza massima | 5 W, **ma con i terminali tenuti a 75 °C** a 9,5 mm dal corpo |
+
+**Perché 5,1 V e non 5,6 V.** Lo zener da 5,6 V (1N5339B) può arrivare a 5,9 V già alla corrente di prova, e sopra quella corrente la tensione sale ancora di Z<sub>ZT</sub> · ΔI. Con un pannello da 0,4 A si arriva a circa 6,1 V, sopra i 6 V del pin. Con il 5,1 V il caso peggiore resta intorno a 5,6 V. Il caricatore della scheda lavora comunque, perché gli bastano circa 4,5 V.
+
+**Perché contare solo 2 W e non 5 W.** I 5 W valgono solo se i terminali dello zener restano a 75 °C, cioè saldati su piazzole di rame grandi che fanno da dissipatore. Su una millefori o con fili volanti il calore non va via così bene. Si usa quindi circa il 40 % del valore nominale, come per il declassamento visto in [MOSFET.md](MOSFET.md). A 2 W lo zener è comunque **molto caldo**: tienilo sollevato di qualche millimetro dalla scheda, lontano da plastica e batteria.
+
+#### Requisiti del pannello
+
+| | **Senza zener** (diodo ideale da solo) | **Con lo zener 1N5338B** |
+|---|---|---|
+| Tensione nominale (V<sub>MP</sub>, quella "di targa") | 5 V | **da 5 a 6 V** |
+| Tensione a vuoto V<sub>OC</sub> | **Misurata al sole × 1,1 ≤ massimo del pin 5V** (con 6 V di massimo: misurata ≤ 5,4 V) | Nessun limite stretto: la limita lo zener. In pratica quella di un pannello da 5–6 V, cioè 6–7,5 V |
+| Corrente di cortocircuito I<sub>SC</sub> (dati di targa) | Nessun limite per la scheda | **≤ 0,30 A** |
+| Potenza indicativa | Qualsiasi, se la V<sub>OC</sub> rispetta il limite | **Circa 1,5 W al massimo** (es. 5 V × 0,3 A) |
+
+Il perché di ogni riga:
+
+- **V<sub>OC</sub> × 1,1 (senza zener).** La tensione a vuoto di un pannello sale quando fa freddo (circa +0,3 % per ogni °C sotto i 25 °C). Una misura fatta d'estate può essere superata del 5–10 % in una giornata limpida d'inverno. Misura con il tester ai capi del pannello, in pieno sole e **senza carico**.
+- **V<sub>MP</sub> da 5 a 6 V (con zener).** Sotto i 5 V il caricatore non ha abbastanza margine. Con un pannello da 9 o 12 V lo zener terrebbe il pannello a circa 5,3 V, molto lontano dal suo punto di massima potenza: il pannello renderebbe meno della metà e lo zener lavorerebbe quasi sempre. Con 5–6 V nominali, invece, lo zener interviene solo quando la scheda assorbe poco.
+- **I<sub>SC</sub> ≤ 0,30 A (con zener).** Il caso peggiore è sole pieno con la batteria carica: la scheda non assorbe quasi nulla e **tutta** la corrente del pannello passa nello zener. La potenza da dissipare è P = V<sub>Z,max</sub> · I<sub>SC</sub>. Imponendo P ≤ 2 W e V<sub>Z,max</sub> ≈ 5,6 V, la corrente massima è 2 / 5,6 ≈ 0,36 A. Si divide poi per 1,2, perché con riflessi, nuvole bianche ai bordi del sole o vetri vicini l'irraggiamento può superare per un po' i 1000 W/m² su cui si misura la I<sub>SC</sub>: 0,36 / 1,2 ≈ **0,30 A**.
+
+**Verifica a posteriori.** Il caso peggiore si può riprodurre al banco. Con il pannello in pieno sole e la scheda **staccata**, misura la tensione ai capi dello zener: deve stare **sotto il massimo del pin 5V** (per esempio sotto 5,7 V con un massimo di 6 V). Dopo una decina di minuti misura la temperatura del corpo dello zener con la termocoppia del tester o con un termometro a infrarossi, **senza toccarlo con le dita**: deve restare sotto i 100 °C circa. Se la tensione è troppo alta o lo zener supera quella temperatura, il pannello è troppo potente per questa soluzione.
+
+Se il pannello non rientra in nessuna delle due colonne, con l'opzione A tieni **D1**, oppure passa all'opzione B.
 
 ---
 
