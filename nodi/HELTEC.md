@@ -1,6 +1,6 @@
 # Uso con schede Heltec (WiFi Kit 32 V3, Wireless Stick Lite V3, WiFi LoRa 32 V4)
 
-Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [panel2esp32.md](panel2esp32.md).
+Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [README](README.md).
 
 <p align="center">
   <img src="img/heltec_opzioni.svg" alt="Opzioni di alimentazione per schede Heltec" width="100%">
@@ -10,21 +10,62 @@ Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V
 
 ## Cosa c'è già sulle schede Heltec
 
-Dai datasheet e dalle schede tecniche risulta questo:
+Dai datasheet e dagli schemi elettrici Heltec risulta questo:
 
 | | WiFi Kit 32 V3 | Wireless Stick Lite V3 |
 |---|---|---|
-| Caricatore LiPo integrato | Sì (chip non indicato nel datasheet) | Sì, **TP4054** |
+| Caricatore LiPo integrato | Sì, **LGS4056** (schema della revisione V3.2) | Sì, **TP4054** |
+| Corrente di carica | Non indicata | **500 mA** (R_PROG = 2 kΩ) |
 | Connettore batteria | SH1.25, 2 pin | SH1.25, 2 pin |
 | Lettura batteria | **GPIO1** (ADC1_CH0), partitore **390k/100k** | **GPIO1**, partitore **390k/100k** |
 | Attivazione partitore | **GPIO37** (`ADC_Ctrl`) | **GPIO37** (`ADC_Ctrl`), attivo **basso** secondo la scheda tecnica |
 | Uscita Vext comandata | **GPIO36** (Vext, 350 mA) | — |
 | Ingresso pannello solare | **No** | **No** |
-| Load sharing documentato | **No** | **No** |
+| Load sharing | **Sì** (AO3401 + Schottky 1N5817, revisione V3.2) | **Sì** (Q2 AO3401 + D2 1N5819) |
+| Pin 5V | Stesso nodo del VBUS dell'USB-C (dopo il fusibile) | Stesso nodo del VBUS dell'USB-C (dopo il fusibile) |
 
-In pratica queste schede hanno già il **partitore attivabile**: consumo zero a riposo, come la variante descritta nel README. Non hanno invece un ingresso solare dedicato né un load sharing documentato. Il TP4054 della Wireless Stick Lite, come il TP4056, da solo non separa il carico dalla batteria.
+In pratica queste schede hanno già il **partitore attivabile** (consumo zero a riposo, come la variante descritta nel README) e anche un **load sharing** uguale al nostro, con un P-MOSFET e uno Schottky. Non hanno invece un ingresso solare dedicato. Lo schema è spiegato nella sezione successiva.
 
 > ℹ️ Per la WiFi Kit 32 V3 il datasheet nomina `ADC_Ctrl` ma non indica a quale livello attiva la lettura. Se leggi sempre 0 V, inverti il livello (vedi il codice più sotto).
+
+---
+
+## Lo schema di alimentazione delle Heltec V3
+
+Lo schema della Wireless Stick Lite V3, ridisegnato qui sotto con i soli componenti dell'alimentazione, mostra che sulla scheda c'è già quasi tutto il nostro circuito.
+
+<p align="center">
+  <img src="img/heltec_v3_alimentazione.svg" alt="Alimentazione della Heltec Wireless Stick Lite V3" width="100%">
+</p>
+
+### Come funziona
+
+- **VDD_5V** è il nodo dei 5 V. Ci arrivano il **VBUS dell'USB-C**, attraverso il fusibile ripristinabile F1, e il **pin 5V del pettine**, collegato direttamente. Sono quindi lo stesso nodo: il fusibile protegge solo il lato USB-C. D1 (RSB6.8S) è una piccola protezione contro le scariche elettrostatiche, **non** un limitatore per il pannello.
+- **Caricatore U3 (TP4054)**: è alimentato da VDD_5V e carica la batteria su JP1. La corrente di carica è I = 1000 V / R9 = 1000 / 2000 = **500 mA**.
+- **Load sharing (Q2, D2, R4, R5)**: è lo stesso principio di Q1, D3 e R3 del README.
+  - Con VDD_5V presente, il gate di Q2 è alto (tramite R5) e Q2 è **spento**. Il regolatore prende corrente da VDD_5V attraverso lo Schottky D2 e il caricatore vede solo la batteria, quindi la carica termina correttamente.
+  - Senza VDD_5V, R4 porta il nodo, e quindi il gate, a GND: Q2 si **accende** e il regolatore è alimentato dalla batteria.
+- **Regolatore U2 (CE6260B33M)**: LDO a 3,3 V per ESP32-S3, radio e pin 3V3.
+
+La WiFi Kit 32 V3 (revisione V3.2) ha la stessa struttura con componenti diversi: caricatore LGS4056, fusibile da 2 A, Schottky 1N5817, e in più un secondo LDO per l'uscita Vext. Se hai un'altra revisione, controlla il suo schema.
+
+### Cosa cambia nei nostri ragionamenti
+
+| Argomento | Prima | Ora che conosciamo lo schema |
+|---|---|---|
+| Load sharing con l'opzione A | Assente | **C'è già sulla scheda.** L'opzione A diventa molto più valida, anche con l'ESP32 spesso sveglio |
+| Corrente di carica | Non documentata | **500 mA** sulla Stick Lite. Usa una LiPo da **almeno 500 mAh**, per non superare 1C |
+| Pannelli piccoli | — | Il caricatore chiede fino a 500 mA. Un pannello che ne dà meno viene "tirato giù" fino a poco sopra la tensione della batteria: la carica funziona, ma il pannello lavora lontano dal suo punto di massima potenza. Con un buck questo può far accendere e spegnere il modulo a scatti |
+| Pin 5V e USB-C | Ingressi "alternativi" | **Stesso nodo, senza diodo.** L'interruttore per la programmazione serve davvero. Ciò che entra dal pin 5V non passa dal fusibile F1 |
+| Consumo notturno di LTC4412, zener, buck | Da verificare | **Nullo.** A batteria VDD_5V resta a 0 V: D2 e Q2 impediscono alla batteria di risalire su quel nodo |
+| Opzione B (batteria anche sul connettore della Heltec) | Sconsigliata, schema da verificare | **Resta sconsigliata.** Q2 è comandato da VDD_5V, che nell'opzione B è a 0 V: il regolatore della scheda si alimenterebbe dalla batteria, in parallelo all'HT7833 |
+| Massimo del pin 5V | Da cercare | 4,7–6 V dichiarati da Heltec. Il TP4054 accetta fino a circa 6,5 V in funzionamento: i 6 V restano il limite da rispettare |
+
+In sintesi: con queste schede l'**opzione A** fa quasi tutto quello che fa l'opzione B. All'opzione B restano questi vantaggi:
+
+- corrente di carica regolabile;
+- pannelli fino a 8 V senza protezioni aggiuntive;
+- la protezione DW01 sul modulo TP4056.
 
 ---
 
@@ -43,13 +84,15 @@ In pratica queste schede hanno già il **partitore attivabile**: consumo zero a 
 ### Regole importanti
 
 - **Non usare insieme l'USB-C della scheda e il pin 5V.** Heltec li considera ingressi alternativi. L'USB deve entrare solo tramite D2. Per programmare la scheda basta staccare il filo che arriva al pin 5V, meglio con un interruttore o un ponticello: vedi [Programmare la scheda](#programmare-la-scheda-dove-mettere-linterruttore).
-- **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Per la WiFi LoRa 32 V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 verificalo sullo schema della tua revisione. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V. Se al posto di D1 usi il diodo ideale LTC4412, i requisiti diventano più stretti: vedi [Diodo ideale LTC4412 al posto di D1](#diodo-ideale-ltc4412-al-posto-di-d1).
+- **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Heltec dichiara 4,7–6 V per la WiFi LoRa 32 V4 e per la Kit 32 V3; per la Stick Lite V3 assumi lo stesso valore, coerente con il caricatore TP4054. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V. Se al posto di D1 usi il diodo ideale LTC4412, i requisiti diventano più stretti: vedi [Diodo ideale LTC4412 al posto di D1](#diodo-ideale-ltc4412-al-posto-di-d1).
 - **Polarità del connettore batteria.** I cavetti SH1.25 in commercio non sono tutti uguali: controlla che il rosso arrivi sul + della scheda prima di collegare.
 
 ### Limiti
 
-- **Niente load sharing.** Mentre la batteria è in carica, l'ESP32 assorbe dalla stessa linea. Con l'ESP32 quasi sempre in deep sleep il problema è trascurabile. Con il WiFi sempre acceso la carica potrebbe non terminare mai e la batteria resterebbe a 4,2 V a lungo.
-- **Corrente di carica fissa**, decisa dalla scheda e non documentata per queste versioni, quindi non regolabile.
+- **Corrente di carica fissa**, decisa dalla scheda: **500 mA** sulla Stick Lite V3 (R_PROG = 2 kΩ), non indicata per la Kit 32 V3. Si cambierebbe solo sostituendo la resistenza SMD sulla scheda. Usa una batteria da almeno 500 mAh.
+- **Pannello limitato dal pin 5V** (4,7–6 V): niente pannelli da 6 V nominali senza protezione (vedi [Diodo ideale LTC4412](#diodo-ideale-ltc4412-al-posto-di-d1) per zener e buck).
+
+Il **load sharing** invece c'è: è già sulla scheda (vedi [lo schema](#lo-schema-di-alimentazione-delle-heltec-v3)). Mentre la batteria si carica, l'ESP32 è alimentato da VDD_5V e non dalla batteria.
 
 ---
 
@@ -82,13 +125,13 @@ Per farlo funzionare bisognerebbe collegare la batteria **anche** al connettore 
 
 Partitore e alimentazione della scheda condividono lo stesso nodo, quindi non esiste un punto in cui collegare "solo il partitore". Per questo nell'opzione B il connettore batteria della Heltec resta **vuoto** e la batteria si legge con il **partitore attivabile esterno**.
 
-> ℹ️ Se lo schema elettrico della tua revisione mostrasse che il regolatore interno viene staccato dalla batteria quando c'è tensione sul pin 3V3, la cosa si potrebbe rivalutare. Non è documentato: senza schema non darlo per scontato.
+> ℹ️ Lo [schema delle V3](#lo-schema-di-alimentazione-delle-heltec-v3) lo conferma: il load sharing interno è comandato da VDD_5V (il pin 5V), non dal pin 3V3. Nell'opzione B VDD_5V è a 0 V, quindi con una batteria sul connettore della scheda il regolatore interno si accenderebbe e lavorerebbe in parallelo all'HT7833.
 
-Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: la batteria sta sul connettore della Heltec, ma rinunci al load sharing esterno.
+Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: la batteria sta sul connettore della Heltec, e il load sharing lo fa la scheda.
 
 ### Vantaggi e limiti
 
-- ✅ Load sharing vero, corrente di carica regolabile, pannelli da 6 V senza problemi.
+- ✅ Corrente di carica regolabile, pannelli da 6 V senza problemi, protezione DW01 del modulo TP4056.
 - ✅ Funziona anche con schede ESP32 diverse, senza dipendere dai dettagli della Heltec.
 - ⚠️ Il pin 3V3 viene usato come **ingresso**: per la V4 Heltec dichiara 2,7–3,5 V in ingresso sul pin 3V3. Per la tua scheda verifica sul datasheet o sullo schema.
 - ⚠️ Mentre programmi via USB-C, il regolatore della scheda e l'HT7833 si trovano in parallelo sulla linea 3V3: per sicurezza stacca il filo tra l'HT7833 e il pin 3V3 (vedi [Programmare la scheda](#programmare-la-scheda-dove-mettere-linterruttore)).
@@ -100,11 +143,11 @@ Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: l
 | | Opzione A | Opzione B |
 |---|---|---|
 | Componenti esterni | 2 diodi | Circuito completo del README |
-| Load sharing | No | Sì |
+| Load sharing | Sì, quello della scheda | Sì, quello esterno |
 | Pannello | 5 V nominali (verificare il massimo del pin 5V) | 6 V |
-| Corrente di carica | Fissa, decisa dalla scheda | Regolabile (R_PROG) |
+| Corrente di carica | Fissa (500 mA sulla Stick Lite V3) | Regolabile (R_PROG) |
 | Lettura batteria | Partitore interno (GPIO1 + GPIO37) | Partitore attivabile esterno |
-| Adatto a | ESP32 quasi sempre in deep sleep, montaggio rapido | Uso 24/7, sensori pesanti, massimo controllo |
+| Adatto a | Quasi tutti i casi, montaggio rapido | Pannelli da 6 V, corrente di carica su misura, massimo controllo |
 
 ---
 
@@ -134,7 +177,7 @@ Basta un deviatore a slitta o un pettine a 2 pin con cappuccio. La corrente è a
 
 ## Diodo ideale LTC4412 al posto di D1
 
-La variante del [panel2esp32.md](panel2esp32.md#variante-diodo-ideale-ltc4412-al-posto-di-d1) (U2 LTC4412 con Q6 e Q7 contrapposti e R_CTL) si può usare anche con la WiFi Kit 32 V3 e la Wireless Stick Lite V3. Il risultato però cambia molto tra le due opzioni.
+La variante del [README](README.md#variante-diodo-ideale-ltc4412-al-posto-di-d1) (U2 LTC4412 con Q6 e Q7 contrapposti e R_CTL) si può usare anche con la WiFi Kit 32 V3 e la Wireless Stick Lite V3. Il risultato però cambia molto tra le due opzioni.
 
 ### Con l'opzione B: nessun problema
 
@@ -142,14 +185,15 @@ L'LTC4412 sta prima del TP4056 esterno, che accetta fino a 8 V. La Heltec riceve
 
 ### Con l'opzione A: attenzione alla tensione sul pin 5V
 
-Nell'opzione A l'uscita del diodo ideale va al **pin 5V** della scheda, che ha un **massimo** (per la V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 cercalo sullo schema della tua revisione). Con D1 una parte della tensione del pannello si perdeva sul diodo. Con il diodo ideale quella caduta sparisce e **sul pin arriva quasi tutta la tensione a vuoto del pannello**, cioè quella che c'è quando la scheda assorbe poco: batteria carica, carica terminata, ESP32 in deep sleep. Un pannello da "5 V" che al sole a vuoto dà 6,2–6,5 V passa da "al limite" a "oltre il limite".
+Nell'opzione A l'uscita del diodo ideale va al **pin 5V** della scheda, che ha un **massimo** (Heltec dichiara 4,7–6 V per la V4 e, nel datasheet, anche per la Kit 32 V3; per la Stick Lite V3 assumi lo stesso valore). Con D1 una parte della tensione del pannello si perdeva sul diodo. Con il diodo ideale quella caduta sparisce e **sul pin arriva quasi tutta la tensione a vuoto del pannello**, cioè quella che c'è quando la scheda assorbe poco: batteria carica, carica terminata, ESP32 in deep sleep. Un pannello da "5 V" che al sole a vuoto dà 6,2–6,5 V passa da "al limite" a "oltre il limite".
 
-Con l'opzione A hai quindi due strade:
+Con l'opzione A hai quindi tre strade:
 
 1. **Pannello che non supera mai il massimo del pin**, senza altri componenti (vedi i requisiti più sotto);
-2. **Zener di protezione** in parallelo al pannello, se il pannello può superarlo.
+2. **Zener di protezione** in parallelo al pannello, se il pannello può superarlo;
+3. **Modulo buck (step-down) a 5 V** con un pannello da 9–12 V: in questo caso l'LTC4412 non serve più e basta D1 (vedi [più sotto](#terza-strada-modulo-buck-a-5-v)).
 
-Restano le regole dell'opzione A: R_CTL vede solo l'USB esterno che entra da D2, non l'USB-C della scheda, quindi **mentre programmi stacca pannello e USB esterno**.
+Restano le regole dell'opzione A: R_CTL vede solo l'USB esterno che entra da D2, non l'USB-C della scheda, quindi **mentre programmi apri l'interruttore verso il pin 5V** (vedi [Programmare la scheda](#programmare-la-scheda-dove-mettere-linterruttore)).
 
 #### Perché una resistenza in serie non basta
 
@@ -208,7 +252,45 @@ Il perché di ogni riga:
 
 **Verifica a posteriori.** Il caso peggiore si può riprodurre al banco. Con il pannello in pieno sole e la scheda **staccata**, misura la tensione ai capi dello zener: deve stare **sotto il massimo del pin 5V** (per esempio sotto 5,7 V con un massimo di 6 V). Dopo una decina di minuti misura la temperatura del corpo dello zener con la termocoppia del tester o con un termometro a infrarossi, **senza toccarlo con le dita**: deve restare sotto i 100 °C circa. Se la tensione è troppo alta o lo zener supera quella temperatura, il pannello è troppo potente per questa soluzione.
 
-Se il pannello non rientra in nessuna delle due colonne, con l'opzione A tieni **D1**, oppure passa all'opzione B.
+Se il pannello non rientra in nessuna delle due colonne, con l'opzione A tieni **D1**, usa un **buck** (qui sotto) oppure passa all'opzione B.
+
+#### Terza strada: modulo buck a 5 V
+
+Invece di limitare la tensione del pannello, la si **riduce** con un convertitore step-down (*buck*). Lo zener butta via in calore la tensione in eccesso; il buck la trasforma in corrente in più, con un rendimento dell'85–90 %.
+
+<p align="center">
+  <img src="img/heltec_buck.svg" alt="Opzione A con modulo buck a 5 V tra pannello e pin 5V" width="100%">
+</p>
+
+**Collegamenti:**
+
+```
+pannello 9–12 V ──► buck (regolato a 5,4 V) ──► D1 ──┬──► SW_PROG ──► pin 5V
+USB esterno ──────────────────────────────► D2 ──┘
+```
+
+Il perché di ogni scelta:
+
+- **Pannello da 9–12 V, non da 6 V.** Per dare 5 V in uscita un buck vuole in ingresso qualcosa in più: da circa 0,5 V a 1,5–2 V a seconda del modulo (l'LM2596 è tra i peggiori). Con un pannello da 6 V, appena il sole cala, il buck non tiene più i 5 V e l'uscita scende sotto i 4,5 V del caricatore prima di quanto succederebbe con il solo D1. Con 9–12 V nominali il margine c'è anche con poca luce.
+- **Uscita regolata a 5,4 V.** Dopo i circa 0,3 V di D1 al pin arrivano circa 5,1 V: sotto il massimo di 6 V anche a vuoto, perché la tensione è fissata dal buck e non dal pannello, e sopra il minimo del caricatore. Regola il trimmer **con il tester, prima di collegare la scheda**.
+- **D1 dopo il buck, non prima.** Il pin 5V della scheda è collegato direttamente all'USB-C (vedi la figura). Senza D1, l'USB esterno o l'USB-C del PC spingerebbero tensione all'indietro nell'uscita del buck. Molti buck, quelli sincroni in particolare, hanno un percorso interno che la porterebbe fino al loro ingresso.
+- **L'LTC4412 non serve più.** La caduta di D1 a valle del buck è irrilevante, perché il buck dà già tensione in abbondanza.
+- **Tensione massima d'ingresso del modulo ≥ 1,2 × V<sub>OC</sub> del pannello**, per avere margine anche con il freddo. Un mini modulo regolabile tipo **MP1584** accetta circa fino a 28 V: va bene sia per pannelli da 9 V sia da 12 V.
+
+**Di notte** il pannello è a 0 V e il buck si spegne: dalla batteria non consuma nulla, perché sul lato scheda c'è D1 a bloccare.
+
+**Limite.** Il buck non "insegue" il punto di massima potenza del pannello (non è MPPT). Con poca luce e il caricatore che chiede corrente, la tensione del pannello può crollare e il buck si accende e spegne a scatti. Con le piccole correnti di carica delle Heltec di solito va bene. Per il massimo rendimento esistono caricatori solari con MPPT (per esempio il CN3791), ma sono un'altra strada rispetto all'opzione A.
+
+#### Quale strada scegliere con l'opzione A
+
+| | Solo D1 | LTC4412 senza zener | LTC4412 + zener 1N5338B | Buck + D1 |
+|---|---|---|---|---|
+| Pannello | 5 V, V<sub>OC</sub> dopo D1 ≤ 6 V | 5 V, V<sub>OC</sub> × 1,1 ≤ 6 V | 5–6 V, I<sub>SC</sub> ≤ 0,30 A | **9–12 V**, qualsiasi potenza ragionevole |
+| Caduta tra pannello e pin | 0,15–0,45 V | poche decine di mV | poche decine di mV | regolata: 5,1 V fissi al pin |
+| Con poco sole | discreto | migliore | migliore | buono solo con pannello da 9–12 V |
+| Energia sprecata | caduta su D1 | quasi nulla | calore nello zener a batteria carica | 10–15 % nel buck |
+| Componenti | 1 | 4 | 5 | modulo + 1 diodo |
+| Difficoltà | minima | saldatura TSOT-23 | come LTC4412 + dissipare lo zener | taratura del trimmer |
 
 ---
 
@@ -381,6 +463,8 @@ Valgono le tabelle della [sezione SDS011](README.md#bilancio-energetico) del REA
 ## Fonti
 
 - [Heltec WiFi Kit 32 V3, datasheet Rev1.1](https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WiFi%20kit32_V3(Rev1.1).pdf)
+- [Heltec WiFi Kit 32 V3.2, schema elettrico](https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.2-schematic.pdf)
+- Heltec Wireless Stick Lite V3, schema elettrico HTIT-WSL_V3 (copia nel repository [PaulSchulz/heltec-wifi-lora-32-v3](https://github.com/PaulSchulz/heltec-wifi-lora-32-v3))
 - [ESPBoards: Heltec Wireless Stick Lite (V3)](https://www.espboards.dev/esp32/heltec-wireless-stick-lite-v3/)
 - [Heltec WiFi LoRa 32 V4.2.0, datasheet](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf) (pin 5V e 3V3, uscita Vext 500 mA con GPIO36, consumo in deep sleep)
 - [Pololu 5V Step-Up Voltage Regulator U1V11F5](https://www.pololu.com/product/2562)
