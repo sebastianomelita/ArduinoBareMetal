@@ -1,6 +1,6 @@
 """Generazione dei file di produzione: Gerber RS-274X, forature Excellon, BOM, posizionamento."""
 import json, os, zipfile, math, csv
-from board import (BOARD_W, BOARD_H, MOUNT_HOLES, MOUNT_DRILL, ZONES, COMPONENTS, PIN_LABELS, LABEL_SIDE,
+from board import (BOARD_W, BOARD_H, MOUNT_HOLES, MOUNT_DRILL, ZONES, COMPONENTS, PIN_LABELS, LABEL_SIDE, REF_SIDE,
                    placed_pads, body_rect, rotate)
 from drc import plane_clearances, PLANE_INSET, PLANE_CLR, THERMAL_SPOKE
 from route import VIA_D, VIA_DRILL
@@ -91,7 +91,7 @@ def silk_items(routing):
             side = 1 if cx_ > 0 else -1
             for off in (3.6, 3.8, 4.0):
                 lines.append([(x + side * off, y - 1.35), (x + side * off, y + 1.35)])
-        if fp in ('SOT23', 'SOT89'):  # punto del pin 1
+        if fp in ('SOT23', 'SOT23_6', 'SOT89'):  # punto del pin 1
             p1 = [p for p in pads if p['ref'] == ref and p['num'] == 1][0]
             dx = -1 if p1['x'] < x else 1
             px, py = p1['x'] + dx * (p1['w'] / 2 + 0.45), p1['y']
@@ -150,6 +150,9 @@ def silk_items(routing):
         _, w = text_strokes(ref, 0, 0, H)
         cands = [((x0 + x1) / 2 - w / 2, y0 - 0.35 - H), ((x0 + x1) / 2 - w / 2, y1 + 0.35),
                  (x0 - 0.4 - w, (y0 + y1) / 2 - H / 2), (x1 + 0.4, (y0 + y1) / 2 - H / 2)]
+        if ref in REF_SIDE:  # posizione preferita imposta in board.py
+            k = 'TBLR'.index(REF_SIDE[ref])
+            cands = [cands[k]] + cands[:k] + cands[k + 1:]
         for cx, cy in cands + [(c[0] + dx, c[1] + dy) for c in cands for dx in (-1.5, 1.5) for dy in (-1, 1)]:
             bb = (cx, cy, cx + w, cy + H)
             if free(bb):
@@ -161,8 +164,9 @@ def silk_items(routing):
 
     # nomi dei connettori (valore) accanto alla sigla
     legend = [(TITLE, 1.1), ('JP1 SRC: BAT=SDS011 3V3=SCD41', 0.8), ('JP2 OUT: BST=SDS011 DIR=SCD41', 0.8),
-              ('J3 -> MODULO TP4056', 0.8), ('J6 -> MODULO BOOST 5V', 0.8)]
-    ly = 38.6
+              ('J3 -> MODULO TP4056', 0.8), ('J6 -> MODULO BOOST 5V', 0.8),
+              ('JP3: APRI SE ESP32 SU USB', 0.8), ('D1 OPPURE U2+Q6+Q7+RCTL', 0.8)]
+    ly = 36.4
     for s, h in legend:
         texts.append((s, 35.6, ly, h, 'left', False))
         ly += h + 0.85
@@ -285,6 +289,7 @@ BOM_INFO = {
     'SS34': ('Diodo Schottky 3 A 40 V', 'SMA (DO-214AC)'),
     'AO3401A': ('P-MOSFET -30 V logic level', 'SOT-23'),
     '2N7002': ('N-MOSFET 60 V (o BSS138)', 'SOT-23'),
+    'LTC4412': ('Controllore diodo ideale (alternativa a D1)', 'TSOT-23-6'),
     'HT7833': ('Regolatore LDO 3,3 V 500 mA', 'SOT-89-3'),
     '100k': ('Resistenza 1%', '0805'), '10k': ('Resistenza 1%', '0805'),
     '4k7*': ('Resistenza 1% - opzionale (pull-up I2C)', '0805'),
@@ -308,7 +313,7 @@ def write_bom(path='gerber/BOM.csv'):
         w.writerow(['Riferimenti', 'Quantita', 'Valore / descrizione', 'Contenitore'])
         for (desc, pkg), refs in sorted(groups.items(), key=lambda kv: kv[1][0]):
             w.writerow([' '.join(refs), len(refs), desc, pkg])
-        w.writerow(['(JP1 JP2)', 2, 'Cappuccio per ponticello (jumper) 2,54 mm', '-'])
+        w.writerow(['(JP1 JP2 JP3)', 3, 'Cappuccio per ponticello (jumper) 2,54 mm', '-'])
 
 
 if __name__ == '__main__':

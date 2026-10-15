@@ -274,13 +274,15 @@ class Router:
                 yield self.objs[i], p
                 i += 1
 
-    def gnd_vias(self):
+    def gnd_vias(self, only=None, skip=()):
         """Per ogni pad SMD di massa: breve pista sul lato top fino a una via verso il piano."""
         w = W_GND
         Btr = self.blocked('GND', w / 2)
         Bvia = self.blocked('GND', VIA_D / 2)
         for p in self.pads:
             if p['net'] != 'GND' or p['drill']:
+                continue
+            if (only is not None and p['ref'] not in only) or p['ref'] in skip:
                 continue
             src = self.pad_cells(p)
             # BFS sul top fino alla prima cella dove si può mettere una via
@@ -315,16 +317,19 @@ class Router:
             Bvia = self.blocked('GND', VIA_D / 2)
 
 
-ORDER = ['VSOL', 'VUSB', 'VIN_EXT', 'VBAT', 'VLOAD', '3V3', 'SWIN', 'SWOUT', 'BOOSTOUT', 'SENSVCC',
+ORDER = ['QCS', 'LGATE', 'CTL', 'VSOL', 'VUSB', 'VIN_EXT', '3V3E', 'VBAT', 'VLOAD', '3V3', 'SWIN', 'SWOUT', 'BOOSTOUT', 'SENSVCC',
          'ADC', 'DIVT', 'Q2G', 'Q4G', 'Q5D', 'EN_DIV', 'EN_SENS', 'IO1', 'IO2']
 
 
 def run(order=ORDER):
     R = Router()
+    # pad di massa chiusi tra altri pad (U2.2): via di massa prima dello sbroglio
+    EARLY = {'U2'}
+    R.gnd_vias(only=EARLY)
     for net in order:
         R.route_net(net)
         print('instradata', net, flush=True)
-    R.gnd_vias()
+    R.gnd_vias(skip=EARLY)
     print('vie di massa:', sum(1 for v in R.vias if v['net'] == 'GND'))
     return R
 

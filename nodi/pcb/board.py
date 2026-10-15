@@ -24,6 +24,14 @@ def fp_sot23():
     return [(1, 'rect', -1.0, -0.95, 0.9, 0.8, 0), (2, 'rect', -1.0, 0.95, 0.9, 0.8, 0),
             (3, 'rect', 1.0, 0.0, 0.9, 0.8, 0)]
 
+def fp_sot23_6():
+    # KiCad SOT-23-6 (va bene anche per TSOT-23-6 / ThinSOT dell'LTC4412)
+    # 1-2-3 a sinistra dall'alto in basso, 4-5-6 a destra dal basso in alto
+    return [(1, 'rect', -1.1375, -0.95, 1.325, 0.6, 0), (2, 'rect', -1.1375, 0, 1.325, 0.6, 0),
+            (3, 'rect', -1.1375, 0.95, 1.325, 0.6, 0), (4, 'rect', 1.1375, 0.95, 1.325, 0.6, 0),
+            (5, 'rect', 1.1375, 0, 1.325, 0.6, 0), (6, 'rect', 1.1375, -0.95, 1.325, 0.6, 0)]
+
+
 def fp_sot89():
     # KiCad SOT-89-3: pad 2 composito (pad + linguetta). HT7833: 1 GND, 2 VIN, 3 VOUT
     return [(1, 'rect', -1.65, -1.5, 1.3, 0.9, 0), (3, 'rect', -1.65, 1.5, 1.3, 0.9, 0),
@@ -44,7 +52,7 @@ def fp_cp_radial_d8():
     return [(1, 'rect', 0, 0, 1.6, 1.6, 0.8), (2, 'circle', 3.5, 0, 1.6, 1.6, 0.8)]
 
 FOOTPRINTS = {
-    '0805': fp_0805, 'SOT23': fp_sot23, 'SOT89': fp_sot89, 'SMA': fp_sma,
+    '0805': fp_0805, 'SOT23': fp_sot23, 'SOT23_6': fp_sot23_6, 'SOT89': fp_sot89, 'SMA': fp_sma,
     'H2': lambda: fp_header(2), 'H3': lambda: fp_header(3), 'H4': lambda: fp_header(4),
     'H7': lambda: fp_header(7), 'CP8': fp_cp_radial_d8,
 }
@@ -53,6 +61,7 @@ FOOTPRINTS = {
 BODY = {
     '0805': (-1.9, -0.95, 1.9, 0.95),
     'SOT23': (-1.75, -1.6, 1.75, 1.6),
+    'SOT23_6': (-2.05, -1.75, 2.05, 1.75),
     'SOT89': (-2.6, -2.3, 2.45, 2.3),
     'SMA': (-3.6, -1.35, 3.6, 1.35),
     'H2': (-1.27, -1.27, 1.27, 2.54 + 1.27),
@@ -63,7 +72,7 @@ BODY = {
 
 # ---------------------------------------------------------------- componenti
 # ref: (impronta, x, y, rot, valore, {pad: net})
-POWER_NETS = {'VSOL', 'VUSB', 'VIN_EXT', 'VBAT', 'VLOAD', '3V3', 'SWIN', 'SWOUT', 'BOOSTOUT', 'SENSVCC'}
+POWER_NETS = {'VSOL', 'VUSB', 'VIN_EXT', 'VBAT', 'VLOAD', '3V3', 'SWIN', 'SWOUT', 'BOOSTOUT', 'SENSVCC', 'QCS', '3V3E'}
 
 COMPONENTS = {
     # ingressi
@@ -71,6 +80,12 @@ COMPONENTS = {
     'J2': ('H2', 5.0, 21.0, 0, 'USB 5V', {1: 'VUSB', 2: 'GND'}),
     'D1': ('SMA', 12.0, 11.0, 180, 'SS34', {1: 'VIN_EXT', 2: 'VSOL'}),
     'D2': ('SMA', 12.0, 21.0, 180, 'SS34', {1: 'VIN_EXT', 2: 'VUSB'}),
+    # alternativa a D1 (montare D1 OPPURE U2+Q6+Q7+RCTL): diodo ideale LTC4412
+    # Q6 e Q7 contrapposti (sorgenti in comune) per staccare davvero il pannello
+    'Q6': ('SOT23', 20.4, 11.0, 0, 'AO3401A', {1: 'LGATE', 2: 'QCS', 3: 'VSOL'}),
+    'Q7': ('SOT23', 20.4, 15.2, 0, 'AO3401A', {1: 'LGATE', 2: 'QCS', 3: 'VIN_EXT'}),
+    'U2': ('SOT23_6', 19.4, 19.6, 0, 'LTC4412', {1: 'VSOL', 2: 'GND', 3: 'CTL', 4: 'NC_STAT', 5: 'LGATE', 6: 'VIN_EXT'}),
+    'RCTL': ('0805', 16.5, 25.5, 0, '100k', {1: 'VUSB', 2: 'CTL'}),
     'J3': ('H4', 14.0, 4.5, 90, 'TP4056', {1: 'VIN_EXT', 2: 'GND', 3: 'VBAT', 4: 'GND'}),
     # load sharing
     'D3': ('SMA', 23.0, 25.0, 180, 'SS34', {1: 'VLOAD', 2: 'VIN_EXT'}),
@@ -107,7 +122,9 @@ COMPONENTS = {
     'R9': ('0805', 53.5, 33.5, 90, '4k7*', {1: 'SENSVCC', 2: 'IO2'}),
     'J5': ('H4', 67.0, 25.5, 0, 'SENSOR', {1: 'SENSVCC', 2: 'GND', 3: 'IO1', 4: 'IO2'}),
     # verso l'ESP32
-    'J4': ('H7', 18.0, 48.0, 90, 'ESP32', {1: '3V3', 2: 'GND', 3: 'ADC', 4: 'EN_DIV', 5: 'EN_SENS', 6: 'IO1', 7: 'IO2'}),
+    # JP3: togliere il cappuccio quando si programma l'ESP32 via USB
+    'JP3': ('H2', 9.0, 47.0, 90, 'PROG', {1: '3V3', 2: '3V3E'}),
+    'J4': ('H7', 18.0, 48.0, 90, 'ESP32', {1: '3V3E', 2: 'GND', 3: 'ADC', 4: 'EN_DIV', 5: 'EN_SENS', 6: 'IO1', 7: 'IO2'}),
 }
 
 # Aree di rame aggiuntive sul lato top: (rete, x0, y0, x1, y1)
@@ -115,6 +132,9 @@ COMPONENTS = {
 ZONES = [('VLOAD', 42.0, 12.6, 44.6, 19.4)]
 
 # lato delle etichette dei pin per i connettori verticali ('L' o 'R')
+# lato preferito della sigla (T, B, L, R) dove la scelta automatica non va bene
+REF_SIDE = {'Q6': 'L', 'Q7': 'L'}
+
 LABEL_SIDE = {'J1': 'R', 'J2': 'R', 'J5': 'L', 'J6': 'L', 'JP2': 'R'}
 
 PIN_LABELS = {
@@ -125,6 +145,7 @@ PIN_LABELS = {
     'J6': ['IN', 'GND', 'OUT'],
     'JP1': ['BAT', '', '3V3'],
     'JP2': ['DIR', '', 'BST'],
+    'JP3': ['3V3', 'ESP'],
 }
 
 
