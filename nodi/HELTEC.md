@@ -134,7 +134,7 @@ Basta un deviatore a slitta o un pettine a 2 pin con cappuccio. La corrente è a
 
 ## Diodo ideale LTC4412 al posto di D1
 
-La variante del [README](README.md#variante-diodo-ideale-ltc4412-al-posto-di-d1) (U2 LTC4412 con Q6 e Q7 contrapposti e R_CTL) si può usare anche con la WiFi Kit 32 V3 e la Wireless Stick Lite V3. Il risultato però cambia molto tra le due opzioni.
+La variante del [panel2esp32.md](panel2esp32.md#variante-diodo-ideale-ltc4412-al-posto-di-d1) (U2 LTC4412 con Q6 e Q7 contrapposti e R_CTL) si può usare anche con la WiFi Kit 32 V3 e la Wireless Stick Lite V3. Il risultato però cambia molto tra le due opzioni.
 
 ### Con l'opzione B: nessun problema
 
