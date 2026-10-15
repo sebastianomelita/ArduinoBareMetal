@@ -1,13 +1,14 @@
 # Circuito stampato: modulo di alimentazione ESP32 solare
 
-Stampato a due strati che raccoglie tutto il progetto del [panel2esp32.md](panel2esp32.md) su una scheda unica:
+Stampato a due strati che raccoglie tutto il progetto del [README](README.md) su una scheda unica:
 
-- ingressi da **pannello solare** e **USB**, uniti dai diodi D1 e D2;
+- ingressi da **pannello solare** e **USB**, uniti dai diodi D1 e D2, con le piazzole per montare **al posto di D1** il diodo ideale **LTC4412** (U2, Q6, Q7, R<sub>CTL</sub>);
 - collegamento al modulo **TP4056**;
 - **load sharing** (Q1, D3, R3);
 - regolatore **HT7833** a 3,3 V;
 - **partitore attivabile** per la lettura della batteria (Q2, Q3);
-- **interruttore con soft-start** per un sensore (Q4, Q5, R<sub>S</sub>, C<sub>GD</sub>).
+- **interruttore con soft-start** per un sensore (Q4, Q5, R<sub>S</sub>, C<sub>GD</sub>);
+- ponticello **JP3** per staccare il 3V3 dall'ESP32 mentre lo programmi via USB.
 
 L'uscita per il sensore si configura con due ponticelli: funziona sia con un sensore "pesante" a 5 V come l'**SDS011** (tramite un modulo boost esterno) sia con un sensore a basso consumo a 3,3 V come l'**SCD41**.
 
@@ -68,13 +69,37 @@ Tutti i connettori sono a pettine con passo 2,54 mm. Si possono saldare i fili d
 | **J1 SOLAR** | 1 `+` · 2 `−` | Pannello solare 6 V |
 | **J2 USB 5V** | 1 `+` · 2 `−` | 5 V da cavo USB tagliato (rosso +, nero −) |
 | **J3 TP4056** | 1 `IN+` · 2 `IN−` · 3 `OUT+` · 4 `OUT−` | Alle piazzole omonime del modulo TP4056. **La batteria va solo su B+/B− del modulo** |
-| **J4 ESP32** | 1 `3V3` · 2 `GND` · 3 `ADC` · 4 `EDIV` · 5 `ESNS` · 6 `IO1` · 7 `IO2` | 3V3 → pin 3V3 dell'ESP32; ADC → GPIO33 (o un altro pin ADC1); EDIV → GPIO del partitore (es. GPIO25); ESNS → GPIO del sensore (es. GPIO26); IO1/IO2 → GPIO per il sensore (UART o I²C) |
+| **J4 ESP32** | 1 `3V3` (attraverso JP3) · 2 `GND` · 3 `ADC` · 4 `EDIV` · 5 `ESNS` · 6 `IO1` · 7 `IO2` | 3V3 → pin 3V3 dell'ESP32; ADC → GPIO33 (o un altro pin ADC1); EDIV → GPIO del partitore (es. GPIO25); ESNS → GPIO del sensore (es. GPIO26); IO1/IO2 → GPIO per il sensore (UART o I²C) |
 | **J5 SENSOR** | 1 `VCC` · 2 `GND` · 3 `IO1` · 4 `IO2` | Al sensore. IO1 e IO2 passano direttamente da J4 |
 | **J6 BOOST** | 1 `IN` · 2 `GND` · 3 `OUT` | Al modulo boost 5 V (solo per l'SDS011): IN → piazzola + d'ingresso, OUT → +5 V d'uscita |
 | **JP1 SRC** | `BAT` – centro – `3V3` | Ponticello: da dove l'interruttore prende l'alimentazione |
 | **JP2 OUT** | `DIR` – centro – `BST` | Ponticello: uscita diretta o attraverso il boost |
+| **JP3 PROG** | `3V3` – `ESP` | Ponticello sulla linea 3V3 verso J4.1. **Chiuso** nell'uso normale, **aperto** mentre programmi l'ESP32 via USB |
 
 > ⚠️ Il connettore micro-USB del modulo TP4056 **non** va usato: l'USB entra da J2, attraverso il diodo D2 (vedi il README).
+
+---
+
+## D1 oppure diodo ideale LTC4412
+
+Tra il pannello (J1) e VIN_EXT lo stampato ha **due percorsi alternativi**. Se ne monta **uno solo**:
+
+| Soluzione | Componenti da montare | Da lasciare vuoti | Quando sceglierla |
+|---|---|---|---|
+| **Diodo Schottky** (base) | D1 | U2, Q6, Q7, RCTL | Montaggio più semplice; caduta di 0,3–0,45 V; con USB e pannello insieme carica la sorgente a tensione più alta |
+| **Diodo ideale** | U2 (LTC4412), Q6, Q7, RCTL | D1 | Caduta di poche decine di mV, quindi più carica con poco sole; con l'USB presente il pannello viene staccato e carica solo l'USB |
+
+Il funzionamento è spiegato nel [README](README.md#variante-diodo-ideale-ltc4412-al-posto-di-d1). Q6 e Q7 hanno le sorgenti in comune: così, a MOSFET spenti, i loro diodi interni non lasciano passare corrente in nessuna direzione. Il pin STAT di U2 resta scollegato.
+
+> ⚠️ **Non montare D1 insieme al gruppo LTC4412**: il pannello passerebbe da D1 anche quando l'LTC4412 lo vuole staccare.
+
+---
+
+## Programmare l'ESP32 collegato alla scheda
+
+Quando colleghi la DevKit al PC per caricare il firmware, il suo regolatore e l'HT7833 si trovano in parallelo sulla linea 3V3. Con pannello o USB su J2 presenti, oppure con la batteria carica, non succede nulla. Con la **batteria scarica e nessuna sorgente esterna**, invece, la corrente può tornare indietro attraverso l'HT7833 e Q1 e caricare la batteria dalla DevKit, senza il controllo del TP4056 (spiegazione completa nel [README](README.md#programmare-lesp32-collegato-alla-scheda)).
+
+**Regola pratica:** prima di collegare l'USB della DevKit **togli il cappuccio di JP3**, e rimettilo quando hai finito. La massa resta collegata, quindi ADC, EDIV, ESNS e IO1/IO2 continuano a funzionare durante le prove.
 
 ---
 
@@ -84,6 +109,7 @@ Tutti i connettori sono a pettine con passo 2,54 mm. Si possono saldare i fili d
 |---|---|---|
 | **JP1** | `BAT`: la batteria alimenta il boost | `3V3`: il sensore è alimentato dai 3,3 V regolati |
 | **JP2** | `BST`: il sensore riceve i 5 V del boost | `DIR`: uscita diretta dell'interruttore |
+| **JP3** | Chiuso (aperto solo mentre programmi) | Chiuso (aperto solo mentre programmi) |
 | **J6** | Modulo boost collegato | Vuoto |
 | **C6** (470 µF) | Montato | Facoltativo (bastano C7 e C8) |
 | **R8, R9** | **Non montate** (IO1/IO2 sono la seriale) | 4,7 kΩ **solo se** la scheda del sensore non ha già le resistenze di pull-up I²C |
@@ -103,8 +129,11 @@ Tutti i connettori sono a pettine con passo 2,54 mm. Si possono saldare i fili d
 
 | Riferimenti | Q.tà | Componente | Contenitore |
 |---|---|---|---|
-| D1 D2 D3 | 3 | Diodo Schottky **SS34** (3 A, 40 V) | SMA |
+| D1 D2 D3 | 3 | Diodo Schottky **SS34** (3 A, 40 V). **D1 solo nella versione base** | SMA |
 | Q1 Q2 Q4 | 3 | P-MOSFET **AO3401A** | SOT-23 |
+| U2 | 1 | Controllore di diodo ideale **LTC4412** (**solo nella versione con diodo ideale**, al posto di D1) | TSOT-23-6 |
+| Q6 Q7 | 2 | P-MOSFET **AO3401A** (**solo con U2**) | SOT-23 |
+| RCTL | 1 | Resistenza 100 kΩ (**solo con U2**) | 0805 |
 | Q3 Q5 | 2 | N-MOSFET **2N7002** (o BSS138) | SOT-23 |
 | U1 | 1 | Regolatore LDO **HT7833** (3,3 V, 500 mA) | SOT-89-3 |
 | R1 R2 R3 R4 R5 R6 R7 | 7 | Resistenza 100 kΩ 1 % | 0805 |
@@ -114,11 +143,11 @@ Tutti i connettori sono a pettine con passo 2,54 mm. Si possono saldare i fili d
 | C4 C5 C8 | 3 | Condensatore ceramico 100 nF X7R | 0805 |
 | CGD | 1 | Condensatore ceramico 1 µF ≥ 10 V X7R | 0805 |
 | C3 C6 | 2 | Condensatore elettrolitico 470 µF ≥ 10 V, Ø 8 mm, passo 3,5 mm | radiale |
-| J1 J2 | 2 | Connettore a pettine 1×2, passo 2,54 mm | THT |
+| J1 J2 JP3 | 3 | Connettore a pettine 1×2, passo 2,54 mm | THT |
 | J6 JP1 JP2 | 3 | Connettore a pettine 1×3 | THT |
 | J3 J5 | 2 | Connettore a pettine 1×4 | THT |
 | J4 | 1 | Connettore a pettine 1×7 | THT |
-| — | 2 | Cappuccio per ponticello 2,54 mm (JP1, JP2) | — |
+| — | 3 | Cappuccio per ponticello 2,54 mm (JP1, JP2, JP3) | — |
 
 > ⚠️ **Verifica la piedinatura dell'HT7833 che compri.** Lo stampato usa quella del datasheet Holtek per il contenitore SOT-89: pin 1 = GND, pin 2 (linguetta) = VIN, pin 3 = VOUT. Regolatori "equivalenti" di altri produttori in SOT-89 possono avere i pin in un altro ordine.
 
@@ -129,19 +158,21 @@ Tutti i connettori sono a pettine con passo 2,54 mm. Si possono saldare i fili d
 **Ordine consigliato** (dal componente più basso al più alto, così la scheda appoggia sempre piana):
 
 1. Resistenze e condensatori 0805.
-2. MOSFET SOT-23 (Q1–Q5): il **puntino** in serigrafia indica il pin 1 (gate).
+2. MOSFET SOT-23 (Q1–Q5, e Q6–Q7 se usi l'LTC4412): il **puntino** in serigrafia indica il pin 1 (gate).
+   Se usi il diodo ideale, monta anche **U2 (LTC4412)**: il **puntino** indica il pin 1 (VIN), che sul chip è segnato da un punto o da una tacca. I piedini hanno passo 0,95 mm: usa una punta fine e poco stagno, poi controlla con la lente che non ci siano ponti.
 3. HT7833 (U1): il **puntino** indica il pin 1 (GND); la linguetta va sulla piazzola grande, verso l'area di rame di dissipazione.
-4. Diodi SMA (D1–D3): la **barra** in serigrafia indica il catodo, che sul diodo è il lato con la fascia.
+4. Diodi SMA (D2, D3 e D1 solo nella versione base): la **barra** in serigrafia indica il catodo, che sul diodo è il lato con la fascia.
 5. Connettori a pettine.
 6. Elettrolitici C3 e C6: il **pad quadrato** e il segno **+** indicano il positivo.
 
 **Prima accensione**, senza ESP32 e senza sensore:
 
 1. Con il tester in continuità, controlla che non ci siano cortocircuiti tra 3V3 e GND, tra OUT+ (J3.3) e GND e tra USB+ (J2.1) e GND.
-2. Collega il modulo TP4056 a J3 e la batteria al TP4056.
-3. Misura **3V3 su J4.1: 3,25–3,35 V**.
+2. Collega il modulo TP4056 a J3 e la batteria al TP4056. Inserisci il cappuccio di **JP3**.
+3. Misura **3V3 su J4.1: 3,25–3,35 V**. Se leggi 0 V, controlla JP3.
 4. Collega l'USB a J2: il LED rosso del TP4056 si accende e 3V3 resta stabile.
-5. Solo a questo punto collega l'ESP32 e il sensore.
+5. Solo con il diodo ideale: collega il pannello a J1 (o un alimentatore da 6 V al suo posto) **senza** USB su J2. La tensione tra J1.1 e J3.1 (IN+) deve essere di poche decine di mV, non 0,3–0,4 V. Collega poi anche l'USB: J3.1 deve scendere a circa 4,6–4,7 V, segno che il pannello è stato staccato.
+6. Solo a questo punto collega l'ESP32 e il sensore.
 
 ---
 
@@ -151,7 +182,7 @@ I file sono generati da script Python nella cartella [`pcb/`](pcb/), senza un pr
 
 | Script | Funzione |
 |---|---|
-| `board.py` | Impronte con le dimensioni della libreria ufficiale di KiCad (SOT-23, SOT-89-3, SMA, 0805 *HandSolder*, elettrolitico D8 P3,5, connettori 2,54 mm), componenti, collegamenti e piazzamento |
+| `board.py` | Impronte con le dimensioni della libreria ufficiale di KiCad (SOT-23, SOT-23-6, SOT-89-3, SMA, 0805 *HandSolder*, elettrolitico D8 P3,5, connettori 2,54 mm), componenti, collegamenti e piazzamento |
 | `route.py` | Sbroglio automatico su griglia da 0,2 mm (A*, due strati) e vie di massa |
 | `drc.py` | Verifica indipendente: distanze esatte tra tutte le geometrie, continuità di ogni rete, continuità del piano di massa |
 | `gerber.py` | Scrittura di Gerber, forature, distinta |
@@ -162,7 +193,8 @@ Il controllo (`drc.py`) è stato a sua volta verificato introducendo di proposit
 Restano comunque due controlli da fare tu, perché non è stato usato un CAD commerciale con il suo DRC:
 
 - l'**anteprima del fornitore** dopo il caricamento (punto 3 di "Come ordinare");
-- la **piedinatura dell'HT7833** acquistato, come indicato sopra.
+- la **piedinatura dell'HT7833** acquistato, come indicato sopra;
+- se monti il diodo ideale, l'**orientamento dell'LTC4412** (pin 1 = VIN, sul lato del puntino) e la piedinatura nel datasheet del contenitore che hai comprato.
 
 Per rigenerare i file dopo una modifica (servono Python 3, numpy e Pillow):
 
