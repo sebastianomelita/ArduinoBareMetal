@@ -42,7 +42,7 @@ In pratica queste schede hanno già il **partitore attivabile**: consumo zero a 
 
 ### Regole importanti
 
-- **Non usare insieme l'USB-C della scheda e il pin 5V.** Heltec li considera ingressi alternativi. L'USB deve entrare solo tramite D2. Per programmare la scheda scollega pannello e USB esterno.
+- **Non usare insieme l'USB-C della scheda e il pin 5V.** Heltec li considera ingressi alternativi. L'USB deve entrare solo tramite D2. Per programmare la scheda basta staccare il filo che arriva al pin 5V, meglio con un interruttore o un ponticello: vedi [Programmare la scheda](#programmare-la-scheda-dove-mettere-linterruttore).
 - **Tensione del pannello.** La tensione a vuoto del pannello, meno circa 0,4 V del diodo, deve restare entro il massimo ammesso dal pin 5V. Per la WiFi LoRa 32 V4 Heltec dichiara 4,7–6 V; per la Kit 32 V3 e la Stick Lite V3 verificalo sullo schema della tua revisione. In caso di dubbio usa un pannello da **5 V nominali** e misura la tensione a vuoto al sole: dopo D1 non deve superare 6 V. Se al posto di D1 usi il diodo ideale LTC4412, i requisiti diventano più stretti: vedi [Diodo ideale LTC4412 al posto di D1](#diodo-ideale-ltc4412-al-posto-di-d1).
 - **Polarità del connettore batteria.** I cavetti SH1.25 in commercio non sono tutti uguali: controlla che il rosso arrivi sul + della scheda prima di collegare.
 
@@ -91,7 +91,7 @@ Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: l
 - ✅ Load sharing vero, corrente di carica regolabile, pannelli da 6 V senza problemi.
 - ✅ Funziona anche con schede ESP32 diverse, senza dipendere dai dettagli della Heltec.
 - ⚠️ Il pin 3V3 viene usato come **ingresso**: per la V4 Heltec dichiara 2,7–3,5 V in ingresso sul pin 3V3. Per la tua scheda verifica sul datasheet o sullo schema.
-- ⚠️ Mentre programmi via USB-C, il regolatore della scheda e l'HT7833 si trovano in parallelo sulla linea 3V3: per sicurezza scollega il filo dell'HT7833.
+- ⚠️ Mentre programmi via USB-C, il regolatore della scheda e l'HT7833 si trovano in parallelo sulla linea 3V3: per sicurezza stacca il filo tra l'HT7833 e il pin 3V3 (vedi [Programmare la scheda](#programmare-la-scheda-dove-mettere-linterruttore)).
 
 ---
 
@@ -105,6 +105,30 @@ Se invece preferisci usare il partitore interno, la strada è l'**opzione A**: l
 | Corrente di carica | Fissa, decisa dalla scheda | Regolabile (R_PROG) |
 | Lettura batteria | Partitore interno (GPIO1 + GPIO37) | Partitore attivabile esterno |
 | Adatto a | ESP32 quasi sempre in deep sleep, montaggio rapido | Uso 24/7, sensori pesanti, massimo controllo |
+
+---
+
+## Programmare la scheda: dove mettere l'interruttore
+
+Mentre programmi la Heltec via USB-C, l'alimentazione esterna non deve arrivare alla scheda dallo stesso lato dell'USB del PC. Non serve staccare tutto: basta **un interruttore (o un ponticello a 2 pin) nel punto giusto**.
+
+<p align="center">
+  <img src="img/heltec_interruttore_prog.svg" alt="Posizione dell'interruttore per la programmazione con le opzioni A e B" width="100%">
+</p>
+
+| | Dove va l'interruttore | Perché proprio lì |
+|---|---|---|
+| **Opzione A** | Sul filo tra il **nodo comune** di D1 e D2 (o dell'LTC4412 e D2) e il **pin 5V** | Pannello e USB esterno arrivano alla scheda solo da quel filo: un solo contatto li stacca tutti e due. Se lo metti sul solo filo del pannello, l'USB esterno arriva ancora al pin 5V, insieme all'USB-C del PC |
+| **Opzione B** | Sulla linea **3,3 V** tra l'uscita dell'HT7833 e il **pin 3V3** (sullo stampato è **JP3**) | Il problema sono i due regolatori in parallelo sul 3,3 V. Staccare il pannello non basta: la batteria continua ad alimentare l'HT7833 attraverso Q1 |
+
+In entrambi i casi:
+
+- **apri** l'interruttore **prima** di collegare l'USB-C e **richiudilo** dopo averlo staccato;
+- il **pannello può restare collegato** e al sole: a monte dell'interruttore non disturba;
+- la **massa resta sempre collegata**;
+- nell'opzione A la **LiPo sul connettore SH1.25 resta collegata**: USB-C più batteria è l'uso normale previsto da Heltec.
+
+Basta un deviatore a slitta o un pettine a 2 pin con cappuccio. La corrente è al massimo qualche centinaio di mA, quindi va bene qualunque piccolo interruttore da circuito stampato.
 
 ---
 
