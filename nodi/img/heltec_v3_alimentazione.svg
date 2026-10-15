@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 820" width="1300" height="820" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .w{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .v5{stroke:#e07a00}.reg{stroke:#7b2cbf}.v33{stroke:#2a9d8f}.bat{stroke:#c1121f}.gnd{stroke:#444}.usb{stroke:#1d70b8}
+      .c{fill:none;stroke:#222;stroke-width:2.4;stroke-linecap:round}
+      .lbl{font-size:14px;fill:#222}
+      .lblb{font-size:14px;fill:#222;font-weight:bold}
+      .s{font-size:12.5px;fill:#444}
+      .net{font-size:13.5px;font-weight:bold}
+      .leg{font-size:14.5px;fill:#222}
+    </style>
+    <g id="gnd"><path class="w gnd" d="M0 0V10M-11 10H11M-7 15H7M-3 20H3"/></g>
+    <!-- condensatore verticale: terminale superiore a (0,0), inferiore a (0,40) -->
+    <g id="cap"><path class="c" d="M0 0V16M-12 16H12M-12 24H12M0 24V40"/></g>
+  </defs>
+
+  <rect width="1300" height="820" fill="#ffffff"/>
+  <text x="40" y="40" font-size="23" font-weight="bold" fill="#1d3557">Heltec Wireless Stick Lite V3: alimentazione sulla scheda (ridisegnata dallo schema Heltec)</text>
+
+  <!-- ===================== USB-C e fusibile ===================== -->
+  <rect x="40" y="104" width="70" height="32" rx="6" fill="#9aa5b1" stroke="#555" stroke-width="1.5"/>
+  <text x="75" y="125" text-anchor="middle" class="lblb" fill="#fff">USB-C</text>
+  <path class="w usb" d="M110 120H140"/>
+  <text x="125" y="96" text-anchor="middle" class="net" fill="#1d70b8">VUSB</text>
+  <rect x="140" y="111" width="50" height="18" rx="3" fill="#fff" stroke="#222" stroke-width="2.2"/>
+  <path d="M146 120H184" stroke="#222" stroke-width="1.5"/>
+  <text x="165" y="150" text-anchor="middle" class="lblb">F1</text>
+  <text x="165" y="166" text-anchor="middle" class="s">fusibile 6 V 500 mA</text>
+
+  <!-- ===================== rete VDD_5V ===================== -->
+  <path class="w v5" d="M190 120H700"/>
+  <text x="238" y="108" class="net" fill="#e07a00">VDD_5V</text>
+  <!-- pin 5V del pettine -->
+  <circle cx="300" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="w v5" d="M300 120V78"/>
+  <rect x="290" y="62" width="20" height="16" fill="#d4a017" stroke="#555" stroke-width="1.5"/>
+  <text x="318" y="75" class="lblb">pin 5V del pettine</text>
+
+  <!-- D1 RSB6.8S -->
+  <circle cx="370" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="c" d="M370 120V160M370 196V230"/>
+  <polygon points="358,160 382,160 370,178" fill="#222"/>
+  <polygon points="358,196 382,196 370,178" fill="#222"/>
+  <path class="c" d="M356 178H384"/>
+  <use href="#gnd" x="370" y="230"/>
+  <text x="352" y="172" text-anchor="end" class="lblb">D1</text>
+  <text x="352" y="188" text-anchor="end" class="s">RSB6.8S</text>
+  <text x="352" y="203" text-anchor="end" class="s">ESD, 6,8 V</text>
+
+  <!-- ===================== load sharing ===================== -->
+  <rect x="420" y="136" width="310" height="194" rx="10" fill="#e3f4e8" fill-opacity="0.55" stroke="#1b7a3a" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="613" y="157" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b7a3a">load sharing interno</text>
+  <text x="613" y="174" text-anchor="middle" font-size="11.5" fill="#1b7a3a">(come Q1, D3, R3 del README)</text>
+
+  <!-- R4 -->
+  <circle cx="440" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="c" d="M440 120V190M440 240V262"/>
+  <rect x="431" y="190" width="18" height="50" fill="#fff" stroke="#222" stroke-width="2.2"/>
+  <use href="#gnd" x="440" y="262"/>
+  <text x="456" y="212" class="lblb">R4</text>
+  <text x="456" y="228" class="s">10k</text>
+
+  <!-- R5 -> gate Q2 -->
+  <circle cx="520" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="c" d="M520 120V190M520 236V270"/>
+  <rect x="511" y="186" width="18" height="50" fill="#fff" stroke="#222" stroke-width="2.2"/>
+  <text x="536" y="208" class="lblb">R5</text>
+  <text x="536" y="224" class="s">1k</text>
+
+  <!-- Q2 AO3401 (drain a sinistra, source a destra, gate in alto) -->
+  <g transform="translate(-240,110)">
+    <path class="c" d="M700 190H740V172"/>
+    <path class="c" d="M780 172V190H820"/>
+    <path d="M735 172H750M753 172H767M770 172H785" stroke="#222" stroke-width="3.2"/>
+    <path d="M735 160H785" stroke="#222" stroke-width="3.2"/>
+    <path class="c" d="M760 172V190H780"/>
+    <polygon points="760,188 754,178 766,178" fill="#222"/>
+  </g>
+  <text x="468" y="292" class="s">D</text>
+  <text x="566" y="292" class="s">S</text>
+  <text x="486" y="324" class="lblb">Q2 AO3401</text>
+
+  <!-- D2 1N5819 -->
+  <circle cx="700" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="c" d="M700 120V198M700 222V300"/>
+  <polygon points="688,198 712,198 700,222" fill="#222"/>
+  <path class="c" d="M688 222H712"/>
+  <text x="660" y="208" text-anchor="end" class="lblb">D2</text>
+  <text x="660" y="224" text-anchor="end" class="s">1N5819</text>
+
+  <!-- ===================== ingresso regolatore ===================== -->
+  <path class="w reg" d="M580 300H860"/>
+  <circle cx="700" cy="300" r="4.5" fill="#7b2cbf"/>
+  <text x="790" y="290" text-anchor="middle" class="net" fill="#7b2cbf">ingresso LDO</text>
+  <circle cx="760" cy="300" r="4.5" fill="#7b2cbf"/>
+  <use href="#cap" x="760" y="300"/>
+  <use href="#gnd" x="760" y="340"/>
+  <text x="776" y="324" class="lblb">C5</text>
+  <text x="776" y="340" class="s">1 µF</text>
+
+  <!-- U2 CE6260B33M -->
+  <circle cx="830" cy="300" r="4.5" fill="#7b2cbf"/>
+  <path class="w reg" d="M830 300V330H860"/>
+  <rect x="860" y="270" width="150" height="100" rx="6" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="935" y="262" text-anchor="middle" class="lblb">U2 CE6260B33M</text>
+  <text x="868" y="305" class="s">IN</text>
+  <text x="868" y="335" class="s">EN</text>
+  <text x="1002" y="305" class="s" text-anchor="end">OUT</text>
+  <text x="935" y="362" class="s" text-anchor="middle">GND</text>
+  <text x="935" y="325" class="lbl" text-anchor="middle">LDO 3,3 V</text>
+  <path class="w gnd" d="M935 370V380"/><use href="#gnd" x="935" y="380"/>
+  <path class="w v33" d="M1010 300H1110"/>
+  <text x="1060" y="290" text-anchor="middle" class="net" fill="#2a9d8f">VDD_3V3</text>
+  <rect x="1110" y="262" width="150" height="76" rx="8" fill="#1d4e89" stroke="#0b2545" stroke-width="2"/>
+  <text x="1185" y="292" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">ESP32-S3</text>
+  <text x="1185" y="312" text-anchor="middle" font-size="12.5" fill="#dfe7f2">+ LoRa</text>
+  <text x="1185" y="328" text-anchor="middle" font-size="12.5" fill="#dfe7f2">+ pin 3V3</text>
+
+  <!-- ===================== caricatore ===================== -->
+  <circle cx="230" cy="120" r="4.5" fill="#e07a00"/>
+  <path class="w v5" d="M230 120V420"/>
+  <circle cx="230" cy="380" r="4.5" fill="#e07a00"/>
+  <path class="c" d="M230 380H170"/>
+  <use href="#cap" x="170" y="380"/>
+  <use href="#gnd" x="170" y="420"/>
+  <text x="150" y="400" class="lblb" text-anchor="end">C8</text>
+  <text x="150" y="416" class="s" text-anchor="end">10 µF</text>
+
+  <rect x="190" y="420" width="150" height="110" rx="6" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="265" y="465" text-anchor="middle" class="lblb">U3 TP4054</text>
+  <text x="265" y="482" text-anchor="middle" class="s">caricatore LiPo</text>
+  <text x="230" y="440" text-anchor="middle" class="s">VCC</text>
+  <text x="332" y="455" class="s" text-anchor="end">BAT</text>
+  <text x="198" y="512" class="s">PROG</text>
+  <text x="332" y="512" class="s" text-anchor="end">CHRG</text>
+  <path class="c" d="M190 508H130V540"/>
+  <rect x="121" y="540" width="18" height="44" fill="#fff" stroke="#222" stroke-width="2.2"/>
+  <path class="c" d="M130 584V600"/>
+  <use href="#gnd" x="130" y="600"/>
+  <text x="112" y="560" class="lblb" text-anchor="end">R9</text>
+  <text x="112" y="576" class="s" text-anchor="end">2k</text>
+  <path class="c" d="M340 508H372"/>
+  <text x="378" y="512" class="s">LED di carica</text>
+  <text x="265" y="552" text-anchor="middle" class="s">I carica = 1000 V / R9 = 500 mA</text>
+
+  <!-- ===================== rete VBAT ===================== -->
+  <path class="w bat" d="M340 450H700"/>
+  <text x="600" y="440" class="net" fill="#c1121f">VBAT</text>
+  <!-- drain di Q2 verso VBAT -->
+  <path class="w bat" d="M460 300H420V450"/>
+  <circle cx="420" cy="450" r="4.5" fill="#c1121f"/>
+  <circle cx="520" cy="450" r="4.5" fill="#c1121f"/>
+  <use href="#cap" x="520" y="450"/>
+  <use href="#gnd" x="520" y="490"/>
+  <text x="536" y="474" class="lblb">C9</text>
+  <text x="536" y="490" class="s">220 nF</text>
+
+  <!-- partitore (altra pagina dello schema) -->
+  <circle cx="620" cy="450" r="4.5" fill="#c1121f"/>
+  <path class="c" d="M620 450V510" stroke-dasharray="5 4"/>
+  <rect x="560" y="510" width="200" height="52" rx="6" fill="#fff" stroke="#888" stroke-width="1.8" stroke-dasharray="6 4"/>
+  <text x="660" y="532" text-anchor="middle" class="s">partitore 390k/100k → GPIO1</text>
+  <text x="660" y="550" text-anchor="middle" class="s">attivato da GPIO37 (ADC_Ctrl)</text>
+
+  <!-- JP1 connettore batteria -->
+  <rect x="700" y="425" width="110" height="60" rx="6" fill="#fff3d6" stroke="#333" stroke-width="2"/>
+  <text x="755" y="450" text-anchor="middle" class="lblb">JP1</text>
+  <text x="755" y="470" text-anchor="middle" class="s">SH1.25 LiPo</text>
+  <path class="w gnd" d="M755 485V500"/><use href="#gnd" x="755" y="500"/>
+
+  <!-- ===================== note a destra ===================== -->
+  <rect x="845" y="415" width="425" height="190" rx="8" fill="#fff8e1" stroke="#e0a800" stroke-width="1.5"/>
+  <text x="862" y="440" class="lblb">Da notare</text>
+  <text x="862" y="464" class="s">• Il pin 5V è sulla rete VDD_5V, a valle di F1: è lo stesso</text>
+  <text x="874" y="481" class="s">nodo del VBUS dell'USB-C. Ciò che entra dal pin 5V</text>
+  <text x="874" y="498" class="s">non passa dal fusibile.</text>
+  <text x="862" y="522" class="s">• Con VDD_5V presente Q2 è spento: l'LDO prende da VDD_5V</text>
+  <text x="874" y="539" class="s">tramite D2 e il TP4054 carica la batteria senza carico.</text>
+  <text x="862" y="563" class="s">• Senza VDD_5V, R4 porta il gate a GND: Q2 si accende</text>
+  <text x="874" y="580" class="s">e la scheda è alimentata dalla batteria.</text>
+
+  <!-- ===================== legenda ===================== -->
+  <rect x="30" y="625" width="1240" height="175" rx="10" fill="#f8f9fa" stroke="#ccc"/>
+  <text x="50" y="653" class="lblb" font-size="15">Legenda</text>
+  <path class="w v5" d="M50 678H85"/><text x="92" y="683" class="leg">VDD_5V (USB-C e pin 5V)</text>
+  <path class="w reg" d="M330 678H365"/><text x="372" y="683" class="leg">ingresso del regolatore</text>
+  <path class="w bat" d="M590 678H625"/><text x="632" y="683" class="leg">VBAT</text>
+  <path class="w v33" d="M720 678H755"/><text x="762" y="683" class="leg">3,3 V</text>
+  <use href="#gnd" x="870" y="668"/><text x="890" y="683" class="leg">massa</text>
+  <text x="50" y="716" class="leg">• Schema semplificato: sono riportati solo i componenti dell'alimentazione. Riferimenti e valori sono quelli dello schema Heltec HTIT-WSL_V3.</text>
+  <text x="50" y="742" class="leg">• La WiFi Kit 32 V3 (revisione V3.2) ha la stessa struttura con componenti diversi: caricatore LGS4056, fusibile da 2 A, Schottky 1N5817,</text>
+  <text x="64" y="764" class="leg">più un secondo LDO per Vext. Controlla lo schema della tua revisione.</text>
+  <text x="50" y="790" class="leg">• Il partitore della batteria è su un'altra pagina dello schema ed è disegnato tratteggiato.</text>
+</svg>
