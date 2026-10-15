@@ -1,6 +1,6 @@
-# Uso con schede Heltec (WiFi Kit 32 V3, Wireless Stick Lite V3)
+# Uso con schede Heltec (WiFi Kit 32 V3, Wireless Stick Lite V3, WiFi LoRa 32 V4)
 
-Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [panel2esp32.md](panel2esp32.md).
+Questa guida spiega come adattare il progetto alle schede **Heltec WiFi Kit 32 V3** e **Heltec Wireless Stick Lite V3**, entrambe basate su ESP32-S3. Per il circuito di base, il load sharing e la sezione SDS011 fai riferimento al [README](README.md).
 
 <p align="center">
   <img src="img/heltec_opzioni.svg" alt="Opzioni di alimentazione per schede Heltec" width="100%">
@@ -187,10 +187,96 @@ Vale tutto quanto descritto nella sezione [SDS011](README.md#sensore-pesante-sds
   - **opzione B:** usa **OUT+** del TP4056, come nel README.
 - **Pin.** Sull'ESP32-S3 l'UART si può assegnare a quasi tutti i GPIO: scegli due pin liberi della tua scheda per RX e TX e un terzo per il comando del boost, poi aggiorna le costanti nel codice.
 
+Con la **WiFi LoRa 32 V4** c'è una strada più semplice, descritta nella sezione seguente.
+
+---
+
+## Heltec WiFi LoRa 32 V4 con SDS011: alimentazione tramite Vext
+
+La WiFi LoRa 32 V4 ha già sulla scheda quasi tutto quello che, nelle altre configurazioni, si costruisce a parte: ingresso per il pannello solare (4,7–6 V), caricatore, connettore della batteria e soprattutto un'**uscita di alimentazione commutata, Vext**. Vext fornisce **3,3 V fino a 500 mA** e si accende portando a livello basso **GPIO36** (Vext_Ctrl). In pratica è l'interruttore lato alto che sulle altre schede si realizza con Q4 e Q5: per alimentare un SDS011 basta aggiungere un **modulo boost a 5 V** tra Vext e il sensore.
+
+<p align="center">
+  <img src="img/heltec_v4_sds011.svg" alt="Heltec WiFi LoRa 32 V4 con SDS011 alimentato da Vext tramite boost 5 V" width="100%">
+</p>
+
+### Il collegamento
+
+- **Vext → ingresso del boost → 5V dell'SDS011.** Il boost serve perché Vext dà 3,3 V e l'SDS011 vuole 5 V. Il pin 5V della scheda non si può usare: ha tensione solo quando è collegato l'USB.
+- **Masse in comune:** GND della Heltec, ingresso e uscita del boost, GND dell'SDS011.
+- **Seriale:** TXD del sensore → un GPIO libero usato come RX; un altro GPIO libero usato come TX → RXD del sensore. I livelli dell'SDS011 sono a 3,3 V, quindi il collegamento è diretto. Scegli i GPIO sul pinout della V4 tra quelli non usati dalla radio LoRa, dal display, da GPIO36 (Vext_Ctrl) e da GPIO37 (ADC_Ctrl).
+
+### Il bilancio di corrente
+
+L'SDS011 assorbe circa 70 mA a 5 V. Con un rendimento del boost intorno all'85 %, da Vext servono circa 5 × 0,07 / (3,3 × 0,85) ≈ **125 mA**, ben sotto i 500 mA disponibili.
+
+Vext però prende corrente dalla **stessa linea a 3,3 V** dell'ESP32 e della radio LoRa. Con sensore e radio in trasmissione insieme si resta intorno ai 300 mA; il WiFi aggiungerebbe picchi di circa 400 mA. Durante la misura **lascia spento il WiFi**.
+
+### Il picco all'accensione
+
+L'uscita Vext probabilmente non ha un soft-start, e un boost ha un percorso diretto tra ingresso e uscita (induttore e diodo). Quando Vext si accende, il condensatore d'uscita del boost si carica di colpo, e il picco può far calare la linea a 3,3 V da cui si alimenta anche l'ESP32. Per questo:
+
+- tieni il condensatore sull'uscita del boost **piccolo**, 100–220 µF, invece dei 470–1000 µF usati con l'interruttore con soft-start;
+- se all'accensione del sensore vedi dei reset, usa un boost che da spento isoli l'uscita, come il **Pololu U1V11F5**, oppure passa al circuito con soft-start del README.
+
+### La sequenza di ogni misura
+
+1. **GPIO36 LOW**: Vext si accende, e con lui il boost e l'SDS011.
+2. **30 secondi** di ventola, poi lettura di 3–5 pacchetti.
+3. **Comando di sleep** all'SDS011, che ferma ventola e laser.
+4. **Pin TX dell'ESP32 in ingresso**, per non alimentare il sensore spento attraverso la seriale.
+5. **GPIO36 HIGH**: Vext si spegne.
+6. **Deep sleep**, con GPIO36 **bloccato alto**: durante il deep sleep i GPIO restano flottanti, e un Vext riacceso consumerebbe la batteria.
+
+Vext alimenta anche il display della scheda: mentre il sensore è acceso, si accende anche quello.
+
+### Codice
+
+Il codice SDS011 del README (`readSdsFrame()`, `sdsSleep()`) vale così com'è. Cambiano solo le funzioni di accensione e spegnimento:
+
+```cpp
+#include "driver/gpio.h"
+
+const int VEXT_CTRL  = 36;   // LOW = Vext acceso
+const int SDS_RX_PIN = 47;   // RX dell'ESP32  <- TXD dell'SDS011  (scegli un GPIO libero)
+const int SDS_TX_PIN = 48;   // TX dell'ESP32  -> RXD dell'SDS011  (scegli un GPIO libero)
+
+HardwareSerial sds(1);
+
+void sdsPowerOn() {
+  gpio_hold_dis((gpio_num_t)VEXT_CTRL);     // sblocca il pin bloccato prima del deep sleep
+  pinMode(VEXT_CTRL, OUTPUT);
+  digitalWrite(VEXT_CTRL, LOW);             // Vext acceso
+  delay(50);
+  sds.begin(9600, SERIAL_8N1, SDS_RX_PIN, SDS_TX_PIN);
+}
+
+void sdsPowerOff() {
+  sdsSleep();                               // ferma ventola e laser
+  sds.end();
+  pinMode(SDS_TX_PIN, INPUT);               // niente alimentazione dalla linea TX
+  digitalWrite(VEXT_CTRL, HIGH);            // Vext spento
+}
+
+void goToSleep(uint64_t us) {
+  digitalWrite(VEXT_CTRL, HIGH);
+  gpio_hold_en((gpio_num_t)VEXT_CTRL);      // mantiene Vext spento durante il deep sleep
+  gpio_deep_sleep_hold_en();
+  esp_sleep_enable_timer_wakeup(us);
+  esp_deep_sleep_start();
+}
+```
+
+> ⚠️ I numeri di GPIO 47 e 48 per la seriale sono solo un esempio: **verificali sul pinout della tua revisione della V4** prima di usarli, e sceglili tra quelli liberi.
+
+### Consumi
+
+Valgono le tabelle della [sezione SDS011](README.md#bilancio-energetico) del README: con una misura ogni 30 minuti l'SDS011 consuma circa 60 mAh al giorno. In deep sleep a batteria la V4 assorbe circa 20 µA (dato del datasheet), quindi il bilancio è dominato dal sensore, e il pannello va dimensionato di conseguenza.
+
 ---
 
 ## Fonti
 
 - [Heltec WiFi Kit 32 V3, datasheet Rev1.1](https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WiFi%20kit32_V3(Rev1.1).pdf)
 - [ESPBoards: Heltec Wireless Stick Lite (V3)](https://www.espboards.dev/esp32/heltec-wireless-stick-lite-v3/)
-- [Heltec WiFi LoRa 32 V4.2.0, datasheet](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf) (per i valori di riferimento del pin 5V e del pin 3V3)
+- [Heltec WiFi LoRa 32 V4.2.0, datasheet](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf) (pin 5V e 3V3, uscita Vext 500 mA con GPIO36, consumo in deep sleep)
+- [Pololu 5V Step-Up Voltage Regulator U1V11F5](https://www.pololu.com/product/2562)
