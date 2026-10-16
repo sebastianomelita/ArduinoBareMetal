@@ -37,6 +37,38 @@ In **sostanza**, grazie alla **bassa attenuazione per km** delle fibre ottiche, 
 
 > L'analogia è il vecchio Ethernet su cavo coassiale: il mezzo è passivo e comune a tutti, e la regola su chi parla quando la fanno le stazioni. In GPON, però, la regola non è a contesa (come il CSMA/CD) ma **centralizzata** nell'OLT.
 
+#### **TDM e TDMA a confronto**
+
+Entrambe le tecniche dividono il mezzo **nel tempo**, ma differiscono per **chi trasmette**:
+
+- **TDM** (*Time Division Multiplexing*, multiplazione): c'è **un solo trasmettitore**, che riceve più flussi e li intreccia nel tempo in un unico segnale continuo. È lui stesso a decidere l'ordine, per cui le collisioni sono impossibili per costruzione. Esempi: il downstream GPON, i trunk E1/SDH della telefonia, i sotto-canali OTN dentro una λ.
+- **TDMA** (*Time Division Multiple Access*, accesso multiplo): ci sono **molti trasmettitori**, distinti e distanti, che condividono lo stesso mezzo parlando a turno. Nessuno vede gli altri, quindi serve un **coordinatore** che assegni i turni, altrimenti i segnali si sovrappongono. Esempi: l'upstream GPON, l'uplink radio del GSM, i terminali satellitari che condividono un transponder.
+
+| | TDM | TDMA |
+|---|---|---|
+| Trasmettitori | uno solo | molti, distribuiti |
+| Segnale | continuo | a *burst* (lampi) |
+| Chi assegna i tempi | il trasmettitore stesso | un coordinatore (OLT, stazione base) |
+| Collisioni possibili | no | sì, senza coordinamento |
+| Servono *ranging* e tempi di guardia | no | sì |
+
+In ambito PON le due tecniche si usano in **direzioni opposte**:
+
+| Direzione | Flusso | Tecnica | Chi trasmette | Come funziona |
+|---|---|---|---|---|
+| Downstream | OLT → ONT | TDM | l'OLT, in modo continuo | flusso in broadcast a 1490 nm: tutte le ONT ricevono tutto, ma ciascuna tiene solo i propri dati |
+| Upstream | ONT → OLT | TDMA | le ONT, a turno | flusso intermittente a 1310 nm, coordinato dall'OLT tramite DBA per evitare collisioni |
+
+**Downstream.** L'OLT è l'unico trasmettitore della linea: non c'è rischio di collisione alla sorgente, per cui basta il TDM. Ogni ONT legge l'intestazione delle trame GEM (il **GEM Port ID**) e preleva solo quelle a lei indirizzate. Va però precisato che gli slot **non sono rigidi** come in un E1: la trama dura sempre **125 µs** (8000 trame al secondo), ma il suo contenuto è una sequenza di trame GEM **di lunghezza variabile**, composta dall'OLT in base al traffico. Non ci sono "64 canali fissi", uno per ONT: una ONT inattiva può non comparire per molte trame, una che scarica un file può occuparne gran parte. È un **TDM dinamico**, o statistico.
+
+**Upstream.** Se più ONT trasmettessero insieme, i segnali si sommerebbero nello splitter (**collisione ottica**) e l'OLT non riuscirebbe a leggerli. L'OLT agisce allora da "vigile urbano": nell'intestazione di ogni trama downstream pubblica la **mappa di banda** (**BWmap**), che dice a ciascuna ONT da quale istante a quale istante può trasmettere nella prossima trama upstream. Quando arriva il suo turno, la ONT accende il laser e invia un **burst** di luce, preceduto da un preambolo che permette al ricevitore dell'OLT di agganciarsi; finito il turno si spegne, lasciando un piccolo **tempo di guardia** prima del burst successivo. Il ricevitore dell'OLT è di tipo **burst-mode**: deve agganciare al volo burst che arrivano con potenze diverse, da ONT a distanze diverse.
+
+Il TDMA funziona grazie a due meccanismi dell'OLT:
+
+1. **Ranging.** All'attivazione di ogni ONT, l'OLT ne misura il **ritardo di andata e ritorno**: un utente a 2 km e uno a 15 km hanno tempi di propagazione molto diversi (la luce in fibra percorre circa 5 µs per km). L'OLT assegna a ogni ONT un ritardo aggiuntivo (**Equalization Delay**) che rende tutte le ONT "virtualmente equidistanti", in modo che i burst arrivino all'OLT esattamente nei tempi previsti dalla BWmap. La precisione richiesta non è del millisecondo ma dell'ordine dei **nanosecondi**, cioè di pochi bit.
+2. **DBA** (*Dynamic Bandwidth Allocation*). L'OLT modifica trama per trama la durata dei turni: a una ONT che sta caricando un video concede burst più lunghi, a quelle inattive turni minimi o nulli. La banda è assegnata per **T-CONT** (*Transmission Container*), i "contenitori" di traffico upstream di ogni ONT, ciascuno con la propria classe di servizio (ad esempio banda fissa o garantita per la voce, *best effort* per i dati). L'OLT conosce il fabbisogno delle ONT in due modi: perché le ONT gli segnalano quanto traffico hanno in coda (DBA a *status report*) oppure osservando quanto usano effettivamente i turni concessi (DBA a *traffic monitoring*).
+
+
 Fa eccezione lo standard **NG-PON2 (TWDM-PON)**, che usa più λ anche nella rete di accesso, ciascuna con il proprio TDM/TDMA; in Italia oggi si usano soprattutto **GPON** e **XGS-PON**, che funzionano come descritto sopra.
 
 ![Multiplazione nella rete di accesso GPON e nella dorsale DWDM](img/multiplazione_gpon_dwdm.svg)
