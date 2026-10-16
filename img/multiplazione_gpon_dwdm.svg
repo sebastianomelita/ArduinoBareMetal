@@ -14,49 +14,37 @@
 <rect x="170" y="190" width="650" height="100" rx="6" fill="#FAC775" stroke="#BA7517" stroke-width="0.8"/>
 <rect x="170" y="190" width="650" height="100" rx="6" fill="#ffffff" fill-opacity="0.6"/>
 <text x="495" y="240" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" font-style="italic" dominant-baseline="central">fibra di feeder (una sola)</text>
-<rect x="200" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="227" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="258" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="285" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="316" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="343" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
-<rect x="374" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="401" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="432" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="459" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="490" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="517" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
-<rect x="548" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="575" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="606" y="200" width="54" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="633" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="664" y="200" width="54" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="691" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
-<rect x="722" y="200" width="54" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="749" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="200" y="200" width="44" height="24" rx="3" fill="#5F5E5A" stroke="none" stroke-width="1"/>
+<text x="222.0" y="212" font-size="9.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">BWmap</text>
+<rect x="247" y="200" width="120" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="307.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="370" y="200" width="42" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="391.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="415" y="200" width="56" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="443.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="474" y="200" width="30" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="489.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">3</text>
+<rect x="507" y="200" width="44" height="24" rx="3" fill="#5F5E5A" stroke="none" stroke-width="1"/>
+<text x="529.0" y="212" font-size="9.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">BWmap</text>
+<rect x="554" y="200" width="150" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="629.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="707" y="200" width="52" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="733.0" y="212" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
 <line x1="200" y1="232" x2="780" y2="232" stroke="#633806" stroke-width="1.2" stroke-linecap="butt"/>
 <line x1="760" y1="232" x2="785" y2="232" stroke="#633806" stroke-width="1.2" marker-end="url(#ar)"/>
-<text x="200" y="168" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↓ λ 1490 nm · TDM: un flusso continuo composto dall'OLT, uno slot per ONT (in broadcast)</text>
-<rect x="205" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="229" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="269" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="293" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="333" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="357" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
-<rect x="397" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="421" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="461" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="485" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="525" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="549" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
-<rect x="589" y="256" width="48" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
-<text x="613" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
-<rect x="653" y="256" width="48" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
-<text x="677" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
-<rect x="717" y="256" width="48" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
-<text x="741" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
+<text x="200" y="168" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↓ λ 1490 nm · TDM dinamico: trame da 125 µs; BWmap in testa, porzioni variabili per ONT</text>
+<rect x="205" y="256" width="140" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="275.0" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="357" y="256" width="50" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="382.0" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="419" y="256" width="90" height="24" rx="3" fill="#378ADD" stroke="none" stroke-width="1"/>
+<text x="464.0" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT1</text>
+<rect x="521" y="256" width="120" height="24" rx="3" fill="#7F77DD" stroke="none" stroke-width="1"/>
+<text x="581.0" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT2</text>
+<rect x="653" y="256" width="40" height="24" rx="3" fill="#D4537E" stroke="none" stroke-width="1"/>
+<text x="673.0" y="268" font-size="10.5" text-anchor="middle" font-weight="bold" fill="#ffffff" dominant-baseline="central">ONT3</text>
 <line x1="785" y1="248" x2="200" y2="248" stroke="#633806" stroke-width="1.2" marker-end="url(#ar)"/>
-<text x="200" y="312" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↑ λ 1310 nm · TDMA: burst delle ONT in fila, con piccoli intervalli di guardia, nei tempi assegnati dall'OLT</text>
+<text x="200" y="312" font-size="12.5" text-anchor="start" font-weight="bold" fill="#633806" dominant-baseline="central">↑ λ 1310 nm · TDMA: burst di durata variabile (DBA); chi non ha traffico non trasmette</text>
 <polygon points="820,240 900,204 900,276" fill="#FAC775" stroke="#854F0B"/>
 <text x="856" y="296" font-size="13" text-anchor="middle" font-weight="bold" fill="#633806" dominant-baseline="central">Splitter 1:N</text>
 <text x="856" y="313" font-size="11" text-anchor="middle" font-weight="normal" fill="#854F0B" dominant-baseline="central">passivo</text>
@@ -101,7 +89,7 @@
 <line x1="1060" y1="360" x2="1298" y2="360" stroke="#BA7517" stroke-width="3" stroke-linecap="butt"/>
 <text x="1110" y="445" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">↓ ogni ONT riceve la copia di tutto il flusso e tiene solo i suoi slot (gli altri sono cifrati)</text>
 <text x="1110" y="463" font-size="11.5" text-anchor="middle" font-weight="normal" fill="#5F5E5A" dominant-baseline="central">↑ ogni ONT trasmette solo quando l'OLT glielo concede: altrimenti i segnali si sommerebbero nello splitter</text>
-<line x1="227" y1="224" x2="230" y2="385" stroke="#5F5E5A" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="3 3"/>
+<line x1="307.0" y1="224" x2="230" y2="385" stroke="#5F5E5A" stroke-width="0.8" stroke-linecap="butt" stroke-dasharray="3 3"/>
 <rect x="200" y="385" width="560" height="92" rx="8" fill="#ffffff" stroke="#5F5E5A" stroke-width="0.8"/>
 <text x="214" y="403" font-size="12" text-anchor="start" font-weight="bold" fill="#2C2C2A" dominant-baseline="central">Dentro gli slot della ONT 1: trame Ethernet etichettate (multiplazione statistica, non TDM)</text>
 <rect x="214" y="423" width="150" height="26" rx="3" fill="#1D9E75" stroke="none" stroke-width="1"/>
