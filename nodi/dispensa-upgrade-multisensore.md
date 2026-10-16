@@ -652,4 +652,4 @@ Prima di chiudere il nodo nel contenitore:
 - [Datasheet Heltec WiFi LoRa 32 V4.2](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf): pin dei pettini, GPIO 7 VFEM_Control, GPIO usati dalla scheda
 - [Sensirion arduino-i2c-scd4x](https://github.com/Sensirion/arduino-i2c-scd4x): comando `setAmbientPressure` (range 70 000–120 000 Pa, accettato durante le misure periodiche)
 - [Crilley et al., *Evaluation of a low-cost optical particle counter (Alphasense OPC-N2) for ambient air monitoring*, AMT 11, 709–720 (2018)](https://amt.copernicus.org/articles/11/709/2018/): correzione κ-Köhler dei PM per l'umidità
-- Protocollo seriale del SDS011: già descritto nel [panel2esp32.md]panel2esp32.md.md#sensore-pesante-sds011) del progetto di alimentazione
+- Protocollo seriale del SDS011: già descritto nel [panel2esp32.md](panel2esp32.md.md#sensore-pesante-sds011) del progetto di alimentazione
