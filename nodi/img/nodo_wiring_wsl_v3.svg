@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1050" width="1240" height="1050" font-family="Helvetica, Arial, sans-serif">
+<rect width="1240" height="1050" fill="#ffffff"/>
+<text x="620" y="32" font-size="20" fill="#212121" text-anchor="middle" font-weight="bold">Schema di collegamento — Nodo LoRaWAN Heltec Wireless Stick Lite V3</text>
+<text x="620" y="54" font-size="13" fill="#616161" text-anchor="middle">SCD41 (CO₂/T/RH) + L76K (GPS) + LiPo 1S con protezione</text>
+<rect x="20" y="76" width="290" height="130" rx="6" fill="#fafafa" stroke="#bdbdbd" stroke-width="1" />
+<text x="32" y="96" font-size="12" fill="#424242" text-anchor="start" font-weight="bold">Legenda linee</text>
+<path d="M32 112H64" fill="none" stroke="#d32f2f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="116" font-size="12" fill="#333" text-anchor="start">Alimentazione 3,3 V</text>
+<path d="M32 132H64" fill="none" stroke="#d32f2f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
+<text x="74" y="136" font-size="12" fill="#333" text-anchor="start">Vext (3,3 V comandata da GPIO 36)</text>
+<path d="M32 152H64" fill="none" stroke="#212121" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="156" font-size="12" fill="#333" text-anchor="start">Massa (GND)</text>
+<path d="M32 172H64" fill="none" stroke="#1976d2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="176" font-size="12" fill="#333" text-anchor="start">Dati (I²C, UART)</text>
+<path d="M32 192H64" fill="none" stroke="#ef6c00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="196" font-size="12" fill="#333" text-anchor="start">Controllo (enable)</text>
+<rect x="330" y="76" width="580" height="84" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5" />
+<text x="344" y="98" font-size="13" fill="#e65100" text-anchor="start" font-weight="bold">⚠ Usa le etichette serigrafate sulla scheda</text>
+<text x="344" y="118" font-size="12" fill="#5d4037" text-anchor="start">Tra parentesi la posizione sui pettini JP2 / JP3 (pin 1 = quello quadrato).</text>
+<text x="344" y="136" font-size="12" fill="#5d4037" text-anchor="start">Vext è un'USCITA a 3,3 V comandata da GPIO 36: alimenta il SCD41.</text>
+<text x="344" y="154" font-size="12" fill="#5d4037" text-anchor="start">GPIO 36 è solo il comando: non collegarci i sensori.</text>
+<rect x="470" y="200" width="375" height="600" rx="12" fill="#eceff1" stroke="#37474f" stroke-width="2.5" />
+<text x="657.5" y="228" font-size="17" fill="#263238" text-anchor="middle" font-weight="bold">Heltec Wireless Stick Lite V3</text>
+<text x="657.5" y="247" font-size="12" fill="#546e7a" text-anchor="middle" font-style="italic">ESP32-S3FN8 + SX1262</text>
+<circle cx="470" cy="300" r="4.5" fill="#d32f2f"/>
+<text x="482" y="304" font-size="13" fill="#d32f2f" text-anchor="start">Vext 3,3 V (JP2.1)</text>
+<circle cx="470" cy="330" r="4.5" fill="#212121"/>
+<text x="482" y="334" font-size="13" fill="#212121" text-anchor="start">GND (JP2.2)</text>
+<circle cx="470" cy="360" r="4.5" fill="#1976d2"/>
+<text x="482" y="364" font-size="13" fill="#1976d2" text-anchor="start">GPIO 7 — SDA (JP3.17)</text>
+<circle cx="470" cy="390" r="4.5" fill="#1976d2"/>
+<text x="482" y="394" font-size="13" fill="#1976d2" text-anchor="start">GPIO 6 — SCL (JP3.18)</text>
+<circle cx="470" cy="455" r="4.5" fill="#d32f2f"/>
+<text x="482" y="459" font-size="13" fill="#d32f2f" text-anchor="start">3V3 (JP3.2)</text>
+<circle cx="470" cy="500" r="4.5" fill="#ef6c00"/>
+<text x="482" y="504" font-size="13" fill="#ef6c00" text-anchor="start">GPIO 34 — GPS_EN (JP2.7)</text>
+<circle cx="470" cy="560" r="4.5" fill="#1976d2"/>
+<text x="482" y="564" font-size="13" fill="#1976d2" text-anchor="start">GPIO 39 — RX ← GPS TX (JP2.12)</text>
+<circle cx="470" cy="590" r="4.5" fill="#1976d2"/>
+<text x="482" y="594" font-size="13" fill="#1976d2" text-anchor="start">GPIO 38 — TX → GPS RX (JP2.11)</text>
+<circle cx="845" cy="775" r="4.5" fill="#d32f2f"/>
+<text x="833" y="779" font-size="13" fill="#d32f2f" text-anchor="end">BAT (SH1.25)</text>
+<circle cx="845" cy="300" r="4.5" fill="#6a1b9a"/>
+<text x="833" y="304" font-size="13" fill="#6a1b9a" text-anchor="end">LoRa (IPEX)</text>
+<text x="657.5" y="625" font-size="12" fill="#455a64" text-anchor="middle">Interni (già collegati sulla scheda):</text>
+<text x="657.5" y="643" font-size="12" fill="#607d8b" text-anchor="middle">SX1262: NSS 8 · SCK 9 · MOSI 10 · MISO 11</text>
+<text x="657.5" y="661" font-size="12" fill="#607d8b" text-anchor="middle">RST 12 · BUSY 13 · DIO1 14</text>
+<text x="657.5" y="683" font-size="12" fill="#ef6c00" text-anchor="middle">Vext_Ctrl GPIO 36 (LOW = Vext acceso)</text>
+<text x="657.5" y="701" font-size="12" fill="#ef6c00" text-anchor="middle">ADC_Ctrl GPIO 37 (LOW = legge VBAT)</text>
+<text x="657.5" y="719" font-size="12" fill="#607d8b" text-anchor="middle">VBAT → 390k/100k → GPIO 1 · LED GPIO 35</text>
+<text x="657.5" y="745" font-size="12" fill="#1565c0" text-anchor="middle">USB-C → CP2102 → UART0 (Serial)</text>
+<rect x="40" y="230" width="290" height="168" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" />
+<text x="185.0" y="254" font-size="16" fill="#2e7d32" text-anchor="middle" font-weight="bold">Sensirion SCD41</text>
+<text x="185.0" y="272" font-size="12" fill="#555" text-anchor="middle" font-style="italic">CO₂ (NDIR) + T + RH · I²C 0x62</text>
+<circle cx="330" cy="296" r="4.5" fill="#d32f2f"/>
+<text x="54" y="300" font-size="13" fill="#212121" text-anchor="start">VDD — da Vext</text>
+<circle cx="330" cy="322" r="4.5" fill="#212121"/>
+<text x="54" y="326" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="348" r="4.5" fill="#1976d2"/>
+<text x="54" y="352" font-size="13" fill="#212121" text-anchor="start">SDA</text>
+<circle cx="330" cy="374" r="4.5" fill="#1976d2"/>
+<text x="54" y="378" font-size="13" fill="#212121" text-anchor="start">SCL</text>
+<path d="M330 296H400V300H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
+<path d="M330 322H380V330H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 348H360V360H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 374H345V390H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="418" width="290" height="160" rx="8" fill="#fff8e1" stroke="#ef6c00" stroke-width="2" />
+<text x="56" y="440" font-size="14" fill="#e65100" text-anchor="start" font-weight="bold">Interruttore GPS (esterno)</text>
+<text x="56" y="457" font-size="12" fill="#6d4c41" text-anchor="start" font-style="italic">P-MOSFET AO3401 + pull-up 10 kΩ</text>
+<path d="M330 473H135V503H160" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 496V510M160 514V522M160 526V540" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M172 498V538" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 533H135V563H330" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 518H148V503" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="148,518 157,513 157,523" fill="#222"/>
+<path d="M172 518H330" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="255" cy="473" r="3.5" fill="#d32f2f"/>
+<circle cx="255" cy="518" r="3.5" fill="#ef6c00"/>
+<path d="M255 473V481M255 509V518" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="248" y="481" width="14" height="28" rx="0" fill="#fff" stroke="#222" stroke-width="2" />
+<text x="267" y="500" font-size="11" fill="#555" text-anchor="start">10k</text>
+<text x="130" y="499" font-size="11" fill="#555" text-anchor="end">S</text>
+<text x="130" y="544" font-size="11" fill="#555" text-anchor="end">D</text>
+<text x="180" y="512" font-size="11" fill="#555" text-anchor="start">G</text>
+<text x="324" y="467" font-size="11" fill="#d32f2f" text-anchor="end" font-weight="bold">3V3</text>
+<text x="324" y="512" font-size="11" fill="#ef6c00" text-anchor="end" font-weight="bold">GPIO 34</text>
+<text x="324" y="557" font-size="11" fill="#d32f2f" text-anchor="end" font-weight="bold">VCC GPS</text>
+<text x="56" y="570" font-size="11" fill="#6d4c41" text-anchor="start">LOW = acceso</text>
+<path d="M470 455H400V473H330" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M470 500H410V518H330" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="640" width="290" height="168" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" />
+<text x="185.0" y="664" font-size="16" fill="#1565c0" text-anchor="middle" font-weight="bold">GPS Quectel L76K</text>
+<text x="185.0" y="682" font-size="12" fill="#555" text-anchor="middle" font-style="italic">NMEA su UART, 9600 baud</text>
+<circle cx="330" cy="706" r="4.5" fill="#d32f2f"/>
+<text x="54" y="710" font-size="13" fill="#212121" text-anchor="start">VCC — dall'interruttore</text>
+<circle cx="330" cy="732" r="4.5" fill="#212121"/>
+<text x="54" y="736" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="758" r="4.5" fill="#1976d2"/>
+<text x="54" y="762" font-size="13" fill="#212121" text-anchor="start">TX → GPIO 39</text>
+<circle cx="330" cy="784" r="4.5" fill="#1976d2"/>
+<text x="54" y="788" font-size="13" fill="#212121" text-anchor="start">RX ← GPIO 38</text>
+<path d="M330 563H345V706H330" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 732H385V330" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="385" cy="330" r="3.5" fill="#212121"/>
+<path d="M330 758H420V560H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 784H435V590H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="900" y="730" width="300" height="90" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="2" />
+<text x="1050.0" y="754" font-size="16" fill="#c62828" text-anchor="middle" font-weight="bold">LiPo 1S + protezione</text>
+<text x="1050.0" y="772" font-size="12" fill="#555" text-anchor="middle" font-style="italic">cella con PCM o BMS 1S (DW01A + 8205A)</text>
+<circle cx="900" cy="796" r="4.5" fill="#d32f2f"/>
+<text x="914" y="800" font-size="13" fill="#212121" text-anchor="start">P+ / P− → connettore BAT</text>
+<path d="M845 775H872V796H900" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="910" y="838" font-size="12" fill="#555" text-anchor="start">Ricarica: TP4054 della scheda (USB-C o pin 5V).</text>
+<text x="910" y="856" font-size="12" fill="#555" text-anchor="start">Capacità consigliata ≥ 500 mAh (carica a 500 mA).</text>
+<rect x="900" y="220" width="300" height="90" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="2" />
+<text x="1050.0" y="244" font-size="16" fill="#e65100" text-anchor="middle" font-weight="bold">Antenna LoRa 868 MHz</text>
+<text x="1050.0" y="262" font-size="12" fill="#555" text-anchor="middle" font-style="italic">IPEX (U.FL) → pigtail SMA</text>
+<circle cx="900" cy="286" r="4.5" fill="#6a1b9a"/>
+<text x="914" y="290" font-size="13" fill="#212121" text-anchor="start">sul connettore IPEX LoRa</text>
+<path d="M845 300H900" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<text x="910" y="330" font-size="12" fill="#bf360c" text-anchor="start" font-weight="bold">Mai trasmettere senza antenna.</text>
+<rect x="40" y="875" width="1160" height="155" rx="10" fill="#f8f9fa" stroke="#ccc" stroke-width="1" />
+<text x="60" y="903" font-size="15" fill="#212121" text-anchor="start" font-weight="bold">Note</text>
+<text x="60" y="929" font-size="13" fill="#333" text-anchor="start">• Il GPS non ha un interruttore sulla scheda: il P-MOSFET esterno lo spegne in deep sleep. GPIO 34 basso = acceso, come VGNSS_Ctrl della V4.</text>
+<text x="60" y="953" font-size="13" fill="#333" text-anchor="start">• SCD41 su Vext: picchi di circa 200 mA durante la misura. Fili corti e, se possibile, un condensatore da 10–100 µF vicino al sensore.</text>
+<text x="60" y="977" font-size="13" fill="#333" text-anchor="start">• La porta USB passa dal bridge CP2102: la COM resta visibile anche in deep sleep e l'upload non richiede BOOT + RST.</text>
+<text x="60" y="1001" font-size="13" fill="#333" text-anchor="start">• ADC_Ctrl (GPIO 37) è attivo BASSO su questa scheda: è l'unica differenza di polarità rispetto alla V4.</text>
+</svg>
