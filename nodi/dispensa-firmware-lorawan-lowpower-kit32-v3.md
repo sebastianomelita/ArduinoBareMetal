@@ -32,6 +32,7 @@ Complementa la [dispensa gateway](../gateways/dispensa-chirpstack-configurazione
 20. [Ottimizzazione dei consumi](#ottimizzazione-dei-consumi)
 21. [Meccanismi di riattivazione e manutenzione](#meccanismi-di-riattivazione-e-manutenzione)
 22. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
+23. [Upgrade multisensore: SDS011, CCS811 e MPL3115A2](#upgrade-multisensore-sds011-ccs811-e-mpl3115a2)
 
 ---
 
@@ -2141,6 +2142,36 @@ Questi sketch non usano LoRaWAN né altre astrazioni; sono minimali e mirati. Si
 
 ---
 
+## Upgrade multisensore: SDS011, CCS811 e MPL3115A2
+
+Il nodo si può estendere con tre sensori in più: **SDS011** (polveri PM2.5 e PM10), **CJMCU-811 / CCS811** (TVOC ed eCO₂ stimata) e **MPL3115A2** (pressione atmosferica). Il firmware dell'upgrade, [`FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino`](FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino), contiene tutti i sensori, ognuno attivabile con un `#define`: chi non li monta li mette a 0 e torna, di fatto, al nodo di questa dispensa.
+
+La descrizione completa (scelte di alimentazione, driver, payload, codec, consumi e limiti delle misure) è nella dispensa comune [Upgrade multisensore](dispensa-upgrade-multisensore.md). Qui c'è quello che riguarda la WiFi Kit 32 V3 + RFM95W.
+
+<p align="center">
+  <img src="img/nodo_wiring_upgrade_kit.svg" alt="Upgrade multisensore sulla WiFi Kit 32 V3 + RFM95W" width="1100">
+</p>
+
+| Sensore | Collegamento sulla WiFi Kit 32 V3 + RFM95W | Alimentazione |
+|---|---|---|
+| MPL3115A2 | SDA/SCL sul bus **Wire** del SCD41 (GPIO 7 / 6), indirizzo 0x60 | Vext, insieme al SCD41 |
+| CJMCU-811 (CCS811) | bus **Wire1**: SDA GPIO 4 (J2.15), SCL GPIO 2 (J2.17); WAK e ADD a GND | 3V3, **sempre acceso** |
+| SDS011 | TX del sensore → GPIO 3 (J2.16) (UART2, solo ricezione) | 5 V da un boost collegato alla batteria, tramite un interruttore lato alto comandato da GPIO 26 (J3.4) (alto = acceso) |
+
+Sulla Kit 32 V3 i GPIO 47 e 48 sono già occupati dall'RFM95W, per questo il SDS011 usa il **3** e il **26**. Il GPIO 26 è libero perché l'ESP32-S3FN8 della Kit non ha PSRAM. Il GPIO 3 è un pin di strapping solo se è stato programmato un fusibile apposito, cosa che sulle Heltec non succede; in più all'avvio il SDS011 è spento.
+
+**Cosa cambia nel firmware**, in sintesi:
+
+- **Ciclo**: il SDS011 si accende all'inizio, così i suoi 30 secondi di ventilazione scorrono in parallelo all'attesa del GPS. Dopo il SCD41 si leggono MPL3115A2, CCS811 (compensato con temperatura e umidità del SCD41) e SDS011, che viene subito spento.
+- **CCS811**: non viene mai resettato. Al risveglio il firmware controlla che sia già in funzione e legge soltanto, così non ripete i 20 minuti di riscaldamento.
+- **Payload**: le misure passano allo schema **0x44** a blocchi, da 10 a 43 byte, con una maschera dei sensori presenti. Lo schema state 0x43 cresce a 31 byte.
+- **Downlink**: quattro nuovi comandi su FPort 20, cioè `SET_SDS_ENABLED` (0x1A), `SET_CCS_ENABLED` (0x1B), `SET_MPL_ENABLED` (0x1C) e `SET_SDS_WARMUP` (0x1D).
+- **Codec**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js) decodifica sia lo 0x42 sia lo 0x44, quindi nodi vecchi e aggiornati convivono.
+
+> ⚠️ **Il SDS011 consuma circa 1,2 mAh a ogni ciclo.** Con il TX al minuto scaricherebbe la batteria in meno di un giorno: con il SDS011 acceso usa un intervallo di almeno 10–30 minuti, oppure un pannello solare. I conti sono nella [dispensa comune](dispensa-upgrade-multisensore.md#consumi-e-autonomia).
+
+---
+
 ## Considerazioni finali
 
 
@@ -2198,8 +2229,9 @@ Se un'immagine dovesse smettere di essere disponibile, cerca su Google Immagini 
 I file completi descritti in questa dispensa sono disponibili in:
 
 - **Firmware Arduino (Heltec WiFi Kit 32 V3)**: [`FWs/heltec_kit32_v3_rfm95_scd41_gps_lorawan.ino`](FWs/heltec_kit32_v3_rfm95_scd41_gps_lorawan.ino)
+- **Firmware dell'upgrade multisensore**: [`FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino`](FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino) (schema 0x44, vedi la [dispensa comune](dispensa-upgrade-multisensore.md))
 - **Firmware originale (Heltec V4)**: [`FWs/heltec_v4_scd41_gps_lorawan.ino`](FWs/heltec_v4_scd41_gps_lorawan.ino)
-- **Codec JavaScript per ChirpStack** (invariato): [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js)
+- **Codec JavaScript per ChirpStack**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js) (decodifica 0x42, 0x43 e 0x44)
 - **Script bash di test downlink**: [`tests/test_downlinks.sh`](tests/test_downlinks.sh)
 - **Dashboard di configurazione**: [`indexconfiglora.html`](../dashboard/indexconfiglora.html)
 - **Codec dashboard**: [`mqtt_downlink_encoder.js`](../dashboard/mqtt_downlink_encoder.js)
