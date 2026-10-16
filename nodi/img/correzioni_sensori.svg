@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 900" width="1240" height="900" font-family="Helvetica, Arial, sans-serif">
+<rect width="1240" height="900" fill="#ffffff"/>
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+<marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ef6c00"/></marker>
+</defs>
+<text x="620.0" y="34" font-size="21" fill="#212121" text-anchor="middle" font-weight="bold">Correzioni incrociate tra i sensori del nodo</text>
+<text x="620.0" y="58" font-size="13" fill="#616161" text-anchor="middle">Chi fornisce la grandezza (a sinistra) e chi la usa per correggersi (a destra) — dove avviene la correzione</text>
+<rect x="40" y="100" width="250" height="96" rx="10" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2.2"/>
+<text x="165.0" y="126" font-size="15" fill="#6a1b9a" text-anchor="middle" font-weight="bold">MPL3115A2</text>
+<text x="165.0" y="146" font-size="12" fill="#424242" text-anchor="middle">pressione assoluta (hPa)</text>
+<text x="165.0" y="163" font-size="12" fill="#424242" text-anchor="middle">barometro, ±1,5 hPa</text>
+<rect x="40" y="250" width="250" height="96" rx="10" fill="#e0f7fa" stroke="#00838f" stroke-width="2.2"/>
+<text x="165.0" y="276" font-size="15" fill="#00838f" text-anchor="middle" font-weight="bold">GPS L76K</text>
+<text x="165.0" y="296" font-size="12" fill="#424242" text-anchor="middle">quota (m), ora UTC</text>
+<text x="165.0" y="313" font-size="12" fill="#424242" text-anchor="middle">quota ±10–20 m</text>
+<rect x="40" y="430" width="250" height="96" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2.2"/>
+<text x="165.0" y="456" font-size="15" fill="#c62828" text-anchor="middle" font-weight="bold">SCD41</text>
+<text x="165.0" y="476" font-size="12" fill="#424242" text-anchor="middle">CO₂ (ppm), T (°C), UR (%)</text>
+<text x="165.0" y="493" font-size="12" fill="#424242" text-anchor="middle">CO₂ NDIR ±50 ppm</text>
+<rect x="950" y="100" width="250" height="96" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2.2"/>
+<text x="1075.0" y="126" font-size="15" fill="#c62828" text-anchor="middle" font-weight="bold">SCD41</text>
+<text x="1075.0" y="146" font-size="12" fill="#424242" text-anchor="middle">misura della CO₂</text>
+<text x="1075.0" y="163" font-size="12" fill="#424242" text-anchor="middle">compensata in pressione</text>
+<rect x="950" y="300" width="250" height="112" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.2"/>
+<text x="1075.0" y="326" font-size="15" fill="#2e7d32" text-anchor="middle" font-weight="bold">CCS811</text>
+<text x="1075.0" y="346" font-size="12" fill="#424242" text-anchor="middle">TVOC / eCO₂</text>
+<text x="1075.0" y="363" font-size="12" fill="#424242" text-anchor="middle">compensato in T e UR</text>
+<text x="1075.0" y="380" font-size="12" fill="#424242" text-anchor="middle">baseline salvata</text>
+<rect x="950" y="520" width="250" height="112" rx="10" fill="#fff3e0" stroke="#ef6c00" stroke-width="2.2"/>
+<text x="1075.0" y="546" font-size="15" fill="#ef6c00" text-anchor="middle" font-weight="bold">SDS011</text>
+<text x="1075.0" y="566" font-size="12" fill="#424242" text-anchor="middle">PM2.5 / PM10</text>
+<text x="1075.0" y="583" font-size="12" fill="#424242" text-anchor="middle">flag e correzione</text>
+<text x="1075.0" y="600" font-size="12" fill="#424242" text-anchor="middle">per l'umidità</text>
+<rect x="950" y="650" width="250" height="96" rx="10" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2.2"/>
+<text x="1075.0" y="676" font-size="15" fill="#6a1b9a" text-anchor="middle" font-weight="bold">Pressione al mare</text>
+<text x="1075.0" y="696" font-size="12" fill="#424242" text-anchor="middle">p0 confrontabile con</text>
+<text x="1075.0" y="713" font-size="12" fill="#424242" text-anchor="middle">i bollettini meteo</text>
+<rect x="370" y="88" width="500" height="74" rx="8" fill="#ffffff" stroke="#1565c0" stroke-width="1.6"/>
+<circle cx="392" cy="109" r="13" fill="#1565c0"/>
+<text x="392" y="114" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">1</text>
+<text x="414" y="114" font-size="14" fill="#1565c0" text-anchor="start" font-weight="bold">Pressione → CO₂ del SCD41</text>
+<rect x="778" y="97" width="82" height="20" rx="10" fill="#1565c0"/>
+<text x="819" y="111" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">FIRMWARE</text>
+<text x="386" y="138" font-size="12" fill="#424242" text-anchor="start">setAmbientPressure(Pa) dopo l'avvio delle misure</text>
+<text x="386" y="155" font-size="12" fill="#424242" text-anchor="start">≈ 1–1,5 % di CO₂ ogni 10 hPa di scarto da 1013 hPa</text>
+<rect x="370" y="196" width="500" height="74" rx="8" fill="#ffffff" stroke="#1565c0" stroke-width="1.6"/>
+<circle cx="392" cy="217" r="13" fill="#1565c0"/>
+<text x="392" y="222" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">2</text>
+<text x="414" y="222" font-size="14" fill="#1565c0" text-anchor="start" font-weight="bold">Riserva: pressione stimata dalla quota GPS</text>
+<rect x="778" y="205" width="82" height="20" rx="10" fill="#1565c0"/>
+<text x="819" y="219" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">FIRMWARE</text>
+<text x="386" y="246" font-size="12" fill="#424242" text-anchor="start">se l'MPL manca: p = 101325·(1 − h/44330)^5,255</text>
+<text x="386" y="263" font-size="12" fill="#424242" text-anchor="start">ignora il meteo (±20 hPa), ma corregge l'altitudine</text>
+<rect x="370" y="304" width="500" height="74" rx="8" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="392" cy="325" r="13" fill="#2e7d32"/>
+<text x="392" y="330" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">3</text>
+<text x="414" y="330" font-size="14" fill="#2e7d32" text-anchor="start" font-weight="bold">T e UR → CCS811</text>
+<rect x="778" y="313" width="82" height="20" rx="10" fill="#1565c0"/>
+<text x="819" y="327" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">FIRMWARE</text>
+<text x="386" y="354" font-size="12" fill="#424242" text-anchor="start">ENV_DATA: il sensore a ossidi metallici dipende</text>
+<text x="386" y="371" font-size="12" fill="#424242" text-anchor="start">da temperatura e umidità (già nel firmware base)</text>
+<rect x="370" y="412" width="500" height="74" rx="8" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="392" cy="433" r="13" fill="#2e7d32"/>
+<text x="392" y="438" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">4</text>
+<text x="414" y="438" font-size="14" fill="#2e7d32" text-anchor="start" font-weight="bold">CO₂ bassa → baseline del CCS811</text>
+<rect x="778" y="421" width="82" height="20" rx="10" fill="#1565c0"/>
+<text x="819" y="435" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">FIRMWARE</text>
+<text x="386" y="462" font-size="12" fill="#424242" text-anchor="start">se CO₂ ≤ 450 ppm l'aria è pulita: salva BASELINE</text>
+<text x="386" y="479" font-size="12" fill="#424242" text-anchor="start">in NVS; la riscrive dopo un'interruzione</text>
+<rect x="370" y="520" width="500" height="74" rx="8" fill="#ffffff" stroke="#ef6c00" stroke-width="1.6"/>
+<circle cx="392" cy="541" r="13" fill="#ef6c00"/>
+<text x="392" y="546" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">5</text>
+<text x="414" y="546" font-size="14" fill="#ef6c00" text-anchor="start" font-weight="bold">UR → PM del SDS011</text>
+<rect x="778" y="529" width="82" height="20" rx="10" fill="#2e7d32"/>
+<text x="819" y="543" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">CODEC</text>
+<text x="386" y="570" font-size="12" fill="#424242" text-anchor="start">UR ≥ 75 %: flag "PM sovrastimati" nel payload</text>
+<text x="386" y="587" font-size="12" fill="#424242" text-anchor="start">PM_secco = PM / (1 + (κ/ρ)·a/(1−a)) nel codec</text>
+<rect x="370" y="640" width="500" height="74" rx="8" fill="#ffffff" stroke="#6a1b9a" stroke-width="1.6"/>
+<circle cx="392" cy="661" r="13" fill="#6a1b9a"/>
+<text x="392" y="666" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">6</text>
+<text x="414" y="666" font-size="14" fill="#6a1b9a" text-anchor="start" font-weight="bold">Pressione + quota → pressione al mare</text>
+<rect x="778" y="649" width="82" height="20" rx="10" fill="#2e7d32"/>
+<text x="819" y="663" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">CODEC</text>
+<text x="386" y="690" font-size="12" fill="#424242" text-anchor="start">p0 = p / (1 − h/44330)^5,255</text>
+<text x="386" y="707" font-size="12" fill="#424242" text-anchor="start">h dal GPS (fix attuale) o fissa: STATION_ALTITUDE_M</text>
+<path d="M290 148C330.0 148 330.0 125.0 370 125.0" fill="none" stroke="#1565c0" stroke-width="2.4" marker-end="url(#a1)"/>
+<path d="M870 125.0C910.0 125.0 910.0 148 950 148" fill="none" stroke="#1565c0" stroke-width="2.4" marker-end="url(#a1)"/>
+<path d="M290 298C330.0 298 330.0 233.0 370 233.0" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#a1)"/>
+<path d="M870 233.0C910.0 233.0 910.0 160 950 160" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#a1)"/>
+<path d="M290 465C330.0 465 330.0 341.0 370 341.0" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
+<path d="M870 341.0C910.0 341.0 910.0 350 950 350" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
+<path d="M290 485C330.0 485 330.0 449.0 370 449.0" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
+<path d="M870 449.0C910.0 449.0 910.0 370 950 370" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
+<path d="M290 505C330.0 505 330.0 557.0 370 557.0" fill="none" stroke="#ef6c00" stroke-width="2.4" marker-end="url(#a3)"/>
+<path d="M870 557.0C910.0 557.0 910.0 572 950 572" fill="none" stroke="#ef6c00" stroke-width="2.4" marker-end="url(#a3)"/>
+<path d="M40 165H24V669.0H370" fill="none" stroke="#6a1b9a" stroke-width="2" stroke-dasharray="3 4"/>
+<path d="M40 315H32V685.0H370" fill="none" stroke="#6a1b9a" stroke-width="2" stroke-dasharray="3 4"/>
+<text x="200" y="663.0" font-size="11.5" fill="#6a1b9a" text-anchor="middle">pressione (MPL)</text>
+<text x="200" y="701.0" font-size="11.5" fill="#6a1b9a" text-anchor="middle">quota (GPS)</text>
+<path d="M870 677.0H948" fill="none" stroke="#6a1b9a" stroke-width="2.4"/>
+<path d="M940 672.0L950 677.0L940 682.0z" fill="#6a1b9a"/>
+<rect x="40" y="772" width="1160" height="92" rx="8" fill="#fafafa" stroke="#bdbdbd"/>
+<text x="56" y="796" font-size="13.5" fill="#b71c1c" text-anchor="start" font-weight="bold">Cosa NON si corregge così</text>
+<text x="56" y="818" font-size="12" fill="#b71c1c" text-anchor="start" font-weight="bold">✗ eCO₂ del CCS811 ↔ CO₂ del SCD41</text>
+<text x="56" y="835" font-size="12" fill="#424242" text-anchor="start">misurano cose diverse: l'eCO₂ è una stima</text>
+<text x="56" y="852" font-size="12" fill="#424242" text-anchor="start">ricavata dai VOC, non si tarano a vicenda</text>
+<text x="441" y="818" font-size="12" fill="#b71c1c" text-anchor="start" font-weight="bold">✗ T del SCD41 ↔ T dell'MPL3115A2</text>
+<text x="441" y="835" font-size="12" fill="#424242" text-anchor="start">il termometro del barometro è scaldato</text>
+<text x="441" y="852" font-size="12" fill="#424242" text-anchor="start">dalla scheda: non è un riferimento</text>
+<text x="826" y="818" font-size="12" fill="#b71c1c" text-anchor="start" font-weight="bold">✗ taratura FRC/ASC del SCD41</text>
+<text x="826" y="835" font-size="12" fill="#424242" text-anchor="start">serve aria esterna nota (≈ 420 ppm),</text>
+<text x="826" y="852" font-size="12" fill="#424242" text-anchor="start">non un altro sensore del nodo</text>
+<text x="620" y="890" font-size="12" fill="#616161" text-anchor="middle" font-style="italic">linea continua = sorgente principale · tratteggio lungo = riserva · tratteggio corto = dati usati dal codec</text>
+</svg>
