@@ -21,6 +21,15 @@
  * Un sensore messo a 0 sparisce dal firmware e dal payload: e' cosi' che si fa
  * il "downgrade" verso un nodo piu' semplice.
  *
+ * Correzioni incrociate tra sensori (sezione CORREZIONI in CONFIGURAZIONE):
+ *   - la pressione dell'MPL3115A2 (o, in mancanza, quella stimata dalla quota
+ *     GPS) viene passata al SCD41, che compensa la misura di CO2;
+ *   - temperatura e umidita' del SCD41 compensano il CCS811;
+ *   - con umidita' alta il payload segnala i PM del SDS011 come poco affidabili
+ *     (la correzione numerica e' nel codec, dove si puo' tarare);
+ *   - quando il SCD41 vede aria pulita, il firmware salva la "baseline" del
+ *     CCS811 e la ripristina dopo un'interruzione di alimentazione.
+ *
  * Payload misure: schema 0x44 a lunghezza VARIABILE (10-43 byte) su FPort 1:
  * intestazione con maschera dei sensori presenti + un blocco per sensore.
  * Il codec ChirpStack aggiornato decodifica 0x42, 0x43 e 0x44.
@@ -526,6 +535,31 @@ uint8_t appKey[16] = {
 #define CCS811_DRIVE_MODE   3
 #define CCS811_WARMUP_S  1200  // 20 minuti di condizionamento dopo l'avvio
 
+// ---- CORREZIONI INCROCIATE TRA SENSORI ----
+// Pressione -> SCD41. Un sensore NDIR misura la densita' di CO2 nella sua
+// cella: senza compensazione sbaglia di circa l'1-1,5% ogni 10 hPa di differenza
+// dalla pressione di riferimento (1013 hPa). Fonte della pressione:
+//   1) MPL3115A2, se presente e letto correttamente;
+//   2) altrimenti la quota dell'ultimo fix GPS, convertita con l'atmosfera
+//      standard (meno precisa: ignora le variazioni meteo).
+#define ENABLE_PRESSURE_COMPENSATION  1
+
+// Umidita' -> SDS011. Sopra questa umidita' relativa (misurata dal SCD41) le
+// goccioline d'acqua vengono contate come particelle: il payload alza il flag
+// P44_FLAG_PM_HUMID e il codec calcola anche i PM corretti.
+#define PM_HUMIDITY_WARN_RH          75
+
+// CO2 bassa -> baseline del CCS811. Il CCS811 corregge da solo la sua "linea
+// di base" assumendo di vedere ogni tanto aria pulita. Quando il SCD41 misura
+// una CO2 vicina a quella esterna, l'ambiente e' appena stato ventilato: e' il
+// momento giusto per salvare la baseline in NVS. Dopo un'interruzione di
+// alimentazione la baseline salvata viene riscritta nel sensore, cosi' non
+// deve reimpararla da zero.
+#define ENABLE_CCS811_BASELINE        1
+#define CCS811_CLEAN_AIR_CO2_PPM    450     // soglia "aria pulita" del SCD41
+#define CCS811_BASELINE_MIN_RUN_S  86400    // salva solo dopo 24 h di funzionamento
+#define CCS811_BASELINE_EVERY_S    86400    // al massimo un salvataggio al giorno
+
 #if (!ENABLE_SCD41 || !ENABLE_GPS) && !ENABLE_SENSOR_DISABLE
 #error "ENABLE_SCD41=0 o ENABLE_GPS=0 richiedono ENABLE_SENSOR_DISABLE=1"
 #endif
@@ -769,6 +803,9 @@ static_assert(sizeof(Payload_v0x43) == 31, "Payload state deve essere 31 byte (v
 #define P44_FLAG_TIME_EPOCH  0x01   // timestamp = epoch UTC dal GPS
 #define P44_FLAG_GPS_STALE   0x02   // posizione non aggiornata in questo ciclo
 #define P44_FLAG_CCS_WARMUP  0x04   // CCS811 nei primi 20 minuti: valori indicativi
+#define P44_FLAG_PM_HUMID    0x08   // RH >= PM_HUMIDITY_WARN_RH: PM sovrastimati
+#define P44_FLAG_PCOMP_MPL   0x10   // SCD41 compensato con la pressione dell'MPL3115A2
+#define P44_FLAG_PCOMP_GPS   0x20   // SCD41 compensato con la pressione stimata dalla quota GPS
 
 #define PAYLOAD44_MAX_LEN    43
 #define P44_INVALID_U16      0xFFFFu
@@ -785,6 +822,9 @@ struct ExtraReadings {
     bool     mplPresent = false, mplOk = false;
     uint16_t press_hpa10 = P44_INVALID_U16;
     int16_t  mplTemp_c100 = P44_INVALID_I16;
+    // correzioni incrociate
+    bool     pmHumid = false;        // umidita' alta durante la misura del SDS011
+    uint8_t  pressCompSource = 0;    // 0 nessuna, 1 MPL3115A2, 2 quota GPS
 };
 
 // =============================================================
@@ -880,6 +920,9 @@ uint8_t  cfgSdsWarmupS;            // SET_SDS_WARMUP  (0x1D), secondi 5-120
 // In RTC: sopravvive al deep sleep, come il CCS811 che resta alimentato.
 RTC_DATA_ATTR uint32_t ccsStartUptimeS = 0;
 RTC_DATA_ATTR bool     ccsStartKnown   = false;
+RTC_DATA_ATTR bool     ccsRestorePending    = false;   // APP_START eseguito, baseline da ripristinare
+RTC_DATA_ATTR uint32_t ccsLastBaselineSaveS = 0;       // ultimo salvataggio della baseline
+RTC_DATA_ATTR bool     ccsBaselineSavedOnce = false;
 
 // ---- Contatori RTC per feature di risparmio ----
 // Sopravvivono al deep sleep, si azzerano al power-off e al reset hardware.
@@ -1077,6 +1120,9 @@ bool ccsEnsureRunning() {
         if (!(st & 0x80)) { Serial.println("CCS811: APP_START fallito"); return false; }
         ccsStartUptimeS = uptimeNowS();
         ccsStartKnown = true;
+#if ENABLE_CCS811_BASELINE
+        ccsRestorePending = true;    // a condizionamento finito, ripristina la baseline
+#endif
         Serial.println("CCS811: avviato (inizio condizionamento di 20 minuti)");
     }
     uint8_t mm = 0;
@@ -1143,8 +1189,9 @@ bool ccsWarmingUp() {
 #define MPL_REG_CTRL_REG1   0x26
 
 bool mplRead(float& pressHpa, float& tempC) {
-    // Il bus Wire di solito e' gia' avviato da initScd41(); se il SCD41 e'
-    // disattivato lo avviamo qui (stessi pin, stessa alimentazione Vext).
+    // L'MPL3115A2 si legge PRIMA di initScd41(): il bus Wire va avviato qui
+    // (stessi pin, stessa alimentazione Vext). Il secondo Wire.begin() di
+    // initScd41() trova il bus gia' avviato e non fa nulla.
     static bool wireStarted = false;
     if (!wireStarted) { Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 100000); wireStarted = true; }
     uint8_t v = 0;
@@ -1178,6 +1225,96 @@ bool mplRead(float& pressHpa, float& tempC) {
 }
 #endif  // ENABLE_MPL3115A2
 
+// ---------------- Correzioni incrociate ----------------
+
+// Pressione dell'atmosfera standard alla quota h (formula barometrica):
+//   p = 101325 * (1 - h / 44330) ^ 5.255   [Pa]
+uint32_t pressureFromAltitudePa(float altitude_m) {
+    if (altitude_m < -400.0f) altitude_m = -400.0f;
+    if (altitude_m > 5000.0f) altitude_m = 5000.0f;
+    return (uint32_t)(101325.0f * powf(1.0f - altitude_m / 44330.0f, 5.255f));
+}
+
+/**
+ * Passa al SCD41 la pressione ambiente. Va chiamata DOPO startPeriodicMeasurement:
+ * il comando set_ambient_pressure e' accettato anche durante le misure e vale
+ * da quella successiva (la prima arriva dopo 5 s). Ritorna la fonte usata:
+ * 0 nessuna, 1 MPL3115A2, 2 quota GPS.
+ */
+uint8_t applyScdPressureCompensation(const ExtraReadings& x) {
+#if ENABLE_PRESSURE_COMPENSATION
+    uint32_t pa = 0;
+    uint8_t  source = 0;
+    if (x.mplOk) {
+        pa = (uint32_t)x.press_hpa10 * 10;          // hPa x 10 -> Pa
+        source = 1;
+    } else if (rtcLastFixValid) {
+        pa = pressureFromAltitudePa(rtcLastAlt_m);
+        source = 2;
+    }
+    if (source == 0 || pa < 70000 || pa > 120000) {
+        Serial.println("SCD41: nessuna compensazione di pressione (uso 1013 hPa)");
+        return 0;
+    }
+    if (scd4x.setAmbientPressure(pa) != 0) {
+        Serial.println("SCD41: setAmbientPressure fallito");
+        return 0;
+    }
+    Serial.printf("SCD41: compensazione pressione %.1f hPa (%s)\n",
+                  pa / 100.0f, source == 1 ? "MPL3115A2" : "quota GPS");
+    return source;
+#else
+    (void)x;
+    return 0;
+#endif
+}
+
+#if ENABLE_CCS811 && ENABLE_CCS811_BASELINE
+#define CCS_REG_BASELINE   0x11
+#define NVS_KEY_CCS_BASE   "ccs_bl"        // uint16 baseline del CCS811
+
+/**
+ * Gestione della baseline del CCS811 guidata dal SCD41:
+ *  - dopo un riavvio del sensore (APP_START) e la fine del condizionamento,
+ *    riscrive la baseline salvata in NVS;
+ *  - con il sensore stabile da almeno 24 h e il SCD41 che vede aria pulita,
+ *    salva la baseline attuale (al massimo una volta al giorno).
+ */
+void ccsManageBaseline(bool scdOk, uint16_t co2) {
+    if (ccsWarmingUp()) return;
+    uint32_t now = uptimeNowS();
+    uint8_t b[2];
+
+    if (ccsRestorePending) {
+        ccsRestorePending = false;
+        if (prefs.begin(NVS_NAMESPACE, true)) {
+            uint16_t saved = prefs.getUShort(NVS_KEY_CCS_BASE, 0);
+            prefs.end();
+            if (saved != 0) {
+                b[0] = saved >> 8; b[1] = saved & 0xFF;
+                if (i2cWriteReg(Wire1, CCS811_ADDR, CCS_REG_BASELINE, b, 2)) {
+                    Serial.printf("CCS811: baseline 0x%04X ripristinata da NVS\n", saved);
+                }
+            }
+        }
+        return;
+    }
+
+    bool runLongEnough = ccsStartKnown && (now - ccsStartUptimeS) >= CCS811_BASELINE_MIN_RUN_S;
+    bool cleanAir      = scdOk && co2 > 0 && co2 <= CCS811_CLEAN_AIR_CO2_PPM;
+    bool dueForSave    = !ccsBaselineSavedOnce || (now - ccsLastBaselineSaveS) >= CCS811_BASELINE_EVERY_S;
+    if (!(runLongEnough && cleanAir && dueForSave)) return;
+
+    if (!i2cReadReg(Wire1, CCS811_ADDR, CCS_REG_BASELINE, b, 2)) return;
+    uint16_t baseline = (uint16_t)(b[0] << 8 | b[1]);
+    if (saveConfigUShort(NVS_KEY_CCS_BASE, baseline)) {
+        ccsLastBaselineSaveS = now;
+        ccsBaselineSavedOnce = true;
+        Serial.printf("CCS811: aria pulita (CO2 %u ppm), baseline 0x%04X salvata in NVS\n", co2, baseline);
+    }
+}
+#endif
+
 // ---------------- Payload 0x44 ----------------
 static void p44Put16(uint8_t* b, size_t& i, uint16_t v) { b[i++] = v & 0xFF; b[i++] = v >> 8; }
 static void p44Put32(uint8_t* b, size_t& i, uint32_t v) {
@@ -1200,6 +1337,9 @@ size_t buildPayload44(uint8_t* out, const Payload_v0x42& p, bool scdPresent, boo
     if (timeEpoch)    flags |= P44_FLAG_TIME_EPOCH;
     if (gpsPresent && p.hdop_x100 == 9999)  flags |= P44_FLAG_GPS_STALE;
     if (x.ccsPresent && x.ccsWarmup)        flags |= P44_FLAG_CCS_WARMUP;
+    if (x.sdsPresent && x.pmHumid)          flags |= P44_FLAG_PM_HUMID;
+    if (x.pressCompSource == 1)             flags |= P44_FLAG_PCOMP_MPL;
+    if (x.pressCompSource == 2)             flags |= P44_FLAG_PCOMP_GPS;
 
     size_t i = 0;
     out[i++] = SCHEMA_ID_MULTI;
@@ -4112,6 +4252,22 @@ void setup() {
         initGps();
     }
 
+    // --- 2b) MPL3115A2 PRIMA del SCD41: la sua pressione serve a compensare
+    //         la misura di CO2 (vedi applyScdPressureCompensation) ---
+    ExtraReadings xr;
+#if ENABLE_MPL3115A2
+    if (cfgMplEnabled) {
+        xr.mplPresent = true;
+        delay(20);                     // avvio dell'MPL dopo l'accensione di Vext
+        float pHpa = 0, tMpl = 0;
+        xr.mplOk = mplRead(pHpa, tMpl);
+        if (xr.mplOk) {
+            xr.press_hpa10  = (uint16_t)(pHpa * 10.0f + 0.5f);
+            xr.mplTemp_c100 = (int16_t)(tMpl * 100.0f);
+        }
+    }
+#endif
+
     // --- 3) Init SCD41 (solo se abilitato) ---
     bool doScdThisCycle = true;
 #if ENABLE_SENSOR_DISABLE
@@ -4123,6 +4279,8 @@ void setup() {
     if (doScdThisCycle) {
         if (!initScd41()) {
             Serial.println("SCD41 init fallito, procedo con valori nulli");
+        } else {
+            xr.pressCompSource = applyScdPressureCompensation(xr);
         }
     }
 
@@ -4149,19 +4307,7 @@ void setup() {
         }
     }
 
-    // --- 5b) Upgrade multisensore: MPL3115A2, CCS811, SDS011 ---
-    ExtraReadings xr;
-#if ENABLE_MPL3115A2
-    if (cfgMplEnabled) {
-        xr.mplPresent = true;
-        float pHpa = 0, tMpl = 0;
-        xr.mplOk = mplRead(pHpa, tMpl);
-        if (xr.mplOk) {
-            xr.press_hpa10  = (uint16_t)(pHpa * 10.0f + 0.5f);
-            xr.mplTemp_c100 = (int16_t)(tMpl * 100.0f);
-        }
-    }
-#endif
+    // --- 5b) Upgrade multisensore: CCS811 e SDS011 (MPL3115A2 gia' letto) ---
 #if ENABLE_CCS811
     if (cfgCcsEnabled) {
         xr.ccsPresent = true;
@@ -4169,6 +4315,9 @@ void setup() {
             if (scdOk) ccsSetEnvironment(tempC, humRH);   // compensazione T/RH
             xr.ccsOk     = ccsRead(xr.eco2, xr.tvoc, xr.ccsError);
             xr.ccsWarmup = ccsWarmingUp();
+#if ENABLE_CCS811_BASELINE
+            ccsManageBaseline(scdOk, co2);
+#endif
         }
     } else {
         ccsSetIdle();
@@ -4178,6 +4327,11 @@ void setup() {
     if (cfgSdsEnabled && !identifyMode) {
         xr.sdsPresent = true;
         xr.sdsOk = sdsRead(xr.pm25_x10, xr.pm10_x10);
+        xr.pmHumid = scdOk && humRH >= PM_HUMIDITY_WARN_RH;
+        if (xr.sdsOk && xr.pmHumid) {
+            Serial.printf("SDS011: RH %.0f%% >= %u%%, PM probabilmente sovrastimati\n",
+                          humRH, PM_HUMIDITY_WARN_RH);
+        }
     }
     sdsPowerOff();   // la batteria si legge con il SDS011 spento
 #endif
