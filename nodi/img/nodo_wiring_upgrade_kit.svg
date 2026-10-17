@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1266" width="1240" height="1266" font-family="Helvetica, Arial, sans-serif">
-<rect width="1240" height="1266" fill="#ffffff"/>
-<text x="620" y="32" font-size="20" fill="#212121" text-anchor="middle" font-weight="bold">Upgrade multisensore — Heltec WiFi Kit 32 V3 + RFM95W</text>
-<text x="620" y="54" font-size="13" fill="#616161" text-anchor="middle">MPL3115A2 (pressione) · CJMCU-811 / CCS811 (TVOC) · SDS011 (PM2.5 / PM10) · DS18B20 (T esterna) — in aggiunta allo schema base</text>
-<rect x="20" y="72" width="310" height="132" rx="6" fill="#fafafa" stroke="#bdbdbd" stroke-width="1" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1726" width="1240" height="1726" font-family="Helvetica, Arial, sans-serif">
+<rect width="1240" height="1726" fill="#ffffff"/>
+<text x="620.0" y="32" font-size="20" fill="#212121" text-anchor="middle" font-weight="bold">Nodo multisensore completo — Heltec WiFi Kit 32 V3</text>
+<text x="620.0" y="54" font-size="13" fill="#616161" text-anchor="middle">Schema base (SCD41, GPS, RFM95W, batteria) + upgrade (MPL3115A2, CCS811, DS18B20, SDS011)</text>
+<rect x="20" y="72" width="330" height="150" rx="6" fill="#fafafa" stroke="#bdbdbd" stroke-width="1" />
 <text x="32" y="92" font-size="12" fill="#424242" text-anchor="start" font-weight="bold">Legenda linee</text>
 <path d="M32 108H58" fill="none" stroke="#d32f2f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="64" y="112" font-size="11.5" fill="#333" text-anchor="start">3,3 V sempre acceso</text>
@@ -12,163 +12,317 @@
 <text x="64" y="152" font-size="11.5" fill="#333" text-anchor="start">Batteria VBAT</text>
 <path d="M32 168H58" fill="none" stroke="#b5179e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="64" y="172" font-size="11.5" fill="#333" text-anchor="start">5 V dal boost</text>
-<path d="M184 108H210" fill="none" stroke="#212121" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="216" y="112" font-size="11.5" fill="#333" text-anchor="start">Massa (GND)</text>
-<path d="M184 128H210" fill="none" stroke="#1976d2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="216" y="132" font-size="11.5" fill="#333" text-anchor="start">I²C Wire (Vext)</text>
-<path d="M184 148H210" fill="none" stroke="#00897b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="216" y="152" font-size="11.5" fill="#333" text-anchor="start">I²C Wire1 (3V3)</text>
-<path d="M184 168H210" fill="none" stroke="#ef6c00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="216" y="172" font-size="11.5" fill="#333" text-anchor="start">UART / enable</text>
-<path d="M32 188H58" fill="none" stroke="#6d4c41" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="64" y="192" font-size="11.5" fill="#333" text-anchor="start">1-Wire (Vext)</text>
-<rect x="340" y="72" width="560" height="104" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5" />
-<text x="354" y="94" font-size="13" fill="#e65100" text-anchor="start" font-weight="bold">⚠ Due bus I²C separati</text>
-<text x="354" y="114" font-size="12" fill="#5d4037" text-anchor="start">Wire (GPIO 7/6): SCD41 e MPL3115A2, alimentati da Vext → si spengono in sleep.</text>
-<text x="354" y="132" font-size="12" fill="#5d4037" text-anchor="start">Wire1: CCS811, alimentato SEMPRE dal 3V3 (non va spento).</text>
-<text x="354" y="150" font-size="12" fill="#5d4037" text-anchor="start">Sullo stesso bus, con Vext spenta, i pull-up del CCS811</text>
-<text x="354" y="168" font-size="12" fill="#5d4037" text-anchor="start">alimenterebbero il SCD41 attraverso SDA e SCL.</text>
-<rect x="470" y="220" width="375" height="720" rx="12" fill="#eceff1" stroke="#37474f" stroke-width="2.5" />
-<text x="657.5" y="248" font-size="17" fill="#263238" text-anchor="middle" font-weight="bold">Heltec WiFi Kit 32 V3 + RFM95W</text>
-<text x="657.5" y="267" font-size="12" fill="#546e7a" text-anchor="middle" font-style="italic">ESP32-S3FN8 · RFM95W sui GPIO 5, 33, 40-42, 47, 48</text>
-<circle cx="470" cy="300" r="4.5" fill="#d32f2f"/>
-<text x="482" y="304" font-size="13" fill="#d32f2f" text-anchor="start">Vext 3,3 V (J2.3/4)</text>
-<circle cx="470" cy="330" r="4.5" fill="#212121"/>
-<text x="482" y="334" font-size="13" fill="#212121" text-anchor="start">GND (J2.1)</text>
-<circle cx="470" cy="360" r="4.5" fill="#1976d2"/>
-<text x="482" y="364" font-size="13" fill="#1976d2" text-anchor="start">GPIO 7 — SDA Wire (J2.12)</text>
-<circle cx="470" cy="390" r="4.5" fill="#1976d2"/>
-<text x="482" y="394" font-size="13" fill="#1976d2" text-anchor="start">GPIO 6 — SCL Wire (J2.13)</text>
-<circle cx="470" cy="500" r="4.5" fill="#d32f2f"/>
-<text x="482" y="504" font-size="13" fill="#d32f2f" text-anchor="start">3V3 (J3.2)</text>
-<circle cx="470" cy="530" r="4.5" fill="#212121"/>
-<text x="482" y="534" font-size="13" fill="#212121" text-anchor="start">GND (J3.1)</text>
-<circle cx="470" cy="560" r="4.5" fill="#00897b"/>
-<text x="482" y="564" font-size="13" fill="#00897b" text-anchor="start">GPIO 4 — SDA Wire1 (J2.15)</text>
-<circle cx="470" cy="590" r="4.5" fill="#00897b"/>
-<text x="482" y="594" font-size="13" fill="#00897b" text-anchor="start">GPIO 2 — SCL Wire1 (J2.17)</text>
-<circle cx="470" cy="826" r="4.5" fill="#d32f2f"/>
-<text x="482" y="830" font-size="13" fill="#d32f2f" text-anchor="start">Vext 3,3 V (J2.3/4)</text>
-<circle cx="470" cy="856" r="4.5" fill="#6d4c41"/>
-<text x="482" y="860" font-size="13" fill="#6d4c41" text-anchor="start">GPIO 19 — DQ 1-Wire (J2.11)</text>
-<circle cx="470" cy="886" r="4.5" fill="#212121"/>
-<text x="482" y="890" font-size="13" fill="#212121" text-anchor="start">GND (J3.1)</text>
-<circle cx="845" cy="330" r="4.5" fill="#ef6c00"/>
-<text x="833" y="334" font-size="13" fill="#ef6c00" text-anchor="end">(J3.4) SDS_EN — GPIO 26</text>
-<circle cx="845" cy="590" r="4.5" fill="#ef6c00"/>
-<text x="833" y="594" font-size="13" fill="#ef6c00" text-anchor="end">(J2.16) SDS_RX — GPIO 3</text>
-<circle cx="845" cy="780" r="4.5" fill="#8e0000"/>
-<text x="833" y="784" font-size="13" fill="#8e0000" text-anchor="end">BAT (SH1.25)</text>
-<text x="657.5" y="660" font-size="12" fill="#455a64" text-anchor="middle">Uso dei bus:</text>
-<text x="657.5" y="678" font-size="12" fill="#607d8b" text-anchor="middle">Wire: SCD41 + MPL3115A2 (su Vext)</text>
-<text x="657.5" y="696" font-size="12" fill="#607d8b" text-anchor="middle">Wire1: CCS811 (sempre su 3V3)</text>
-<text x="657.5" y="714" font-size="12" fill="#607d8b" text-anchor="middle">UART1: GPS · UART2: SDS011 (solo RX)</text>
-<text x="657.5" y="732" font-size="12" fill="#607d8b" text-anchor="middle">1-Wire: DS18B20 (su Vext)</text>
-<text x="657.5" y="750" font-size="12" fill="#607d8b" text-anchor="middle">Vext_Ctrl GPIO 36 · ADC_Ctrl GPIO 37</text>
-<rect x="40" y="234" width="290" height="184" rx="8" fill="#e8eaf6" stroke="#283593" stroke-width="2" />
-<text x="185.0" y="258" font-size="16" fill="#283593" text-anchor="middle" font-weight="bold">MPL3115A2</text>
-<text x="185.0" y="276" font-size="12" fill="#555" text-anchor="middle" font-style="italic">pressione + T · I²C 0x60 · one-shot</text>
-<circle cx="330" cy="300" r="4.5" fill="#d32f2f"/>
-<text x="54" y="304" font-size="13" fill="#212121" text-anchor="start">VIN — da Vext</text>
-<circle cx="330" cy="330" r="4.5" fill="#212121"/>
-<text x="54" y="334" font-size="13" fill="#212121" text-anchor="start">GND</text>
-<circle cx="330" cy="360" r="4.5" fill="#1976d2"/>
-<text x="54" y="364" font-size="13" fill="#212121" text-anchor="start">SDA</text>
-<circle cx="330" cy="390" r="4.5" fill="#1976d2"/>
-<text x="54" y="394" font-size="13" fill="#212121" text-anchor="start">SCL</text>
-<path d="M330 300H400V300H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
-<path d="M330 330H385V330H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 360H370V360H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 390H355V390H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="40" y="434" width="290" height="244" rx="8" fill="#e0f2f1" stroke="#00695c" stroke-width="2" />
-<text x="185.0" y="458" font-size="16" fill="#00695c" text-anchor="middle" font-weight="bold">CJMCU-811 (CCS811)</text>
-<text x="185.0" y="476" font-size="12" fill="#555" text-anchor="middle" font-style="italic">TVOC + eCO₂ · I²C 0x5A · sempre acceso</text>
-<circle cx="330" cy="500" r="4.5" fill="#d32f2f"/>
-<text x="54" y="504" font-size="13" fill="#212121" text-anchor="start">VCC — 3V3 sempre acceso</text>
-<circle cx="330" cy="530" r="4.5" fill="#212121"/>
-<text x="54" y="534" font-size="13" fill="#212121" text-anchor="start">GND</text>
-<circle cx="330" cy="560" r="4.5" fill="#00897b"/>
-<text x="54" y="564" font-size="13" fill="#212121" text-anchor="start">SDA</text>
-<circle cx="330" cy="590" r="4.5" fill="#00897b"/>
-<text x="54" y="594" font-size="13" fill="#212121" text-anchor="start">SCL</text>
-<circle cx="330" cy="620" r="4.5" fill="#212121"/>
-<text x="54" y="624" font-size="13" fill="#212121" text-anchor="start">WAK — a GND (sempre sveglio)</text>
-<circle cx="330" cy="650" r="4.5" fill="#212121"/>
-<text x="54" y="654" font-size="13" fill="#212121" text-anchor="start">ADD — a GND (indirizzo 0x5A)</text>
-<path d="M330 500H400V500H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 530H385V530H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 560H370V560H470" fill="none" stroke="#00897b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 590H355V590H470" fill="none" stroke="#00897b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 620H385V530" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 650H385V530" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="385" cy="530" r="3.5" fill="#212121"/>
-<text x="50" y="696" font-size="12" fill="#555" text-anchor="start">RST e INT non collegati. Pull-up su SDA/SCL: se la</text>
-<text x="50" y="712" font-size="12" fill="#555" text-anchor="start">scheda non li ha, 10 kΩ verso 3V3 su ciascuna linea.</text>
-<rect x="40" y="760" width="290" height="154" rx="8" fill="#efebe9" stroke="#5d4037" stroke-width="2" />
-<text x="185.0" y="784" font-size="16" fill="#5d4037" text-anchor="middle" font-weight="bold">DS18B20 in sonda</text>
-<text x="185.0" y="802" font-size="12" fill="#555" text-anchor="middle" font-style="italic">T esterna · 1-Wire · fuori dal contenitore</text>
-<circle cx="330" cy="826" r="4.5" fill="#d32f2f"/>
-<text x="54" y="830" font-size="13" fill="#212121" text-anchor="start">VDD (rosso) — da Vext</text>
-<circle cx="330" cy="856" r="4.5" fill="#6d4c41"/>
-<text x="54" y="860" font-size="13" fill="#212121" text-anchor="start">DQ (giallo) — dati</text>
-<circle cx="330" cy="886" r="4.5" fill="#212121"/>
-<text x="54" y="890" font-size="13" fill="#212121" text-anchor="start">GND (nero)</text>
-<path d="M330 826H400V826H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
-<path d="M330 856H385V856H470" fill="none" stroke="#6d4c41" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M330 886H370V886H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="432" cy="826" r="3.5" fill="#d32f2f"/>
-<circle cx="432" cy="856" r="3.5" fill="#6d4c41"/>
-<rect x="426" y="831" width="12" height="20" rx="2" fill="#ffffff" stroke="#5d4037" stroke-width="1.6" />
-<text x="420" y="845.0" font-size="11" fill="#5d4037" text-anchor="end" font-weight="bold">4,7 kΩ</text>
-<text x="50" y="932" font-size="12" fill="#555" text-anchor="start">Pull-up da 4,7 kΩ verso Vext, NON verso 3V3: con Vext</text>
-<text x="50" y="948" font-size="12" fill="#555" text-anchor="start">spenta alimenterebbe la sonda attraverso il pin dati.</text>
-<rect x="900" y="214" width="300" height="140" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="2" />
-<text x="1050" y="236" font-size="14" fill="#e65100" text-anchor="middle" font-weight="bold">Interruttore lato alto SDS011</text>
-<text x="914" y="258" font-size="12" fill="#5d4037" text-anchor="start">P-MOSFET AO3401: source su VBAT,</text>
-<text x="914" y="276" font-size="12" fill="#5d4037" text-anchor="start">drain verso IN+ del boost, 100 kΩ gate-source.</text>
-<text x="914" y="294" font-size="12" fill="#5d4037" text-anchor="start">N-MOSFET 2N7002: drain sul gate del P,</text>
-<text x="914" y="312" font-size="12" fill="#5d4037" text-anchor="start">gate ← SDS_EN, 100 kΩ gate-GND.</text>
-<text x="914" y="330" font-size="12" fill="#5d4037" text-anchor="start">SDS_EN alto = SDS011 alimentato.</text>
-<circle cx="900" cy="330" r="4.5" fill="#ef6c00"/>
-<text x="908" y="324" font-size="11" fill="#212121" text-anchor="start"></text>
-<path d="M845 330H900" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="1200" cy="250" r="4.5" fill="#8e0000"/>
-<text x="1192" y="242" font-size="11" fill="#8e0000" text-anchor="end" font-weight="bold">VBAT</text>
-<circle cx="1050" cy="354" r="4.5" fill="#8e0000"/>
-<rect x="900" y="384" width="300" height="76" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" />
-<text x="1050" y="408" font-size="14" fill="#6a1b9a" text-anchor="middle" font-weight="bold">Boost 5 V</text>
-<text x="1050" y="426" font-size="12" fill="#555" text-anchor="middle">es. MT3608 regolato a 5,0 V o Pololu U1V11F5</text>
-<text x="1050" y="444" font-size="12" fill="#555" text-anchor="middle">+ 470 µF sull'uscita, vicino al sensore</text>
-<path d="M1050 354V384" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="1058" y="374" font-size="11" fill="#8e0000" text-anchor="start">IN+</text>
-<rect x="900" y="524" width="300" height="154" rx="8" fill="#fce4ec" stroke="#ad1457" stroke-width="2" />
-<text x="1050.0" y="548" font-size="16" fill="#ad1457" text-anchor="middle" font-weight="bold">Nova SDS011</text>
-<text x="1050.0" y="566" font-size="12" fill="#555" text-anchor="middle" font-style="italic">PM2.5 / PM10 · UART 9600 · 5 V, ~70 mA</text>
-<circle cx="900" cy="590" r="4.5" fill="#ef6c00"/>
-<text x="914" y="594" font-size="13" fill="#212121" text-anchor="start">TXD → SDS_RX</text>
-<circle cx="900" cy="620" r="4.5" fill="#9e9e9e"/>
-<text x="914" y="624" font-size="13" fill="#212121" text-anchor="start">RXD — non collegato</text>
-<circle cx="900" cy="650" r="4.5" fill="#212121"/>
-<text x="914" y="654" font-size="13" fill="#212121" text-anchor="start">GND</text>
-<path d="M1050 460V524" fill="none" stroke="#b5179e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="1058" y="500" font-size="11" fill="#b5179e" text-anchor="start" font-weight="bold">5 V → pin 5V del SDS011</text>
-<path d="M845 590H872V590H900" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="900" y="712" width="300" height="90" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="2" />
-<text x="1050.0" y="736" font-size="16" fill="#c62828" text-anchor="middle" font-weight="bold">LiPo 1S + protezione</text>
-<text x="1050.0" y="754" font-size="12" fill="#555" text-anchor="middle" font-style="italic">P+ alla scheda e al ramo VBAT dell'SDS011</text>
-<circle cx="900" cy="778" r="4.5" fill="#8e0000"/>
-<text x="914" y="782" font-size="13" fill="#212121" text-anchor="start">P+ → BAT della scheda</text>
-<path d="M845 780H872V778H900" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M1200 752H1222V250H1200" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="1214" y="480" font-size="11" fill="#8e0000" text-anchor="end" font-weight="bold">VBAT</text>
-<rect x="40" y="1000" width="1160" height="246" rx="10" fill="#f8f9fa" stroke="#ccc" stroke-width="1" />
-<text x="60" y="1028" font-size="15" fill="#212121" text-anchor="start" font-weight="bold">Note</text>
-<text x="60" y="1054" font-size="13" fill="#333" text-anchor="start">• MPL3115A2: INT1 e INT2 non collegati. Il SCD41 resta sullo stesso bus Wire (0x62): nessun conflitto con lo 0x60.</text>
-<text x="60" y="1078" font-size="13" fill="#333" text-anchor="start">• Tutte le masse sono comuni: GND della scheda, dei sensori, del boost e il negativo della batteria (lato carico della protezione).</text>
-<text x="60" y="1102" font-size="13" fill="#333" text-anchor="start">• SDS011 alimentato solo durante la misura: il firmware accende SDS_EN all'inizio del ciclo e lo spegne dopo la lettura (~30 s di ventilazione).</text>
-<text x="60" y="1126" font-size="13" fill="#333" text-anchor="start">• Il boost prende corrente dalla batteria e non dal regolatore a 3,3 V della scheda: ~130 mA durante la ventilazione.</text>
-<text x="60" y="1150" font-size="13" fill="#333" text-anchor="start">• CCS811 sempre alimentato: il firmware non lo resetta al risveglio, così non ripete i 20 minuti di riscaldamento.</text>
-<text x="60" y="1174" font-size="13" fill="#333" text-anchor="start">• DS18B20: la sonda va fuori dal contenitore, all'ombra e vicino all'ingresso d'aria del SDS011 (meglio in uno schermo antiradiazione).</text>
-<text x="60" y="1198" font-size="13" fill="#333" text-anchor="start">• Restano collegati come nello schema base: SCD41, GPS con il suo interruttore, RFM95W, batteria.</text>
-<text x="60" y="1222" font-size="13" fill="#333" text-anchor="start">• Posizioni sui pettini J2 / J3 tra parentesi: in caso di dubbio vale la serigrafia della scheda.</text>
+<path d="M32 188H58" fill="none" stroke="#212121" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="64" y="192" font-size="11.5" fill="#333" text-anchor="start">Massa (GND)</text>
+<path d="M32 208H58" fill="none" stroke="#1976d2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="64" y="212" font-size="11.5" fill="#333" text-anchor="start">I²C Wire (Vext)</text>
+<path d="M192 108H218" fill="none" stroke="#00897b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="112" font-size="11.5" fill="#333" text-anchor="start">I²C Wire1 (3V3)</text>
+<path d="M192 128H218" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="132" font-size="11.5" fill="#333" text-anchor="start">UART</text>
+<path d="M192 148H218" fill="none" stroke="#ef6c00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="152" font-size="11.5" fill="#333" text-anchor="start">Comandi (enable)</text>
+<path d="M192 168H218" fill="none" stroke="#6d4c41" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="172" font-size="11.5" fill="#333" text-anchor="start">1-Wire (Vext)</text>
+<path d="M192 188H218" fill="none" stroke="#6a1b9a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="192" font-size="11.5" fill="#333" text-anchor="start">SPI verso l'RFM95W</text>
+<rect x="370" y="72" width="850" height="104" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5" />
+<text x="384" y="94" font-size="13" fill="#e65100" text-anchor="start" font-weight="bold">⚠ Tre regole di alimentazione</text>
+<text x="384" y="114" font-size="12" fill="#5d4037" text-anchor="start">1. Vext (GPIO 36 basso) alimenta SCD41, MPL3115A2 e DS18B20: si spengono in deep sleep, e con loro i loro pull-up.</text>
+<text x="384" y="132" font-size="12" fill="#5d4037" text-anchor="start">2. Il CCS811 resta SEMPRE acceso dal 3V3, su un bus suo (Wire1): sul bus del SCD41 i suoi pull-up lo alimenterebbero da SDA/SCL.</text>
+<text x="384" y="150" font-size="12" fill="#5d4037" text-anchor="start">3. Il SDS011 prende 5 V da un boost collegato alla BATTERIA, acceso solo durante la misura dall'interruttore a MOSFET.</text>
+<text x="384" y="168" font-size="12" fill="#5d4037" text-anchor="start" font-style="italic">Tra parentesi le posizioni sui pettini J2 / J3: in caso di dubbio vale la serigrafia della scheda.</text>
+<rect x="40" y="246" width="290" height="176" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" />
+<text x="185.0" y="270" font-size="16" fill="#2e7d32" text-anchor="middle" font-weight="bold">Sensirion SCD41</text>
+<text x="185.0" y="288" font-size="12" fill="#555" text-anchor="middle" font-style="italic">CO₂ (NDIR) + T + UR · I²C 0x62</text>
+<circle cx="330" cy="312" r="4.5" fill="#d32f2f"/>
+<text x="54" y="316" font-size="13" fill="#212121" text-anchor="start">VDD — da Vext</text>
+<circle cx="330" cy="340" r="4.5" fill="#212121"/>
+<text x="54" y="344" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="368" r="4.5" fill="#1976d2"/>
+<text x="54" y="372" font-size="13" fill="#212121" text-anchor="start">SDA</text>
+<circle cx="330" cy="396" r="4.5" fill="#1976d2"/>
+<text x="54" y="400" font-size="13" fill="#212121" text-anchor="start">SCL</text>
+<rect x="40" y="444" width="290" height="176" rx="8" fill="#e8eaf6" stroke="#283593" stroke-width="2" />
+<text x="185.0" y="468" font-size="16" fill="#283593" text-anchor="middle" font-weight="bold">MPL3115A2</text>
+<text x="185.0" y="486" font-size="12" fill="#555" text-anchor="middle" font-style="italic">pressione + T · I²C 0x60 · stesso bus</text>
+<circle cx="330" cy="510" r="4.5" fill="#d32f2f"/>
+<text x="54" y="514" font-size="13" fill="#212121" text-anchor="start">VIN — da Vext</text>
+<circle cx="330" cy="538" r="4.5" fill="#212121"/>
+<text x="54" y="542" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="566" r="4.5" fill="#1976d2"/>
+<text x="54" y="570" font-size="13" fill="#212121" text-anchor="start">SDA</text>
+<circle cx="330" cy="594" r="4.5" fill="#1976d2"/>
+<text x="54" y="598" font-size="13" fill="#212121" text-anchor="start">SCL</text>
+<path d="M330 510H348V312" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
+<path d="M330 538H363V340" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 566H378V368" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 594H393V396" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="642" width="290" height="160" rx="8" fill="#fff8e1" stroke="#ef6c00" stroke-width="2" />
+<text x="56" y="664" font-size="14" fill="#e65100" text-anchor="start" font-weight="bold">Interruttore GPS (esterno)</text>
+<text x="56" y="681" font-size="12" fill="#6d4c41" text-anchor="start" font-style="italic">P-MOSFET AO3401 + pull-up 10 kΩ</text>
+<path d="M330 697H135V727H160" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 720V734M160 738V746M160 750V764" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M172 722V762" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 757H135V787H330" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 742H148V727" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="148,742 157,737 157,747" fill="#222"/>
+<path d="M172 742H330" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="255" cy="697" r="3.5" fill="#d32f2f"/>
+<circle cx="255" cy="742" r="3.5" fill="#ef6c00"/>
+<path d="M255 697V705M255 733V742" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="248" y="705" width="14" height="28" rx="0" fill="#fff" stroke="#222" stroke-width="2" />
+<text x="267" y="724" font-size="11" fill="#555" text-anchor="start">10k</text>
+<text x="130" y="723" font-size="11" fill="#555" text-anchor="end">S</text>
+<text x="130" y="768" font-size="11" fill="#555" text-anchor="end">D</text>
+<text x="180" y="736" font-size="11" fill="#555" text-anchor="start">G</text>
+<text x="324" y="691" font-size="11" fill="#d32f2f" text-anchor="end" font-weight="bold">3V3</text>
+<text x="324" y="736" font-size="11" fill="#ef6c00" text-anchor="end" font-weight="bold">GPIO 34</text>
+<text x="324" y="781" font-size="11" fill="#d32f2f" text-anchor="end" font-weight="bold">VCC GPS</text>
+<text x="56" y="794" font-size="11" fill="#6d4c41" text-anchor="start">LOW = acceso</text>
+<rect x="40" y="824" width="290" height="176" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" />
+<text x="185.0" y="848" font-size="16" fill="#1565c0" text-anchor="middle" font-weight="bold">GPS Quectel L76K</text>
+<text x="185.0" y="866" font-size="12" fill="#555" text-anchor="middle" font-style="italic">NMEA su UART1, 9600 baud</text>
+<circle cx="330" cy="890" r="4.5" fill="#d32f2f"/>
+<text x="54" y="894" font-size="13" fill="#212121" text-anchor="start">VCC — dall'interruttore</text>
+<circle cx="330" cy="918" r="4.5" fill="#212121"/>
+<text x="54" y="922" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="946" r="4.5" fill="#1565c0"/>
+<text x="54" y="950" font-size="13" fill="#212121" text-anchor="start">TX → GPIO 39</text>
+<circle cx="330" cy="974" r="4.5" fill="#1565c0"/>
+<text x="54" y="978" font-size="13" fill="#212121" text-anchor="start">RX ← GPIO 38</text>
+<path d="M330 787H348V890H330" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="1022" width="290" height="232" rx="8" fill="#e0f2f1" stroke="#00695c" stroke-width="2" />
+<text x="185.0" y="1046" font-size="16" fill="#00695c" text-anchor="middle" font-weight="bold">CJMCU-811 (CCS811)</text>
+<text x="185.0" y="1064" font-size="12" fill="#555" text-anchor="middle" font-style="italic">TVOC + eCO₂ · I²C 0x5A · sempre acceso</text>
+<circle cx="330" cy="1088" r="4.5" fill="#d32f2f"/>
+<text x="54" y="1092" font-size="13" fill="#212121" text-anchor="start">VCC — 3V3 sempre acceso</text>
+<circle cx="330" cy="1116" r="4.5" fill="#212121"/>
+<text x="54" y="1120" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="330" cy="1144" r="4.5" fill="#00897b"/>
+<text x="54" y="1148" font-size="13" fill="#212121" text-anchor="start">SDA</text>
+<circle cx="330" cy="1172" r="4.5" fill="#00897b"/>
+<text x="54" y="1176" font-size="13" fill="#212121" text-anchor="start">SCL</text>
+<circle cx="330" cy="1200" r="4.5" fill="#212121"/>
+<text x="54" y="1204" font-size="13" fill="#212121" text-anchor="start">WAK — a GND (sempre sveglio)</text>
+<circle cx="330" cy="1228" r="4.5" fill="#212121"/>
+<text x="54" y="1232" font-size="13" fill="#212121" text-anchor="start">ADD — a GND (0x5A)</text>
+<path d="M330 1200H350V1116" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1228H350V1116" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="1116" r="3.5" fill="#212121"/>
+<text x="50" y="1270" font-size="11" fill="#555" text-anchor="start">RST e INT non collegati. Pull-up 10 kΩ verso 3V3</text>
+<text x="50" y="1284" font-size="11" fill="#555" text-anchor="start">se la schedina non li ha già.</text>
+<rect x="40" y="1300" width="290" height="148" rx="8" fill="#efebe9" stroke="#5d4037" stroke-width="2" />
+<text x="185.0" y="1324" font-size="16" fill="#5d4037" text-anchor="middle" font-weight="bold">DS18B20 in sonda</text>
+<text x="185.0" y="1342" font-size="12" fill="#555" text-anchor="middle" font-style="italic">T esterna · 1-Wire · fuori dal contenitore</text>
+<circle cx="330" cy="1366" r="4.5" fill="#d32f2f"/>
+<text x="54" y="1370" font-size="13" fill="#212121" text-anchor="start">VDD (rosso) — da Vext</text>
+<circle cx="330" cy="1394" r="4.5" fill="#6d4c41"/>
+<text x="54" y="1398" font-size="13" fill="#212121" text-anchor="start">DQ (giallo) — dati</text>
+<circle cx="330" cy="1422" r="4.5" fill="#212121"/>
+<text x="54" y="1426" font-size="13" fill="#212121" text-anchor="start">GND (nero)</text>
+<text x="50" y="1464" font-size="11" fill="#555" text-anchor="start">Pull-up 4,7 kΩ tra DQ e Vext (NON 3V3).</text>
+<rect x="920" y="246" width="300" height="316" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" />
+<text x="1070.0" y="270" font-size="16" fill="#6a1b9a" text-anchor="middle" font-weight="bold">HopeRF RFM95W</text>
+<text x="1070.0" y="288" font-size="12" fill="#555" text-anchor="middle" font-style="italic">SX1276 · 868 MHz · alimentato da 3V3</text>
+<circle cx="920" cy="312" r="4.5" fill="#d32f2f"/>
+<text x="934" y="316" font-size="13" fill="#212121" text-anchor="start">3.3V</text>
+<circle cx="920" cy="340" r="4.5" fill="#212121"/>
+<text x="934" y="344" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<circle cx="920" cy="368" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="372" font-size="13" fill="#212121" text-anchor="start">NSS</text>
+<circle cx="920" cy="396" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="400" font-size="13" fill="#212121" text-anchor="start">SCK</text>
+<circle cx="920" cy="424" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="428" font-size="13" fill="#212121" text-anchor="start">MOSI</text>
+<circle cx="920" cy="452" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="456" font-size="13" fill="#212121" text-anchor="start">MISO</text>
+<circle cx="920" cy="480" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="484" font-size="13" fill="#212121" text-anchor="start">RESET</text>
+<circle cx="920" cy="508" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="512" font-size="13" fill="#212121" text-anchor="start">DIO0</text>
+<circle cx="920" cy="536" r="4.5" fill="#6a1b9a"/>
+<text x="934" y="540" font-size="13" fill="#212121" text-anchor="start">DIO1</text>
+<text x="1070.0" y="578" font-size="11" fill="#4a148c" text-anchor="middle">ANT: antenna 868 MHz · mai trasmettere senza antenna</text>
+<rect x="920" y="596" width="300" height="260" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="2" />
+<text x="934" y="618" font-size="14" fill="#e65100" text-anchor="start" font-weight="bold">Interruttore lato alto SDS011</text>
+<text x="934" y="635" font-size="12" fill="#6d4c41" text-anchor="start" font-style="italic">SDS_EN alto = SDS011 alimentato</text>
+<path d="M1116 686V700M1116 704V712M1116 716V730" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1107 690V726" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1116 693H1140V668M1116 723H1140V748" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1116 708H1140V693" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="1130,708 1121,703 1121,713" fill="#222"/>
+<path d="M1107 708H1076" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1152" y="704" font-size="11.5" fill="#222" text-anchor="start" font-weight="bold">AO3401</text>
+<text x="1152" y="719" font-size="11" fill="#555" text-anchor="start">(P)</text>
+<text x="1146" y="682" font-size="11" fill="#555" text-anchor="start">S</text>
+<text x="1146" y="744" font-size="11" fill="#555" text-anchor="start">D</text>
+<path d="M1220 654H1140V668" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1214" y="648" font-size="11" fill="#8e0000" text-anchor="end" font-weight="bold">VBAT</text>
+<path d="M1050 654H1140" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1140" cy="654" r="3.5" fill="#8e0000"/>
+<path d="M1050 654V667.0M1050 695.0V708" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1043" y="667.0" width="14" height="28" rx="0" fill="#fff" stroke="#222" stroke-width="2" />
+<text x="1061" y="685.0" font-size="11" fill="#555" text-anchor="start">100k</text>
+<path d="M1050 708H1076" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1080" y="702" font-size="11" fill="#555" text-anchor="start">G</text>
+<path d="M1006 770V784M1006 788V796M1006 800V814" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M997 774V810" fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1006 777H1030V752M1006 807H1030V832" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1006 792H1030V807" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="1007,792 1016,787 1016,797" fill="#222"/>
+<path d="M997 792H966" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1036" y="796" font-size="11.5" fill="#222" text-anchor="start" font-weight="bold">2N7002</text>
+<path d="M1030 752V708H1050" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1050" cy="708" r="3.5" fill="#222"/>
+<path d="M1030 832V840" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1021 840H1039M1024 844H1036M1027 848H1033" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M920 792H966" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="946" cy="792" r="3.5" fill="#ef6c00"/>
+<path d="M946 792V800.0M946 828.0V836" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="939" y="800.0" width="14" height="28" rx="0" fill="#fff" stroke="#222" stroke-width="2" />
+<text x="957" y="818.0" font-size="11" fill="#555" text-anchor="start"></text>
+<text x="956" y="822" font-size="11" fill="#555" text-anchor="start">100k</text>
+<path d="M946 836V844" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M937 844H955M940 848H952M943 852H949" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="928" y="786" font-size="11" fill="#ef6c00" text-anchor="start" font-weight="bold">SDS_EN</text>
+<path d="M1140 748V856" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1146" y="850" font-size="11" fill="#8e0000" text-anchor="start" font-weight="bold">al boost</text>
+<rect x="920" y="886" width="300" height="74" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" />
+<text x="1070.0" y="908" font-size="14" fill="#6a1b9a" text-anchor="middle" font-weight="bold">Boost 5 V</text>
+<text x="1070.0" y="926" font-size="11.5" fill="#555" text-anchor="middle">MT3608 regolato a 5,0 V o Pololu U1V11F5</text>
+<text x="1070.0" y="943" font-size="11.5" fill="#555" text-anchor="middle">+ 470 µF sull'uscita · GND comune</text>
+<path d="M1140 856V886" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1146" y="880" font-size="11" fill="#8e0000" text-anchor="start" font-weight="bold">IN+</text>
+<rect x="920" y="994" width="300" height="176" rx="8" fill="#fce4ec" stroke="#ad1457" stroke-width="2" />
+<text x="1070.0" y="1018" font-size="16" fill="#ad1457" text-anchor="middle" font-weight="bold">Nova SDS011</text>
+<text x="1070.0" y="1036" font-size="12" fill="#555" text-anchor="middle" font-style="italic">PM2.5 / PM10 · UART2 9600 · 5 V, ~70 mA</text>
+<circle cx="920" cy="1060" r="4.5" fill="#b5179e"/>
+<text x="934" y="1064" font-size="13" fill="#212121" text-anchor="start">5V ← uscita del boost</text>
+<circle cx="920" cy="1088" r="4.5" fill="#1565c0"/>
+<text x="934" y="1092" font-size="13" fill="#212121" text-anchor="start">TXD → SDS_RX</text>
+<circle cx="920" cy="1116" r="4.5" fill="#9e9e9e"/>
+<text x="934" y="1120" font-size="13" fill="#212121" text-anchor="start">RXD — non collegato</text>
+<circle cx="920" cy="1144" r="4.5" fill="#212121"/>
+<text x="934" y="1148" font-size="13" fill="#212121" text-anchor="start">GND</text>
+<path d="M920 923H906V1060H920" fill="none" stroke="#b5179e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="902" y="919" font-size="11" fill="#b5179e" text-anchor="end" font-weight="bold">OUT+</text>
+<path d="M920 1144H896" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M896 1144V1152" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M887 1152H905M890 1156H902M893 1160H899" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="1200" width="300" height="92" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="2" />
+<text x="1070.0" y="1224" font-size="16" fill="#c62828" text-anchor="middle" font-weight="bold">LiPo 1S + protezione</text>
+<text x="1070.0" y="1242" font-size="12" fill="#555" text-anchor="middle" font-style="italic">P+ alla scheda e all'interruttore SDS011</text>
+<circle cx="920" cy="1266" r="4.5" fill="#8e0000"/>
+<text x="934" y="1270" font-size="13" fill="#212121" text-anchor="start">P+ → BAT della scheda</text>
+<path d="M1220 1266H1222V654H1220" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1220" cy="1266" r="4" fill="#8e0000"/>
+<rect x="470" y="216" width="400" height="1276" rx="12" fill="#eceff1" stroke="#37474f" stroke-width="2.5" />
+<text x="670.0" y="244" font-size="17" fill="#263238" text-anchor="middle" font-weight="bold">Heltec WiFi Kit 32 V3</text>
+<text x="670.0" y="263" font-size="12" fill="#546e7a" text-anchor="middle" font-style="italic">ESP32-S3FN8 + OLED · radio RFM95W esterna</text>
+<circle cx="470" cy="312" r="4.5" fill="#d32f2f"/>
+<text x="482" y="316" font-size="13" fill="#d32f2f" text-anchor="start">Vext 3,3 V (J2.3/4)</text>
+<circle cx="470" cy="340" r="4.5" fill="#212121"/>
+<text x="482" y="344" font-size="13" fill="#212121" text-anchor="start">GND (J2.1)</text>
+<circle cx="470" cy="368" r="4.5" fill="#1976d2"/>
+<text x="482" y="372" font-size="13" fill="#1976d2" text-anchor="start">GPIO 7 — SDA Wire (J2.12)</text>
+<circle cx="470" cy="396" r="4.5" fill="#1976d2"/>
+<text x="482" y="400" font-size="13" fill="#1976d2" text-anchor="start">GPIO 6 — SCL Wire (J2.13)</text>
+<circle cx="470" cy="697" r="4.5" fill="#d32f2f"/>
+<text x="482" y="701" font-size="13" fill="#d32f2f" text-anchor="start">3V3 (J3.2)</text>
+<circle cx="470" cy="742" r="4.5" fill="#ef6c00"/>
+<text x="482" y="746" font-size="13" fill="#ef6c00" text-anchor="start">GPIO 34 — GPS_EN (J3.8)</text>
+<circle cx="470" cy="918" r="4.5" fill="#212121"/>
+<text x="482" y="922" font-size="13" fill="#212121" text-anchor="start">GND (J3.1)</text>
+<circle cx="470" cy="946" r="4.5" fill="#1565c0"/>
+<text x="482" y="950" font-size="13" fill="#1565c0" text-anchor="start">GPIO 39 — RX ← GPS (J3.13)</text>
+<circle cx="470" cy="974" r="4.5" fill="#1565c0"/>
+<text x="482" y="978" font-size="13" fill="#1565c0" text-anchor="start">GPIO 38 — TX → GPS (J3.12)</text>
+<circle cx="470" cy="1088" r="4.5" fill="#d32f2f"/>
+<text x="482" y="1092" font-size="13" fill="#d32f2f" text-anchor="start">3V3 (J3.2)</text>
+<circle cx="470" cy="1116" r="4.5" fill="#212121"/>
+<text x="482" y="1120" font-size="13" fill="#212121" text-anchor="start">GND (J3.1)</text>
+<circle cx="470" cy="1144" r="4.5" fill="#00897b"/>
+<text x="482" y="1148" font-size="13" fill="#00897b" text-anchor="start">GPIO 4 — SDA Wire1 (J2.15)</text>
+<circle cx="470" cy="1172" r="4.5" fill="#00897b"/>
+<text x="482" y="1176" font-size="13" fill="#00897b" text-anchor="start">GPIO 2 — SCL Wire1 (J2.17)</text>
+<circle cx="470" cy="1366" r="4.5" fill="#d32f2f"/>
+<text x="482" y="1370" font-size="13" fill="#d32f2f" text-anchor="start">Vext 3,3 V (J2.3/4)</text>
+<circle cx="470" cy="1394" r="4.5" fill="#6d4c41"/>
+<text x="482" y="1398" font-size="13" fill="#6d4c41" text-anchor="start">GPIO 19 — DQ 1-Wire (J2.11)</text>
+<circle cx="470" cy="1422" r="4.5" fill="#212121"/>
+<text x="482" y="1426" font-size="13" fill="#212121" text-anchor="start">GND (J3.1)</text>
+<circle cx="870" cy="312" r="4.5" fill="#d32f2f"/>
+<text x="858" y="316" font-size="13" fill="#d32f2f" text-anchor="end">3V3 (J3.3)</text>
+<circle cx="870" cy="340" r="4.5" fill="#212121"/>
+<text x="858" y="344" font-size="13" fill="#212121" text-anchor="end">GND (J3.1)</text>
+<circle cx="870" cy="368" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="372" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.7) NSS — GPIO 33</text>
+<circle cx="870" cy="396" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="400" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.14) SCK — GPIO 40</text>
+<circle cx="870" cy="424" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="428" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.16) MOSI — GPIO 42</text>
+<circle cx="870" cy="452" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="456" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.15) MISO — GPIO 41</text>
+<circle cx="870" cy="480" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="484" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.6) RST — GPIO 47</text>
+<circle cx="870" cy="508" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="512" font-size="13" fill="#6a1b9a" text-anchor="end">(J3.5) DIO0 — GPIO 48</text>
+<circle cx="870" cy="536" r="4.5" fill="#6a1b9a"/>
+<text x="858" y="540" font-size="13" fill="#6a1b9a" text-anchor="end">(J2.14) DIO1 — GPIO 5</text>
+<circle cx="870" cy="792" r="4.5" fill="#ef6c00"/>
+<text x="858" y="796" font-size="13" fill="#ef6c00" text-anchor="end">(J3.4) SDS_EN — GPIO 26</text>
+<circle cx="870" cy="1088" r="4.5" fill="#1565c0"/>
+<text x="858" y="1092" font-size="13" fill="#1565c0" text-anchor="end">(J2.16) SDS_RX — GPIO 3</text>
+<circle cx="870" cy="1266" r="4.5" fill="#8e0000"/>
+<text x="858" y="1270" font-size="13" fill="#8e0000" text-anchor="end">BAT (SH1.25)</text>
+<text x="670.0" y="583.5" font-size="12" fill="#455a64" text-anchor="middle">Interni (già collegati sulla scheda):</text>
+<text x="670.0" y="601.5" font-size="12" fill="#607d8b" text-anchor="middle">OLED: SDA 17 · SCL 18 · RST 21 (su Vext)</text>
+<text x="670.0" y="619.5" font-size="12" fill="#607d8b" text-anchor="middle">Vext_Ctrl GPIO 36 · ADC_Ctrl GPIO 37</text>
+<text x="670.0" y="637.5" font-size="12" fill="#607d8b" text-anchor="middle">VBAT → 390k/100k → GPIO 1 · LED GPIO 35</text>
+<text x="670.0" y="655.5" font-size="12" fill="#607d8b" text-anchor="middle">USB-C → CP2102 → UART0 (Serial)</text>
+<path d="M330 312H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
+<path d="M330 340H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 368H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 396H470" fill="none" stroke="#1976d2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 918H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 946H470" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 974H470" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1088H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1116H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1144H470" fill="none" stroke="#00897b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1172H470" fill="none" stroke="#00897b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1366H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 4"/>
+<path d="M330 1394H470" fill="none" stroke="#6d4c41" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 1422H470" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 697H470" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 742H470" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="348" cy="312" r="3.5" fill="#d32f2f"/>
+<circle cx="363" cy="340" r="3.5" fill="#212121"/>
+<circle cx="378" cy="368" r="3.5" fill="#1976d2"/>
+<circle cx="393" cy="396" r="3.5" fill="#1976d2"/>
+<circle cx="420" cy="1366" r="3.5" fill="#d32f2f"/>
+<circle cx="420" cy="1394" r="3.5" fill="#6d4c41"/>
+<rect x="414" y="1370" width="12" height="20" rx="2" fill="#ffffff" stroke="#5d4037" stroke-width="1.6" />
+<text x="410" y="1384.0" font-size="11" fill="#5d4037" text-anchor="end" font-weight="bold">4,7 kΩ</text>
+<path d="M870 312H920" fill="none" stroke="#d32f2f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 340H920" fill="none" stroke="#212121" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 368H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 396H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 424H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 452H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 480H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 508H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 536H920" fill="none" stroke="#6a1b9a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 792H920" fill="none" stroke="#ef6c00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 1088H920" fill="none" stroke="#1565c0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M870 1266H920" fill="none" stroke="#8e0000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="1522" width="1160" height="184" rx="10" fill="#f8f9fa" stroke="#ccc" stroke-width="1" />
+<text x="60" y="1548" font-size="15" fill="#212121" text-anchor="start" font-weight="bold">Note</text>
+<text x="60" y="1574" font-size="12.5" fill="#333" text-anchor="start">• Tutte le masse sono comuni: scheda, sensori, interruttori, boost e negativo della batteria (lato carico della protezione).</text>
+<text x="60" y="1598" font-size="12.5" fill="#333" text-anchor="start">• SCD41 e MPL3115A2 condividono il bus Wire (punti di giunzione): indirizzi diversi, 0x62 e 0x60. INT1/INT2 dell'MPL non collegati.</text>
+<text x="60" y="1622" font-size="12.5" fill="#333" text-anchor="start">• Il SDS011 si accende all'inizio del ciclo (~30 s di ventilazione) e si spegne dopo la lettura. Senza SDS_EN il 100k lo tiene spento.</text>
+<text x="60" y="1646" font-size="12.5" fill="#333" text-anchor="start">• DS18B20: sonda fuori dal contenitore, all'ombra, vicino all'ingresso d'aria del SDS011.</text>
+<text x="60" y="1670" font-size="12.5" fill="#333" text-anchor="start">• Il GPS non ha un interruttore sulla scheda: il P-MOSFET esterno (GPIO 34 basso = acceso) lo spegne in deep sleep.</text>
+<text x="60" y="1694" font-size="12.5" fill="#333" text-anchor="start">• RFM95W sempre alimentato: il firmware lo mette in sleep prima del deep sleep, altrimenti consumerebbe ~1,6 mA.</text>
 </svg>
