@@ -32,7 +32,7 @@ Complementa la [dispensa gateway](../gateways/dispensa-chirpstack-configurazione
 20. [Ottimizzazione dei consumi](#ottimizzazione-dei-consumi)
 21. [Meccanismi di riattivazione e manutenzione](#meccanismi-di-riattivazione-e-manutenzione)
 22. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
-23. [Upgrade multisensore: SDS011, CCS811 e MPL3115A2](#upgrade-multisensore-sds011-ccs811-e-mpl3115a2)
+23. [Upgrade multisensore: SDS011, CCS811, MPL3115A2 e DS18B20](#upgrade-multisensore-sds011-ccs811-mpl3115a2-e-ds18b20)
 
 ---
 
@@ -2142,9 +2142,9 @@ Questi sketch non usano LoRaWAN né altre astrazioni; sono minimali e mirati. Si
 
 ---
 
-## Upgrade multisensore: SDS011, CCS811 e MPL3115A2
+## Upgrade multisensore: SDS011, CCS811, MPL3115A2 e DS18B20
 
-Il nodo si può estendere con tre sensori in più: **SDS011** (polveri PM2.5 e PM10), **CJMCU-811 / CCS811** (TVOC ed eCO₂ stimata) e **MPL3115A2** (pressione atmosferica). Il firmware dell'upgrade, [`FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino`](FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino), contiene tutti i sensori, ognuno attivabile con un `#define`: chi non li monta li mette a 0 e torna, di fatto, al nodo di questa dispensa.
+Il nodo si può estendere con quattro sensori in più: **SDS011** (polveri PM2.5 e PM10), **CJMCU-811 / CCS811** (TVOC ed eCO₂ stimata), **MPL3115A2** (pressione atmosferica) e **DS18B20** in sonda (temperatura esterna, facoltativo). Il firmware dell'upgrade, [`FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino`](FWs/heltec_kit32_v3_rfm95_multisensor_lorawan.ino), contiene tutti i sensori, ognuno attivabile con un `#define`: chi non li monta li mette a 0 e torna, di fatto, al nodo di questa dispensa.
 
 La descrizione completa (scelte di alimentazione, driver, payload, codec, consumi e limiti delle misure) è nella dispensa comune [Upgrade multisensore](dispensa-upgrade-multisensore.md). Qui c'è quello che riguarda la WiFi Kit 32 V3 + RFM95W.
 
@@ -2157,6 +2157,7 @@ La descrizione completa (scelte di alimentazione, driver, payload, codec, consum
 | MPL3115A2 | SDA/SCL sul bus **Wire** del SCD41 (GPIO 7 / 6), indirizzo 0x60 | Vext, insieme al SCD41 |
 | CJMCU-811 (CCS811) | bus **Wire1**: SDA GPIO 4 (J2.15), SCL GPIO 2 (J2.17); WAK e ADD a GND | 3V3, **sempre acceso** |
 | SDS011 | TX del sensore → GPIO 3 (J2.16) (UART2, solo ricezione) | 5 V da un boost collegato alla batteria, tramite un interruttore lato alto comandato da GPIO 26 (J3.4) (alto = acceso) |
+| DS18B20 (sonda) | DQ → GPIO 19 (J2.11), pull-up da 4,7 kΩ verso **Vext** | Vext |
 
 Sulla Kit 32 V3 i GPIO 47 e 48 sono già occupati dall'RFM95W, per questo il SDS011 usa il **3** e il **26**. Il GPIO 26 è libero perché l'ESP32-S3FN8 della Kit non ha PSRAM. Il GPIO 3 è un pin di strapping solo se è stato programmato un fusibile apposito, cosa che sulle Heltec non succede; in più all'avvio il SDS011 è spento.
 
@@ -2164,9 +2165,10 @@ Sulla Kit 32 V3 i GPIO 47 e 48 sono già occupati dall'RFM95W, per questo il SDS
 
 - **Ciclo**: il SDS011 si accende all'inizio, così i suoi 30 secondi di ventilazione scorrono in parallelo all'attesa del GPS. Dopo il SCD41 si leggono MPL3115A2, CCS811 (compensato con temperatura e umidità del SCD41) e SDS011, che viene subito spento.
 - **CCS811**: non viene mai resettato. Al risveglio il firmware controlla che sia già in funzione e legge soltanto, così non ripete i 20 minuti di riscaldamento.
-- **Payload**: le misure passano allo schema **0x44** a blocchi, da 10 a 43 byte, con una maschera dei sensori presenti. Lo schema state 0x43 cresce a 31 byte.
-- **Downlink**: quattro nuovi comandi su FPort 20, cioè `SET_SDS_ENABLED` (0x1A), `SET_CCS_ENABLED` (0x1B), `SET_MPL_ENABLED` (0x1C) e `SET_SDS_WARMUP` (0x1D).
+- **Payload**: le misure passano allo schema **0x44** a blocchi, da 10 a 45 byte, con una maschera dei sensori presenti. Lo schema state 0x43 cresce a 32 byte.
+- **Downlink**: cinque nuovi comandi su FPort 20, cioè `SET_SDS_ENABLED` (0x1A), `SET_CCS_ENABLED` (0x1B), `SET_MPL_ENABLED` (0x1C), `SET_SDS_WARMUP` (0x1D) e `SET_DS_ENABLED` (0x1E).
 - **Codec**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js) decodifica sia lo 0x42 sia lo 0x44, quindi nodi vecchi e aggiornati convivono.
+- **Correzioni incrociate**: i sensori si aiutano a vicenda. La pressione dell'MPL3115A2 (o, in mancanza, la quota GPS) compensa la CO₂ del SCD41; temperatura e umidità del SCD41 compensano il CCS811; la CO₂ del SCD41 decide quando salvare la baseline del CCS811; l'umidità del SCD41 segnala e corregge i PM del SDS011, e con il DS18B20 viene prima riportata alla temperatura esterna. La spiegazione, con gli schemi, è nella sezione [Correzioni e compensazioni tra sensori](dispensa-upgrade-multisensore.md#correzioni-e-compensazioni-tra-sensori) della dispensa comune.
 
 > ⚠️ **Il SDS011 consuma circa 1,2 mAh a ogni ciclo.** Con il TX al minuto scaricherebbe la batteria in meno di un giorno: con il SDS011 acceso usa un intervallo di almeno 10–30 minuti, oppure un pannello solare. I conti sono nella [dispensa comune](dispensa-upgrade-multisensore.md#consumi-e-autonomia).
 
