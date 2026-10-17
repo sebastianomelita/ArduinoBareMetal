@@ -150,7 +150,7 @@ Sulla Kit 32 V3 i GPIO 47 e 48 sono occupati dall'RFM95W, per questo l'SDS011 us
 
 Per il DS18B20 la Kit usa il **GPIO 19**, uno dei due pin dell'USB nativo dell'ESP32-S3. Sulla Kit 32 V3 l'USB passa dal convertitore CP2102 e i GPIO 19 e 20 non sono collegati al connettore, quindi sono liberi. Sulla V4 e sulla Stick Lite il DS18B20 usa il **GPIO 3**, come il SDS011 sulla Kit: vale lo stesso discorso sullo strapping.
 
-Gli schemi completi:
+Gli schemi seguenti sono **completi**: oltre ai sensori nuovi contengono tutto lo schema di base (SCD41, GPS con il suo interruttore, radio o antenna, batteria), quindi bastano da soli per montare il nodo. Gli interruttori sono disegnati con i simboli veri dei MOSFET: quello del GPS (solo Stick Lite e Kit 32, la V4 ce l'ha sulla scheda) e quello del SDS011.
 
 <p align="center">
   <img src="img/nodo_wiring_upgrade_v4.svg" alt="Upgrade multisensore sulla Heltec V4" width="1100">

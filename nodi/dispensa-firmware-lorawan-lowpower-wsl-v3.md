@@ -2061,6 +2061,8 @@ La descrizione completa (scelte di alimentazione, driver, payload, codec, consum
   <img src="img/nodo_wiring_upgrade_wsl.svg" alt="Upgrade multisensore sulla Wireless Stick Lite V3" width="1100">
 </p>
 
+Lo schema è **completo**: comprende anche i collegamenti di base di questa dispensa, compreso l'**interruttore del GPS** con il P-MOSFET AO3401, che resta indispensabile.
+
 | Sensore | Collegamento sulla Wireless Stick Lite V3 | Alimentazione |
 |---|---|---|
 | MPL3115A2 | SDA/SCL sul bus **Wire** del SCD41 (GPIO 7 / 6), indirizzo 0x60 | Vext, insieme al SCD41 |

@@ -1968,6 +1968,8 @@ La descrizione completa (scelte di alimentazione, driver, payload, codec, consum
   <img src="img/nodo_wiring_upgrade_v4.svg" alt="Upgrade multisensore sulla Heltec WiFi LoRa 32 V4" width="1100">
 </p>
 
+Lo schema è **completo**: comprende anche i collegamenti di base di questa dispensa. Il GPS non ha bisogno di un interruttore esterno, perché sulla V4 c'è già quello della scheda (VGNSS, GPIO 34).
+
 | Sensore | Collegamento sulla Heltec WiFi LoRa 32 V4 | Alimentazione |
 |---|---|---|
 | MPL3115A2 | SDA/SCL sul bus **Wire** del SCD41 (GPIO 7 / 6), indirizzo 0x60 | Vext, insieme al SCD41 |
