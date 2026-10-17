@@ -19,6 +19,10 @@
 <text x="165.0" y="456" font-size="15" fill="#c62828" text-anchor="middle" font-weight="bold">SCD41</text>
 <text x="165.0" y="476" font-size="12" fill="#424242" text-anchor="middle">CO₂ (ppm), T (°C), UR (%)</text>
 <text x="165.0" y="493" font-size="12" fill="#424242" text-anchor="middle">CO₂ NDIR ±50 ppm</text>
+<rect x="40" y="546" width="250" height="96" rx="10" fill="#efebe9" stroke="#5d4037" stroke-width="2.2"/>
+<text x="165.0" y="572" font-size="15" fill="#5d4037" text-anchor="middle" font-weight="bold">DS18B20</text>
+<text x="165.0" y="592" font-size="12" fill="#424242" text-anchor="middle">T esterna (sonda)</text>
+<text x="165.0" y="609" font-size="12" fill="#424242" text-anchor="middle">fuori dal contenitore</text>
 <rect x="950" y="100" width="250" height="96" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2.2"/>
 <text x="1075.0" y="126" font-size="15" fill="#c62828" text-anchor="middle" font-weight="bold">SCD41</text>
 <text x="1075.0" y="146" font-size="12" fill="#424242" text-anchor="middle">misura della CO₂</text>
@@ -75,8 +79,8 @@
 <text x="414" y="546" font-size="14" fill="#ef6c00" text-anchor="start" font-weight="bold">UR → PM del SDS011</text>
 <rect x="778" y="529" width="82" height="20" rx="10" fill="#2e7d32"/>
 <text x="819" y="543" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="bold">CODEC</text>
-<text x="386" y="570" font-size="12" fill="#424242" text-anchor="start">UR ≥ 75 %: flag "PM sovrastimati" nel payload</text>
-<text x="386" y="587" font-size="12" fill="#424242" text-anchor="start">PM_secco = PM / (1 + (κ/ρ)·a/(1−a)) nel codec</text>
+<text x="386" y="570" font-size="12" fill="#424242" text-anchor="start">UR del SCD41 riportata alla T esterna del DS18B20;</text>
+<text x="386" y="587" font-size="12" fill="#424242" text-anchor="start">flag se ≥ 75 %; PM / (1 + (κ/ρ)·a/(1−a)) nel codec</text>
 <rect x="370" y="640" width="500" height="74" rx="8" fill="#ffffff" stroke="#6a1b9a" stroke-width="1.6"/>
 <circle cx="392" cy="661" r="13" fill="#6a1b9a"/>
 <text x="392" y="666" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">6</text>
@@ -94,6 +98,7 @@
 <path d="M290 485C330.0 485 330.0 449.0 370 449.0" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
 <path d="M870 449.0C910.0 449.0 910.0 370 950 370" fill="none" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#a2)"/>
 <path d="M290 505C330.0 505 330.0 557.0 370 557.0" fill="none" stroke="#ef6c00" stroke-width="2.4" marker-end="url(#a3)"/>
+<path d="M290 594C330.0 594 330.0 567.0 370 567.0" fill="none" stroke="#ef6c00" stroke-width="2.4" marker-end="url(#a3)"/>
 <path d="M870 557.0C910.0 557.0 910.0 572 950 572" fill="none" stroke="#ef6c00" stroke-width="2.4" marker-end="url(#a3)"/>
 <path d="M40 165H24V669.0H370" fill="none" stroke="#6a1b9a" stroke-width="2" stroke-dasharray="3 4"/>
 <path d="M40 315H32V685.0H370" fill="none" stroke="#6a1b9a" stroke-width="2" stroke-dasharray="3 4"/>

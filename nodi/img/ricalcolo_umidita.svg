@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="Helvetica, Arial, sans-serif">
+<rect width="1200" height="700" fill="#ffffff"/>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker></defs>
+<text x="600.0" y="34" font-size="21" fill="#212121" text-anchor="middle" font-weight="bold">Dall'umidità del contenitore all'umidità esterna</text>
+<text x="600.0" y="58" font-size="13" fill="#616161" text-anchor="middle">Il vapore acqueo è lo stesso dentro e fuori: cambia solo quanto ne può contenere l'aria a quella temperatura</text>
+<path d="M225.0 185.59487751605002V470H355.0V185.59487751605002" fill="none" stroke="#c62828" stroke-width="3"/>
+<path d="M225.0 185.59487751605002H355.0" stroke="#c62828" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="227.0" y="299.35692650963" width="126" height="169.64307349037" fill="#bbdefb"/>
+<text x="290" y="390.67846325481503" font-size="22" fill="#0d47a1" text-anchor="middle" font-weight="bold">60 %</text>
+<text x="365.0" y="190.59487751605002" font-size="12.5" fill="#c62828" text-anchor="start" font-weight="bold">massimo a 25 °C: 31,6 hPa</text>
+<text x="365.0" y="304.35692650963" font-size="12.5" fill="#1565c0" text-anchor="start" font-weight="bold">vapore: 19,0 hPa</text>
+<text x="290" y="498" font-size="15" fill="#c62828" text-anchor="middle" font-weight="bold">Dentro il contenitore</text>
+<text x="290" y="518" font-size="12.5" fill="#555" text-anchor="middle">SCD41: T = 25 °C, UR = 60 %</text>
+<path d="M615.0 260.0663580111974V470H745.0V260.0663580111974" fill="none" stroke="#2e7d32" stroke-width="3"/>
+<path d="M615.0 260.0663580111974H745.0" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="617.0" y="299.35692650963" width="126" height="169.64307349037" fill="#90caf9"/>
+<text x="680" y="390.67846325481503" font-size="22" fill="#0d47a1" text-anchor="middle" font-weight="bold">81 %</text>
+<text x="755.0" y="265.0663580111974" font-size="12.5" fill="#2e7d32" text-anchor="start" font-weight="bold">massimo a 20 °C: 23,3 hPa</text>
+<text x="755.0" y="304.35692650963" font-size="12.5" fill="#1565c0" text-anchor="start" font-weight="bold">vapore: 19,0 hPa</text>
+<text x="680" y="498" font-size="15" fill="#2e7d32" text-anchor="middle" font-weight="bold">Fuori (aria aspirata dal SDS011)</text>
+<text x="680" y="518" font-size="12.5" fill="#555" text-anchor="middle">DS18B20: T = 20 °C</text>
+<path d="M370 285.35692650963C505.0 214.35692650963 505.0 214.35692650963 610 269.35692650963" fill="none" stroke="#1565c0" stroke-width="2.4" marker-end="url(#ar)"/>
+<text x="535.0" y="213.35692650963" font-size="13" fill="#1565c0" text-anchor="middle" font-weight="bold">stessa aria, stesso vapore</text>
+<path d="M80 470V155.0" stroke="#9e9e9e"/>
+<path d="M76 470.0H84" stroke="#9e9e9e"/>
+<text x="70" y="474.0" font-size="11" fill="#616161" text-anchor="end">0</text>
+<path d="M76 425.0H84" stroke="#9e9e9e"/>
+<text x="70" y="429.0" font-size="11" fill="#616161" text-anchor="end">5</text>
+<path d="M76 380.0H84" stroke="#9e9e9e"/>
+<text x="70" y="384.0" font-size="11" fill="#616161" text-anchor="end">10</text>
+<path d="M76 335.0H84" stroke="#9e9e9e"/>
+<text x="70" y="339.0" font-size="11" fill="#616161" text-anchor="end">15</text>
+<path d="M76 290.0H84" stroke="#9e9e9e"/>
+<text x="70" y="294.0" font-size="11" fill="#616161" text-anchor="end">20</text>
+<path d="M76 245.0H84" stroke="#9e9e9e"/>
+<text x="70" y="249.0" font-size="11" fill="#616161" text-anchor="end">25</text>
+<path d="M76 200.0H84" stroke="#9e9e9e"/>
+<text x="70" y="204.0" font-size="11" fill="#616161" text-anchor="end">30</text>
+<path d="M76 155.0H84" stroke="#9e9e9e"/>
+<text x="70" y="159.0" font-size="11" fill="#616161" text-anchor="end">35</text>
+<text x="34" y="317.0" font-size="12" fill="#424242" text-anchor="middle" transform="rotate(-90 34 317.0)">pressione di vapore (hPa)</text>
+<rect x="960" y="96" width="220" height="420" rx="8" fill="#f5f5f5" stroke="#bdbdbd"/>
+<text x="974" y="122" font-size="12.5" fill="#212121" text-anchor="start" font-weight="bold">1  Quanto vapore c'è</text>
+<text x="974" y="144" font-size="12" fill="#424242" text-anchor="start">e_s(25 °C) = 31,6 hPa</text>
+<text x="974" y="166" font-size="12" fill="#424242" text-anchor="start">60 % di 31,6 = 19,0 hPa</text>
+<text x="974" y="198" font-size="12.5" fill="#212121" text-anchor="start" font-weight="bold">2  Quanto ne sta fuori</text>
+<text x="974" y="220" font-size="12" fill="#424242" text-anchor="start">e_s(20 °C) = 23,3 hPa</text>
+<text x="974" y="252" font-size="12.5" fill="#212121" text-anchor="start" font-weight="bold">3  UR esterna</text>
+<text x="974" y="274" font-size="12" fill="#424242" text-anchor="start">19,0 / 23,3 = 81 %</text>
+<text x="974" y="306" font-size="12.5" fill="#212121" text-anchor="start" font-weight="bold">Formula di Magnus:</text>
+<text x="974" y="328" font-size="12" fill="#424242" text-anchor="start">e_s(T) = 6,112 ·</text>
+<text x="974" y="350" font-size="12" fill="#424242" text-anchor="start">   exp(17,62·T / (243,12 + T))</text>
+<text x="974" y="382" font-size="12.5" fill="#212121" text-anchor="start" font-weight="bold">Punto di rugiada</text>
+<text x="974" y="404" font-size="12" fill="#424242" text-anchor="start">il vapore satura a 16,7 °C:</text>
+<text x="974" y="426" font-size="12" fill="#424242" text-anchor="start">è lo stesso dentro e fuori</text>
+<rect x="40" y="580" width="1140" height="96" rx="8" fill="#fff3e0" stroke="#ef6c00"/>
+<text x="58" y="606" font-size="14" fill="#e65100" text-anchor="start" font-weight="bold">Perché conta per i PM</text>
+<text x="58" y="630" font-size="13" fill="#4e342e" text-anchor="start">Con l'UR del contenitore (60 %) il fattore di crescita vale 1,36; con quella vera dell'aria esterna (81 %) vale 2,05.</text>
+<text x="58" y="652" font-size="13" fill="#4e342e" text-anchor="start">Senza la sonda esterna i PM "corretti" resterebbero circa il 51 % più alti del vero, e il flag di umidità alta (≥ 75 %) non scatterebbe.</text>
+</svg>
