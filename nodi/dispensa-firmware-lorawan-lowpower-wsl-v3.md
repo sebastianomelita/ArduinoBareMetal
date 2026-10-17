@@ -2074,7 +2074,6 @@ La descrizione completa (scelte di alimentazione, driver, payload, codec, consum
 - **Payload**: le misure passano allo schema **0x44** a blocchi, da 10 a 43 byte, con una maschera dei sensori presenti. Lo schema state 0x43 cresce a 31 byte.
 - **Downlink**: quattro nuovi comandi su FPort 20, cioè `SET_SDS_ENABLED` (0x1A), `SET_CCS_ENABLED` (0x1B), `SET_MPL_ENABLED` (0x1C) e `SET_SDS_WARMUP` (0x1D).
 - **Codec**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js) decodifica sia lo 0x42 sia lo 0x44, quindi nodi vecchi e aggiornati convivono.
-- **Correzioni incrociate**: i sensori si aiutano a vicenda. La pressione dell'MPL3115A2 (o, in mancanza, la quota GPS) compensa la CO₂ del SCD41; temperatura e umidità del SCD41 compensano il CCS811; la CO₂ del SCD41 decide quando salvare la baseline del CCS811; l'umidità del SCD41 segnala e corregge i PM del SDS011. La spiegazione, con gli schemi, è nella sezione [Correzioni e compensazioni tra sensori](dispensa-upgrade-multisensore.md#correzioni-e-compensazioni-tra-sensori) della dispensa comune.
 
 > ⚠️ **Il SDS011 consuma circa 1,2 mAh a ogni ciclo.** Con il TX al minuto scaricherebbe la batteria in meno di un giorno: con il SDS011 acceso usa un intervallo di almeno 10–30 minuti, oppure un pannello solare. I conti sono nella [dispensa comune](dispensa-upgrade-multisensore.md#consumi-e-autonomia).
 

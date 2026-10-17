@@ -32,8 +32,7 @@ Tutto ciò che non è descritto qui (LoRaWAN, OTAA, persistenza, watchdog, downl
 10. [Il codec ChirpStack](#il-codec-chirpstack)
 11. [Consumi e autonomia](#consumi-e-autonomia)
 12. [Limiti delle misure](#limiti-delle-misure)
-13. [Correzioni e compensazioni tra sensori](#correzioni-e-compensazioni-tra-sensori)
-14. [Verifiche al banco](#verifiche-al-banco)
+13. [Verifiche al banco](#verifiche-al-banco)
 
 ---
 
@@ -156,11 +155,11 @@ Il ciclo resta quello della dispensa di base. I nuovi sensori si inseriscono cos
 
 1. **Boot e rilascio degli hold** dei GPIO, compreso SDS_EN.
 2. **Alimentazione**: Vext (SCD41 e MPL3115A2), GPS e, **subito**, il SDS011. La sua ventilazione di 30 secondi avviene così **in parallelo** all'attesa del fix GPS e alle misure del SCD41.
-3. **Nuovo**: lettura dell'**MPL3115A2** (una misura one-shot). Avviene **prima** di avviare il SCD41, perché la sua pressione serve a compensare la misura di CO₂.
-4. Inizializzazione del SCD41, seguita dalla **compensazione di pressione** (`setAmbientPressure`), e attesa del fix GPS, come prima.
-5. Lettura del SCD41.
-6. **Nuovo**: lettura del **CCS811**, dopo avergli passato temperatura e umidità misurate dal SCD41 per la compensazione. Se il SCD41 vede aria pulita, il firmware salva la *baseline* del CCS811.
-7. **Nuovo**: lettura del **SDS011**. Se il GPS ha già impiegato più di 30 secondi non si aspetta nulla, altrimenti si attende la fine della ventilazione. Poi si mediano 5 pacchetti e **si spegne il SDS011**. Se l'umidità è alta, si alza il flag che segnala i PM come poco affidabili.
+3. Inizializzazione del SCD41 e attesa del fix GPS, come prima.
+4. Lettura del SCD41.
+5. **Nuovo**: lettura dell'**MPL3115A2** (una misura one-shot).
+6. **Nuovo**: lettura del **CCS811**, dopo avergli passato temperatura e umidità misurate dal SCD41 per la compensazione.
+7. **Nuovo**: lettura del **SDS011**. Se il GPS ha già impiegato più di 30 secondi non si aspetta nulla, altrimenti si attende la fine della ventilazione. Poi si mediano 5 pacchetti e **si spegne il SDS011**.
 8. Lettura della batteria, che avviene con il SDS011 già spento, quindi senza il calo di tensione dovuto alla ventola.
 9. Composizione del payload 0x42 come prima, poi **traduzione nel formato 0x44** con l'aggiunta dei nuovi sensori.
 10. Trasmissione, finestre RX, deep sleep. Prima del sleep SDS_EN viene messo basso e bloccato con `gpio_hold_en()`.
@@ -281,7 +280,7 @@ Lo schema 0x42 aveva una lunghezza fissa di 32 byte. Con cinque sensori, una str
 |---|---|---|---|---|
 | 0 | 1 | u8 | schema_id | 0x44 |
 | 1 | 1 | u8 | sensor_mask | bit 0 SCD41, bit 1 GPS, bit 2 SDS011, bit 3 CCS811, bit 4 MPL3115A2 |
-| 2 | 1 | u8 | flags | bit 0 timestamp dal GPS, bit 1 posizione non aggiornata, bit 2 CCS811 in riscaldamento, bit 3 umidità alta durante la misura dei PM, bit 4 SCD41 compensato con la pressione dell'MPL3115A2, bit 5 SCD41 compensato con la pressione stimata dalla quota GPS |
+| 2 | 1 | u8 | flags | bit 0 timestamp dal GPS, bit 1 posizione non aggiornata, bit 2 CCS811 in riscaldamento |
 | 3 | 1 | u8 | battery_pct | % |
 | 4 | 2 | u16 | vbat_mv | mV |
 | 6 | 4 | u32 | timestamp | epoch UTC dal GPS, oppure secondi dal boot |
@@ -314,7 +313,7 @@ Per il GPS valgono le stesse convenzioni dello schema 0x42: `hdop_x100 = 9999` i
 Con tutti i sensori presenti, il firmware produce 43 byte:
 
 ```
-44 1F 15 58 AC0F 0078E768        intestazione: maschera 0x1F, flag 0x15,
+44 1F 05 58 AC0F 0078E768        intestazione: maschera 0x1F, flag 0x05,
                                  88 %, 4012 mV, timestamp 1760000000 (epoch)
 6402 6A08 0613                   SCD41: 612 ppm, 21,54 °C, 48,70 %
 01 07 00EE5B16 4D88FE08 2A00 6E00   GPS: fix, 7 satelliti, 37,5123456 / 15,0898765, 42 m, HDOP 1,10
@@ -323,7 +322,7 @@ Con tutti i sensori presenti, il firmware produce 43 byte:
 9427 A208                        MPL3115A2: 1013,2 hPa · 22,10 °C
 ```
 
-Il flag 0x15 è la somma di 0x01 (timestamp dal GPS), 0x04 (CCS811 ancora nei primi 20 minuti) e 0x10 (CO₂ del SCD41 compensata con la pressione dell'MPL3115A2).
+Il flag 0x05 è la somma di 0x01 (timestamp dal GPS) e 0x04 (CCS811 ancora nei primi 20 minuti).
 
 ---
 
@@ -373,8 +372,7 @@ Il codec [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js) è stato est
 - gli schemi **0x41, 0x42 e 0x43** si decodificano come prima;
 - lo schema **0x43** da 31 byte espone in più `cfg_sds_enabled`, `cfg_ccs_enabled`, `cfg_mpl_enabled`, `cfg_sds_warmup_s` e `sensors_compiled`. Con 26 byte quei campi valgono `null`;
 - lo schema **0x44** viene letto blocco per blocco seguendo la maschera. Prima di tutto il codec controlla che la lunghezza ricevuta corrisponda alla maschera, e in caso contrario restituisce un errore leggibile invece di valori sbagliati;
-- il downlink accetta ora i comandi fino a **0x1D** su FPort 20;
-- per lo schema 0x44 il codec calcola anche alcune **grandezze corrette**: PM corretti per l'umidità e pressione al livello del mare. Sono spiegate nella sezione [Correzioni e compensazioni tra sensori](#correzioni-e-compensazioni-tra-sensori).
+- il downlink accetta ora i comandi fino a **0x1D** su FPort 20.
 
 È stato corretto anche un piccolo difetto della funzione `readU32LE`: in JavaScript gli operatori sui bit lavorano con interi **con segno**, e un valore oltre 2³¹ (per esempio un uptime molto lungo) sarebbe diventato negativo. Ora il risultato passa per `>>> 0`, che lo rende senza segno.
 
@@ -393,10 +391,6 @@ L'oggetto decodificato per il payload d'esempio è:
   "pressure_hpa": 1013.2, "mpl_temp_c": 22.1,
   "location": { "latitude": 37.5123456, "longitude": 15.0898765, "altitude": 42,
                 "source": "GPS", "accuracy": 6 },
-  "scd_pressure_comp": "MPL3115A2",
-  "pm_humidity_warning": false, "pm_rh_factor": 1.23,
-  "pm25_rh_corr": 10, "pm10_rh_corr": 19.9,
-  "pressure_sea_hpa": 1018.3,
   "scd_disabled": false, "gps_disabled": false
 }
 ```
@@ -437,188 +431,19 @@ Il ventilatore e il laser del SDS011 hanno una vita di circa 8000 ore di funzion
 
 ## Limiti delle misure
 
-**SDS011.** Con umidità relativa sopra il 70–80 % le goccioline d'acqua vengono contate come particelle e i valori di PM salgono molto. È un limite di tutti i sensori ottici a basso costo. Il nodo usa l'umidità del SCD41 per segnalarlo e per correggere i valori: vedi la [sezione sulle correzioni](#correzioni-e-compensazioni-tra-sensori).
+**SDS011.** Con umidità relativa sopra il 70–80 % le goccioline d'acqua vengono contate come particelle e i valori di PM salgono molto. È un limite di tutti i sensori ottici a basso costo. L'umidità misurata dal SCD41 permette di riconoscere questi casi in dashboard, per esempio segnalando come poco affidabili i valori di PM con RH > 80 %.
 
 **CCS811.** Non misura la CO₂: la **eCO₂** è una stima ricavata dai composti organici volatili, che ha senso solo in ambienti chiusi abitati. Con il SCD41 sul nodo, la CO₂ vera è quella del SCD41, e il dato utile del CCS811 è il **TVOC**. Altri punti:
 - secondo il datasheet le letture si possono usare dopo **60 minuti** di funzionamento dalla prima accensione, e il sensore si stabilizza nelle prime **48 ore**;
-- la correzione automatica della linea di base lavora su tempi di almeno 24 ore. Il firmware la salva in NVS e la ripristina dopo un'interruzione di alimentazione, usando il SCD41 per scegliere il momento giusto (vedi la [sezione sulle correzioni](#correzioni-e-compensazioni-tra-sensori)).
+- la correzione automatica della linea di base lavora su tempi di almeno 24 ore. Il registro BASELINE (0x11) permetterebbe di salvarla e ripristinarla dopo un'interruzione di alimentazione: è un'estensione possibile, non implementata in questa versione.
 
-**MPL3115A2.** Misura la pressione **alla quota del sensore**, non quella riportata al livello del mare dei bollettini meteo. Il codec fa la conversione (campo `pressure_sea_hpa`, vedi la [sezione sulle correzioni](#correzioni-e-compensazioni-tra-sensori)). La sua temperatura (`mpl_temp_c`) è utile come controllo, ma risente del calore della scheda: per la temperatura dell'aria vale quella del SCD41.
-
----
-
-## Correzioni e compensazioni tra sensori
-
-Ogni sensore misura bene la propria grandezza, ma è **disturbato** da grandezze che non misura. Il SCD41 sbaglia la CO₂ se non conosce la pressione dell'aria. Il CCS811 cambia risposta con temperatura e umidità. Il SDS011 conta come polvere anche le goccioline d'acqua. Sul nodo però ci sono altri sensori che misurano proprio quelle grandezze: basta **passare il dato giusto al sensore giusto**.
-
-Lo schema riassume tutte le correzioni: a sinistra il sensore che **fornisce** la grandezza, a destra quello che la **usa**. Nel mezzo c'è la correzione, con l'indicazione di **dove** avviene: nel **firmware**, quando il sensore deve ricevere il dato prima di misurare, oppure nel **codec**, quando basta ricalcolare il valore dopo.
-
-<p align="center"><img src="img/correzioni_sensori.svg" width="100%"></p>
-
-Perché alcune correzioni stanno nel codec? Una correzione nel firmware **cambia il dato trasmesso**: se la formula è sbagliata o va tarata, il dato originale è perso e per cambiarla bisogna riprogrammare tutti i nodi. Nel codec invece il nodo trasmette il **dato grezzo più le informazioni per correggerlo**, e la formula si modifica in un minuto dall'interfaccia di ChirpStack. Le correzioni vanno quindi nel firmware **solo quando il sensore ha bisogno del dato per misurare** (1–4 nello schema).
-
-| # | Chi fornisce | Chi corregge | Dove | Interruttore / parametro |
-|---|---|---|---|---|
-| 1 | MPL3115A2 (pressione) | SCD41 (CO₂) | firmware | `ENABLE_PRESSURE_COMPENSATION` |
-| 2 | GPS (quota), se manca l'MPL | SCD41 (CO₂) | firmware | `ENABLE_PRESSURE_COMPENSATION` |
-| 3 | SCD41 (T, UR) | CCS811 (TVOC) | firmware | sempre attiva |
-| 4 | SCD41 (CO₂ bassa) | CCS811 (baseline) | firmware | `ENABLE_CCS811_BASELINE` |
-| 5 | SCD41 (UR) | SDS011 (PM) | firmware (flag) + codec (valore) | `PM_HUMIDITY_WARN_RH`, `PM_KAPPA` |
-| 6 | MPL3115A2 + GPS (quota) | pressione al livello del mare | codec | `STATION_ALTITUDE_M` |
-
-### 1. La pressione compensa la CO₂ del SCD41
-
-Il SCD41 è un sensore **NDIR**: manda luce infrarossa attraverso una piccola cella piena d'aria e misura quanta ne assorbe la CO₂. L'assorbimento dipende dal **numero di molecole** di CO₂ nella cella, non dalla loro percentuale. A parità di concentrazione (ppm), con pressione più bassa l'aria è più rarefatta, nella cella ci sono meno molecole e il sensore legge **meno CO₂** di quella vera.
-
-Il sensore è tarato a **1013 hPa**. L'errore vale circa **1–1,5 % della lettura ogni 10 hPa** di differenza:
-
-| Situazione | Pressione | Scarto da 1013 hPa | Errore su 1000 ppm, senza compensazione |
-|---|---|---|---|
-| Alta pressione, livello del mare | 1030 hPa | +17 hPa | circa +20 ppm |
-| Bassa pressione (perturbazione) | 990 hPa | −23 hPa | circa −30 ppm |
-| Collina, 500 m | 955 hPa | −58 hPa | circa −70 ppm |
-| Montagna, 1500 m | 845 hPa | −168 hPa | circa −200 ppm |
-
-Le variazioni meteo valgono poche decine di ppm, più o meno quanto la precisione del sensore (±50 ppm). La **quota** invece pesa molto: un nodo in montagna senza compensazione sbaglia di centinaia di ppm.
-
-Il SCD41 ha un comando apposta, `set_ambient_pressure`, che riceve la pressione in pascal. Il firmware legge l'MPL3115A2 **prima** di avviare il SCD41 e gli passa il valore subito dopo l'avvio delle misure periodiche:
-
-```cpp
-uint8_t applyScdPressureCompensation(const ExtraReadings& x) {
-    uint32_t pa = 0;
-    uint8_t  source = 0;
-    if (x.mplOk) {
-        pa = (uint32_t)x.press_hpa10 * 10;          // hPa x 10 -> Pa
-        source = 1;
-    } else if (rtcLastFixValid) {
-        pa = pressureFromAltitudePa(rtcLastAlt_m);  // riserva: dalla quota GPS
-        source = 2;
-    }
-    if (source == 0 || pa < 70000 || pa > 120000) return 0;   // fuori range: 1013 hPa
-    if (scd4x.setAmbientPressure(pa) != 0) return 0;
-    return source;
-}
-```
-
-Perché proprio **dopo** `startPeriodicMeasurement`? Questo comando, a differenza di quasi tutti gli altri del SCD41, è accettato anche durante le misure e vale dalla misura successiva. La prima misura arriva dopo 5 secondi, quindi è già compensata. Il valore **non viene salvato** nel sensore: il SCD41 si spegne con Vext a ogni ciclo, e a ogni ciclo riceve la pressione aggiornata.
-
-Il range 700–1200 hPa (70 000–120 000 Pa) è quello accettato dal sensore. Un valore fuori range indica una lettura sbagliata dell'MPL, e in quel caso è meglio lasciare il valore di fabbrica.
-
-### 2. Se manca il barometro: la pressione stimata dalla quota GPS
-
-Senza l'MPL3115A2 (non montato, guasto o spento con `SET_MPL_ENABLED = 0`) il firmware usa la **quota dell'ultimo fix GPS** e calcola la pressione dell'**atmosfera standard** a quella quota:
+**MPL3115A2.** Misura la pressione **alla quota del sensore**, non quella riportata al livello del mare dei bollettini meteo. Per confrontarla con quella dei bollettini si converte in dashboard, con la quota del GPS o una quota fissa nota:
 
 ```
-p = 101325 · (1 − h / 44330)^5,255     [Pa]
+p_mare = p · (1 − h / 44330)^(−5,255)
 ```
 
-È una stima: ignora il meteo, che sposta la pressione di ±20–30 hPa. Corregge però la parte che pesa di più, cioè la quota. Un nodo a 1500 m passa da un errore di circa 200 ppm a uno di qualche decina.
-
-Il flag del payload dice quale delle due fonti è stata usata: **bit 4** per l'MPL3115A2, **bit 5** per il GPS. Se nessuno dei due è alzato, il SCD41 ha lavorato con il valore di fabbrica (1013 hPa). Il codec lo riporta nel campo `scd_pressure_comp` (`"MPL3115A2"`, `"GPS"` oppure `null`).
-
-### 3. Temperatura e umidità compensano il CCS811
-
-Il CCS811 è un sensore a **ossidi metallici** (MOX): uno strato riscaldato cambia resistenza quando incontra i composti organici volatili. Ma la resistenza dipende anche dall'**umidità**, perché il vapore acqueo reagisce con lo strato, e dalla **temperatura**. Il sensore ha un registro, ENV_DATA, in cui scrivere le condizioni ambientali per correggere il calcolo.
-
-Questa correzione c'era già nella prima versione dell'upgrade (vedi il driver del CCS811): prima di ogni lettura il firmware scrive in ENV_DATA la temperatura e l'umidità misurate dal SCD41. Se il SCD41 non ha una lettura valida, il firmware non scrive nulla: il CCS811, che resta sempre alimentato, continua a usare gli ultimi valori ricevuti (25 °C e 50 % se non ne ha mai ricevuti).
-
-### 4. La CO₂ del SCD41 aiuta la baseline del CCS811
-
-Il CCS811 non sa quale sia il valore di "aria pulita" per il suo strato sensibile, che cambia con l'invecchiamento e la temperatura. Per questo tiene una **baseline**, una specie di "zero" che aggiusta da solo con un'ipotesi: almeno una volta ogni tanto vedrà aria pulita, e il valore più basso visto corrisponde a quella. La baseline sta nel registro **BASELINE (0x11)**, 2 byte.
-
-Il problema è che la baseline **si perde** quando il sensore resta senza alimentazione, per esempio quando si scarica la batteria o si stacca il connettore. Il sensore deve allora reimpararla, e per giorni le letture di TVOC sono meno affidabili. Il datasheet consiglia di **salvarla** e **riscriverla** dopo l'accensione.
-
-La domanda è **quando** salvarla. Se si salva mentre nella stanza ci sono trenta studenti, lo "zero" è sbagliato. Qui entra in gioco il SCD41: quando la CO₂ vera scende vicino a quella dell'aria esterna (≈ 420 ppm), l'ambiente è appena stato **ventilato** e il momento è giusto.
-
-Il firmware salva la baseline in NVS solo se valgono **tutte** queste condizioni:
-
-| Condizione | Perché |
-|---|---|
-| CCS811 acceso da almeno **24 ore** (`CCS811_BASELINE_MIN_RUN_S`) | prima la baseline interna non si è ancora assestata |
-| condizionamento di 20 minuti finito | durante il condizionamento le letture non sono valide |
-| CO₂ del SCD41 ≤ **450 ppm** (`CCS811_CLEAN_AIR_CO2_PPM`) | aria pulita: ambiente appena ventilato, o nodo all'esterno |
-| ultimo salvataggio più vecchio di **24 ore** (`CCS811_BASELINE_EVERY_S`) | non consumare la flash con scritture continue |
-
-Il ripristino avviene da solo. Quando il firmware deve eseguire APP_START (il CCS811 è stato senza alimentazione), segna in RTC che c'è una baseline da ripristinare. Finiti i 20 minuti di condizionamento, la rilegge da NVS e la scrive nel registro 0x11. Sul monitor seriale compaiono:
-
-```
-CCS811: aria pulita (CO2 432 ppm), baseline 0x84C3 salvata in NVS
-...
-CCS811: baseline 0x84C3 ripristinata da NVS
-```
-
-> Un nodo che vive in una stanza **mai ventilata** non vedrà mai CO₂ sotto i 450 ppm e non salverà mai la baseline. Non è un errore: in quell'ambiente anche il CCS811 non ha mai visto aria pulita, e non c'è uno zero affidabile da salvare.
-
-### 5. L'umidità corregge i PM del SDS011
-
-Il SDS011 conta le particelle dalla luce laser che diffondono. Le particelle di sali (solfati, nitrati, sale marino) sono **igroscopiche**: con aria umida assorbono acqua e **si gonfiano**. Il sensore vede particelle più grandi e calcola una massa più alta. Le centraline ufficiali invece misurano il particolato **secco**, perché lo scaldano o lo essiccano prima della misura. Per confrontare il nodo con loro bisogna togliere l'acqua, almeno con un calcolo.
-
-Il modello usato è il **κ-Köhler** nella forma per la massa (Crilley et al., 2018):
-
-```
-f(UR) = 1 + (κ / ρ) · a / (1 − a)         con a = UR / 100
-
-PM_secco = PM_misurato / f(UR)
-```
-
-- **κ** (kappa) è l'**igroscopicità** dell'aerosol: circa 0,2 per aerosol urbano da traffico, 0,4 con molti solfati e nitrati, fino a 0,6 vicino al mare;
-- **ρ** è la densità delle particelle secche, circa 1,65 g/cm³;
-- il termine a/(1−a) è quello che **esplode** quando l'umidità si avvicina al 100 %.
-
-<p align="center"><img src="img/correzione_umidita_pm.svg" width="100%"></p>
-
-Il grafico mostra il punto chiave: fino al 60 % circa il fattore resta sotto 1,4 e la correzione è piccola. Oltre il 75–80 % cresce velocemente, e al 90 % il sensore legge **più del triplo** della massa secca.
-
-La correzione è divisa in due parti.
-
-**Nel firmware, un flag.** Se il SCD41 misura UR ≥ `PM_HUMIDITY_WARN_RH` (75 %) durante la lettura del SDS011, il firmware alza il **bit 3** del campo flags. Il codec lo espone come `pm_humidity_warning`, e la dashboard può colorare i PM come "poco affidabili". Il dato trasmesso resta quello grezzo.
-
-**Nel codec, il valore corretto.** Il codec calcola `pm_rh_factor` (il fattore f), `pm25_rh_corr` e `pm10_rh_corr`. I parametri sono in cima al codec:
-
-```javascript
-var PM_KAPPA   = 0.4;    // igroscopicita' dell'aerosol: si tara
-var PM_DENSITY = 1.65;   // densita' delle particelle secche, g/cm3
-var PM_RH_MAX  = 95;     // oltre, la formula esplode: si satura qui
-```
-
-Il valore di κ **non si conosce a priori**: dipende dal luogo e anche dalla stagione. Si tara così:
-
-1. si installa il nodo vicino a una **centralina ARPA** che pubblica i PM2.5 orari;
-2. si raccolgono alcune settimane di dati, con giorni secchi e giorni umidi;
-3. si sceglie il κ che rende `pm25_rh_corr` più vicino al valore ARPA **nei giorni umidi**. Nei giorni secchi f vale circa 1 e κ non conta.
-
-È un buon esercizio di analisi dati: un foglio di calcolo, una colonna per ogni κ di prova e l'errore medio per ciascuna.
-
-Limiti da conoscere:
-- **sopra il 95 %** (nebbia, pioggia fine) le goccioline sono acqua liquida e nessuna formula basta: il codec satura a 95 %, ma quei dati vanno **scartati**, non corretti;
-- l'umidità è quella misurata dal SCD41 **nel contenitore**. Se il contenitore si scalda al sole, l'UR interna è più bassa di quella esterna e la correzione risulta troppo debole. Il SCD41 va montato vicino all'ingresso d'aria del SDS011, all'ombra;
-- con aerosol poco igroscopico, come le polveri minerali o il fumo fresco, la crescita è minore e la correzione con κ = 0,4 **sottostima** il PM vero.
-
-### 6. Pressione al livello del mare: MPL3115A2 più la quota
-
-L'MPL3115A2 misura la pressione **dove si trova**. I bollettini meteo riportano invece la pressione **ridotta al livello del mare**, per poter confrontare stazioni a quote diverse. A 100 m di quota la differenza è di circa 12 hPa, e confrontare i due valori senza convertirli porta a conclusioni sbagliate.
-
-Il codec fa la conversione, con la formula inversa di quella del punto 2:
-
-```
-p_mare = p / (1 − h / 44330)^5,255
-```
-
-La quota h arriva da una di due fonti:
-- **`STATION_ALTITUDE_M`** in cima al codec, se si conosce la quota esatta del nodo (da una mappa o dal catasto). È la scelta migliore per un nodo fisso;
-- altrimenti la **quota del GPS**, ma **solo con un fix attuale** (non "stale"). L'errore tipico del GPS sulla quota, ±10–20 m, vale ±1–2 hPa sulla pressione al mare.
-
-Il risultato è il campo `pressure_sea_hpa`.
-
-### Cosa NON si può correggere così
-
-Non tutte le coppie di sensori si correggono a vicenda. Tre casi che sembrano possibili e non lo sono:
-
-- **eCO₂ del CCS811 con la CO₂ del SCD41.** Sembrano la stessa grandezza, ma l'eCO₂ è una **stima** ricavata dai VOC, sulla base dell'ipotesi che le persone emettano VOC e CO₂ insieme. Non misura la CO₂: con una vernice fresca l'eCO₂ sale a migliaia di ppm mentre la CO₂ vera non cambia. Usare il SCD41 per "tarare" l'eCO₂ non ha senso. Il dato utile del CCS811 è il TVOC.
-- **Temperatura del SCD41 con quella dell'MPL3115A2.** Il termometro dell'MPL serve a compensare internamente il barometro, e sta su una scheda scaldata dal resto del circuito. Nessuno dei due termometri è un **riferimento**: per correggerne uno serve un termometro tarato. Lo stesso vale per l'offset di temperatura del SCD41 (`setTemperatureOffset`), che si regola confrontandolo con un termometro di riferimento nel contenitore chiuso.
-- **Taratura della CO₂ del SCD41.** L'autotaratura (ASC) e la taratura forzata (FRC) richiedono un riferimento esterno: aria esterna nota a circa 420 ppm, per l'FRC, oppure la certezza che il sensore veda aria esterna almeno una volta alla settimana, per l'ASC. Un altro sensore del nodo non può fare da riferimento, perché nessuno misura la CO₂ meglio del SCD41.
-
-La regola generale: un sensore può **compensarne** un altro, cioè dargli una grandezza che gli serve, quando misura quella grandezza **meglio** di quanto l'altro la conosca. Non può **tararlo**, cioè correggerne l'errore sulla grandezza principale, se non è più preciso proprio su quella.
+dove h è la quota in metri. A 100 m di quota la differenza è di circa 12 hPa. La sua temperatura (`mpl_temp_c`) è utile come controllo, ma risente del calore della scheda: per la temperatura dell'aria vale quella del SCD41.
 
 ---
 
@@ -632,10 +457,9 @@ Prima di chiudere il nodo nel contenitore:
    SDS011: alimentato, ventilazione in corso
    ...
    MPL3115A2: P=1012.84 hPa  T=23.40 C
-   SCD41: compensazione pressione 1012.8 hPa (MPL3115A2)
    CCS811: avviato (inizio condizionamento di 20 minuti)
    SDS011: PM2.5=8.4  PM10=11.2 ug/m3 (5 pacchetti)
-   TX 43 byte: 441F15...
+   TX 43 byte: 441F05...
    ```
    Al primo ciclo il CCS811 può non dare ancora una misura: nel primo minuto dopo l'avvio restituisce 0.
 3. **SDS011 spento in sleep.** Durante il deep sleep la ventola deve essere ferma. Se gira, l'interruttore lato alto non si spegne: controlla la resistenza da 100 kΩ tra gate e source del P-MOSFET.
@@ -650,6 +474,4 @@ Prima di chiudere il nodo nel contenitore:
 - [Adafruit CCS811 library](https://github.com/adafruit/Adafruit_CCS811): mappa dei registri e formato di ENV_DATA usati come riferimento
 - [Adafruit MPL3115A2 library](https://github.com/adafruit/Adafruit_MPL3115A2_Library): registri e conversione della pressione usati come riferimento
 - [Datasheet Heltec WiFi LoRa 32 V4.2](https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf): pin dei pettini, GPIO 7 VFEM_Control, GPIO usati dalla scheda
-- [Sensirion arduino-i2c-scd4x](https://github.com/Sensirion/arduino-i2c-scd4x): comando `setAmbientPressure` (range 70 000–120 000 Pa, accettato durante le misure periodiche)
-- [Crilley et al., *Evaluation of a low-cost optical particle counter (Alphasense OPC-N2) for ambient air monitoring*, AMT 11, 709–720 (2018)](https://amt.copernicus.org/articles/11/709/2018/): correzione κ-Köhler dei PM per l'umidità
-- Protocollo seriale del SDS011: già descritto nel [panel2esp32.md](panel2esp32.md#sensore-pesante-sds011) del progetto di alimentazione
+- Protocollo seriale del SDS011: già descritto nel [README](README.md#sensore-pesante-sds011) del progetto di alimentazione
