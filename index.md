@@ -16,7 +16,7 @@
 12. [Reti di sensori](sensornetworkshort.md)
 13. [Dispositivo IoT collegato via WIFi a una rete di sensori MQTT](gateway.md)
 14. [Dispositivo IoT LoRaWAN low-power Heltec WiFi LoRa 32 V4](nodi/dispensa-firmware-lorawan-lowpower.md)
-15. [Dispositivo IoT LoRaWAN low-power Heltec Wireless Stick Lite V3](dispensa-firmware-lorawan-lowpower-wsl-v3.md)
+15. [Dispositivo IoT LoRaWAN low-power Heltec Wireless Stick Lite V3]((nodi/dispensa-firmware-lorawan-lowpower-wsl-v3.md)
 16. [Dispositivo IoT LoRaWAN low-power Heltec WiFi Kit 32 V3](nodi/dispensa-firmware-lorawan-lowpower-kit32-v3.md)
 17. [Nodo LoRaWan LMIC - rete di sensori](gatewaylorasw.md)
 18. [Nodo LoRaWan LMIC su STM32 (RAK811) - rete di sensori](lorarak811sw.md)
