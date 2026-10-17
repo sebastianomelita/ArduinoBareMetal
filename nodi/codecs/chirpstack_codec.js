@@ -12,7 +12,7 @@
 //
 // DOWNLINK (server → device):
 //   FPort 10 = comandi di azione (0x01-0x07)
-//   FPort 20 = configurazione persistente (0x11-0x1D)
+//   FPort 20 = configurazione persistente (0x11-0x1E)
 //   Input: JSON con campo 'data' = stringa base64 dei bytes
 //   Output: bytes decodificati con fPort dedotto dal primo byte
 //
@@ -28,7 +28,7 @@
 //
 // La pagina web di configurazione costruisce i bytes lato client e li
 // invia base64-encoded. Il codec deduce il fPort dal primo byte del
-// payload (range 0x01-0x07 → FPort 10, range 0x11-0x1D → FPort 20).
+// payload (range 0x01-0x07 → FPort 10, range 0x11-0x1E → FPort 20).
 //
 // ================================================================
 
@@ -226,7 +226,8 @@ function decodeSchema43(b) {
         cfg_ccs_enabled:        b.length >= 31 ? b[27] !== 0 : null,
         cfg_mpl_enabled:        b.length >= 31 ? b[28] !== 0 : null,
         cfg_sds_warmup_s:       b.length >= 31 ? b[29] : null,
-        sensors_compiled:       b.length >= 31 ? sensorMaskToObject(b[30]) : null
+        sensors_compiled:       b.length >= 31 ? sensorMaskToObject(b[30]) : null,
+        cfg_ds_enabled:         b.length >= 32 ? b[31] !== 0 : null
     };
 }
 
@@ -238,7 +239,10 @@ function decodeSchema43(b) {
 //   b[0]      schema_id   0x44
 //   b[1]      sensor_mask bit0 SCD41, bit1 GPS, bit2 SDS011, bit3 CCS811, bit4 MPL3115A2
 //   b[2]      flags       bit0 timestamp = epoch GPS, bit1 posizione stale,
-//                         bit2 CCS811 in riscaldamento (primi 20 minuti)
+//                         bit2 CCS811 in riscaldamento (primi 20 minuti),
+//                         bit3 umidita' alta durante la misura PM (PM sovrastimati),
+//                         bit4 SCD41 compensato con la pressione dell'MPL3115A2,
+//                         bit5 SCD41 compensato con la pressione stimata dalla quota GPS
 //   b[3]      battery_pct uint8
 //   b[4..5]   vbat_mv     uint16 LE
 //   b[6..9]   timestamp   uint32 LE (epoch UTC o secondi dal boot)
@@ -248,13 +252,64 @@ function decodeSchema43(b) {
 //   SDS011     4 byte  pm25_x10 u16, pm10_x10 u16
 //   CCS811     5 byte  eco2_ppm u16, tvoc_ppb u16, error_id u8
 //   MPL3115A2  4 byte  press_hpa10 u16, temp_c100 i16
+//   DS18B20    2 byte  temp_ext_c100 i16 (temperatura esterna, sonda)
 // Sentinelle: 0xFFFF (u16) e 0x7FFF (i16) = lettura non riuscita -> null.
 // Un sensore assente non ha blocco: i suoi campi valgono null.
 //
 // I nomi dei campi comuni (co2_ppm, temp_c, hum_pct, battery_pct, vbat_mv,
 // location, ...) sono gli stessi dello schema 0x42: le dashboard esistenti
 // continuano a funzionare e trovano in piu' i campi dei nuovi sensori.
-var BLOCK_LEN_44 = [6, 14, 4, 5, 4];   // nell'ordine dei bit 0..4
+var BLOCK_LEN_44 = [6, 14, 4, 5, 4, 2];   // nell'ordine dei bit 0..5
+
+// ---- Correzioni calcolate nel codec (modificabili senza riprogrammare il nodo)
+// Crescita igroscopica del particolato (kappa-Koehler, per la massa):
+//   PM_secco = PM_misurato / f,   f = 1 + (KAPPA / DENSITA') * a / (1 - a),
+//   a = RH/100   (Crilley et al., 2018)
+// KAPPA dipende dal tipo di aerosol: ~0.2 urbano/traffico, ~0.4 con molti
+// solfati/nitrati, fino a ~0.6 vicino al mare. Si tara confrontando il nodo
+// con una centralina ARPA vicina nei giorni umidi.
+var PM_KAPPA = 0.4;
+var PM_DENSITY = 1.65;       // densita' delle particelle secche, g/cm3
+var PM_RH_MAX = 95;          // oltre, la formula esplode: si satura qui
+// Quota della stazione per riportare la pressione al livello del mare.
+// null = usa la quota del GPS (solo se il fix e' attuale, non "stale").
+var STATION_ALTITUDE_M = null;
+
+function pmHumidityFactor(rh) {
+    if (rh === null || rh === undefined) return null;
+    var a = Math.min(Math.max(rh, 0), PM_RH_MAX) / 100;
+    return 1 + (PM_KAPPA / PM_DENSITY) * a / (1 - a);
+}
+
+// Pressione ridotta al livello del mare (atmosfera standard):
+//   p0 = p / (1 - h/44330)^5.255
+function seaLevelPressure(pHpa, altM) {
+    if (pHpa === null || altM === null || altM === undefined) return null;
+    return pHpa / Math.pow(1 - altM / 44330, 5.255);
+}
+
+function round1(v) { return v === null ? null : Math.round(v * 10) / 10; }
+
+// Pressione di vapore saturo (formula di Magnus), hPa
+function saturationVapor(tC) {
+    return 6.112 * Math.exp(17.62 * tC / (243.12 + tC));
+}
+
+// Umidita' relativa della STESSA aria (stesso vapore) a un'altra temperatura:
+// serve a riportare l'UR misurata dal SCD41 nel contenitore, piu' caldo,
+// alla temperatura esterna misurata dal DS18B20.
+function rhAtTemperature(rh, tFrom, tTo) {
+    if (rh === null || tFrom === null || tTo === null) return null;
+    return Math.min(100, rh * saturationVapor(tFrom) / saturationVapor(tTo));
+}
+
+// Punto di rugiada: la temperatura a cui quel vapore satura l'aria.
+// Non dipende da dove si misura: e' lo stesso dentro e fuori dal contenitore.
+function dewPoint(tC, rh) {
+    if (tC === null || rh === null || rh <= 0) return null;
+    var g = Math.log(rh / 100) + 17.62 * tC / (243.12 + tC);
+    return 243.12 * g / (17.62 - g);
+}
 
 function sensorMaskToObject(m) {
     return {
@@ -262,7 +317,8 @@ function sensorMaskToObject(m) {
         gps:       (m & 0x02) !== 0,
         sds011:    (m & 0x04) !== 0,
         ccs811:    (m & 0x08) !== 0,
-        mpl3115a2: (m & 0x10) !== 0
+        mpl3115a2: (m & 0x10) !== 0,
+        ds18b20:   (m & 0x20) !== 0
     };
 }
 
@@ -303,7 +359,8 @@ function decodeSchema44(b) {
         pm25: null, pm10: null,
         eco2_ppm: null, tvoc_ppb: null, ccs_error: null,
         ccs_warmup: (flags & 0x04) !== 0,
-        pressure_hpa: null, mpl_temp_c: null
+        pressure_hpa: null, mpl_temp_c: null,
+        temp_ext_c: null
     };
 
     var o = 10;
@@ -348,6 +405,30 @@ function decodeSchema44(b) {
         r.mpl_temp_c   = i16(o + 2, 100);
         o += 4;
     }
+    if (mask & 0x20) {            // DS18B20
+        r.temp_ext_c = i16(o, 100);
+        o += 2;
+    }
+
+    // ---- Correzioni incrociate
+    // SCD41: quale pressione ha usato il nodo per compensare la CO2
+    r.scd_pressure_comp = (flags & 0x10) ? "MPL3115A2" : ((flags & 0x20) ? "GPS" : null);
+    // SDS011: flag di umidita' alta e PM corretti con l'umidita' del SCD41
+    r.pm_humidity_warning = (flags & 0x08) !== 0;
+    // UR esterna: quella del SCD41 riportata alla temperatura del DS18B20
+    r.dew_point_c = round1(dewPoint(r.temp_c, r.hum_pct));
+    r.hum_ext_pct = round1(rhAtTemperature(r.hum_pct, r.temp_c, r.temp_ext_c));
+    var rhPm = r.hum_ext_pct !== null ? r.hum_ext_pct : r.hum_pct;
+    r.pm_rh_source = r.hum_ext_pct !== null ? "DS18B20" : (r.hum_pct !== null ? "SCD41" : null);
+    var f = pmHumidityFactor(rhPm);
+    r.pm_rh_factor = f === null ? null : Math.round(f * 100) / 100;
+    r.pm25_rh_corr = (r.pm25 !== null && f !== null) ? round1(r.pm25 / f) : null;
+    r.pm10_rh_corr = (r.pm10 !== null && f !== null) ? round1(r.pm10 / f) : null;
+    // MPL3115A2: pressione al livello del mare (confrontabile con i bollettini)
+    var h = STATION_ALTITUDE_M;
+    if (h === null && r.alt_m !== null && r.fix_quality > 0 && !r.gps_stale) h = r.alt_m;
+    r.pressure_sea_hpa = round1(seaLevelPressure(r.pressure_hpa, h));
+
     // Compatibilita' con le dashboard dello schema 0x42
     r.scd_disabled = (mask & 0x01) === 0;
     r.gps_disabled = (mask & 0x02) === 0;
@@ -374,7 +455,7 @@ function decodeSchema44(b) {
 //   [0x06]                                          IDENTIFY_OFF
 //   [0x07]                                          GET_STATE (richiede payload state 0x43)
 //
-// FPort 20 - CONFIGURAZIONE (byte 0x11-0x1D, persistente in NVS del device)
+// FPort 20 - CONFIGURAZIONE (byte 0x11-0x1E, persistente in NVS del device)
 //   [0x11, preset]                                  SET_TX_INTERVAL (preset 0-10, 10=STORAGE MODE)
 //   [0x12, sf]                                      SET_LORAWAN_SF (7-12)
 //   [0x13, dbm]                                     SET_TX_POWER (2-14)
@@ -388,6 +469,7 @@ function decodeSchema44(b) {
 //   [0x1B, 0|1]                                     SET_CCS_ENABLED   (upgrade multisensore)
 //   [0x1C, 0|1]                                     SET_MPL_ENABLED   (upgrade multisensore)
 //   [0x1D, sec]                                     SET_SDS_WARMUP    (5-120 s, upgrade multisensore)
+//   [0x1E, 0|1]                                     SET_DS_ENABLED    (DS18B20, upgrade multisensore)
 //
 // Esempi di generazione base64 lato client (JavaScript):
 //   btoa(String.fromCharCode(0x01))            → "AQ=="   REBOOT
@@ -435,18 +517,19 @@ function encodeDownlink(input) {
     //   0x03 FORCE_TX_NOW     0x04 CLEAR_NVS (richiede magic 0xA5)
     //   0x05 IDENTIFY_ON      0x06 IDENTIFY_OFF
     //   0x07 GET_STATE        (richiede invio payload state 0x43)
-    // Comandi di CONFIG (FPort 20): primo byte 0x11-0x1D
+    // Comandi di CONFIG (FPort 20): primo byte 0x11-0x1E
     //   0x11 SET_TX_INTERVAL  0x12 SET_LORAWAN_SF   0x13 SET_TX_POWER
     //   0x14 SET_GPS_TIMEOUT  0x15 SET_BATT_THRESH  0x16 SET_ADR_ENABLED
     //   0x17 SET_GPS_SKIP     0x18 SET_GPS_ENABLED  0x19 SET_SCD_ENABLED
     //   0x1A SET_SDS_ENABLED  0x1B SET_CCS_ENABLED  0x1C SET_MPL_ENABLED
     //   0x1D SET_SDS_WARMUP
+    //   0x1E SET_DS_ENABLED
     var firstByte = bytes[0];
     var fPort;
 
     if (firstByte >= 0x01 && firstByte <= 0x07) {
         fPort = 10;
-    } else if (firstByte >= 0x11 && firstByte <= 0x1D) {
+    } else if (firstByte >= 0x11 && firstByte <= 0x1E) {
         fPort = 20;
     } else {
         // Byte fuori dai range noti: default a 20 (config).
