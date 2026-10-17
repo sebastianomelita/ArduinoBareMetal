@@ -18,13 +18,25 @@
  *                riscaldamento di 20 minuti a ogni ciclo)
  *   - MPL3115A2  pressione atmosferica e temperatura (I2C su Wire, insieme al
  *                SCD41, alimentato da Vext, misura one-shot)
+ *   - DS18B20    temperatura dell'aria ESTERNA (sonda impermeabile, bus
+ *                1-Wire, alimentato da Vext). Serve a ricalcolare l'umidita'
+ *                esterna a partire da quella misurata dal SCD41 nel contenitore.
  * Un sensore messo a 0 sparisce dal firmware e dal payload: e' cosi' che si fa
  * il "downgrade" verso un nodo piu' semplice.
  *
- * Payload misure: schema 0x44 a lunghezza VARIABILE (10-43 byte) su FPort 1:
+ * Correzioni incrociate tra sensori (sezione CORREZIONI in CONFIGURAZIONE):
+ *   - la pressione dell'MPL3115A2 (o, in mancanza, quella stimata dalla quota
+ *     GPS) viene passata al SCD41, che compensa la misura di CO2;
+ *   - temperatura e umidita' del SCD41 compensano il CCS811;
+ *   - con umidita' alta il payload segnala i PM del SDS011 come poco affidabili
+ *     (la correzione numerica e' nel codec, dove si puo' tarare);
+ *   - quando il SCD41 vede aria pulita, il firmware salva la "baseline" del
+ *     CCS811 e la ripristina dopo un'interruzione di alimentazione.
+ *
+ * Payload misure: schema 0x44 a lunghezza VARIABILE (10-45 byte) su FPort 1:
  * intestazione con maschera dei sensori presenti + un blocco per sensore.
  * Il codec ChirpStack aggiornato decodifica 0x42, 0x43 e 0x44.
- * Payload state: schema 0x43 esteso a 31 byte (configurazione dei nuovi sensori).
+ * Payload state: schema 0x43 esteso a 32 byte (configurazione dei nuovi sensori).
  * Formato coerente col decoder JavaScript delle dashboard multi/single.
  *
  * Attivazione: OTAA di default (USE_OTAA=1). Il codice supporta anche ABP
@@ -300,6 +312,7 @@ uint8_t appKey[16] = {
 #define NVS_KEY_CCS_ENABLED   "ccs_en"     // uint8_t 0/1
 #define NVS_KEY_MPL_ENABLED   "mpl_en"     // uint8_t 0/1
 #define NVS_KEY_SDS_WARMUP    "sds_wu"     // uint8_t secondi
+#define NVS_KEY_DS_ENABLED    "ds_en"      // uint8_t 0/1
 
 // Chiave NVS per nonces OTAA (solo se USE_OTAA=1)
 // Persiste DevNonce e JoinNonce cosi' il device non ripete valori dopo
@@ -508,12 +521,13 @@ uint8_t appKey[16] = {
 // SCD41 e GPS restano nel codice anche a 0 (il firmware non li accende e non
 // li mette nel payload); i tre sensori nuovi a 0 vengono tolti del tutto dal
 // binario. Ogni sensore compilato si puo' poi spegnere anche a runtime con i
-// downlink FPort 20 (0x18, 0x19, 0x1A, 0x1B, 0x1C).
+// downlink FPort 20 (0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1E).
 #define ENABLE_SCD41       1   // CO2 / T / RH (Sensirion SCD41, I2C su Vext)
 #define ENABLE_GPS         1   // posizione (Quectel L76K, UART1)
 #define ENABLE_SDS011      1   // PM2.5 / PM10 (Nova SDS011, UART2, 5 V da boost)
 #define ENABLE_CCS811      1   // TVOC / eCO2 (CJMCU-811, I2C Wire1, sempre acceso)
 #define ENABLE_MPL3115A2   1   // pressione / T (MPL3115A2, I2C su Vext)
+#define ENABLE_DS18B20     1   // T esterna (DS18B20 in sonda, 1-Wire su Vext)
 
 // SDS011: secondi di ventilazione prima della lettura. Il datasheet chiede
 // circa 30 s perche' la ventola rinnovi l'aria nella camera di misura.
@@ -525,6 +539,32 @@ uint8_t appKey[16] = {
 // resta sempre alimentato e misura da solo anche mentre l'ESP32 dorme.
 #define CCS811_DRIVE_MODE   3
 #define CCS811_WARMUP_S  1200  // 20 minuti di condizionamento dopo l'avvio
+
+// ---- CORREZIONI INCROCIATE TRA SENSORI ----
+// Pressione -> SCD41. Un sensore NDIR misura la densita' di CO2 nella sua
+// cella: senza compensazione sbaglia di circa l'1-1,5% ogni 10 hPa di differenza
+// dalla pressione di riferimento (1013 hPa). Fonte della pressione:
+//   1) MPL3115A2, se presente e letto correttamente;
+//   2) altrimenti la quota dell'ultimo fix GPS, convertita con l'atmosfera
+//      standard (meno precisa: ignora le variazioni meteo).
+#define ENABLE_PRESSURE_COMPENSATION  1
+
+// Umidita' -> SDS011. Sopra questa umidita' relativa (del SCD41, riportata alla
+// temperatura esterna se c'e' il DS18B20) le
+// goccioline d'acqua vengono contate come particelle: il payload alza il flag
+// P44_FLAG_PM_HUMID e il codec calcola anche i PM corretti.
+#define PM_HUMIDITY_WARN_RH          75
+
+// CO2 bassa -> baseline del CCS811. Il CCS811 corregge da solo la sua "linea
+// di base" assumendo di vedere ogni tanto aria pulita. Quando il SCD41 misura
+// una CO2 vicina a quella esterna, l'ambiente e' appena stato ventilato: e' il
+// momento giusto per salvare la baseline in NVS. Dopo un'interruzione di
+// alimentazione la baseline salvata viene riscritta nel sensore, cosi' non
+// deve reimpararla da zero.
+#define ENABLE_CCS811_BASELINE        1
+#define CCS811_CLEAN_AIR_CO2_PPM    450     // soglia "aria pulita" del SCD41
+#define CCS811_BASELINE_MIN_RUN_S  86400    // salva solo dopo 24 h di funzionamento
+#define CCS811_BASELINE_EVERY_S    86400    // al massimo un salvataggio al giorno
 
 #if (!ENABLE_SCD41 || !ENABLE_GPS) && !ENABLE_SENSOR_DISABLE
 #error "ENABLE_SCD41=0 o ENABLE_GPS=0 richiedono ENABLE_SENSOR_DISABLE=1"
@@ -605,6 +645,11 @@ uint8_t appKey[16] = {
 #define PIN_CCS_SCL     5   // JP3 pin 19
 #define CCS811_ADDR  0x5A   // pin ADD del CJMCU-811 a GND (0x5B se ADD a VCC)
 #define MPL3115_ADDR 0x60   // fisso
+
+// DS18B20 in sonda impermeabile, fuori dal contenitore. Bus 1-Wire con una
+// resistenza di pull-up da 4,7 kOhm verso Vext (NON verso 3V3: con Vext spento
+// il pull-up alimenterebbe il sensore attraverso il pin dati).
+#define PIN_DS18B20     3   // JP2 pin 20
 
 // =============================================================
 // SCHEMA PAYLOAD 0x42
@@ -727,10 +772,11 @@ struct Payload_v0x43 {
     uint8_t  cfgMplEnabled;         // 0/1
     uint8_t  cfgSdsWarmupS;         // secondi di ventilazione SDS011
     uint8_t  sensorsCompiled;       // maschera SENSOR_BIT_* dei sensori compilati
+    uint8_t  cfgDsEnabled;          // 0/1 (offset 31)
 };
 #pragma pack(pop)
 
-static_assert(sizeof(Payload_v0x43) == 31, "Payload state deve essere 31 byte (v3)");
+static_assert(sizeof(Payload_v0x43) == 32, "Payload state deve essere 32 byte (v3)");
 
 // =============================================================
 // SCHEMA PAYLOAD 0x44 - MISURE MULTISENSORE (lunghezza variabile)
@@ -753,24 +799,29 @@ static_assert(sizeof(Payload_v0x43) == 31, "Payload state deve essere 31 byte (v
 //   bit2 SDS011    4 byte: pm25_x10 u16, pm10_x10 u16          (ug/m3 x 10)
 //   bit3 CCS811    5 byte: eco2_ppm u16, tvoc_ppb u16, error_id u8
 //   bit4 MPL3115A2 4 byte: press_hpa10 u16 (hPa x 10), temp_c100 i16
+//   bit5 DS18B20   2 byte: temp_ext_c100 i16 (temperatura esterna)
 //
 // Un sensore spento (compile-time o via downlink) NON ha il blocco: il
 // payload si accorcia. Un sensore acceso ma con lettura fallita ha il blocco
 // con valori sentinella: 0xFFFF per i campi u16, 0x7FFF per i16. GPS acceso
 // ma senza alcuna posizione nota: hdop_x100 = 0xFFFF; posizione vecchia
 // (GPS SKIP o fix fallito): hdop_x100 = 9999 e flag P44_FLAG_GPS_STALE.
-// Lunghezza massima: 10 + 6 + 14 + 4 + 5 + 4 = 43 byte (entra anche in DR0).
+// Lunghezza massima: 10 + 6 + 14 + 4 + 5 + 4 + 2 = 45 byte (entra anche in DR0).
 #define SENSOR_BIT_SCD41     0x01
 #define SENSOR_BIT_GPS       0x02
 #define SENSOR_BIT_SDS011    0x04
 #define SENSOR_BIT_CCS811    0x08
 #define SENSOR_BIT_MPL3115   0x10
+#define SENSOR_BIT_DS18B20   0x20
 
 #define P44_FLAG_TIME_EPOCH  0x01   // timestamp = epoch UTC dal GPS
 #define P44_FLAG_GPS_STALE   0x02   // posizione non aggiornata in questo ciclo
 #define P44_FLAG_CCS_WARMUP  0x04   // CCS811 nei primi 20 minuti: valori indicativi
+#define P44_FLAG_PM_HUMID    0x08   // RH >= PM_HUMIDITY_WARN_RH: PM sovrastimati
+#define P44_FLAG_PCOMP_MPL   0x10   // SCD41 compensato con la pressione dell'MPL3115A2
+#define P44_FLAG_PCOMP_GPS   0x20   // SCD41 compensato con la pressione stimata dalla quota GPS
 
-#define PAYLOAD44_MAX_LEN    43
+#define PAYLOAD44_MAX_LEN    45
 #define P44_INVALID_U16      0xFFFFu
 #define P44_INVALID_I16      0x7FFF
 
@@ -785,6 +836,11 @@ struct ExtraReadings {
     bool     mplPresent = false, mplOk = false;
     uint16_t press_hpa10 = P44_INVALID_U16;
     int16_t  mplTemp_c100 = P44_INVALID_I16;
+    bool     dsPresent = false, dsOk = false;
+    int16_t  dsTemp_c100 = P44_INVALID_I16;
+    // correzioni incrociate
+    bool     pmHumid = false;        // umidita' alta durante la misura del SDS011
+    uint8_t  pressCompSource = 0;    // 0 nessuna, 1 MPL3115A2, 2 quota GPS
 };
 
 // =============================================================
@@ -874,12 +930,16 @@ bool     cfgScdEnabled;            // 0 = SCD41 disattivato, 1 = attivo (SET_SCD
 bool     cfgSdsEnabled;            // SET_SDS_ENABLED (0x1A)
 bool     cfgCcsEnabled;            // SET_CCS_ENABLED (0x1B)
 bool     cfgMplEnabled;            // SET_MPL_ENABLED (0x1C)
+bool     cfgDsEnabled;             // SET_DS_ENABLED  (0x1E)
 uint8_t  cfgSdsWarmupS;            // SET_SDS_WARMUP  (0x1D), secondi 5-120
 
 // CCS811: istante (uptime wall-clock, s) in cui e' iniziato il condizionamento.
 // In RTC: sopravvive al deep sleep, come il CCS811 che resta alimentato.
 RTC_DATA_ATTR uint32_t ccsStartUptimeS = 0;
 RTC_DATA_ATTR bool     ccsStartKnown   = false;
+RTC_DATA_ATTR bool     ccsRestorePending    = false;   // APP_START eseguito, baseline da ripristinare
+RTC_DATA_ATTR uint32_t ccsLastBaselineSaveS = 0;       // ultimo salvataggio della baseline
+RTC_DATA_ATTR bool     ccsBaselineSavedOnce = false;
 
 // ---- Contatori RTC per feature di risparmio ----
 // Sopravvivono al deep sleep, si azzerano al power-off e al reset hardware.
@@ -1077,6 +1137,9 @@ bool ccsEnsureRunning() {
         if (!(st & 0x80)) { Serial.println("CCS811: APP_START fallito"); return false; }
         ccsStartUptimeS = uptimeNowS();
         ccsStartKnown = true;
+#if ENABLE_CCS811_BASELINE
+        ccsRestorePending = true;    // a condizionamento finito, ripristina la baseline
+#endif
         Serial.println("CCS811: avviato (inizio condizionamento di 20 minuti)");
     }
     uint8_t mm = 0;
@@ -1143,8 +1206,9 @@ bool ccsWarmingUp() {
 #define MPL_REG_CTRL_REG1   0x26
 
 bool mplRead(float& pressHpa, float& tempC) {
-    // Il bus Wire di solito e' gia' avviato da initScd41(); se il SCD41 e'
-    // disattivato lo avviamo qui (stessi pin, stessa alimentazione Vext).
+    // L'MPL3115A2 si legge PRIMA di initScd41(): il bus Wire va avviato qui
+    // (stessi pin, stessa alimentazione Vext). Il secondo Wire.begin() di
+    // initScd41() trova il bus gia' avviato e non fa nulla.
     static bool wireStarted = false;
     if (!wireStarted) { Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 100000); wireStarted = true; }
     uint8_t v = 0;
@@ -1178,6 +1242,235 @@ bool mplRead(float& pressHpa, float& tempC) {
 }
 #endif  // ENABLE_MPL3115A2
 
+#if ENABLE_DS18B20
+// ---------------- DS18B20 (bus 1-Wire) ----------------
+// Un solo filo per dati e sincronismo. Il master (l'ESP32) tira la linea a
+// massa per un tempo preciso e poi la RILASCIA: la riporta alta il pull-up da
+// 4,7 kOhm. Il pin lavora quindi in open drain: puo' solo tirare giu'.
+//   reset     : basso 480 us, poi il sensore risponde con un impulso di presenza
+//   scrivi 1  : basso   6 us, poi rilascia (slot da 70 us)
+//   scrivi 0  : basso  60 us, poi rilascia
+//   leggi     : basso   3 us, rilascia, campiona dopo 10 us
+// Le parti con tempi critici girano in sezione critica: un interrupt a meta'
+// slot allungherebbe gli impulsi e il sensore capirebbe un bit sbagliato.
+static portMUX_TYPE owMux = portMUX_INITIALIZER_UNLOCKED;
+static inline void owLow()     { gpio_set_level((gpio_num_t)PIN_DS18B20, 0); }
+static inline void owRelease() { gpio_set_level((gpio_num_t)PIN_DS18B20, 1); }
+static inline int  owLine()    { return gpio_get_level((gpio_num_t)PIN_DS18B20); }
+
+bool owReset() {
+    pinMode(PIN_DS18B20, OUTPUT_OPEN_DRAIN);    // open drain, ingresso abilitato
+    owRelease();
+    delayMicroseconds(5);
+    if (!owLine()) return false;               // linea bassa: manca il pull-up o c'e' un corto
+    owLow();
+    delayMicroseconds(480);
+    portENTER_CRITICAL(&owMux);
+    owRelease();
+    delayMicroseconds(70);
+    bool presence = (owLine() == 0);            // il sensore tiene bassa la linea
+    portEXIT_CRITICAL(&owMux);
+    delayMicroseconds(410);
+    return presence;
+}
+
+void owWriteBit(uint8_t bit) {
+    portENTER_CRITICAL(&owMux);
+    owLow();
+    if (bit) { delayMicroseconds(6);  owRelease(); delayMicroseconds(64); }
+    else     { delayMicroseconds(60); owRelease(); delayMicroseconds(10); }
+    portEXIT_CRITICAL(&owMux);
+}
+
+uint8_t owReadBit() {
+    portENTER_CRITICAL(&owMux);
+    owLow();
+    delayMicroseconds(3);
+    owRelease();
+    delayMicroseconds(10);
+    uint8_t bit = owLine();
+    portEXIT_CRITICAL(&owMux);
+    delayMicroseconds(53);
+    return bit;
+}
+
+void owWriteByte(uint8_t v) {
+    for (int i = 0; i < 8; i++) { owWriteBit(v & 0x01); v >>= 1; }   // LSB per primo
+}
+
+uint8_t owReadByte() {
+    uint8_t v = 0;
+    for (int i = 0; i < 8; i++) v |= owReadBit() << i;
+    return v;
+}
+
+// CRC-8 Dallas/Maxim (polinomio x^8 + x^5 + x^4 + 1)
+uint8_t owCrc8(const uint8_t* d, size_t n) {
+    uint8_t crc = 0;
+    for (size_t i = 0; i < n; i++) {
+        uint8_t in = d[i];
+        for (int b = 0; b < 8; b++) {
+            uint8_t mix = (crc ^ in) & 0x01;
+            crc >>= 1;
+            if (mix) crc ^= 0x8C;
+            in >>= 1;
+        }
+    }
+    return crc;
+}
+
+#define DS_CMD_SKIP_ROM   0xCC   // un solo sensore sul bus: niente indirizzo
+#define DS_CMD_CONVERT_T  0x44   // avvia una conversione
+#define DS_CMD_READ_SCR   0xBE   // leggi lo scratchpad (9 byte)
+#define DS_CONV_MS         750   // conversione a 12 bit (risoluzione 0,0625 C)
+
+uint32_t dsConvStartMs = 0;
+bool     dsConvStarted = false;
+
+/**
+ * Avvia la conversione e ritorna subito: i 750 ms passano mentre il firmware
+ * fa altro (SCD41, GPS). La lettura avviene dopo, con dsReadTemp().
+ */
+bool dsStartConversion() {
+    dsConvStarted = false;
+    if (!owReset()) {
+        Serial.println("DS18B20: nessuna risposta (sonda collegata? pull-up 4,7k verso Vext?)");
+        return false;
+    }
+    owWriteByte(DS_CMD_SKIP_ROM);
+    owWriteByte(DS_CMD_CONVERT_T);
+    dsConvStartMs = millis();
+    dsConvStarted = true;
+    return true;
+}
+
+bool dsReadTemp(float& tempC) {
+    if (!dsConvStarted) return false;
+    uint32_t elapsed = millis() - dsConvStartMs;
+    if (elapsed < DS_CONV_MS) delay(DS_CONV_MS - elapsed);
+    if (!owReset()) return false;
+    owWriteByte(DS_CMD_SKIP_ROM);
+    owWriteByte(DS_CMD_READ_SCR);
+    uint8_t d[9];
+    for (int i = 0; i < 9; i++) d[i] = owReadByte();
+    // Il CRC scarta i bit sbagliati; il byte di configurazione (d[4]) ha
+    // sempre i 5 bit bassi a 1: scarta anche una linea bloccata a 0.
+    if (owCrc8(d, 8) != d[8] || (d[4] & 0x1F) != 0x1F) {
+        Serial.println("DS18B20: dati non validi (CRC)");
+        return false;
+    }
+    int16_t raw = (int16_t)((d[1] << 8) | d[0]);
+    if (raw == 0x0550) {                        // 85,0 C = valore di accensione
+        Serial.println("DS18B20: conversione non eseguita (85 C)");
+        return false;
+    }
+    tempC = raw / 16.0f;                        // 1/16 di grado
+    Serial.printf("DS18B20: T esterna=%.2f C\n", tempC);
+    return true;
+}
+#endif  // ENABLE_DS18B20
+
+// Umidita' relativa che ha la STESSA aria (stesso vapore) a un'altra
+// temperatura. Pressione di vapore saturo con la formula di Magnus.
+float saturationVaporHpa(float tC) {
+    return 6.112f * expf(17.62f * tC / (243.12f + tC));
+}
+
+float rhAtTemperature(float rh, float tFromC, float tToC) {
+    float r = rh * saturationVaporHpa(tFromC) / saturationVaporHpa(tToC);
+    return r > 100.0f ? 100.0f : r;             // oltre: condensa (nebbia)
+}
+
+// ---------------- Correzioni incrociate ----------------
+
+// Pressione dell'atmosfera standard alla quota h (formula barometrica):
+//   p = 101325 * (1 - h / 44330) ^ 5.255   [Pa]
+uint32_t pressureFromAltitudePa(float altitude_m) {
+    if (altitude_m < -400.0f) altitude_m = -400.0f;
+    if (altitude_m > 5000.0f) altitude_m = 5000.0f;
+    return (uint32_t)(101325.0f * powf(1.0f - altitude_m / 44330.0f, 5.255f));
+}
+
+/**
+ * Passa al SCD41 la pressione ambiente. Va chiamata DOPO startPeriodicMeasurement:
+ * il comando set_ambient_pressure e' accettato anche durante le misure e vale
+ * da quella successiva (la prima arriva dopo 5 s). Ritorna la fonte usata:
+ * 0 nessuna, 1 MPL3115A2, 2 quota GPS.
+ */
+uint8_t applyScdPressureCompensation(const ExtraReadings& x) {
+#if ENABLE_PRESSURE_COMPENSATION
+    uint32_t pa = 0;
+    uint8_t  source = 0;
+    if (x.mplOk) {
+        pa = (uint32_t)x.press_hpa10 * 10;          // hPa x 10 -> Pa
+        source = 1;
+    } else if (rtcLastFixValid) {
+        pa = pressureFromAltitudePa(rtcLastAlt_m);
+        source = 2;
+    }
+    if (source == 0 || pa < 70000 || pa > 120000) {
+        Serial.println("SCD41: nessuna compensazione di pressione (uso 1013 hPa)");
+        return 0;
+    }
+    if (scd4x.setAmbientPressure(pa) != 0) {
+        Serial.println("SCD41: setAmbientPressure fallito");
+        return 0;
+    }
+    Serial.printf("SCD41: compensazione pressione %.1f hPa (%s)\n",
+                  pa / 100.0f, source == 1 ? "MPL3115A2" : "quota GPS");
+    return source;
+#else
+    (void)x;
+    return 0;
+#endif
+}
+
+#if ENABLE_CCS811 && ENABLE_CCS811_BASELINE
+#define CCS_REG_BASELINE   0x11
+#define NVS_KEY_CCS_BASE   "ccs_bl"        // uint16 baseline del CCS811
+
+/**
+ * Gestione della baseline del CCS811 guidata dal SCD41:
+ *  - dopo un riavvio del sensore (APP_START) e la fine del condizionamento,
+ *    riscrive la baseline salvata in NVS;
+ *  - con il sensore stabile da almeno 24 h e il SCD41 che vede aria pulita,
+ *    salva la baseline attuale (al massimo una volta al giorno).
+ */
+void ccsManageBaseline(bool scdOk, uint16_t co2) {
+    if (ccsWarmingUp()) return;
+    uint32_t now = uptimeNowS();
+    uint8_t b[2];
+
+    if (ccsRestorePending) {
+        ccsRestorePending = false;
+        if (prefs.begin(NVS_NAMESPACE, true)) {
+            uint16_t saved = prefs.getUShort(NVS_KEY_CCS_BASE, 0);
+            prefs.end();
+            if (saved != 0) {
+                b[0] = saved >> 8; b[1] = saved & 0xFF;
+                if (i2cWriteReg(Wire1, CCS811_ADDR, CCS_REG_BASELINE, b, 2)) {
+                    Serial.printf("CCS811: baseline 0x%04X ripristinata da NVS\n", saved);
+                }
+            }
+        }
+        return;
+    }
+
+    bool runLongEnough = ccsStartKnown && (now - ccsStartUptimeS) >= CCS811_BASELINE_MIN_RUN_S;
+    bool cleanAir      = scdOk && co2 > 0 && co2 <= CCS811_CLEAN_AIR_CO2_PPM;
+    bool dueForSave    = !ccsBaselineSavedOnce || (now - ccsLastBaselineSaveS) >= CCS811_BASELINE_EVERY_S;
+    if (!(runLongEnough && cleanAir && dueForSave)) return;
+
+    if (!i2cReadReg(Wire1, CCS811_ADDR, CCS_REG_BASELINE, b, 2)) return;
+    uint16_t baseline = (uint16_t)(b[0] << 8 | b[1]);
+    if (saveConfigUShort(NVS_KEY_CCS_BASE, baseline)) {
+        ccsLastBaselineSaveS = now;
+        ccsBaselineSavedOnce = true;
+        Serial.printf("CCS811: aria pulita (CO2 %u ppm), baseline 0x%04X salvata in NVS\n", co2, baseline);
+    }
+}
+#endif
+
 // ---------------- Payload 0x44 ----------------
 static void p44Put16(uint8_t* b, size_t& i, uint16_t v) { b[i++] = v & 0xFF; b[i++] = v >> 8; }
 static void p44Put32(uint8_t* b, size_t& i, uint32_t v) {
@@ -1197,9 +1490,13 @@ size_t buildPayload44(uint8_t* out, const Payload_v0x42& p, bool scdPresent, boo
     if (x.sdsPresent) mask |= SENSOR_BIT_SDS011;
     if (x.ccsPresent) mask |= SENSOR_BIT_CCS811;
     if (x.mplPresent) mask |= SENSOR_BIT_MPL3115;
+    if (x.dsPresent)  mask |= SENSOR_BIT_DS18B20;
     if (timeEpoch)    flags |= P44_FLAG_TIME_EPOCH;
     if (gpsPresent && p.hdop_x100 == 9999)  flags |= P44_FLAG_GPS_STALE;
     if (x.ccsPresent && x.ccsWarmup)        flags |= P44_FLAG_CCS_WARMUP;
+    if (x.sdsPresent && x.pmHumid)          flags |= P44_FLAG_PM_HUMID;
+    if (x.pressCompSource == 1)             flags |= P44_FLAG_PCOMP_MPL;
+    if (x.pressCompSource == 2)             flags |= P44_FLAG_PCOMP_GPS;
 
     size_t i = 0;
     out[i++] = SCHEMA_ID_MULTI;
@@ -1236,6 +1533,9 @@ size_t buildPayload44(uint8_t* out, const Payload_v0x42& p, bool scdPresent, boo
         p44Put16(out, i, x.mplOk ? x.press_hpa10 : P44_INVALID_U16);
         p44Put16(out, i, x.mplOk ? (uint16_t)x.mplTemp_c100 : (uint16_t)P44_INVALID_I16);
     }
+    if (x.dsPresent) {
+        p44Put16(out, i, x.dsOk ? (uint16_t)x.dsTemp_c100 : (uint16_t)P44_INVALID_I16);
+    }
     return i;
 }
 
@@ -1255,6 +1555,9 @@ uint8_t sensorsCompiledMask() {
 #endif
 #if ENABLE_MPL3115A2
     m |= SENSOR_BIT_MPL3115;
+#endif
+#if ENABLE_DS18B20
+    m |= SENSOR_BIT_DS18B20;
 #endif
     return m;
 }
@@ -1491,6 +1794,7 @@ void loadRuntimeConfig() {
     cfgSdsEnabled       = true;
     cfgCcsEnabled       = true;
     cfgMplEnabled       = true;
+    cfgDsEnabled        = true;
     cfgSdsWarmupS       = SDS011_WARMUP_S;
 
     // Prova a leggere da NVS (se una chiave manca, mantiene il default)
@@ -1509,6 +1813,7 @@ void loadRuntimeConfig() {
         cfgSdsEnabled       = prefs.getUChar (NVS_KEY_SDS_ENABLED,  cfgSdsEnabled ? 1 : 0) != 0;
         cfgCcsEnabled       = prefs.getUChar (NVS_KEY_CCS_ENABLED,  cfgCcsEnabled ? 1 : 0) != 0;
         cfgMplEnabled       = prefs.getUChar (NVS_KEY_MPL_ENABLED,  cfgMplEnabled ? 1 : 0) != 0;
+        cfgDsEnabled        = prefs.getUChar (NVS_KEY_DS_ENABLED,   cfgDsEnabled  ? 1 : 0) != 0;
         cfgSdsWarmupS       = prefs.getUChar (NVS_KEY_SDS_WARMUP,   cfgSdsWarmupS);
         prefs.end();
     }
@@ -1538,6 +1843,9 @@ void loadRuntimeConfig() {
 #if !ENABLE_MPL3115A2
     cfgMplEnabled = false;
 #endif
+#if !ENABLE_DS18B20
+    cfgDsEnabled = false;
+#endif
 }
 
 /**
@@ -1563,6 +1871,7 @@ void clearRuntimeConfigToDefaults() {
         prefs.remove(NVS_KEY_CCS_ENABLED);
         prefs.remove(NVS_KEY_MPL_ENABLED);
         prefs.remove(NVS_KEY_SDS_WARMUP);
+        prefs.remove(NVS_KEY_DS_ENABLED);
         prefs.end();
     }
     // Ricarica le variabili in RAM con i default
@@ -2212,7 +2521,8 @@ void serialMenuPrintStatus() {
     Serial.printf ("  SDS011:       %s (ventilazione %u s)\n", cfgSdsEnabled ? "SI" : "NO", cfgSdsWarmupS);
     Serial.printf ("  CCS811:       %s\n", cfgCcsEnabled ? "SI" : "NO");
     Serial.printf ("  MPL3115A2:    %s\n", cfgMplEnabled ? "SI" : "NO");
-    Serial.printf ("  Compilati:    0x%02X (bit0 SCD41, 1 GPS, 2 SDS011, 3 CCS811, 4 MPL)\n", sensorsCompiledMask());
+    Serial.printf ("  DS18B20:      %s\n", cfgDsEnabled ? "SI" : "NO");
+    Serial.printf ("  Compilati:    0x%02X (bit0 SCD41, 1 GPS, 2 SDS011, 3 CCS811, 4 MPL, 5 DS18B20)\n", sensorsCompiledMask());
     Serial.println();
     Serial.println("  ---- Ultimo GPS noto ----");
     if (rtcLastFixValid) {
@@ -2821,6 +3131,7 @@ void checkLongPressBootAtSetup() {
 #define CFG_SET_CCS_ENABLED   0x1B   // 1 byte, 0/1 -> NVS "ccs_en"
 #define CFG_SET_MPL_ENABLED   0x1C   // 1 byte, 0/1 -> NVS "mpl_en"
 #define CFG_SET_SDS_WARMUP    0x1D   // 1 byte, secondi 5-120 -> NVS "sds_wu"
+#define CFG_SET_DS_ENABLED    0x1E   // 1 byte, 0/1 -> NVS "ds_en"
 
 // Fa lampeggiare il LED N volte per identificare visivamente il device.
 // NOTA: durante il ciclo il LED e' gia' acceso (ledOn() nel setup), quindi
@@ -3095,21 +3406,25 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
         // ---- Upgrade multisensore ----
         case CFG_SET_SDS_ENABLED:
         case CFG_SET_CCS_ENABLED:
-        case CFG_SET_MPL_ENABLED: {
+        case CFG_SET_MPL_ENABLED:
+        case CFG_SET_DS_ENABLED: {
             if (len < 2 || (buf[1] != 0 && buf[1] != 1)) {
                 Serial.println("[DOWNLINK] SET_*_ENABLED: valore deve essere 0 o 1");
                 return;
             }
             const char* key  = (cmd == CFG_SET_SDS_ENABLED) ? NVS_KEY_SDS_ENABLED
                              : (cmd == CFG_SET_CCS_ENABLED) ? NVS_KEY_CCS_ENABLED
-                             : NVS_KEY_MPL_ENABLED;
+                             : (cmd == CFG_SET_MPL_ENABLED) ? NVS_KEY_MPL_ENABLED
+                             : NVS_KEY_DS_ENABLED;
             const char* name = (cmd == CFG_SET_SDS_ENABLED) ? "SDS011"
-                             : (cmd == CFG_SET_CCS_ENABLED) ? "CCS811" : "MPL3115A2";
+                             : (cmd == CFG_SET_CCS_ENABLED) ? "CCS811"
+                             : (cmd == CFG_SET_MPL_ENABLED) ? "MPL3115A2" : "DS18B20";
             if (saveConfigUChar(key, buf[1])) {
                 bool on = (buf[1] != 0);
                 if (cmd == CFG_SET_SDS_ENABLED) cfgSdsEnabled = on;
                 if (cmd == CFG_SET_CCS_ENABLED) cfgCcsEnabled = on;
                 if (cmd == CFG_SET_MPL_ENABLED) cfgMplEnabled = on;
+                if (cmd == CFG_SET_DS_ENABLED)  cfgDsEnabled  = on;
                 Serial.printf("[DOWNLINK] %s %s (se compilato)\n", name, on ? "attivato" : "disattivato");
                 sendStateNext = true;
             }
@@ -3656,6 +3971,7 @@ bool sendStatePayload() {
     state.cfgMplEnabled       = cfgMplEnabled ? 1 : 0;
     state.cfgSdsWarmupS       = cfgSdsWarmupS;
     state.sensorsCompiled     = sensorsCompiledMask();
+    state.cfgDsEnabled        = cfgDsEnabled ? 1 : 0;
 
     Serial.printf("TX STATE %u byte su FPort %u: ",
                   (unsigned)sizeof(state), LORAWAN_FPORT_STATE);
@@ -4112,6 +4428,32 @@ void setup() {
         initGps();
     }
 
+    // --- 2b) MPL3115A2 PRIMA del SCD41: la sua pressione serve a compensare
+    //         la misura di CO2 (vedi applyScdPressureCompensation) ---
+    ExtraReadings xr;
+#if ENABLE_MPL3115A2
+    if (cfgMplEnabled) {
+        xr.mplPresent = true;
+        delay(20);                     // avvio dell'MPL dopo l'accensione di Vext
+        float pHpa = 0, tMpl = 0;
+        xr.mplOk = mplRead(pHpa, tMpl);
+        if (xr.mplOk) {
+            xr.press_hpa10  = (uint16_t)(pHpa * 10.0f + 0.5f);
+            xr.mplTemp_c100 = (int16_t)(tMpl * 100.0f);
+        }
+    }
+#endif
+
+#if ENABLE_DS18B20
+    // DS18B20: la conversione dura 750 ms e si avvia ORA; il valore si legge
+    // al passo 5b, quando il SCD41 e il GPS hanno gia' fatto passare il tempo.
+    if (cfgDsEnabled) {
+        xr.dsPresent = true;
+        delay(10);                     // avvio del DS18B20 dopo l'accensione di Vext
+        dsStartConversion();
+    }
+#endif
+
     // --- 3) Init SCD41 (solo se abilitato) ---
     bool doScdThisCycle = true;
 #if ENABLE_SENSOR_DISABLE
@@ -4123,6 +4465,8 @@ void setup() {
     if (doScdThisCycle) {
         if (!initScd41()) {
             Serial.println("SCD41 init fallito, procedo con valori nulli");
+        } else {
+            xr.pressCompSource = applyScdPressureCompensation(xr);
         }
     }
 
@@ -4149,17 +4493,12 @@ void setup() {
         }
     }
 
-    // --- 5b) Upgrade multisensore: MPL3115A2, CCS811, SDS011 ---
-    ExtraReadings xr;
-#if ENABLE_MPL3115A2
-    if (cfgMplEnabled) {
-        xr.mplPresent = true;
-        float pHpa = 0, tMpl = 0;
-        xr.mplOk = mplRead(pHpa, tMpl);
-        if (xr.mplOk) {
-            xr.press_hpa10  = (uint16_t)(pHpa * 10.0f + 0.5f);
-            xr.mplTemp_c100 = (int16_t)(tMpl * 100.0f);
-        }
+    // --- 5b) Upgrade multisensore: DS18B20, CCS811 e SDS011 (MPL3115A2 gia' letto) ---
+#if ENABLE_DS18B20
+    if (xr.dsPresent) {
+        float tExt = 0;
+        xr.dsOk = dsReadTemp(tExt);
+        if (xr.dsOk) xr.dsTemp_c100 = (int16_t)lroundf(tExt * 100.0f);
     }
 #endif
 #if ENABLE_CCS811
@@ -4169,6 +4508,9 @@ void setup() {
             if (scdOk) ccsSetEnvironment(tempC, humRH);   // compensazione T/RH
             xr.ccsOk     = ccsRead(xr.eco2, xr.tvoc, xr.ccsError);
             xr.ccsWarmup = ccsWarmingUp();
+#if ENABLE_CCS811_BASELINE
+            ccsManageBaseline(scdOk, co2);
+#endif
         }
     } else {
         ccsSetIdle();
@@ -4178,6 +4520,22 @@ void setup() {
     if (cfgSdsEnabled && !identifyMode) {
         xr.sdsPresent = true;
         xr.sdsOk = sdsRead(xr.pm25_x10, xr.pm10_x10);
+        // L'umidita' che conta e' quella dell'aria ESTERNA aspirata dal SDS011.
+        // Il SCD41 la misura nel contenitore, piu' caldo: se c'e' il DS18B20 la
+        // si riporta alla temperatura esterna (stesso vapore, altra temperatura).
+        float rhPm = humRH;
+#if ENABLE_DS18B20
+        if (scdOk && xr.dsOk) {
+            rhPm = rhAtTemperature(humRH, tempC, xr.dsTemp_c100 / 100.0f);
+            Serial.printf("UR esterna: %.0f%% (SCD41 %.0f%% a %.1f C, esterno %.1f C)\n",
+                          rhPm, humRH, tempC, xr.dsTemp_c100 / 100.0f);
+        }
+#endif
+        xr.pmHumid = scdOk && rhPm >= PM_HUMIDITY_WARN_RH;
+        if (xr.sdsOk && xr.pmHumid) {
+            Serial.printf("SDS011: UR %.0f%% >= %u%%, PM probabilmente sovrastimati\n",
+                          rhPm, PM_HUMIDITY_WARN_RH);
+        }
     }
     sdsPowerOff();   // la batteria si legge con il SDS011 spento
 #endif
