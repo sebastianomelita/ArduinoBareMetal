@@ -238,10 +238,7 @@ function decodeSchema43(b) {
 //   b[0]      schema_id   0x44
 //   b[1]      sensor_mask bit0 SCD41, bit1 GPS, bit2 SDS011, bit3 CCS811, bit4 MPL3115A2
 //   b[2]      flags       bit0 timestamp = epoch GPS, bit1 posizione stale,
-//                         bit2 CCS811 in riscaldamento (primi 20 minuti),
-//                         bit3 umidita' alta durante la misura PM (PM sovrastimati),
-//                         bit4 SCD41 compensato con la pressione dell'MPL3115A2,
-//                         bit5 SCD41 compensato con la pressione stimata dalla quota GPS
+//                         bit2 CCS811 in riscaldamento (primi 20 minuti)
 //   b[3]      battery_pct uint8
 //   b[4..5]   vbat_mv     uint16 LE
 //   b[6..9]   timestamp   uint32 LE (epoch UTC o secondi dal boot)
@@ -258,35 +255,6 @@ function decodeSchema43(b) {
 // location, ...) sono gli stessi dello schema 0x42: le dashboard esistenti
 // continuano a funzionare e trovano in piu' i campi dei nuovi sensori.
 var BLOCK_LEN_44 = [6, 14, 4, 5, 4];   // nell'ordine dei bit 0..4
-
-// ---- Correzioni calcolate nel codec (modificabili senza riprogrammare il nodo)
-// Crescita igroscopica del particolato (kappa-Koehler, per la massa):
-//   PM_secco = PM_misurato / f,   f = 1 + (KAPPA / DENSITA') * a / (1 - a),
-//   a = RH/100   (Crilley et al., 2018)
-// KAPPA dipende dal tipo di aerosol: ~0.2 urbano/traffico, ~0.4 con molti
-// solfati/nitrati, fino a ~0.6 vicino al mare. Si tara confrontando il nodo
-// con una centralina ARPA vicina nei giorni umidi.
-var PM_KAPPA = 0.4;
-var PM_DENSITY = 1.65;       // densita' delle particelle secche, g/cm3
-var PM_RH_MAX = 95;          // oltre, la formula esplode: si satura qui
-// Quota della stazione per riportare la pressione al livello del mare.
-// null = usa la quota del GPS (solo se il fix e' attuale, non "stale").
-var STATION_ALTITUDE_M = null;
-
-function pmHumidityFactor(rh) {
-    if (rh === null || rh === undefined) return null;
-    var a = Math.min(Math.max(rh, 0), PM_RH_MAX) / 100;
-    return 1 + (PM_KAPPA / PM_DENSITY) * a / (1 - a);
-}
-
-// Pressione ridotta al livello del mare (atmosfera standard):
-//   p0 = p / (1 - h/44330)^5.255
-function seaLevelPressure(pHpa, altM) {
-    if (pHpa === null || altM === null || altM === undefined) return null;
-    return pHpa / Math.pow(1 - altM / 44330, 5.255);
-}
-
-function round1(v) { return v === null ? null : Math.round(v * 10) / 10; }
 
 function sensorMaskToObject(m) {
     return {
@@ -380,21 +348,6 @@ function decodeSchema44(b) {
         r.mpl_temp_c   = i16(o + 2, 100);
         o += 4;
     }
-
-    // ---- Correzioni incrociate
-    // SCD41: quale pressione ha usato il nodo per compensare la CO2
-    r.scd_pressure_comp = (flags & 0x10) ? "MPL3115A2" : ((flags & 0x20) ? "GPS" : null);
-    // SDS011: flag di umidita' alta e PM corretti con l'umidita' del SCD41
-    r.pm_humidity_warning = (flags & 0x08) !== 0;
-    var f = pmHumidityFactor(r.hum_pct);
-    r.pm_rh_factor = f === null ? null : Math.round(f * 100) / 100;
-    r.pm25_rh_corr = (r.pm25 !== null && f !== null) ? round1(r.pm25 / f) : null;
-    r.pm10_rh_corr = (r.pm10 !== null && f !== null) ? round1(r.pm10 / f) : null;
-    // MPL3115A2: pressione al livello del mare (confrontabile con i bollettini)
-    var h = STATION_ALTITUDE_M;
-    if (h === null && r.alt_m !== null && r.fix_quality > 0 && !r.gps_stale) h = r.alt_m;
-    r.pressure_sea_hpa = round1(seaLevelPressure(r.pressure_hpa, h));
-
     // Compatibilita' con le dashboard dello schema 0x42
     r.scd_disabled = (mask & 0x01) === 0;
     r.gps_disabled = (mask & 0x02) === 0;
