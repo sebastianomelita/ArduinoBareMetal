@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 830" width="1000" height="830" font-family="Helvetica,Arial,sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+<pattern id="x" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#fee2e2"/><line x1="0" y1="0" x2="0" y2="8" stroke="#f87171" stroke-width="3"/></pattern>
+</defs>
+<rect width="1000" height="830" fill="#fff"/>
+<text x="500.0" y="34" font-size="21" text-anchor="middle" fill="#111" font-weight="bold">Pipeline reale dell'AVR (ATmega328P): 2 stadi, Fetch + Execute</text>
+<text x="215" y="82" font-size="12" text-anchor="end" fill="#333" font-weight="bold">Clock (16 MHz)</text>
+<polyline points="230,95 230,65 290.0,65 290.0,95 350,95 350,95 350,65 410.0,65 410.0,95 470,95 470,95 470,65 530.0,65 530.0,95 590,95 590,95 590,65 650.0,65 650.0,95 710,95 710,95 710,65 770.0,65 770.0,95 830,95 830,95 830,65 890.0,65 890.0,95 950,95" fill="none" stroke="#0f766e" stroke-width="2"/>
+<line x1="230" y1="100" x2="230" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="350" y1="100" x2="350" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="470" y1="100" x2="470" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="590" y1="100" x2="590" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="710" y1="100" x2="710" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="830" y1="100" x2="830" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<line x1="950" y1="100" x2="950" y2="720" stroke="#e2e8f0" stroke-width="1"/>
+<text x="290.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T1</text>
+<text x="410.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T2</text>
+<text x="530.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T3</text>
+<text x="650.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T4</text>
+<text x="770.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T5</text>
+<text x="890.0" y="116" font-size="13" text-anchor="middle" fill="#0f766e" font-weight="bold">T6</text>
+<text x="215" y="98" font-size="11" text-anchor="end" fill="#0f766e">(1 ciclo = 62,5 ns)</text>
+<text x="30" y="150" font-size="15" text-anchor="start" fill="#111" font-weight="bold">1) Flusso normale: istruzioni da 1 ciclo</text>
+<text x="215" y="181" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">ldi r16, 10</text>
+<text x="215" y="195" font-size="10" text-anchor="end" fill="#333" font-style="italic">r16 ← 10</text>
+<rect x="233" y="165" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="290.0" y="186" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="353" y="165" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="410.0" y="186" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="215" y="221" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">ldi r17, 5</text>
+<text x="215" y="235" font-size="10" text-anchor="end" fill="#333" font-style="italic">r17 ← 5</text>
+<rect x="353" y="205" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="410.0" y="226" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="473" y="205" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="530.0" y="226" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="215" y="261" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">add r16, r17</text>
+<text x="215" y="275" font-size="10" text-anchor="end" fill="#333" font-style="italic">r16 ← r16 + r17</text>
+<rect x="473" y="245" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="530.0" y="266" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="593" y="245" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="650.0" y="266" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="215" y="301" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">out PORTB, r16</text>
+<text x="215" y="315" font-size="10" text-anchor="end" fill="#333" font-style="italic">PORTB ← r16</text>
+<rect x="593" y="285" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="650.0" y="306" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="713" y="285" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="770.0" y="306" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="830.0" y="195" font-size="12" text-anchor="start" fill="#333" font-weight="bold">Da T2 in poi, a ogni ciclo:</text>
+<text x="830.0" y="213" font-size="12" text-anchor="start" fill="#333">• un'istruzione viene eseguita</text>
+<text x="830.0" y="231" font-size="12" text-anchor="start" fill="#333">• la successiva viene prelevata</text>
+<text x="830.0" y="252" font-size="12" text-anchor="start" fill="#15803d" font-weight="bold">→ 1 istruzione per ciclo</text>
+<text x="830.0" y="269" font-size="11" text-anchor="start" fill="#15803d">(≈16 MIPS a 16 MHz)</text>
+<rect x="471.0" y="203" width="118" height="76" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6,4" rx="6"/>
+<text x="530.0" y="182" font-size="10" text-anchor="middle" fill="#7c3aed" font-weight="bold">in T3 lavorano</text>
+<text x="530.0" y="196" font-size="10" text-anchor="middle" fill="#7c3aed" font-weight="bold">2 istruzioni insieme</text>
+<text x="30" y="355" font-size="15" text-anchor="start" fill="#111" font-weight="bold">2) Cosa succede dentro un ciclo di Execute e di Fetch</text>
+<rect x="40" y="380" width="270" height="95" rx="5" fill="#fef3c7" stroke="#333" stroke-width="1.5"/>
+<text x="175" y="402" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Stadio EXECUTE (add r16, r17)</text>
+<text x="52" y="425" font-size="12" text-anchor="start" fill="#333">① legge r16 e r17 dal register file</text>
+<text x="52" y="443" font-size="12" text-anchor="start" fill="#333">② l'ALU calcola la somma, aggiorna SREG</text>
+<text x="52" y="461" font-size="12" text-anchor="start" fill="#333">③ scrive il risultato in r16</text>
+<rect x="335" y="380" width="205" height="95" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="437" y="402" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Register file → ALU</text>
+<text x="437" y="425" font-size="12" text-anchor="middle" fill="#333">2 porte di lettura +</text>
+<text x="437" y="443" font-size="12" text-anchor="middle" fill="#333">1 porta di scrittura:</text>
+<text x="437" y="461" font-size="12" text-anchor="middle" fill="#b45309" font-weight="bold">tutto in UN ciclo</text>
+<rect x="565" y="380" width="400" height="95" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="765" y="402" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Contemporaneamente: stadio FETCH</text>
+<text x="765" y="425" font-size="12" text-anchor="middle" fill="#333">l'istruzione successiva (16 bit) arriva dalla Flash</text>
+<text x="765" y="443" font-size="12" text-anchor="middle" fill="#333">sul bus programma, separato dal bus dati</text>
+<text x="765" y="461" font-size="12" text-anchor="middle" fill="#1d4ed8" font-weight="bold">→ possibile solo grazie all'architettura Harvard</text>
+<line x1="310" y1="427" x2="333" y2="427" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<line x1="535" y1="427" x2="563" y2="427" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,4"/>
+<text x="30" y="500" font-size="15" text-anchor="start" fill="#111" font-weight="bold">3) Salto condizionato preso: la pipeline si svuota</text>
+<text x="30" y="518" font-size="12" text-anchor="start" fill="#475569" font-style="italic">ciclo:  dec r16 → brne ciclo  (si torna indietro finché r16 ≠ 0)</text>
+<text x="215" y="551" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">dec r16</text>
+<text x="215" y="565" font-size="10" text-anchor="end" fill="#333" font-style="italic">r16 ← r16 − 1, aggiorna Z</text>
+<text x="215" y="593" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">brne ciclo</text>
+<text x="215" y="607" font-size="10" text-anchor="end" fill="#333" font-style="italic">Z = 0 → salta</text>
+<text x="215" y="635" font-size="13" text-anchor="end" fill="#b91c1c" font-weight="bold">out PORTB, r16</text>
+<text x="215" y="649" font-size="10" text-anchor="end" fill="#333" font-style="italic">istruzione dopo il salto</text>
+<text x="215" y="677" font-size="13" text-anchor="end" fill="#1e3a8a" font-weight="bold">dec r16</text>
+<text x="215" y="691" font-size="10" text-anchor="end" fill="#333" font-style="italic">destinazione del salto</text>
+<rect x="233" y="535" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="290.0" y="556" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="353" y="535" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="410.0" y="556" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<rect x="353" y="577" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="410.0" y="598" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="473" y="577" width="234" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="590.0" y="598" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute (2 cicli)</text>
+<rect x="473" y="619" width="114" height="32" rx="5" fill="url(#x)" stroke="#b91c1c" stroke-width="1.5"/>
+<text x="530.0" y="640" font-size="13" text-anchor="middle" fill="#b91c1c" font-weight="bold">Fetch scartato</text>
+<text x="650.0" y="640" font-size="12" text-anchor="middle" fill="#b91c1c" font-weight="bold">✕ mai eseguita</text>
+<rect x="593" y="661" width="114" height="32" rx="5" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="650.0" y="682" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="713" y="661" width="114" height="32" rx="5" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="770.0" y="682" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="838" y="570" font-size="12" text-anchor="start" fill="#333" font-weight="bold">In T3 la CPU</text>
+<text x="838" y="586" font-size="12" text-anchor="start" fill="#333" font-weight="bold">scopre che deve</text>
+<text x="838" y="602" font-size="12" text-anchor="start" fill="#333" font-weight="bold">saltare: ha già</text>
+<text x="838" y="618" font-size="12" text-anchor="start" fill="#333" font-weight="bold">prelevato l'istruzione</text>
+<text x="838" y="634" font-size="12" text-anchor="start" fill="#333" font-weight="bold">sbagliata e la butta.</text>
+<text x="838" y="658" font-size="12" text-anchor="start" fill="#333">In T4 preleva la</text>
+<text x="838" y="674" font-size="12" text-anchor="start" fill="#333">destinazione giusta:</text>
+<text x="838" y="690" font-size="12" text-anchor="start" fill="#b91c1c" font-weight="bold">brne costa 2 cicli.</text>
+<rect x="30" y="740" width="940" height="72" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="50" y="762" font-size="13" text-anchor="start" fill="#111" font-weight="bold">Cicli di clock tipici (ATmega328P):</text>
+<text x="50" y="784" font-size="12" text-anchor="start" fill="#1e3a8a">add, sub, and, ldi, inc, mov: 1 ciclo</text>
+<text x="360" y="784" font-size="12" text-anchor="start" fill="#1e3a8a">brne / breq: 1 se non salta, 2 se salta</text>
+<text x="670" y="784" font-size="12" text-anchor="start" fill="#1e3a8a">rjmp: 2 cicli</text>
+<text x="50" y="804" font-size="12" text-anchor="start" fill="#1e3a8a">ld, st, lds, sts (SRAM): 2 cicli</text>
+<text x="360" y="804" font-size="12" text-anchor="start" fill="#1e3a8a">rcall: 3 cicli</text>
+<text x="670" y="804" font-size="12" text-anchor="start" fill="#1e3a8a">ret: 4 cicli</text>
+</svg>

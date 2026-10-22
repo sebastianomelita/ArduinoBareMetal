@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="900" height="400" fill="#fff"/>
+<text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Von Neumann vs Harvard</text>
+<text x="225" y="75" font-size="15" text-anchor="middle" fill="#222" font-weight="bold">Von Neumann (PC tradizionale)</text>
+<rect x="140" y="95" width="170" height="60" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="225.0" y="130.6" font-size="16" text-anchor="middle" fill="#222" font-weight="bold">CPU</text>
+<rect x="115" y="240" width="220" height="70" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
+<text x="225.0" y="271.21999999999997" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Memoria unica</text>
+<text x="225.0" y="288.71999999999997" font-size="12" text-anchor="middle" fill="#222">istruzioni + dati</text>
+<path d="M225,155 L225,240" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<text x="235" y="200" font-size="12" text-anchor="start" fill="#444" font-style="italic">un solo bus</text>
+<text x="225" y="345" font-size="12" text-anchor="middle" fill="#b91c1c">istruzione e dato non si leggono insieme</text>
+<text x="225" y="365" font-size="12" text-anchor="middle" fill="#b91c1c">(collo di bottiglia di Von Neumann)</text>
+<line x1="450" y1="60" x2="450" y2="380" stroke="#cbd5e1" stroke-width="2"/><text x="675" y="75" font-size="15" text-anchor="middle" fill="#222" font-weight="bold">Harvard (AVR / ATmega328P)</text>
+<rect x="590" y="95" width="170" height="60" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="675.0" y="130.6" font-size="16" text-anchor="middle" fill="#222" font-weight="bold">CPU</text>
+<rect x="490" y="240" width="170" height="70" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="575.0" y="271.21999999999997" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Flash</text>
+<text x="575.0" y="288.71999999999997" font-size="12" text-anchor="middle" fill="#222">istruzioni</text>
+<rect x="690" y="240" width="170" height="70" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="775.0" y="271.21999999999997" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">SRAM</text>
+<text x="775.0" y="288.71999999999997" font-size="12" text-anchor="middle" fill="#222">dati</text>
+<path d="M620,155 L575,240" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<text x="560" y="200" font-size="12" text-anchor="end" fill="#444" font-style="italic">bus 16 bit</text>
+<path d="M730,155 L775,240" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<text x="790" y="200" font-size="12" text-anchor="start" fill="#444" font-style="italic">bus 8 bit</text>
+<text x="675" y="345" font-size="12" text-anchor="middle" fill="#15803d">fetch dell'istruzione e accesso ai dati</text>
+<text x="675" y="365" font-size="12" text-anchor="middle" fill="#15803d">nello stesso ciclo → pipeline efficiente</text>
+</svg>

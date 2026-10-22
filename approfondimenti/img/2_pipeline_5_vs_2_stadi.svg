@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="900" height="560" fill="#fff"/>
+<text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Pipeline: modello RISC a 5 stadi vs AVR a 2 stadi</text>
+<text x="60" y="75" font-size="15" text-anchor="start" fill="#222" font-weight="bold">A) Pipeline RISC classica a 5 stadi (modello didattico, es. MIPS)</text>
+<text x="185" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 1</text>
+<text x="280" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 2</text>
+<text x="375" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 3</text>
+<text x="470" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 4</text>
+<text x="565" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 5</text>
+<text x="660" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 6</text>
+<text x="755" y="103" font-size="12" text-anchor="middle" fill="#444">ciclo 7</text>
+<text x="125" y="138" font-size="13" text-anchor="end" fill="#444" font-weight="bold">Istr. 1</text>
+<rect x="140" y="112" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="185" y="135" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">IF</text>
+<rect x="235" y="112" width="90" height="36" rx="4" fill="#bbf7d0" stroke="#333"/><text x="280" y="135" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">ID</text>
+<rect x="330" y="112" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="375" y="135" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">EX</text>
+<rect x="425" y="112" width="90" height="36" rx="4" fill="#e9d5ff" stroke="#333"/><text x="470" y="135" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">MEM</text>
+<rect x="520" y="112" width="90" height="36" rx="4" fill="#fecaca" stroke="#333"/><text x="565" y="135" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">WB</text>
+<text x="125" y="180" font-size="13" text-anchor="end" fill="#444" font-weight="bold">Istr. 2</text>
+<rect x="235" y="154" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="280" y="177" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">IF</text>
+<rect x="330" y="154" width="90" height="36" rx="4" fill="#bbf7d0" stroke="#333"/><text x="375" y="177" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">ID</text>
+<rect x="425" y="154" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="470" y="177" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">EX</text>
+<rect x="520" y="154" width="90" height="36" rx="4" fill="#e9d5ff" stroke="#333"/><text x="565" y="177" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">MEM</text>
+<rect x="615" y="154" width="90" height="36" rx="4" fill="#fecaca" stroke="#333"/><text x="660" y="177" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">WB</text>
+<text x="125" y="222" font-size="13" text-anchor="end" fill="#444" font-weight="bold">Istr. 3</text>
+<rect x="330" y="196" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="375" y="219" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">IF</text>
+<rect x="425" y="196" width="90" height="36" rx="4" fill="#bbf7d0" stroke="#333"/><text x="470" y="219" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">ID</text>
+<rect x="520" y="196" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="565" y="219" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">EX</text>
+<rect x="615" y="196" width="90" height="36" rx="4" fill="#e9d5ff" stroke="#333"/><text x="660" y="219" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">MEM</text>
+<rect x="710" y="196" width="90" height="36" rx="4" fill="#fecaca" stroke="#333"/><text x="755" y="219" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">WB</text>
+<text x="60" y="255" font-size="12" text-anchor="start" fill="#444">IF=prelievo · ID=decodifica e lettura registri · EX=ALU · MEM=accesso memoria · WB=scrittura risultato</text>
+<text x="60" y="320" font-size="15" text-anchor="start" fill="#222" font-weight="bold">B) Pipeline AVR a 2 stadi (ATmega328P): mentre esegue un'istruzione preleva la successiva</text>
+<text x="185" y="348" font-size="12" text-anchor="middle" fill="#444">T1</text>
+<text x="280" y="348" font-size="12" text-anchor="middle" fill="#444">T2</text>
+<text x="375" y="348" font-size="12" text-anchor="middle" fill="#444">T3</text>
+<text x="470" y="348" font-size="12" text-anchor="middle" fill="#444">T4</text>
+<text x="565" y="348" font-size="12" text-anchor="middle" fill="#444">T5</text>
+<text x="125" y="383" font-size="12" text-anchor="end" fill="#444" font-weight="bold">add r16,r17</text>
+<rect x="140" y="357" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="185" y="380" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="235" y="357" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="280" y="380" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="125" y="425" font-size="12" text-anchor="end" fill="#444" font-weight="bold">sub r18,r19</text>
+<rect x="235" y="399" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="280" y="422" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="330" y="399" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="375" y="422" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="125" y="467" font-size="12" text-anchor="end" fill="#444" font-weight="bold">and r20,r21</text>
+<rect x="330" y="441" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="375" y="464" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="425" y="441" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="470" y="464" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<text x="125" y="509" font-size="12" text-anchor="end" fill="#444" font-weight="bold">inc r22</text>
+<rect x="425" y="483" width="90" height="36" rx="4" fill="#bfdbfe" stroke="#333"/><text x="470" y="506" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Fetch</text>
+<rect x="520" y="483" width="90" height="36" rx="4" fill="#fed7aa" stroke="#333"/><text x="565" y="506" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute</text>
+<rect x="640" y="360" width="230" height="150" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
+<text x="755.0" y="407.31" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Execute in 1 ciclo:</text>
+<text x="755.0" y="423.56" font-size="11" text-anchor="middle" fill="#222">1) lettura di 2 registri</text>
+<text x="755.0" y="439.81" font-size="11" text-anchor="middle" fill="#222">2) operazione nell'ALU</text>
+<text x="755.0" y="456.06" font-size="11" text-anchor="middle" fill="#222">3) risultato nel registro</text>
+<text x="755.0" y="472.31" font-size="11" text-anchor="middle" fill="#222">→ ~1 MIPS per MHz</text>
+<text x="60" y="545" font-size="12" text-anchor="start" fill="#b91c1c">Un salto (rjmp, brne preso) svuota la pipeline: l'istruzione prelevata va scartata → costa 2 cicli invece di 1</text>
+</svg>

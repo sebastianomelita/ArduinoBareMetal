@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="900" height="640" fill="#fff"/>
+<text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Le tre memorie dell'ATmega328P: cosa sta dove</text>
+<text x="170" y="70" font-size="15" text-anchor="middle" fill="#1d4ed8" font-weight="bold">FLASH 32 KB (non volatile)</text>
+<text x="170" y="88" font-size="11" text-anchor="middle" fill="#444">parole da 16 bit · indirizzi di parola</text>
+<rect x="80" y="100" width="180" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="170.0" y="126.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Vettori di interrupt</text>
+<text x="170.0" y="142.74" font-size="11" text-anchor="middle" fill="#222">RESET in 0x0000</text>
+<rect x="80" y="160" width="180" height="300" rx="6" fill="#eff6ff" stroke="#333" stroke-width="1.5"/>
+<text x="170.0" y="298.43" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Programma applicativo</text>
+<text x="170.0" y="314.68" font-size="11" text-anchor="middle" fill="#222">codice compilato (.hex)</text>
+<text x="170.0" y="330.93" font-size="11" text-anchor="middle" fill="#222">+ costanti PROGMEM / F()</text>
+<rect x="80" y="460" width="180" height="80" rx="6" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="170.0" y="488.43" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Bootloader</text>
+<text x="170.0" y="504.68" font-size="11" text-anchor="middle" fill="#222">fino a 2 KB, a fine Flash</text>
+<text x="170.0" y="520.93" font-size="11" text-anchor="middle" fill="#222">(riceve lo sketch via USB)</text>
+<text x="74" y="113" font-size="11" text-anchor="end" fill="#444">0x0000</text>
+<text x="74" y="173" font-size="11" text-anchor="end" fill="#444">0x0034</text>
+<text x="74" y="473" font-size="11" text-anchor="end" fill="#444">0x3800</text>
+<text x="74" y="540" font-size="11" text-anchor="end" fill="#444">0x3FFF</text>
+<text x="470" y="70" font-size="15" text-anchor="middle" fill="#15803d" font-weight="bold">SPAZIO DATI / SRAM (volatile)</text>
+<text x="470" y="88" font-size="11" text-anchor="middle" fill="#444">byte da 8 bit · 2304 indirizzi</text>
+<rect x="380" y="100" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="124.2" font-size="12" text-anchor="middle" fill="#222" font-weight="bold">32 registri GPR r0–r31</text>
+<text x="374" y="112" font-size="11" text-anchor="end" fill="#444">0x0000</text>
+<rect x="380" y="140" width="180" height="42" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="165.2" font-size="12" text-anchor="middle" fill="#222" font-weight="bold">64 registri I/O (in/out, sbi/cbi)</text>
+<text x="374" y="152" font-size="11" text-anchor="end" fill="#444">0x0020</text>
+<rect x="380" y="182" width="180" height="48" rx="6" fill="#ddd6fe" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="210.2" font-size="12" text-anchor="middle" fill="#222" font-weight="bold">160 registri I/O estesi (ld/st)</text>
+<text x="374" y="194" font-size="11" text-anchor="end" fill="#444">0x0060</text>
+<rect x="380" y="230" width="180" height="70" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="261.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Variabili globali/statiche</text>
+<text x="470.0" y="277.74" font-size="11" text-anchor="middle" fill="#222">.data e .bss</text>
+<text x="374" y="242" font-size="11" text-anchor="end" fill="#444">0x0100</text>
+<rect x="380" y="300" width="180" height="60" rx="6" fill="#bbf7d0" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="334.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Heap (malloc) ↓</text>
+<rect x="380" y="360" width="180" height="110" rx="6" fill="#ffffff" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="470.0" y="411.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">spazio libero</text>
+<text x="470.0" y="427.74" font-size="11" text-anchor="middle" fill="#222">attenzione alla collisione!</text>
+<rect x="380" y="470" width="180" height="70" rx="6" fill="#86efac" stroke="#333" stroke-width="1.5"/>
+<text x="470.0" y="501.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Stack ↑</text>
+<text x="470.0" y="517.74" font-size="11" text-anchor="middle" fill="#222">indirizzi di ritorno, locali</text>
+<text x="374" y="540" font-size="11" text-anchor="end" fill="#444">0x08FF</text>
+<path d="M570,100 h8 v130 h-8" fill="none" stroke="#7c3aed" stroke-width="2"/><text x="584" y="170" font-size="11" text-anchor="start" fill="#7c3aed">registri</text>
+<path d="M570,230 h8 v310 h-8" fill="none" stroke="#15803d" stroke-width="2"/><text x="584" y="390" font-size="11" text-anchor="start" fill="#15803d">2 KB RAM</text>
+<text x="760" y="70" font-size="15" text-anchor="middle" fill="#be185d" font-weight="bold">EEPROM 1 KB (non volatile)</text>
+<text x="760" y="88" font-size="11" text-anchor="middle" fill="#444">spazio di indirizzi separato</text>
+<rect x="670" y="100" width="180" height="180" rx="6" fill="#fce7f3" stroke="#333" stroke-width="1.5"/>
+<text x="760.0" y="162.31" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Dati permanenti</text>
+<text x="760.0" y="178.56" font-size="11" text-anchor="middle" fill="#222">configurazioni, calibrazioni,</text>
+<text x="760.0" y="194.81" font-size="11" text-anchor="middle" fill="#222">contatori, hash password</text>
+<text x="760.0" y="211.06" font-size="11" text-anchor="middle" fill="#222"></text>
+<text x="760.0" y="227.31" font-size="11" text-anchor="middle" fill="#222">0x000 – 0x3FF</text>
+<rect x="670" y="300" width="180" height="120" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
+<text x="760.0" y="340.37" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Accesso</text>
+<text x="760.0" y="356.62" font-size="11" text-anchor="middle" fill="#222">registri EEAR (indirizzo)</text>
+<text x="760.0" y="372.87" font-size="11" text-anchor="middle" fill="#222">EEDR (dato) · EECR (controllo)</text>
+<text x="760.0" y="389.12" font-size="11" text-anchor="middle" fill="#222">Arduino: EEPROM.read/write</text>
+<rect x="670" y="440" width="180" height="100" rx="6" fill="#fee2e2" stroke="#333" stroke-width="1.5"/>
+<text x="760.0" y="470.37" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Attenzione</text>
+<text x="760.0" y="486.62" font-size="11" text-anchor="middle" fill="#222">~100.000 scritture</text>
+<text x="760.0" y="502.87" font-size="11" text-anchor="middle" fill="#222">scrittura lenta (ms)</text>
+<text x="760.0" y="519.1199999999999" font-size="11" text-anchor="middle" fill="#222">mai scrivere in loop()!</text>
+<text x="450" y="585" font-size="12" text-anchor="middle" fill="#334155">Flash: ~10.000 riscritture, si programma con bootloader o ISP · SRAM: veloce ma si perde allo spegnimento</text>
+<text x="450" y="608" font-size="12" text-anchor="middle" fill="#334155">Nella mappa dati gli indirizzi bassi sono in alto: l'heap cresce verso il basso, lo stack parte da 0x08FF e cresce verso l'alto</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="900" height="500" fill="#fff"/>
+<text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Arduino: programmazione ed esecuzione sulla stessa scheda</text>
+<text x="60" y="70" font-size="14" text-anchor="start" fill="#1d4ed8" font-weight="bold">Sul PC</text>
+<rect x="40" y="85" width="145" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="112.5" y="111.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Sketch .ino</text>
+<text x="112.5" y="127.74" font-size="11" text-anchor="middle" fill="#222">setup() / loop()</text>
+<path d="M185,115 L210,115" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<rect x="210" y="85" width="145" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="282.5" y="111.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">IDE Arduino</text>
+<text x="282.5" y="127.74" font-size="11" text-anchor="middle" fill="#222">derivato da Processing</text>
+<path d="M355,115 L380,115" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<rect x="380" y="85" width="145" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="452.5" y="111.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">avr-gcc</text>
+<text x="452.5" y="127.74" font-size="11" text-anchor="middle" fill="#222">compilatore C/C++</text>
+<path d="M525,115 L550,115" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<rect x="550" y="85" width="145" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="622.5" y="111.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">file .hex</text>
+<text x="622.5" y="127.74" font-size="11" text-anchor="middle" fill="#222">codice macchina</text>
+<path d="M695,115 L720,115" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<rect x="720" y="85" width="145" height="60" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="792.5" y="111.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">avrdude</text>
+<text x="792.5" y="127.74" font-size="11" text-anchor="middle" fill="#222">caricatore</text>
+<path d="M752,145 L752,225" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="762" y="190" font-size="12" text-anchor="start" fill="#444" font-style="italic">cavo USB</text>
+<rect x="30" y="215" width="840" height="200" rx="10" fill="#f8fafc" stroke="#0f766e" stroke-width="2" stroke-dasharray="8,5"/><text x="50" y="240" font-size="14" text-anchor="start" fill="#0f766e" font-weight="bold">Scheda Arduino Uno</text>
+<rect x="680" y="255" width="150" height="65" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="755.0" y="283.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Convertitore</text>
+<text x="755.0" y="300.24" font-size="11" text-anchor="middle" fill="#222">USB ↔ seriale</text>
+<rect x="480" y="255" width="150" height="65" rx="6" fill="#bfdbfe" stroke="#333" stroke-width="1.5"/>
+<text x="555.0" y="283.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Bootloader</text>
+<text x="555.0" y="300.24" font-size="11" text-anchor="middle" fill="#222">in fondo alla Flash</text>
+<rect x="280" y="255" width="150" height="65" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="355.0" y="283.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Flash</text>
+<text x="355.0" y="300.24" font-size="11" text-anchor="middle" fill="#222">sketch caricato</text>
+<rect x="80" y="255" width="150" height="65" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="155.0" y="283.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">CPU esegue</text>
+<text x="155.0" y="300.24" font-size="11" text-anchor="middle" fill="#222">il programma</text>
+<path d="M752,225 L752,255" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<path d="M680,287 L630,287" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="655" y="278" font-size="10" text-anchor="middle" fill="#444">UART</text>
+<path d="M480,287 L430,287" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="455" y="278" font-size="10" text-anchor="middle" fill="#444">scrive</text>
+<path d="M280,287 L230,287" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="255" y="278" font-size="10" text-anchor="middle" fill="#444">avvio</text>
+<text x="450" y="350" font-size="13" text-anchor="start" fill="#0f766e">Lo stesso cavo USB porta alimentazione,</text>
+<text x="450" y="368" font-size="13" text-anchor="start" fill="#0f766e">programma e Serial Monitor:</text>
+<text x="450" y="390" font-size="13" text-anchor="start" fill="#0f766e" font-weight="bold">nessun programmatore esterno, un clic su “Carica”</text>
+<rect x="40" y="435" width="330" height="50" rx="6" fill="#fee2e2" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="205.0" y="456.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Alternativa: programmatore ISP</text>
+<text x="205.0" y="472.74" font-size="11" text-anchor="middle" fill="#222">SPI: MOSI · MISO · SCK · RESET</text>
+<path d="M355,435 L355,322" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" stroke-dasharray="6,4"/>
+<text x="390" y="465" font-size="12" text-anchor="start" fill="#444" font-style="italic">serve per scrivere il bootloader su un chip nuovo</text>
+</svg>
