@@ -59,6 +59,26 @@ Le conseguenze:
 - **CISC**: molte istruzioni complesse, eseguite tramite microcodice in più cicli, che possono lavorare direttamente in memoria.
 - **RISC**: istruzioni semplici cablate in hardware, quindi decodificate in fretta. Solo load e store accedono alla memoria; tutte le altre lavorano sui registri. La sezione 3 approfondisce questo modello.
 
+### Istruzioni più larghe dei dati
+
+Con due memorie separate, ognuna può avere la larghezza più comoda. Nell'ATmega328P la Flash è a **16 bit**, così un'istruzione intera arriva in un solo prelievo. La SRAM è a **8 bit**, che basta per i dati e costa meno.
+
+Un esempio: `ldi r16, 200` occupa esattamente 16 bit.
+
+```
+1110  KKKK  dddd  KKKK
+ │     │     │     └─ 4 bit bassi della costante
+ │     │     └─ 4 bit: quale registro (16 possibilità)
+ │     └─ 4 bit alti della costante
+ └─ codice operativo di "ldi"
+```
+
+Questo spiega una stranezza: **`ldi` funziona solo su r16–r31** perché per il registro restano 4 bit, cioè 16 combinazioni.
+
+Nell'8085, Von Neumann con memoria a 8 bit, l'istruzione equivalente `MVI A, 200` occupa 2 byte: servono due letture dalla stessa memoria che usano anche i dati. Le poche istruzioni AVR a 32 bit (`lds`, `sts`, `jmp`, `call`) contengono un indirizzo a 16 bit, occupano due parole di Flash e costano più cicli. I PIC16 di Microchip arrivano a istruzioni a 14 bit con dati a 8 bit: larghezze così diverse sono possibili solo con memorie separate.
+
+Una conseguenza pratica: la Flash è fatta di parole da 16 bit, quindi il Program Counter conta **parole, non byte**. Per questo bastano 14 bit per indirizzare 32 KB: 16K parole da 2 byte.
+
 ## 3. Il modello RISC
 
 L'AVR è un processore RISC (Reduced Instruction Set Computer): poche istruzioni semplici, quasi tutte eseguite in un solo ciclo di clock. A 16 MHz arriva così a circa 16 milioni di istruzioni al secondo.
@@ -408,6 +428,12 @@ Prima di Arduino servivano tre oggetti separati: la scheda con il µC, un progra
 - **librerie** che nascondono i registri: `digitalWrite()` invece di `PORTB`.
 
 La scheda su cui il codice gira è anche lo strumento con cui lo si carica. È questo, insieme al prezzo basso e alla comunità open source, che ha reso Arduino lo standard della didattica.
+
+## Tre idee chiave dell'ATmega328P
+
+1. **Tutto è memory-mapped, anche i registri della CPU.** Registri, periferiche e RAM stanno in un unico spazio di indirizzi; un decodificatore smista ogni indirizzo al blocco fisico giusto. `in` e `out` sono solo una scorciatoia veloce per i primi 64 registri I/O, non un isolated I/O (sezione 6). È una scelta tipica dei microcontrollori classici, come l'8051; nei modelli AVR più recenti (XMEGA) i registri della CPU non sono più mappati.
+2. **Harvard rende possibile la pipeline.** Harvard riguarda come sono organizzate le memorie, la pipeline come vengono eseguite le istruzioni. Con due bus separati, il prelievo dell'istruzione successiva non si scontra con l'accesso ai dati: la pipeline a 2 stadi porta da circa 2 cicli per istruzione a quasi 1, e la velocità quasi raddoppia (sezioni 2 e 5).
+3. **Istruzioni e dati hanno larghezze diverse.** Flash a 16 bit, SRAM a 8 bit: un'istruzione intera arriva in un solo prelievo, mentre i dati viaggiano su un bus più economico. Ne seguono dettagli come `ldi` limitata a r16–r31 e il Program Counter che conta parole invece di byte (sezione 2).
 
 ## 11. In laboratorio e verifica
 
