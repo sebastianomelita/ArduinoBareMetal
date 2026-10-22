@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="900" height="600" fill="#fff"/>
+<text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Un solo spazio di indirizzi, tre blocchi fisici diversi</text>
+<rect x="30" y="95" width="170" height="80" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="115.0" y="122.54" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">CPU</text>
+<text x="115.0" y="140.04" font-size="12" text-anchor="middle" fill="#222">lds / sts / ld / st</text>
+<text x="115.0" y="157.54" font-size="12" text-anchor="middle" fill="#222">con un indirizzo</text>
+<path d="M200,135 L258,135" fill="none" stroke="#333" stroke-width="3" marker-end="url(#a)"/>
+<text x="229" y="125" font-size="11" text-anchor="middle" fill="#444" font-style="italic">indirizzo</text>
+<rect x="260" y="95" width="140" height="80" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
+<text x="330.0" y="123.42999999999999" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Decodificatore</text>
+<text x="330.0" y="139.68" font-size="11" text-anchor="middle" fill="#222">di indirizzi</text>
+<text x="330.0" y="155.93" font-size="11" text-anchor="middle" fill="#222">“dove va?”</text>
+<path d="M400,135 L450,135" fill="none" stroke="#333" stroke-width="1.5"/>
+<path d="M450,107 L450,365" fill="none" stroke="#333" stroke-width="1.5"/>
+<path d="M450,107.5 L493,107.5" fill="none" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="495" y="80" width="200" height="55" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="595.0" y="103.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">32 registri r0–r31</text>
+<text x="595.0" y="120.24" font-size="11" text-anchor="middle" fill="#222">0x0000 – 0x001F</text>
+<text x="710" y="104.5" font-size="12" text-anchor="start" fill="#334155" font-weight="bold">register file</text>
+<text x="710" y="121.5" font-size="11" text-anchor="start" fill="#64748b">dentro la CPU</text>
+<path d="M450,177.5 L493,177.5" fill="none" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="495" y="150" width="200" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="595.0" y="173.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">64 registri I/O</text>
+<text x="595.0" y="190.24" font-size="11" text-anchor="middle" fill="#222">0x0020 – 0x005F</text>
+<text x="710" y="174.5" font-size="12" text-anchor="start" fill="#334155" font-weight="bold">dentro le periferiche</text>
+<text x="710" y="191.5" font-size="11" text-anchor="start" fill="#64748b">PORTB, DDRB, SREG, SP…</text>
+<path d="M450,247.5 L493,247.5" fill="none" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="495" y="220" width="200" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="595.0" y="243.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">160 registri I/O estesi</text>
+<text x="595.0" y="260.24" font-size="11" text-anchor="middle" fill="#222">0x0060 – 0x00FF</text>
+<text x="710" y="244.5" font-size="12" text-anchor="start" fill="#334155" font-weight="bold">dentro le periferiche</text>
+<text x="710" y="261.5" font-size="11" text-anchor="start" fill="#64748b">timer, ADC, USART…</text>
+<path d="M450,365.0 L493,365.0" fill="none" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="495" y="310" width="200" height="110" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="595.0" y="361.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">2048 byte di SRAM</text>
+<text x="595.0" y="377.74" font-size="11" text-anchor="middle" fill="#222">0x0100 – 0x08FF</text>
+<text x="710" y="362.0" font-size="12" text-anchor="start" fill="#334155" font-weight="bold">la vera RAM</text>
+<text x="710" y="379.0" font-size="11" text-anchor="start" fill="#64748b">variabili, heap, stack</text>
+<rect x="488" y="72" width="214" height="211" rx="8" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4"/><text x="595" y="66" font-size="11" text-anchor="middle" fill="#7c3aed" font-weight="bold">NON sono RAM: flip-flop con un indirizzo “prestato”</text>
+<rect x="488" y="302" width="214" height="126" rx="8" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,4"/><text x="595" y="445" font-size="11" text-anchor="middle" fill="#16a34a" font-weight="bold">solo questa fascia è memoria RAM</text>
+<rect x="30" y="215" width="410" height="175" rx="6" fill="#fffbeb" stroke="#333" stroke-width="1.5"/><text x="235" y="240" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Due strade per lo stesso registro</text>
+<text x="45" y="272" font-size="13" font-family="DejaVu Sans Mono,monospace" fill="#1e3a8a" font-weight="bold">add r5, r6</text><text x="185" y="272" font-size="12" text-anchor="start" fill="#334155">l'ALU usa r5 per numero</text>
+<text x="430" y="272" font-size="12" text-anchor="end" fill="#64748b">1 ciclo</text>
+<text x="45" y="300" font-size="13" font-family="DejaVu Sans Mono,monospace" fill="#1e3a8a" font-weight="bold">lds r16, 0x0005</text><text x="185" y="300" font-size="12" text-anchor="start" fill="#334155">legge r5 come memoria</text>
+<text x="430" y="300" font-size="12" text-anchor="end" fill="#64748b">2 cicli</text>
+<text x="45" y="338" font-size="13" font-family="DejaVu Sans Mono,monospace" fill="#1e3a8a" font-weight="bold">out 0x05, r16</text><text x="185" y="338" font-size="12" text-anchor="start" fill="#334155">scrive PORTB (indirizzo I/O)</text>
+<text x="430" y="338" font-size="12" text-anchor="end" fill="#64748b">1 ciclo</text>
+<text x="45" y="366" font-size="13" font-family="DejaVu Sans Mono,monospace" fill="#1e3a8a" font-weight="bold">sts 0x0025, r16</text><text x="185" y="366" font-size="12" text-anchor="start" fill="#334155">scrive PORTB (indirizzo dati)</text>
+<text x="430" y="366" font-size="12" text-anchor="end" fill="#64748b">2 cicli</text>
+<text x="450" y="490" font-size="13" text-anchor="middle" fill="#1e3a8a">È un memory-mapped I/O “esteso”: nello stesso spazio di indirizzi stanno</text>
+<text x="450" y="510" font-size="13" text-anchor="middle" fill="#1e3a8a">i registri della CPU, i registri delle periferiche e la RAM.</text>
+<text x="450" y="550" font-size="13" text-anchor="middle" font-family="DejaVu Sans Mono,monospace" fill="#334155">In C:  PORTB = 0x20;   equivale a   *(volatile uint8_t *)0x25 = 0x20;</text></svg>
