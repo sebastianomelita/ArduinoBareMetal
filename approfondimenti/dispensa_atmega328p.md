@@ -76,6 +76,8 @@ L'idea chiave è l'architettura **load/store**: le operazioni aritmetiche e logi
 
 Per un microcontrollore questa velocità conta soprattutto nella **reazione agli eventi**: poiché le istruzioni sono cablate in hardware e si decodificano in un ciclo, il µC risponde in fretta a un interrupt o al cambiamento di un sensore.
 
+Le istruzioni assembly che compaiono nella dispensa (`ldi`, `add`, `lds`, `sts`, `brne`…) sono spiegate una per una nell'**Appendice** in fondo, prima delle fonti.
+
 ## 4. Architettura interna
 
 Il cuore della CPU è il percorso Flash → registro istruzione → decodificatore → register file → ALU → register file. Tutto il resto (porte, timer, ADC, seriali) è collegato al bus dati a 8 bit e viene comandato tramite registri.
@@ -170,6 +172,23 @@ Come funziona, in tre punti:
 3. Solo da 0x0100 in poi l'indirizzo arriva alla **SRAM** vera, dove stanno le variabili.
 
 Per questo lo stesso registro si raggiunge in due modi: **per nome**, con le istruzioni veloci (`add r5, r6`, oppure `out` per PORTB), o **per indirizzo**, con le istruzioni di memoria (`lds`, `sts`), più lente di un ciclo.
+
+**Perché PORTB è sia 0x05 sia 0x25?** Non sono lo stesso numero: sono due modi di contare lo stesso registro, come in un teatro con 32 posti in platea e poi la galleria. Il quinto posto della galleria è "galleria, posto 5" se conti dall'inizio della galleria, oppure "posto 37" se conti dall'inizio del teatro (32 + 5).
+
+- **Numerazione I/O**, usata da `in` e `out`: si conta dal primo registro I/O, quindi PORTB è il numero 0x05.
+- **Numerazione dati**, usata da `lds` e `sts`: i primi 32 indirizzi (0x00–0x1F) sono occupati da r0–r31, quindi i registri I/O partono da 0x20 e PORTB è 0x20 + 0x05 = 0x25.
+
+In esadecimale 0x20 vale 32, quindi 0x25 = 32 + 5 = 37: esattamente il posto in galleria. La regola è sempre la stessa: **indirizzo dati = numero I/O + 0x20**.
+
+| Registro | Numero I/O (`in`, `out`) | Indirizzo dati (`lds`, `sts`) |
+| --- | --- | --- |
+| r0 … r31 | — | 0x00 … 0x1F |
+| PINB | 0x03 | 0x23 |
+| DDRB | 0x04 | 0x24 |
+| PORTB | 0x05 | 0x25 |
+| SREG | 0x3F | 0x5F |
+
+Le due numerazioni esistono perché `in` e `out` sono istruzioni veloci (1 ciclo) e corte (16 bit), ma hanno solo 6 bit per l'indirizzo: arrivano da 0 a 63. Numerando i registri I/O da zero, i 64 più usati ci stanno tutti.
 
 Anche in C si vede che è memory-mapped I/O. `PORTB = 0x20;` vuol dire letteralmente "scrivi 0x20 all'indirizzo di memoria 0x25":
 
@@ -416,6 +435,79 @@ La scheda su cui il codice gira è anche lo strumento con cui lo si carica. È q
 7. Quali dati conviene salvare in EEPROM e quali precauzioni servono?
 8. A cosa serve il bootloader? Quando serve invece un programmatore ISP?
 9. Quale idea di Processing è stata trasferita in Arduino, e da chi?
+
+## Appendice: le istruzioni assembly usate nella dispensa
+
+Ogni istruzione assembly è una parola abbreviata (il **mnemonico**), di solito presa dal nome inglese, seguita dagli operandi. Quando gli operandi sono due, **il primo è la destinazione**: `add r16, r17` vuol dire "a r16 aggiungi r17", e il risultato finisce in r16.
+
+Nelle tabelle si usano queste convenzioni:
+
+- **r0 … r31**: un registro del register file.
+- **K**: un numero costante scritto dentro l'istruzione, per esempio `10`.
+- **←**: "riceve". `r16 ← r16 + r17` si legge "r16 riceve r16 più r17".
+- **Cicli**: quanti colpi di clock servono sull'ATmega328P. A 16 MHz un ciclo dura 62,5 ns.
+
+### Spostare dati tra registri e costanti
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `ldi` | *LoaD Immediate* | mette una costante in un registro (solo r16–r31) | `ldi r16, 10` → r16 ← 10 | 1 |
+| `mov` | *MOVe* | copia un registro in un altro | `mov r1, r16` → r1 ← r16 | 1 |
+
+### Calcoli (l'ALU lavora sui registri e aggiorna i flag di SREG)
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `add` | *ADD* | somma due registri | `add r16, r17` → r16 ← r16 + r17 | 1 |
+| `adc` | *ADd with Carry* | somma due registri più il carry; serve per i numeri a 16 bit | `adc r17, r19` → r17 ← r17 + r19 + C | 1 |
+| `sub` | *SUBtract* | sottrae due registri | `sub r18, r19` → r18 ← r18 − r19 | 1 |
+| `and` | *logical AND* | AND bit a bit tra due registri | `and r20, r21` | 1 |
+| `inc` | *INCrement* | aggiunge 1 | `inc r22` → r22 ← r22 + 1 | 1 |
+| `dec` | *DECrement* | toglie 1; se il risultato è 0 mette Z = 1 | `dec r16` → r16 ← r16 − 1 | 1 |
+| `adiw` | *ADd Immediate to Word* | aggiunge una costante a una coppia di registri (16 bit) | `adiw r24, 1` → r25:r24 ← r25:r24 + 1 | 2 |
+| `mul` | *MULtiply* | moltiplica due registri; il risultato a 16 bit va sempre in r1:r0 | `mul r16, r17` | 2 |
+
+### Leggere e scrivere la memoria dati (SRAM)
+
+È qui che si vede il modello **load/store**: solo queste istruzioni toccano la SRAM.
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `lds` | *LoaD direct from data Space* | copia in un registro il byte che sta a un certo indirizzo | `lds r24, 0x0100` → r24 ← SRAM[0x0100] | 2 |
+| `sts` | *STore direct to data Space* | scrive un registro a un certo indirizzo | `sts 0x0100, r24` → SRAM[0x0100] ← r24 | 2 |
+| `ld` | *LoaD indirect* | come `lds`, ma l'indirizzo sta in un puntatore X, Y o Z | `ld r16, X` → r16 ← SRAM[X] | 2 |
+| `st` | *STore indirect* | come `sts`, con l'indirizzo in X, Y o Z | `st X, r16` → SRAM[X] ← r16 | 2 |
+
+### Leggere la Flash
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `lpm` | *Load Program Memory* | legge un byte dalla Flash all'indirizzo contenuto in Z; serve per le costanti `PROGMEM` | `lpm r16, Z` → r16 ← Flash[Z] | 3 |
+
+### Registri di I/O (porte e periferiche)
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `in` | *IN from I/O* | legge un registro I/O in un registro | `in r16, 0x03` → r16 ← PINB | 1 |
+| `out` | *OUT to I/O* | scrive un registro in un registro I/O | `out 0x05, r16` → PORTB ← r16 | 1 |
+| `sbi` | *Set Bit in I/O* | mette a 1 un solo bit di un registro I/O | `sbi PORTB, 5` → accende il LED del pin 13 | 2 |
+| `cbi` | *Clear Bit in I/O* | mette a 0 un solo bit di un registro I/O | `cbi PORTB, 5` → spegne il LED | 2 |
+
+### Salti e funzioni
+
+| Istruzione | Da | Cosa fa | Esempio | Cicli |
+| --- | --- | --- | --- | --- |
+| `rjmp` | *Relative JuMP* | salta a un'altra riga del programma, sempre | `rjmp LOOP` | 2 |
+| `breq` | *BRanch if EQual* | salta solo se il flag Z vale 1 (risultato zero, o valori uguali) | `breq FINE` | 1 se non salta, 2 se salta |
+| `brne` | *BRanch if Not Equal* | salta solo se Z vale 0; con `dec` fa un ciclo che si ripete finché il contatore non arriva a 0 | `brne CICLO` | 1 se non salta, 2 se salta |
+| `rcall` / `call` | *(Relative) CALL* | chiama una funzione: salva sullo stack l'indirizzo di ritorno, poi salta | `rcall DELAY` | 3 / 4 |
+| `ret` | *RETurn* | torna dalla funzione: riprende l'indirizzo dallo stack | `ret` | 4 |
+| `push` | *PUSH* | salva un registro sullo stack | `push r16` | 2 |
+| `pop` | *POP* | riprende un registro dallo stack | `pop r16` | 2 |
+
+### Le istruzioni dell'8085 citate nella sezione 6
+
+Servono solo per il confronto con l'accumulatore. `MOV A, B` copia il registro B nell'accumulatore A. `ADD C` somma C all'accumulatore: A ← A + C. Nell'8085 il registro A è sottinteso, mentre nell'AVR entrambi gli operandi si scrivono sempre.
 
 ## Fonti e crediti delle immagini
 
