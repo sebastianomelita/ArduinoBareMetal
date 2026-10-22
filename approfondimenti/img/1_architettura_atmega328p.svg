@@ -1,90 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620" font-family="Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 690" width="900" height="690" font-family="Helvetica,Arial,sans-serif">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
-<rect width="900" height="620" fill="#fff"/>
+<rect width="900" height="690" fill="#fff"/>
 <text x="450.0" y="34" font-size="22" font-weight="bold" text-anchor="middle" fill="#222">Architettura interna ATmega328P (AVR, Harvard, RISC)</text>
-<rect x="40" y="70" width="180" height="120" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
-<text x="130.0" y="117.54" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Memoria Flash</text>
-<text x="130.0" y="135.04" font-size="12" text-anchor="middle" fill="#222">32 KB = 16K × 16 bit</text>
-<text x="130.0" y="152.54" font-size="12" text-anchor="middle" fill="#222">programma + costanti</text>
-<rect x="40" y="220" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="130.0" y="244.9" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Instruction Register</text>
-<rect x="40" y="290" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="130.0" y="314.9" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Instruction Decoder</text>
-<rect x="40" y="370" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="130.0" y="394.9" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Program Counter (14 bit)</text>
-<path d="M130,190 L130,220" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<path d="M130,260 L130,290" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<path d="M40,390 L20,390 L20,130 L40,130" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<text x="138" y="209" font-size="11" text-anchor="start" fill="#1d4ed8" font-style="italic">bus programma 16 bit</text>
-<rect x="300" y="70" width="200" height="120" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="400.0" y="117.54" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Register File</text>
-<text x="400.0" y="135.04" font-size="12" text-anchor="middle" fill="#222">32 registri × 8 bit</text>
-<text x="400.0" y="152.54" font-size="12" text-anchor="middle" fill="#222">r0 … r31 (X, Y, Z)</text>
-<polygon points="300,240 380,240 400,262 420,240 500,240 462,310 338,310" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
-<text x="400" y="292" font-size="15" text-anchor="middle" fill="#222" font-weight="bold">ALU 8 bit</text>
-<path d="M345,190 L345,240" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<path d="M455,190 L455,240" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<text x="335" y="220" font-size="13" text-anchor="end" fill="#444" font-weight="bold">A</text>
-<text x="465" y="220" font-size="13" text-anchor="start" fill="#444" font-weight="bold">B</text>
-<path d="M400,310 L400,326 L520,326 L520,150 L500,150" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<text x="408" y="322" font-size="11" text-anchor="start" fill="#444" font-style="italic">risultato</text>
-<path d="M220,310 L300,280" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
-<text x="258" y="340" font-size="11" text-anchor="middle" fill="#444" font-style="italic">controllo</text>
-<rect x="300" y="345" width="95" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="347.5" y="369.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">SREG</text>
-<rect x="405" y="345" width="95" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
-<text x="452.5" y="369.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Stack Ptr</text>
-<rect x="580" y="70" width="120" height="70" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
-<text x="640.0" y="101.22" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">SRAM</text>
-<text x="640.0" y="118.72" font-size="12" text-anchor="middle" fill="#222">2 KB dati</text>
-<rect x="580" y="160" width="120" height="60" rx="6" fill="#fce7f3" stroke="#333" stroke-width="1.5"/>
-<text x="640.0" y="186.22" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">EEPROM</text>
-<text x="640.0" y="203.72" font-size="12" text-anchor="middle" fill="#222">1 KB</text>
-<rect x="740" y="70" width="130" height="60" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="805.0" y="96.49" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Unità</text>
-<text x="805.0" y="112.74" font-size="11" text-anchor="middle" fill="#222">interrupt</text>
-<rect x="740" y="150" width="130" height="50" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="805.0" y="179.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Watchdog</text>
-<rect x="640" y="240" width="175" height="70" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
-<text x="727.5" y="263.43" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Oscillatore / clock</text>
-<text x="727.5" y="279.68" font-size="11" text-anchor="middle" fill="#222">RC interno ≤ 8 MHz</text>
-<text x="727.5" y="295.93" font-size="11" text-anchor="middle" fill="#222">quarzo ≤ 20 MHz</text>
-<rect x="30" y="432" width="850" height="10" fill="#94a3b8"/>
-<text x="40" y="426" font-size="13" text-anchor="start" fill="#334155" font-weight="bold">BUS DATI 8 bit</text>
-<path d="M347,385 L347,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M452,385 L452,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M500,100 L540,100 L540,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M580,105 L560,105 L560,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M615,220 L615,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M840,200 L840,432" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<path d="M95,470 L95,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="40" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="95.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta B</text>
-<text x="95.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">8 bit</text>
-<path d="M215,470 L215,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="160" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="215.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta C</text>
-<text x="215.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">7 bit</text>
-<path d="M335,470 L335,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="280" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="335.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta D</text>
-<text x="335.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">8 bit</text>
-<path d="M455,470 L455,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="400" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="455.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Timer</text>
-<text x="455.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">0, 1, 2</text>
-<path d="M575,470 L575,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="520" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="575.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">ADC</text>
-<text x="575.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">10 bit, 6 ch</text>
-<path d="M695,470 L695,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="640" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="695.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">USART</text>
-<text x="695.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">seriale</text>
-<path d="M815,470 L815,442" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
-<rect x="760" y="470" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
-<text x="815.0" y="493.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">SPI / TWI</text>
-<text x="815.0" y="510.24" font-size="11" text-anchor="middle" fill="#222">I²C</text>
-<text x="450" y="570" font-size="13" text-anchor="middle" fill="#1e3a8a">Harvard: Flash (istruzioni) e SRAM (dati) hanno bus separati → fetch e execute nello stesso ciclo</text>
-<text x="450" y="595" font-size="13" text-anchor="middle" fill="#1e3a8a">Registri I/O di periferiche, porte, SREG e SP sono mappati nello spazio dati (0x20–0xFF)</text>
+<rect x="40" y="70" width="190" height="105" rx="6" fill="#dbeafe" stroke="#333" stroke-width="1.5"/>
+<text x="135.0" y="110.04" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Memoria Flash</text>
+<text x="135.0" y="127.54" font-size="12" text-anchor="middle" fill="#222">32 KB = 16K × 16 bit</text>
+<text x="135.0" y="145.04" font-size="12" text-anchor="middle" fill="#222">istruzioni + costanti</text>
+<rect x="22" y="215" width="226" height="255" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2" stroke-dasharray="7,4"/>
+<text x="135" y="462" font-size="13" text-anchor="middle" fill="#ea580c" font-weight="bold">UNITÀ DI CONTROLLO</text>
+<rect x="45" y="250" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="135.0" y="274.9" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Instruction Register</text>
+<rect x="45" y="320" width="180" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="135.0" y="344.9" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Instruction Decoder</text>
+<rect x="45" y="400" width="180" height="45" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="135.0" y="418.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Program Counter</text>
+<text x="135.0" y="435.24" font-size="11" text-anchor="middle" fill="#222">14 bit</text>
+<path d="M135,290 L135,320" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<line x1="135" y1="175" x2="135" y2="238" stroke="#2563eb" stroke-width="5"/><polygon points="126,236 144,236 135,250" fill="#2563eb"/>
+<text x="143" y="192" font-size="11" text-anchor="start" fill="#2563eb" font-weight="bold">BUS ISTRUZIONI</text>
+<text x="143" y="206" font-size="11" text-anchor="start" fill="#2563eb" font-weight="bold">16 bit</text>
+<path d="M45,422 L12,422 L12,120 L40,120" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#a)" stroke-dasharray="6,4"/>
+<text x="0" y="0" font-size="11" fill="#2563eb" font-style="italic" transform="translate(9,330) rotate(-90)" text-anchor="middle">indirizzo istruzione</text>
+<rect x="300" y="70" width="200" height="100" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="400.0" y="107.54" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">Register File</text>
+<text x="400.0" y="125.04" font-size="12" text-anchor="middle" fill="#222">32 registri × 8 bit</text>
+<text x="400.0" y="142.54" font-size="12" text-anchor="middle" fill="#222">r0 … r31 (X, Y, Z)</text>
+<polygon points="300,225 380,225 400,247 420,225 500,225 462,295 338,295" fill="#fed7aa" stroke="#333" stroke-width="1.5"/>
+<text x="400" y="277" font-size="15" text-anchor="middle" fill="#222" font-weight="bold">ALU 8 bit</text>
+<path d="M345,170 L345,225" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<path d="M455,170 L455,225" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="337" y="205" font-size="12" text-anchor="end" fill="#444" font-weight="bold">Rd</text>
+<text x="463" y="205" font-size="12" text-anchor="start" fill="#444" font-weight="bold">Rr</text>
+<path d="M430,295 L430,312 L512,312 L512,145 L500,145" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="438" y="326" font-size="10" text-anchor="start" fill="#444" font-style="italic">risultato → Rd</text>
+<path d="M360,295 L360,350" fill="none" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+<text x="352" y="325" font-size="10" text-anchor="end" fill="#444" font-style="italic">flag</text>
+<rect x="300" y="350" width="95" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="347.5" y="374.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">SREG</text>
+<rect x="405" y="350" width="95" height="40" rx="6" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
+<text x="452.5" y="374.55" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Stack Ptr</text>
+<path d="M225,340 L268,340 L268,120 L298,120" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#a)" stroke-dasharray="6,4"/>
+<path d="M268,262 L318,262" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#a)" stroke-dasharray="6,4"/>
+<text x="0" y="0" font-size="11" fill="#ea580c" font-weight="bold" transform="translate(262,200) rotate(-90)" text-anchor="middle">segnali di controllo</text>
+<rect x="560" y="70" width="140" height="70" rx="6" fill="#dcfce7" stroke="#333" stroke-width="1.5"/>
+<text x="630.0" y="101.22" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">SRAM</text>
+<text x="630.0" y="118.72" font-size="12" text-anchor="middle" fill="#222">2 KB dati</text>
+<rect x="735" y="70" width="140" height="70" rx="6" fill="#fce7f3" stroke="#333" stroke-width="1.5"/>
+<text x="805.0" y="101.22" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">EEPROM</text>
+<text x="805.0" y="118.72" font-size="12" text-anchor="middle" fill="#222">1 KB</text>
+<rect x="560" y="180" width="140" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="630.0" y="203.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Unità</text>
+<text x="630.0" y="220.24" font-size="11" text-anchor="middle" fill="#222">interrupt</text>
+<rect x="735" y="180" width="140" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="805.0" y="212.05" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Watchdog</text>
+<rect x="645" y="285" width="140" height="70" rx="6" fill="#f1f5f9" stroke="#333" stroke-width="1.5"/>
+<text x="715.0" y="308.43" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Clock</text>
+<text x="715.0" y="324.68" font-size="11" text-anchor="middle" fill="#222">RC interno ≤ 8 MHz</text>
+<text x="715.0" y="340.93" font-size="11" text-anchor="middle" fill="#222">quarzo ≤ 20 MHz</text>
+<rect x="30" y="500" width="865" height="12" fill="#16a34a"/>
+<text x="40" y="492" font-size="13" text-anchor="start" fill="#16a34a" font-weight="bold">BUS DATI 8 bit</text>
+<path d="M500,100 L530,100 L530,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M347,390 L347,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M452,390 L452,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M560,105 L545,105 L545,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M875,105 L888,105 L888,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M630,235 L630,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M805,235 L805,500" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<path d="M95,540 L95,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="40" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="95.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta B</text>
+<text x="95.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">8 bit</text>
+<path d="M215,540 L215,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="160" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="215.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta C</text>
+<text x="215.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">7 bit</text>
+<path d="M335,540 L335,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="280" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="335.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Porta D</text>
+<text x="335.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">8 bit</text>
+<path d="M455,540 L455,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="400" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="455.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">Timer</text>
+<text x="455.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">0, 1, 2</text>
+<path d="M575,540 L575,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="520" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="575.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">ADC</text>
+<text x="575.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">10 bit, 6 ch</text>
+<path d="M695,540 L695,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="640" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="695.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">USART</text>
+<text x="695.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">seriale</text>
+<path d="M815,540 L815,512" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+<rect x="760" y="540" width="110" height="55" rx="6" fill="#ede9fe" stroke="#333" stroke-width="1.5"/>
+<text x="815.0" y="563.99" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">SPI / TWI</text>
+<text x="815.0" y="580.24" font-size="11" text-anchor="middle" fill="#222">I²C</text>
+<line x1="200" y1="625" x2="240" y2="625" stroke="#2563eb" stroke-width="5"/><text x="248" y="630" font-size="12" text-anchor="start" fill="#2563eb">bus istruzioni: Flash → unità di controllo (16 bit)</text>
+<line x1="560" y1="625" x2="600" y2="625" stroke="#16a34a" stroke-width="5"/><text x="608" y="630" font-size="12" text-anchor="start" fill="#16a34a">bus dati (8 bit)</text>
+<line x1="200" y1="650" x2="240" y2="650" stroke="#ea580c" stroke-width="2" stroke-dasharray="7,4"/><text x="248" y="655" font-size="12" text-anchor="start" fill="#ea580c">segnali di controllo dal decoder</text>
+<text x="450" y="678" font-size="12" text-anchor="middle" fill="#1e3a8a">Harvard: i due bus sono separati, quindi fetch dell'istruzione e accesso ai dati avvengono nello stesso ciclo</text>
 </svg>
