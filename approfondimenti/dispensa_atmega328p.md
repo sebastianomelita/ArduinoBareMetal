@@ -34,7 +34,30 @@ L'ATmega328P usa l'architettura Harvard: istruzioni e dati stanno in memorie sep
 
 In sintesi: Harvard è più veloce, Von Neumann più flessibile. I processori moderni usano soluzioni ibride.
 
-Figura consigliata dalle fonti: [RISC/CISC e Harvard/Von Neumann (weigu.lu)](https://www.weigu.lu/tutorials/microcontroller/04_memory/svg/risc_cisc_neumann_havard.svg).
+### Due scelte di progetto: set di istruzioni e organizzazione della memoria
+
+La figura seguente mette a confronto due scelte indipendenti che caratterizzano un processore: quante e quanto complesse sono le istruzioni (CISC o RISC) e come sono organizzate le memorie (Von Neumann o Harvard). I computer classici sono tipicamente CISC con memoria di tipo Von Neumann. I microcontrollori, come l'ATmega328P, sono quasi sempre RISC con architettura Harvard, perché devono essere economici e veloci.
+
+![RISC e CISC, Von Neumann e Harvard a confronto (fonte: weigu.lu)](img/risc_cisc_neumann_havard.svg)
+
+*Fonte della figura: G. Weigel, [weigu.lu – Microcontroller systems: Memory](https://www.weigu.lu/tutorials/microcontroller/04_memory/index.html).*
+
+**Come leggere la figura.** A sinistra c'è un processore (µP) CISC con architettura Von Neumann, a destra un microcontrollore (µC) RISC con architettura Harvard. Conviene confrontare i due lati blocco per blocco:
+
+| Elemento | Sinistra: µP CISC, Von Neumann | Destra: µC RISC, Harvard |
+| --- | --- | --- |
+| Bus | un unico *shared command and data bus*: istruzioni e dati passano sulle stesse linee | due bus: il *data bus* (nero) e un *command bus* (blu) riservato alle istruzioni |
+| Memoria | una sola *shared main memory* per istruzioni e dati | *command memory* (il programma, nell'ATmega la Flash) separata dalla *data memory* (la SRAM) |
+| Unità di controllo | *command and control unit* guidata da una *memory with microcode*: ogni istruzione complessa è eseguita come una sequenza di micro-passi | *commands hard wired*: le istruzioni sono cablate in hardware, nessun microcodice, decodifica in un ciclo |
+| Registri | *few register*: pochi, quindi molti accessi alla memoria | *many general purpose register*: nell'AVR sono 32, e quasi tutte le operazioni restano dentro la CPU |
+| Collocazione della memoria | fuori dal chip del processore | memorie e I/O dentro lo stesso chip del µC |
+
+Le conseguenze:
+
+- **Von Neumann**: la CPU non può leggere un'istruzione e accedere a un dato nello stesso momento, perché il bus è uno solo. È il collo di bottiglia di Von Neumann.
+- **Harvard**: la CPU legge l'istruzione successiva sul command bus mentre lavora sui dati del data bus. È ciò che permette la pipeline a 2 stadi (sezione 5). Poiché gli spazi di indirizzamento sono distinti, le due memorie possono avere parole di lunghezza diversa: nell'ATmega328P la Flash è a 16 bit, la SRAM a 8 bit.
+- **CISC**: molte istruzioni complesse, eseguite tramite microcodice in più cicli, che possono lavorare direttamente in memoria.
+- **RISC**: istruzioni semplici cablate in hardware, quindi decodificate in fretta. Solo load e store accedono alla memoria; tutte le altre lavorano sui registri. La sezione 3 approfondisce questo modello.
 
 ## 3. Il modello RISC
 
@@ -50,6 +73,8 @@ L'AVR è un processore RISC (Reduced Instruction Set Computer): poche istruzioni
 | Registri | molti (32) di uso generale | pochi, spesso specializzati |
 
 L'idea chiave è l'architettura **load/store**: le operazioni aritmetiche e logiche lavorano solo sui registri. Si porta un dato dalla RAM a un registro (`ld`, 2 cicli), lo si elabora (1 ciclo) e lo si riscrive (`st`, 2 cicli). Avere 32 registri riduce gli accessi alla RAM e fa guadagnare tempo. Il set di istruzioni è stato anche progettato per facilitare il lavoro dei compilatori C.
+
+Per un microcontrollore questa velocità conta soprattutto nella **reazione agli eventi**: poiché le istruzioni sono cablate in hardware e si decodificano in un ciclo, il µC risponde in fretta a un interrupt o al cambiamento di un sensore.
 
 ## 4. Architettura interna
 
@@ -67,6 +92,13 @@ Il cuore della CPU è il percorso Flash → registro istruzione → decodificato
 - **Watchdog**: riavvia il chip se il programma si blocca.
 
 Il ciclo di funzionamento è sempre lo stesso: **preleva → decodifica → esegui**, ripetuto all'infinito a ogni colpo di clock.
+
+### Dettagli utili per chi programma
+
+- **Velocità.** Con un quarzo da 16 MHz l'ATmega328P esegue circa 16 milioni di istruzioni al secondo: più o meno la velocità di un processore Intel 80386 del 1990, in un chip che costa pochi euro.
+- **Registri all'accensione.** I 32 registri sono un banco separato dentro la CPU, non celle di SRAM: sono soltanto *mappati* nello spazio di indirizzi dei dati (0x00–0x1F). Come la SRAM, però, sono volatili, e al riavvio contengono **valori non definiti**. Registri e variabili vanno quindi sempre inizializzati prima di essere usati.
+- **Modalità di sleep.** Il chip può spegnere le parti che non servono per consumare meno: il datasheet elenca sei modalità di sleep, dalla più leggera (*Idle*, si ferma solo la CPU) alla più profonda (*Power-down*, resta attivo quasi solo il risveglio). Un interrupt, per esempio un pulsante o un timer, risveglia il microcontrollore. È così che un dispositivo a batteria dura mesi.
+- **Niente USB a bordo.** Le descrizioni generali degli AVR citano USB, RTC o PLL, ma l'ATmega328P non li ha. Proprio perché manca l'USB, Arduino Uno ha bisogno di un convertitore USB-seriale (sezione 9).
 
 Figure consigliate dalle fonti:
 
@@ -257,7 +289,7 @@ Con Arduino basta un cavo USB: l'IDE compila lo sketch e lo invia al bootloader,
 4. Il convertitore USB-seriale resetta il chip; il **bootloader** parte, riceve il programma dalla seriale e lo scrive in Flash.
 5. Il bootloader cede il controllo allo sketch, che resta in Flash anche dopo lo spegnimento.
 
-**Programmazione ISP** (In-System Programming): un programmatore esterno, o un secondo Arduino caricato con lo sketch ArduinoISP, scrive direttamente in Flash tramite i pin MOSI, MISO, SCK e RESET. Serve per installare il bootloader su un chip nuovo (nell'IDE: *Strumenti → Scrivi il bootloader*) o per programmare un ATmega senza scheda Arduino.
+**Programmazione ISP** (In-System Programming): un programmatore esterno, o un secondo Arduino caricato con lo sketch ArduinoISP, scrive direttamente in Flash tramite i pin MOSI, MISO, SCK e RESET. Serve per installare il bootloader su un chip nuovo (nell'IDE: *Strumenti → Scrivi il bootloader*) o per programmare un ATmega senza scheda Arduino. Via ISP si scrivono non solo la Flash ma anche la EEPROM, i fuse (che impostano per esempio la sorgente di clock) e i lock bit, che impediscono di rileggere il programma dal chip e proteggono il codice da copie e reverse engineering.
 
 Si può anche scrivere in **assembly** e caricare il .hex con avrdude: un blink in assembly occupa meno di 100 byte, contro circa un kilobyte dello sketch Arduino equivalente.
 
@@ -318,7 +350,7 @@ La scheda su cui il codice gira è anche lo strumento con cui lo si carica. È q
 
 ## Fonti e crediti delle immagini
 
-Gli schemi nella cartella `img/` sono originali e liberamente riutilizzabili. Le figure delle fonti sono indicate tramite link, perché restano proprietà dei rispettivi autori: chi le inserisce in una copia stampata deve citarne la fonte sotto ciascuna.
+Gli schemi nella cartella `img/` sono originali e liberamente riutilizzabili, tranne `risc_cisc_neumann_havard.svg`, tratto da weigu.lu e da citare con la sua fonte. Le figure delle fonti sono indicate tramite link, perché restano proprietà dei rispettivi autori: chi le inserisce in una copia stampata deve citarne la fonte sotto ciascuna.
 
 - [Ariat-Tech – Microcontrollori ATmega: struttura, diagramma, funzionamento e programmazione](https://www.ariat-tech.it/blog/Learn-ATmega-Microcontrollers-Structure,Diagram,Working-and-Programming.html)
 - [Wikipedia – ATmega328](https://en.wikipedia.org/wiki/ATmega328)
