@@ -190,6 +190,8 @@ In esadecimale 0x20 vale 32, quindi 0x25 = 32 + 5 = 37: esattamente il posto in 
 
 Le due numerazioni esistono perché `in` e `out` sono istruzioni veloci (1 ciclo) e corte (16 bit), ma hanno solo 6 bit per l'indirizzo: arrivano da 0 a 63. Numerando i registri I/O da zero, i 64 più usati ci stanno tutti.
 
+**Attenzione: non è isolated I/O.** L'AVR è un sistema **memory-mapped**. `in` e `out` non aprono uno spazio separato come `IN` e `OUT` dell'8085, che attivano un segnale apposito per le porte: sono solo una scorciatoia più corta e veloce per raggiungere i primi 64 registri I/O. Dietro `out 0x05` e `sts 0x0025` c'è lo stesso registro, PORTB. I 160 registri estesi (timer 1, ADC, USART…) non hanno la scorciatoia e si raggiungono solo come memoria.
+
 Anche in C si vede che è memory-mapped I/O. `PORTB = 0x20;` vuol dire letteralmente "scrivi 0x20 all'indirizzo di memoria 0x25":
 
 ```c
