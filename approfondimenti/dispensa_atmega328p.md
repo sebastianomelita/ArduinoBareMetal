@@ -96,7 +96,7 @@ Il ciclo di funzionamento è sempre lo stesso: **preleva → decodifica → eseg
 ### Dettagli utili per chi programma
 
 - **Velocità.** Con un quarzo da 16 MHz l'ATmega328P esegue circa 16 milioni di istruzioni al secondo: più o meno la velocità di un processore Intel 80386 del 1990, in un chip che costa pochi euro.
-- **Registri all'accensione.** I 32 registri sono un banco separato dentro la CPU, non celle di SRAM: sono soltanto *mappati* nello spazio di indirizzi dei dati (0x00–0x1F). Come la SRAM, però, sono volatili, e al riavvio contengono **valori non definiti**. Registri e variabili vanno quindi sempre inizializzati prima di essere usati.
+- **Registri all'accensione.** I 32 registri sono un banco separato dentro la CPU, non celle di SRAM: sono soltanto *mappati* nello spazio di indirizzi dei dati (0x00–0x1F). Come la SRAM, però, sono volatili, e al riavvio contengono **valori non definiti**. Il codice di avvio azzera le variabili globali, ma non i registri né le variabili locali: quelle vanno sempre inizializzate prima di essere usate (sezione 7).
 - **Modalità di sleep.** Il chip può spegnere le parti che non servono per consumare meno: il datasheet elenca sei modalità di sleep, dalla più leggera (*Idle*, si ferma solo la CPU) alla più profonda (*Power-down*, resta attivo quasi solo il risveglio). Un interrupt, per esempio un pulsante o un timer, risveglia il microcontrollore. È così che un dispositivo a batteria dura mesi.
 - **Niente USB a bordo.** Le descrizioni generali degli AVR citano USB, RTC o PLL, ma l'ATmega328P non li ha. Proprio perché manca l'USB, Arduino Uno ha bisogno di un convertitore USB-seriale (sezione 9).
 
@@ -156,6 +156,29 @@ Il register file è la "lavagna" dell'ALU: 32 registri da 8 bit (r0–r31) da cu
 | Accesso | direttamente dall'ALU, 1 ciclo | `in`/`out` 1 ciclo; `sbi`/`cbi` bit per bit sui primi 32; gli estesi solo con `ld`/`st` | solo `ld`/`st`/`lds`/`sts`, 2 cicli |
 
 Scrivere in `DDRB` o `PORTB` non memorizza un dato: accende o spegne qualcosa. Tutti questi registri sono volatili e si perdono allo spegnimento.
+
+### Registri e memoria: un unico spazio di indirizzi
+
+I 32 registri sono **memorie dentro la CPU**, fisicamente separate dalla SRAM. Hanno però anche un **indirizzo**, come se fossero celle di memoria. È un'estensione del memory-mapped I/O: nello stesso spazio di indirizzi l'AVR mette i registri della CPU, i registri delle periferiche e la RAM vera.
+
+![Lo spazio dei dati dell'ATmega328P: un decodificatore smista ogni indirizzo verso registri della CPU, registri delle periferiche o SRAM](img/8_spazio_dati_memory_mapped.svg)
+
+Come funziona, in tre punti:
+
+1. Quando la CPU legge o scrive un indirizzo, un **decodificatore** guarda il numero e decide dove mandare la richiesta.
+2. Da 0x0000 a 0x00FF l'indirizzo arriva a dei **flip-flop**: i 32 registri della CPU, poi i registri delle periferiche. Non sono RAM: hanno solo un indirizzo "prestato". `PORTB`, per esempio, è un registro dentro il circuito della porta B, e i suoi bit sono collegati ai pin.
+3. Solo da 0x0100 in poi l'indirizzo arriva alla **SRAM** vera, dove stanno le variabili.
+
+Per questo lo stesso registro si raggiunge in due modi: **per nome**, con le istruzioni veloci (`add r5, r6`, oppure `out` per PORTB), o **per indirizzo**, con le istruzioni di memoria (`lds`, `sts`), più lente di un ciclo.
+
+Anche in C si vede che è memory-mapped I/O. `PORTB = 0x20;` vuol dire letteralmente "scrivi 0x20 all'indirizzo di memoria 0x25":
+
+```c
+PORTB = 0x20;                         // quello che scrivi
+*(volatile uint8_t *)0x25 = 0x20;     // quello che significa
+```
+
+La parola `volatile` avverte il compilatore che a quell'indirizzo c'è hardware, non una variabile qualunque: la scrittura va fatta sempre, senza ottimizzarla.
 
 ### E l'accumulatore?
 
@@ -224,6 +247,52 @@ Il programma sta in Flash, le variabili in SRAM, i dati da conservare allo spegn
 - Lo stack conserva gli indirizzi di ritorno di funzioni e interrupt e le variabili locali (`push`/`pop`, `call`/`ret`).
 - Se heap e stack si scontrano, il programma si blocca in modo imprevedibile. Con 2 KB conviene evitare `malloc` e spostare le stringhe in Flash.
 - **Modi di indirizzamento**: diretto, indiretto con X/Y/Z, indiretto con spiazzamento, con pre-decremento, con post-incremento.
+
+### Dove finiscono le variabili di uno sketch
+
+Una variabile definita fuori da `loop()` sta in **SRAM**. Non sta in un registro, perché i registri sono pochi e servono solo come appoggio per i calcoli. Non sta in Flash, perché la Flash non si può scrivere mentre il programma gira.
+
+```c
+int contatore = 5;    // globale con valore iniziale
+int somma;            // globale senza valore iniziale
+const int LED = 13;   // costante
+const char msg[] PROGMEM = "ciao";  // costante tenuta in Flash
+
+void loop() {
+  int i;              // variabile locale
+  contatore++;
+}
+```
+
+**Prima di `setup()`.** All'accensione, prima del tuo codice, gira un breve programma di avvio aggiunto dal compilatore. Fa tre cose:
+
+1. Imposta lo Stack Pointer alla fine della SRAM (0x08FF).
+2. Copia i valori iniziali delle globali dalla Flash alla SRAM. Il 5 di `contatore` era salvato in Flash, l'unica memoria che sopravvive allo spegnimento, e ora arriva nella sua cella di SRAM.
+3. Azzera le globali senza valore iniziale: `somma` vale 0.
+
+**Le righe, una per una.**
+
+- `int contatore = 5;` — sta in SRAM per tutta la vita del programma e conserva il valore tra un giro di `loop()` e l'altro.
+- `int somma;` — sta in SRAM e parte da 0, garantito.
+- `const int LED = 13;` — di solito non occupa memoria: il compilatore scrive il 13 direttamente dentro le istruzioni, che stanno in Flash.
+- `const char msg[] PROGMEM = "ciao";` — resta in Flash e non occupa SRAM. Si legge con `pgm_read_byte()`.
+- `int i;` — nasce quando `loop()` inizia e sparisce quando finisce. Sta in un registro o nello stack, e **nessuno la azzera**: contiene un valore a caso finché non le assegni qualcosa.
+- `contatore++;` — qui si vede il RISC load/store. L'ALU non lavora direttamente in SRAM, quindi servono tre passi:
+
+```
+lds  r24, contatore     ; 1. copia il valore dalla SRAM in un registro
+adiw r24, 1             ; 2. l'ALU aggiunge 1 al registro
+sts  contatore, r24     ; 3. riscrive il risultato in SRAM
+```
+
+(Il codice è semplificato: un `int` occupa 2 byte, quindi in realtà ogni passo si fa sulla coppia di registri r25:r24 e servono circa 10 cicli. Con un `byte` ne bastano meno: sui microcontrollori conviene usare il tipo più piccolo che basta.)
+
+| Tipo di variabile | Dove sta | Se non le dai un valore |
+| --- | --- | --- |
+| Globale o `static` | SRAM, per tutto il programma | vale 0 |
+| Locale (dentro una funzione) | registro o stack, solo mentre la funzione gira | valore a caso |
+| `const` semplice | di solito dentro le istruzioni, in Flash | — |
+| `PROGMEM` | Flash | — |
 
 ### EEPROM, 1 KB, non volatile: i dati permanenti
 
