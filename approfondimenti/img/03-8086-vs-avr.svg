@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 406" width="780" height="406" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<title>Diagramma di sequenza: 8086 e AVR di Arduino</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4b5563"/></marker><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1d6fd8"/></marker></defs>
+<rect width="780" height="406" fill="#ffffff"/>
+<text x="24" y="30" font-size="16" font-weight="600" fill="#1f2933" text-anchor="start" >Con un bus unico il prelievo si ferma, con Harvard no</text>
+<text x="24" y="52" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >istruzioni: 1 carica a · 2 somma · 3 salva in c · 4 incrementa — in evidenza gli accessi ai dati</text>
+<rect x="302" y="214" width="72" height="102" fill="#f1ede4"/>
+<rect x="446" y="214" width="72" height="102" fill="#f1ede4"/>
+<text x="266" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T1</text>
+<text x="338" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T2</text>
+<text x="410" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T3</text>
+<text x="482" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T4</text>
+<text x="554" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T5</text>
+<text x="626" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T6</text>
+<text x="698" y="82" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >T7</text>
+<text x="24" y="108" font-size="13" font-weight="600" fill="#1f2933" text-anchor="start" >Intel 8086: memoria e bus unici (von Neumann)</text>
+<text x="24" y="135" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >Bus unico (BIU)</text>
+<rect x="232" y="117" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="266" y="135" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 1</text>
+<rect x="304" y="117" width="68" height="26" rx="4" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/><text x="338" y="135" font-size="12" font-weight="600" fill="#1f2933" text-anchor="middle" >legge a</text>
+<rect x="376" y="117" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="410" y="135" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 2</text>
+<rect x="448" y="117" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="482" y="135" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 3</text>
+<rect x="520" y="117" width="68" height="26" rx="4" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/><text x="554" y="135" font-size="12" font-weight="600" fill="#1f2933" text-anchor="middle" >scrive c</text>
+<rect x="592" y="117" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="626" y="135" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 4</text>
+<text x="24" y="169" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >Esecuzione (EU)</text>
+<rect x="304" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="338" y="169" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 1</text>
+<rect x="376" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#5f6b7a" stroke-width="1.25" stroke-dasharray="4 3"/><text x="410" y="169" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" font-style="italic">attesa</text>
+<rect x="448" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="482" y="169" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 2</text>
+<rect x="520" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="554" y="169" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 3</text>
+<rect x="592" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#5f6b7a" stroke-width="1.25" stroke-dasharray="4 3"/><text x="626" y="169" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" font-style="italic">attesa</text>
+<rect x="664" y="151" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="698" y="169" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 4</text>
+<text x="24" y="206" font-size="13" font-weight="600" fill="#1f2933" text-anchor="start" >AVR di Arduino Uno R3: Flash e SRAM separate (Harvard)</text>
+<text x="24" y="235" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >Flash (programma)</text>
+<rect x="232" y="217" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="266" y="235" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 1</text>
+<rect x="304" y="217" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="338" y="235" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 2</text>
+<rect x="376" y="217" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="410" y="235" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 3</text>
+<rect x="448" y="217" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="482" y="235" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >prel. 4</text>
+<text x="24" y="269" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >Esecuzione</text>
+<rect x="304" y="251" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="338" y="269" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 1</text>
+<rect x="376" y="251" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="410" y="269" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 2</text>
+<rect x="448" y="251" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="482" y="269" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 3</text>
+<rect x="520" y="251" width="68" height="26" rx="4" fill="#ffffff" stroke="#4b5563" stroke-width="1.25"/><text x="554" y="269" font-size="12" font-weight="400" fill="#1f2933" text-anchor="middle" >esegue 4</text>
+<text x="24" y="303" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >SRAM (dati)</text>
+<rect x="304" y="285" width="68" height="26" rx="4" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/><text x="338" y="303" font-size="12" font-weight="600" fill="#1f2933" text-anchor="middle" >legge a</text>
+<rect x="448" y="285" width="68" height="26" rx="4" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/><text x="482" y="303" font-size="12" font-weight="600" fill="#1f2933" text-anchor="middle" >scrive c</text>
+<text x="24" y="346" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >8086: 7 intervalli — il bus non può prelevare mentre legge o scrive un dato</text>
+<text x="24" y="366" font-size="12.5" font-weight="400" fill="#1f2933" text-anchor="start" >AVR: 5 intervalli — prelievo dalla Flash e accesso alla SRAM nello stesso intervallo</text>
+<text x="24" y="390" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="start" >esempio semplificato: una fase per intervallo, coda di prefetch dell'8086 vuota all'inizio</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 340" width="780" height="340" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<title>Datapath della pipeline MIPS a 5 stadi</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4b5563"/></marker><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1d6fd8"/></marker></defs>
+<rect width="780" height="340" fill="#ffffff"/>
+<text x="24" y="30" font-size="16" font-weight="600" fill="#1f2933" text-anchor="start" >Ogni stadio usa una risorsa diversa, con due memorie separate</text>
+<text x="24" y="52" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >in evidenza le memorie istruzioni e dati separate dell'architettura Harvard</text>
+<text x="116" y="86" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >IF</text>
+<text x="306" y="86" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >ID</text>
+<text x="452" y="86" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >EX</text>
+<text x="598" y="86" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >MEM</text>
+<text x="720" y="86" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >WB</text>
+<path d="M74 172H90" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M202 172H216" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M232 172H248" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M360 172H374" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M390 172H404" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M496 172H510" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M526 172H540" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M652 172H666" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<path d="M682 172H720V300H306V214" stroke="#4b5563" stroke-width="1.4" fill="none" marker-end="url(#a)"/>
+<rect x="24" y="154" width="50" height="36" rx="8" fill="none" stroke="#4b5563" stroke-width="1.5"/>
+<text x="49" y="177" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >PC</text>
+<rect x="92" y="132" width="110" height="80" rx="8" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/>
+<text x="147" y="168" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >Memoria</text>
+<text x="147" y="186" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >istruzioni</text>
+<rect x="250" y="132" width="110" height="80" rx="8" fill="none" stroke="#4b5563" stroke-width="1.5"/>
+<text x="305" y="168" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >Register</text>
+<text x="305" y="186" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >file</text>
+<polygon points="406,132 496,152 496,192 406,212" fill="#ffffff" stroke="#4b5563" stroke-width="1.5"/>
+<text x="451" y="177" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >ALU</text>
+<rect x="542" y="132" width="110" height="80" rx="8" fill="#dbe9fb" stroke="#1d6fd8" stroke-width="2"/>
+<text x="597" y="168" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >Memoria</text>
+<text x="597" y="186" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >dati</text>
+<rect x="218" y="100" width="14" height="168" rx="3" fill="#e7e2d6" stroke="#4b5563" stroke-width="1.25"/>
+<text x="225" y="284" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" >IF/ID</text>
+<rect x="376" y="100" width="14" height="168" rx="3" fill="#e7e2d6" stroke="#4b5563" stroke-width="1.25"/>
+<text x="383" y="284" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" >ID/EX</text>
+<rect x="512" y="100" width="14" height="168" rx="3" fill="#e7e2d6" stroke="#4b5563" stroke-width="1.25"/>
+<text x="519" y="284" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" >EX/MEM</text>
+<rect x="668" y="100" width="14" height="168" rx="3" fill="#e7e2d6" stroke="#4b5563" stroke-width="1.25"/>
+<text x="675" y="284" font-size="11.5" font-weight="400" fill="#5f6b7a" text-anchor="middle" >MEM/WB</text>
+<text x="512" y="322" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >write back: il risultato torna nel register file</text>
+</svg>
