@@ -142,6 +142,29 @@ All'uscita PWM si mette in cascata un **filtro passa basso** (LP, *Low Pass*), c
 
 La tensione media vale: **V_out = duty cycle × V_max** (es. 25% di 5 V = 1,25 V).
 
+### Il valore medio: il rettangolo equivalente
+
+Il valore medio è l'**altezza del rettangolo equivalente**: il rettangolo largo quanto un periodo T che ha la **stessa area** dell'impulso. Con un impulso di 5 V lungo un quarto del periodo, l'area è 5 V × T/4; un rettangolo di base T con la stessa area è alto 5 V × 1/4 = **1,25 V**.
+
+![Il rettangolo equivalente](img/09_rettangolo_equivalente.svg)
+
+### Chi fa la media
+
+Non serve sempre un filtro vero e proprio: la media la fa qualunque cosa sia **più lenta** del PWM. Tutti i sistemi fisici, infatti, si comportano da **passa basso**: per inerzia (meccanica, termica) o per la presenza di condensatori e induttanze, non riescono a seguire variazioni troppo rapide e "vedono" solo il valore medio.
+
+La media la può fare:
+
+- un **filtro passa basso** (es. un circuito RC): serve quando vogliamo una vera tensione continua, cioè un DAC;
+- il **carico** collegato all'uscita, senza bisogno di filtro: un **motore** (inerzia del rotore e induttanza degli avvolgimenti) gira a una velocità proporzionale al duty cycle; una **resistenza riscaldante** (inerzia termica) scalda in proporzione al duty cycle;
+- i **nostri sensi**: un LED comandato in PWM a circa 500 Hz lampeggia, ma l'**occhio** non riesce a seguirlo (sopra qualche decina di Hz non vediamo lo sfarfallio) e percepisce solo una **luminosità media**. Nel caso del LED, quindi, **la media la fanno i nostri occhi**: il LED si accende e si spegne davvero, ed è l'occhio a fare da filtro passa basso. È così che si regola la luminosità dei LED. (L'occhio però non è lineare: con duty 50% il LED non sembra "metà luminoso", ma più acceso.)
+
+Attenzione: non è la scheda a fare la media. Il pin di Arduino emette sempre l'onda quadra 0 / 5 V; la media la fa chi sta "a valle".
+
+Perché funzioni, la frequenza del PWM deve essere **molto più alta** della velocità di risposta di chi fa la media; altrimenti l'onda si nota (il LED sfarfalla, il motore vibra o fischia). Arduino UNO usa un PWM a circa **490 Hz** (circa 980 Hz sui pin 5 e 6).
+
+Nel filtro RC c'è un compromesso: più il filtro è "lento", più la tensione d'uscita è liscia (meno **ondulazione residua**, o *ripple*), ma più tempo impiega a seguire un cambio del duty cycle.
+
+
 La combinazione **PWM + filtro passa basso** realizza quindi un **DAC**. I DAC si possono costruire anche in altri modi (es. reti resistive), ma questo è quello usato da Arduino.
 
 ## 8. Timer e watchdog timer
