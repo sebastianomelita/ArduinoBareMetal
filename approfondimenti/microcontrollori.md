@@ -169,6 +169,30 @@ Perché funzioni, la frequenza del PWM deve essere **molto più alta** della vel
 
 Nel filtro RC c'è un compromesso: più il filtro è "lento", più la tensione d'uscita è liscia (meno **ondulazione residua**, o *ripple*), ma più tempo impiega a seguire un cambio del duty cycle.
 
+### Approfondimento: valore medio ed energia
+
+**In generale la media di un segnale non è proporzionale alla sua energia.** La media è l'area sotto il segnale divisa per il tempo; l'energia (e la potenza) dipende invece dal **quadrato** del segnale. Su una resistenza R la potenza media è:
+
+**P = media(v²) / R**
+
+Due controesempi:
+
+- una **sinusoide** ha media zero, ma trasporta energia (è la corrente di casa);
+- un'onda quadra tra **−5 V e +5 V** ha media zero, ma su una resistenza dissipa sempre 25/R watt.
+
+La grandezza legata all'energia è il **valore efficace** (RMS, *Root Mean Square*): la radice della media dei quadrati.
+
+**Nel PWM tra 0 e 5 V, però, sì.** Il segnale vale solo 0 oppure 5 V, quindi v² vale solo 0 oppure 25: istante per istante v² = 5 × v. Allora la media dei quadrati è 5 volte la media, e la potenza è **proporzionale al duty cycle**, cioè al valore medio. Per questo una resistenza riscaldante comandata in PWM scalda in proporzione al duty cycle.
+
+**Attenzione al filtro.** Se prima filtriamo il PWM e poi alimentiamo la resistenza con la tensione continua ottenuta, la potenza diventa P = (D × 5 V)² / R: è proporzionale a **D²**, non più a D.
+
+| Duty 50% su una resistenza R | Tensione | Potenza |
+|---|---|---|
+| PWM diretto | 0 / 5 V alternati | 12,5/R W (metà del massimo) |
+| PWM filtrato | 2,5 V continui | 6,25/R W (un quarto del massimo) |
+
+Stesso valore medio (2,5 V), energia diversa. Il valore efficace del PWM vale **5 V × √D** (con D = 50%: circa 3,54 V), più del valore medio **5 V × D** (2,5 V).
+
 
 La combinazione **PWM + filtro passa basso** realizza quindi un **DAC**. I DAC si possono costruire anche in altri modi (es. reti resistive), ma questo è quello usato da Arduino.
 
