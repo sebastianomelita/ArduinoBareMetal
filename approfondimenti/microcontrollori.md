@@ -144,9 +144,14 @@ La tensione media vale: **V_out = duty cycle × V_max** (es. 25% di 5 V = 1,25 V
 
 ### Il valore medio: il rettangolo equivalente
 
-Il valore medio è l'**altezza del rettangolo equivalente**: il rettangolo largo quanto un periodo T che ha la **stessa area** dell'impulso. Con un impulso di 5 V lungo un quarto del periodo, l'area è 5 V × T/4; un rettangolo di base T con la stessa area è alto 5 V × 1/4 = **1,25 V**.
+Il valore medio è l'**altezza del rettangolo equivalente**: il rettangolo che ha la **stessa area** degli impulsi, ma distribuita uniformemente su tutto il tempo. Basta calcolarlo su un periodo T:
 
-![Il rettangolo equivalente](img/09_rettangolo_equivalente.svg)
+- **duty 25%**: l'impulso da 5 V dura T/4, l'area è 5 V × T/4; un rettangolo di base T con la stessa area è alto 5 V × 1/4 = **1,25 V**;
+- **duty 75%**: l'impulso da 5 V dura 3T/4, l'area è 5 V × 3T/4; il rettangolo equivalente è alto 5 V × 3/4 = **3,75 V**.
+
+Stessa ampiezza (5 V), stessa frequenza, ma duty cycle diverso → area diversa → **rettangolo equivalente di altezza diversa**, cioè un valore medio diverso. È così che il PWM "codifica" un valore analogico nella larghezza dell'impulso.
+
+![Il rettangolo equivalente su due treni PWM](img/09_rettangolo_equivalente.svg)
 
 ### Chi fa la media
 
