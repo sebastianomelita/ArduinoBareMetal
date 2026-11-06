@@ -32,6 +32,8 @@ Come leggerla:
 - **Verifiche e stampa**, un **glossario** dei termini e la **configurazione dell'assistente**.
 - **Appendice**: il prompt completo da incollare nell'assistente di SolidCraft per costruire la variante A.
 
+Per approfondire comandi CAD, nomi delle parti e modo di dare istruzioni tecniche, c'è il documento collegato [Lessico tecnico per contenitori elettronici](https://claude.ai/artifact/XPDJLjZiqHB9ki6PBRgtwZ).
+
 ---
 
 ## 2. Criteri generali e ordine delle fasi
@@ -216,6 +218,8 @@ Uno **slicer** è il programma che "affetta" il modello in strati e genera il **
 ---
 
 ## 8. Glossario minimo
+
+Qui ci sono solo i termini usati in questa dispensa. L'elenco completo, diviso per categorie e con esempi di istruzioni, è nel [Lessico tecnico per contenitori elettronici](https://claude.ai/artifact/XPDJLjZiqHB9ki6PBRgtwZ).
 
 | Termine | Significato |
 | --- | --- |
