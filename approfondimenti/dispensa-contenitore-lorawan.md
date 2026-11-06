@@ -306,9 +306,43 @@ Note:
 - Con Node installato nel sistema, come in questa configurazione, `gemini` finisce in `/usr/local/bin` e `wsl.exe` lo trova senza altri accorgimenti, come succede per Claude.
 - In SolidCraft si possono configurare più agenti (per esempio `Claude_acp` e `Gemini_acp`) e scegliere quello da usare dal menu a tendina del pannello Assistente.
 
-**Attenzione all'account.** Dal 18 giugno 2026 Google ha sostituito Gemini CLI con **Antigravity CLI** per gli utenti gratuiti e per gli abbonati Google AI Pro e Ultra. Gemini CLI continua a funzionare con una chiave API a pagamento o con le licenze Gemini Code Assist Standard ed Enterprise. In tutti gli altri casi l'opzione di Google è **Google Antigravity**, che SolidCraft elenca nel pannello Assistente insieme al suo server ACP: va scaricato per il proprio sistema dal registro ACP (agentclientprotocol.com/registry), seguendo le istruzioni del pulsante *Copia*. Questa seconda strada non è stata provata in questa configurazione.
+**Attenzione all'account.** Dal 18 giugno 2026 Google ha sostituito Gemini CLI con **Antigravity CLI** per gli utenti gratuiti e per gli abbonati Google AI Pro e Ultra. Gemini CLI continua a funzionare con una chiave API a pagamento o con le licenze Gemini Code Assist Standard ed Enterprise. In tutti gli altri casi l'opzione di Google è **Google Antigravity**: vedi il paragrafo seguente.
 
 Fonti: [Gemini CLI in modalità ACP (DEV Community)](https://dev.to/gabrielanhaia/agent-client-protocol-by-hand-drive-gemini-acp-over-json-rpc-on-stdio-1jdj) · [Gemini CLI, opzioni da riga di comando](https://www.developersdigest.tech/reference/gemini-cli/cli-flags) · [Gemini CLI dismesso, passaggio ad Antigravity CLI](https://inventivehq.com/blog/gemini-cli-deprecated-antigravity-cli-migration)
+
+### Usare Google Antigravity come agente
+
+Per SolidCraft serve il **server ACP di Antigravity**, un piccolo programma pubblicato da Google nel registro ufficiale ACP (versione 1.4.5 a novembre 2026). Esiste per Windows e per Linux. A differenza di Claude **non serve WSL**: c'è un `.exe` nativo per Windows, ed è la strada consigliata, perché il login con l'account Google apre direttamente il browser.
+
+**Su Windows (consigliato)**
+
+1. Scaricare lo zip per Windows: `https://dl.google.com/agy-extensions/releases/windows/agy-acp-server-1.4.5-windows-x86_64.zip`
+2. Estrarlo in una cartella **senza spazi nel percorso**, per esempio `C:\Users\sebas\agy-acp\`. SolidCraft divide il comando sugli spazi, quindi un percorso come `C:\Program Files\...` non funzionerebbe.
+3. In SolidCraft, Assistente ▸ Modifica agente, creare un nuovo agente:
+    - **Nome:** `Antigravity`
+    - **Comando dell'agente:** `C:\Users\sebas\agy-acp\agy_acp_server.exe`
+4. Salvare, premere **Connetti** e, quando richiesto, accedere con l'account Google.
+
+**In alternativa, dentro Ubuntu (WSL)**
+
+```bash
+sudo apt install -y unzip
+mkdir -p ~/agy-acp && cd ~/agy-acp
+curl -LO https://dl.google.com/agy-extensions/releases/linux/agy-acp-server-1.4.5-linux-x86_64.zip
+unzip agy-acp-server-1.4.5-linux-x86_64.zip
+chmod +x agy_acp_server.par
+```
+
+In SolidCraft il comando diventa `wsl.exe /home/seb/agy-acp/agy_acp_server.par --uid=` (il registro indica `--uid=`, vuoto, come argomento per Linux). Da WSL il browser potrebbe non aprirsi da solo: in quel caso il programma stampa un indirizzo da aprire a mano.
+
+**Se il login non va a buon fine.** Dalla documentazione non risulta chiaro se il server ACP basti da solo o se serva anche **Antigravity CLI** (`agy`) installato e con il login già fatto. Se la connessione fallisce, installarla e lanciare `agy` una volta per accedere:
+
+- su Windows, con l'installer per PowerShell indicato su antigravity.google;
+- su Ubuntu: `curl -fsSL https://antigravity.google/cli/install.sh | bash`, poi `agy --version` per verificare e `agy` per il login.
+
+Quando esce una versione nuova, nei link cambia solo il numero. Gli indirizzi vengono dal registro ACP, ma questa installazione non è stata ancora provata su questa configurazione.
+
+Fonti: [Registro ACP – dati di Google Antigravity (JSON)](https://cdn.agentclientprotocol.com/registry/v1/latest/registry.json) · [Google Antigravity tra gli agenti ACP (Zed)](https://zed.dev/acp/agent/antigravity-acp) · [Installare Antigravity CLI (Arm Learning Paths)](https://learn.arm.com/install-guides/antigravity/) · [Antigravity CLI cheat sheet](https://computingforgeeks.com/antigravity-cli-cheat-sheet/)
 
 ---
 
