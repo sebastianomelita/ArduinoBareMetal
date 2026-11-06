@@ -289,6 +289,27 @@ Serve Node 18 o superiore già installato in Ubuntu.
 
 Le azioni che l'agente può eseguire senza chiedere conferma si impostano in **Preferenze ▸ IA**. All'inizio conviene lasciarle tutte con conferma.
 
+### Usare Google Gemini come agente
+
+Il meccanismo è lo stesso di Claude: SolidCraft avvia un programma dentro Ubuntu e gli parla in ACP su stdin e stdout. Cambia solo il programma. A differenza di Claude, **Gemini CLI parla ACP da solo**, senza bisogno di un adattatore separato.
+
+| | Claude | Gemini |
+| --- | --- | --- |
+| Programma da installare in Ubuntu | Claude Code + `@agentclientprotocol/claude-agent-acp` | `@google/gemini-cli` |
+| Installazione | vedi sopra | `sudo npm install -g @google/gemini-cli` |
+| Primo accesso | `claude`, poi login | `gemini`, poi "Login with Google" oppure chiave `GEMINI_API_KEY` |
+| Comando in SolidCraft | `wsl.exe claude-agent-acp` | `wsl.exe gemini --acp` |
+
+Note:
+
+- Nelle versioni più vecchie di Gemini CLI l'opzione si chiama `--experimental-acp`, oggi deprecata. Con `gemini --help` si vede quale accetta la versione installata.
+- Con Node installato nel sistema, come in questa configurazione, `gemini` finisce in `/usr/local/bin` e `wsl.exe` lo trova senza altri accorgimenti, come succede per Claude.
+- In SolidCraft si possono configurare più agenti (per esempio `Claude_acp` e `Gemini_acp`) e scegliere quello da usare dal menu a tendina del pannello Assistente.
+
+**Attenzione all'account.** Dal 18 giugno 2026 Google ha sostituito Gemini CLI con **Antigravity CLI** per gli utenti gratuiti e per gli abbonati Google AI Pro e Ultra. Gemini CLI continua a funzionare con una chiave API a pagamento o con le licenze Gemini Code Assist Standard ed Enterprise. In tutti gli altri casi l'opzione di Google è **Google Antigravity**, che SolidCraft elenca nel pannello Assistente insieme al suo server ACP: va scaricato per il proprio sistema dal registro ACP (agentclientprotocol.com/registry), seguendo le istruzioni del pulsante *Copia*. Questa seconda strada non è stata provata in questa configurazione.
+
+Fonti: [Gemini CLI in modalità ACP (DEV Community)](https://dev.to/gabrielanhaia/agent-client-protocol-by-hand-drive-gemini-acp-over-json-rpc-on-stdio-1jdj) · [Gemini CLI, opzioni da riga di comando](https://www.developersdigest.tech/reference/gemini-cli/cli-flags) · [Gemini CLI dismesso, passaggio ad Antigravity CLI](https://inventivehq.com/blog/gemini-cli-deprecated-antigravity-cli-migration)
+
 ---
 
 ## 10. Appendice – Prompt per SolidCraft, variante A
