@@ -13,6 +13,7 @@
 7. [Verifiche e stampa 3D](#7-verifiche-e-stampa-3d)
 8. [Glossario minimo](#8-glossario-minimo)
 9. [Configurazione dell'assistente (ACP)](#9-configurazione-dellassistente-acp)
+10. [Appendice – Prompt per SolidCraft, variante A](#10-appendice--prompt-per-solidcraft-variante-a)
 
 ---
 
@@ -29,6 +30,7 @@ Come leggerla:
 - **Ciclo comune**: le lavorazioni uguali per le due varianti.
 - **Varianti A e B**: solo ciò che cambia.
 - **Verifiche e stampa**, un **glossario** dei termini e la **configurazione dell'assistente**.
+- **Appendice**: il prompt completo da incollare nell'assistente di SolidCraft per costruire la variante A.
 
 ---
 
@@ -140,7 +142,9 @@ La scatola si appoggia al muro con il fondo e il **lato lungo orizzontale**: la 
 | 102 | Pressacavo PG7 | foro Ø 12,5 sulla parete frontale, X 84, Z 12 (vano A) | rivolto in basso, l'acqua non scorre lungo il cavo verso l'interno; vicino alla Heltec, a cui si collega la sonda |
 | 103 | Antenna SMA | foro Ø 6,6 sulla parete posteriore, X 75, Z 21 | antenna in alto = portata radio migliore |
 | 104 | Etichette | DS18B20 (3; 84 – 4), ANT (3; 75 – 68,5) | indicano dove arrivano i cavi |
-| 170 | Alette di fissaggio | piastre spesse 4 da Z −2,4, Y 26…46, che sporgono di 12 oltre X −2,4 e oltre X 142,4; estremità arrotondata, foro Ø 4,5 a 6 dalla parete | viti o tasselli nel muro |
+| 170 | Alette di fissaggio | spesse 4 (Z −2,4…1,6), centrate in Y 36, una oltre X −2,4 e una oltre X 142,4; larghe 20 alla parete, sporgono di 12 restringendosi verso una punta arrotondata R5; foro Ø 4,5 a 6 dalla parete | viti o tasselli nel muro |
+
+Per costruirla con l'assistente di SolidCraft c'è un prompt unico, già completo di tutte le quote di questa variante: vedi l'[Appendice](#10-appendice--prompt-per-solidcraft-variante-a). Non contiene i ponticelli per il palo.
 
 Ingombro sul piatto di stampa: circa 169 × 77 mm. La base si stampa con il fondo sul piatto, senza supporti. La finestra USB resta sul fianco sinistro: all'aperto va chiusa con un tappo in gomma.
 
@@ -280,4 +284,96 @@ Le azioni che l'agente può eseguire senza chiedere conferma si impostano in **P
 
 ---
 
-*File allegati: `nodo_lorawan_case.scad` (modello OpenSCAD parametrico) e la cartella `img/` con le figure.*
+## 10. Appendice – Prompt per SolidCraft, variante A
+
+Da incollare nella chat dell'assistente di SolidCraft, partendo da un progetto nuovo con i corpi Base e Lid vuoti. Le lavorazioni hanno la stessa numerazione del ciclo (sezioni 4 e 5) e sono divise in 6 blocchi: alla fine di ogni blocco l'assistente si ferma per il controllo. Lo stesso testo è nel file `prompt_solidcraft_variante_A.txt`.
+
+```text
+Costruisci in SolidCraft il contenitore del nodo LoRaWAN, VARIANTE A (montaggio
+a muro), usando i corpi "Base" e "Lid". Nessun aggancio per palo.
+Ogni lavorazione deve essere una feature separata e modificabile. Lavora a
+blocchi: dopo ogni blocco fermati e mostrami il risultato. Unità: mm.
+
+RIFERIMENTO: origine = angolo interno della cavità sul piano del fondo.
+X = lato lungo (0..140), Y = lato corto (0..72, parete frontale a Y=0),
+Z = altezza. Cavità 140 x 72 x 30; pareti, fondo e coperchio 2.4.
+Installata, la parete frontale (Y=0) guarda in basso, la posteriore in alto.
+
+=== BLOCCO 1 · GUSCIO ===
+10. Guscio: rettangolo (-2.4,-2.4)-(142.4,74.4), raggio 4 sugli spigoli
+    verticali, estruso da Z=-2.4 a Z=30.
+20. Svuotamento: tasca (0,0)-(140,72), raggio 1.6, da Z=0 verso l'alto.
+30. Colonnine angolari Ø8 da Z=0 a Z=30, centri (4,4) (136,4) (4,68)
+    (136,68); in ognuna un foro pilota Ø2.6 profondo 14 dall'alto.
+40. Paratia: X 96..98, Y 0..72, Z 0..25.7, con un passaggio cavi in basso
+    Y 31..41, alto 6.
+
+=== BLOCCO 2 · SUPPORTI INTERNI ===
+50. Heltec V4 (PCB 51.7 x 25.5 x 1.6 posato a X 1..52.7, Y 36..61.5,
+    faccia inferiore a Z=10):
+    - appoggi X 1..6 e X 47.7..52.7, Y 41..56.5, alti 10;
+    - battute laterali spesse 1.6 in Y 34.1..35.7 e Y 61.8..63.4, sugli
+      stessi intervalli di X, alte 12.6;
+    - battuta di fondo X 53..54.6, Y 41..56.5, alta 12.6.
+60. Batteria 14500 (asse lungo X, a Y=14.25, Z=8.25):
+    - selle X 18..26 e X 55..63, Y 5..23.5, alte 9.25, ciascuna con scavo
+      cilindrico Ø15.1 coassiale alla batteria e una fessura per fascetta
+      larga 4 (centrata nella sella) e alta 1.8 (Z 0..1.8), passante lungo Y;
+    - fermi X 12..14 e X 67..69, Y 7..21.5, alti 8.7.
+70. Guida BMS (scheda 35.2 x 4.2 x 2, lunga lungo Y): due guide spesse 1.2,
+    alte 3.2, da Y=8 a Y=43.8, con le facce interne a X=77.6 e X=82.4; in
+    cima a ciascuna (Z 2.4..3.2) un dentino che sporge 0.5 verso l'interno.
+    Estremità aperte.
+80. Colonnine Ø5 alte 5, foro Ø1.8 profondo 4 dall'alto:
+    - GPS: (66.5,42.5) (91.5,42.5) (66.5,62.5) (91.5,62.5)
+    - SCD41: (108.54,46.54) (128.86,46.54) (108.54,59.26) (128.86,59.26)
+    - MPL3115A2: (108.54,14.54) (122.51,14.54) (108.54,27.26) (122.51,27.26)
+
+=== BLOCCO 3 · APERTURE (VARIANTE A) ===
+90.  USB-C, parete sinistra (X -2.4..0): asola 13 x 7.5 a estremità
+     arrotondate, centrata in Y=48.75, Z=13.3.
+101. Feritoie: asole alte 2, con bordo inferiore a Z = 6, 10, 14, 18, 22.
+     - parete destra (X 140..142.4): Y 12..60;
+     - parete frontale (Y -2.4..0): X 102..128.
+     Nessuna feritoia sulla parete posteriore.
+102. Pressacavo PG7: foro Ø12.5 sulla parete frontale, X=84, Z=12.
+103. Antenna SMA: foro Ø6.6 sulla parete posteriore, X=75, Z=21.
+
+=== BLOCCO 4 · ALETTE A MURO ===
+170. Due alette spesse 4, da Z=-2.4 a Z=1.6, centrate in Y=36, una oltre
+     la parete sinistra (X=-2.4) e una oltre la destra (X=142.4).
+     Ognuna è larga 20 alla parete, sporge 12 e si restringe verso una
+     punta arrotondata R5; foro Ø4.5 a 6 dalla parete.
+
+=== BLOCCO 5 · ETICHETTE SUL FONDO ===
+110. Incise 0.6 da Z=0 verso il basso, font bold sans-serif, testo
+     centrato (altezza testo; centro X,Y):
+     "HELTEC V4" (4; 26.85,48.75)   "14500" (4; 40.5,14.25)
+     "GPS L76K" (3.5; 79,52.5)      "SCD41" (4; 118.7,52.9)
+     "MPL3115A2" (2.5; 115.5,20.9)  "BMS" (3; 80,25.6) ruotata 90°
+     "A - ELETTRONICA" (3; 48,68)   "B - SENSORI" (3; 119,66)
+     "< USB" (3; 14,30)             "I2C" (3; 88,36)
+     "DS18B20" (3; 84,4)            "ANT" (3; 75,68.5)
+     Nessuna scritta sulle pareti esterne.
+
+=== BLOCCO 6 · COPERCHIO (corpo Lid) ===
+120. Piastra: stesso profilo esterno del guscio, da Z=30 a Z=32.4.
+130. Labbro sotto la piastra, Z 26..30: anello con profilo esterno
+     (0.3,0.3)-(139.7,71.7), raggio 1.3, spesso 1.6. Scava il labbro con
+     cilindri Ø9 attorno ai 4 centri delle colonnine.
+140. Nervatura: X 96..98, Y 0.3..71.7, Z 26..30.
+150. Fori viti: Ø3.4 passanti ai 4 centri delle colonnine, svasatura Ø6.2
+     profonda 1.6 dall'alto.
+160. Fori RST e PRG: Ø3 passanti in (5,39.5) e (5,58); accanto, incise 0.6
+     sulla faccia superiore, "RST" h3.5 in (11.5,39.5) e "PRG" h3.5 in
+     (11.5,58).
+
+=== VERIFICA FINALE ===
+Controlla che Base e Lid non si compenetrino, che il labbro sia libero dalle
+colonnine, che nervatura e paratia siano allineate e che non ci siano corpi
+in più oltre a Base e Lid.
+```
+
+---
+
+*File allegati: `nodo_lorawan_case.scad` (modello OpenSCAD parametrico; `mount = "wall"` = variante A), `prompt_solidcraft_variante_A.txt` e la cartella `img/` con le figure.*
