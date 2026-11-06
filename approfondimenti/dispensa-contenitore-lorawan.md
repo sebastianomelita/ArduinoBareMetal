@@ -15,6 +15,8 @@
 9. [Configurazione dell'assistente (ACP)](#9-configurazione-dellassistente-acp)
 10. [Appendice – Prompt per SolidCraft, variante A](#10-appendice--prompt-per-solidcraft-variante-a)
 
+**Documento collegato:** [Lessico tecnico per contenitori elettronici](lessico-tecnico-contenitori.md) – comandi CAD, nomi delle parti, quote e istruzioni tecniche.
+
 ---
 
 ## 1. A cosa serve
@@ -31,8 +33,6 @@ Come leggerla:
 - **Varianti A e B**: solo ciò che cambia.
 - **Verifiche e stampa**, un **glossario** dei termini e la **configurazione dell'assistente**.
 - **Appendice**: il prompt completo da incollare nell'assistente di SolidCraft per costruire la variante A.
-
-Per approfondire comandi CAD, nomi delle parti e modo di dare istruzioni tecniche, c'è il documento collegato [Lessico tecnico per contenitori elettronici](https://claude.ai/artifact/XPDJLjZiqHB9ki6PBRgtwZ).
 
 ---
 
@@ -219,7 +219,7 @@ Uno **slicer** è il programma che "affetta" il modello in strati e genera il **
 
 ## 8. Glossario minimo
 
-Qui ci sono solo i termini usati in questa dispensa. L'elenco completo, diviso per categorie e con esempi di istruzioni, è nel [Lessico tecnico per contenitori elettronici](https://claude.ai/artifact/XPDJLjZiqHB9ki6PBRgtwZ).
+Qui ci sono solo i termini usati in questa dispensa. L'elenco completo, diviso per categorie e con esempi di istruzioni, è nel [Lessico tecnico per contenitori elettronici](lessico-tecnico-contenitori.md).
 
 | Termine | Significato |
 | --- | --- |
