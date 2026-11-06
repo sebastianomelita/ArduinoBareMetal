@@ -82,7 +82,9 @@ La cavità interna misura **140 × 72 × 30 mm**, con pareti, fondo e coperchio 
 
 Il **vano A** (X 0…96) contiene ciò che scalda; il **vano B** (X 98…140) i sensori d'aria. La paratia in mezzo, con un passaggio cavi di 10 × 6 mm alla base, impedisce che il calore della Heltec falsi CO₂ e temperatura.
 
-![Pianta della base in scala](img/01_pianta_base.png)
+<p align="center">
+  <img src="img/01_pianta_base.png" alt="Pianta della base in scala" width="700">
+</p>
 
 *Figura 1 – Pianta della base in scala.* La guida della BMS passa per 3,8 mm sotto la scheda GPS: non si toccano perché stanno a quote diverse (la guida è alta 3,2 mm, il GPS sta a 5 mm dal fondo).
 
@@ -92,7 +94,9 @@ Il **vano A** (X 0…96) contiene ciò che scalda; il **vano B** (X 98…140) i 
 
 Queste lavorazioni sono identiche nelle due varianti. Le operazioni sono numerate di 10 in 10, come nei cicli di lavorazione d'officina: così un passo dimenticato si inserisce (per esempio con il numero 45) senza dover rinumerare tutto.
 
-![Pannello Struttura di SolidCraft](img/03_solidcraft_struttura.png)
+<p align="center">
+  <img src="img/03_solidcraft_struttura.png" alt="Pannello Struttura di SolidCraft" width="450">
+</p>
 
 *Figura 2 – Il pannello Struttura è l'albero del modello.* **Corpi** contiene i due solidi separati, Base e Lid: ogni lavorazione va applicata al corpo giusto. **Lavorazioni** elenca le operazioni nell'ordine in cui sono state fatte (estrusioni, fori, raccordi): è il ciclo di lavorazione di questa pagina, e cliccandone una si può correggere una quota senza rifare il resto. L'**occhio** accanto a ogni voce mostra o nasconde l'elemento, senza cancellare nulla.
 
@@ -158,7 +162,9 @@ Il vano sensori in basso è voluto: il calore della Heltec e della batteria sale
 
 Attenzione alla stampa: i ponticelli sporgono sotto il fondo, quindi la base non appoggia in piano sul piatto. Servono supporti, che rovinano il fondo esterno, oppure, meglio, ponticelli stampati su una piastra separata da avvitare sotto la scatola.
 
-![Le due varianti installate](img/02_varianti_installazione.png)
+<p align="center">
+  <img src="img/02_varianti_installazione.png" alt="Le due varianti installate" width="700">
+</p>
 
 *Figura 3 – Le due varianti installate, viste di fronte.* In entrambe valgono le stesse regole (pressacavo e feritoie in basso, antenna in alto, nessuna apertura sul lato esposto alla pioggia); cambia solo quale parete svolge ciascun ruolo.
 
@@ -195,7 +201,9 @@ Uno **slicer** è il programma che "affetta" il modello in strati e genera il **
 
 **1. Invia allo Slicer.** Il pulsante manda il modello direttamente a uno slicer (per esempio EasyPrint, lo slicer in cloud di Prusa). Si invia un corpo alla volta, scegliendo come *Faccia di stampa* il fondo esterno per la base e la faccia superiore della piastra per il coperchio.
 
-![Invia allo Slicer in SolidCraft](img/04_solidcraft_invia_slicer.png)
+<p align="center">
+  <img src="img/04_solidcraft_invia_slicer.png" alt="Invia allo Slicer in SolidCraft" width="700">
+</p>
 
 *Figura 4 – La base completa (variante A) pronta per la stampa.* Si riconoscono il pressacavo e le feritoie sulla parete frontale, le feritoie sulla destra, la paratia, le colonnine e le etichette sul fondo. Nella finestra: **Corpi** = cosa mandare allo slicer; **Faccia di stampa** = la faccia che andrà appoggiata sul piatto (qui il fondo esterno, che in questa vista sta sotto); **Slicer** = il programma che riceve il modello. Con due corpi selezionati serve una faccia diversa per ciascuno: meglio inviarli uno alla volta.
 
@@ -247,11 +255,15 @@ SolidCraft si avvia da Windows; il suo assistente lancia Claude Code dentro Ubun
 
 Funziona senza `bash -lc` perché `/usr/local/bin` è già nel PATH di base: `wsl.exe` trova l'adattatore anche senza caricare `~/.bashrc`.
 
-![Finestra Modifica agente](img/05_solidcraft_modifica_agente.png)
+<p align="center">
+  <img src="img/05_solidcraft_modifica_agente.png" alt="Finestra Modifica agente" width="550">
+</p>
 
 *Figura 5 – Dove si imposta l'agente.* **Nome** è solo un'etichetta; **Comando dell'agente** è il programma che SolidCraft avvia. La nota sotto il campo è la chiave: il programma parla su stdin e stdout e non passa da una shell, quindi niente porte e niente virgolette. L'opzione `--port 7878` è superflua.
 
-![Pannello Assistente](img/06_solidcraft_assistente.png)
+<p align="center">
+  <img src="img/06_solidcraft_assistente.png" alt="Pannello Assistente" width="350">
+</p>
 
 *Figura 6 – Il pannello Assistente.* In alto lo stato (**Non connesso** finché non si preme Connetti) e la scelta dell'agente. L'elenco "Non installato" mostra i comandi npm per gli adattatori ACP di tre agenti alternativi (Claude Code, Codex, Google Antigravity): ne serve uno solo, quello dell'agente che si usa, e il comando va eseguito nel terminale di Ubuntu, non in Windows. In basso la casella per i messaggi e le opzioni **Allega vista** e **Allega selezione**, che mandano all'agente l'immagine o gli elementi selezionati insieme alla richiesta.
 
