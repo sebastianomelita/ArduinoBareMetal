@@ -1,6 +1,6 @@
 # Lessico tecnico per contenitori elettronici
 
-*Documento collegato alla [dispensa del contenitore LoRaWAN](dispensa-contenitore-lorawan.md) · 6 novembre 2026*
+*Documento collegato alla [dispensa del contenitore LoRaWAN](dispensa-contenitore-lorawan.md) · Per esercitarsi: [Esercitazioni](esercitazioni-fogli-di-lavorazione.md) · 6 novembre 2026*
 
 ## Come si formula un'istruzione tecnica
 

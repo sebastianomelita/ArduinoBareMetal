@@ -15,7 +15,10 @@
 9. [Configurazione dell'assistente (ACP)](#9-configurazione-dellassistente-acp)
 10. [Appendice – Prompt per SolidCraft, variante A](#10-appendice--prompt-per-solidcraft-variante-a)
 
-**Documento collegato:** [Lessico tecnico per contenitori elettronici](lessico-tecnico-contenitori.md) – comandi CAD, nomi delle parti, quote e istruzioni tecniche.
+**Documenti collegati:**
+
+- [Lessico tecnico per contenitori elettronici](lessico-tecnico-contenitori.md) – comandi CAD, nomi delle parti, quote e istruzioni tecniche.
+- [Esercitazioni – Comporre un foglio di lavorazione per scatole](esercitazioni-fogli-di-lavorazione.md) – 6 esercizi risolti, di difficoltà crescente.
 
 ---
 
