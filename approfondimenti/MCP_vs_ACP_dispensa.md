@@ -18,6 +18,52 @@ Oggi, quando si parla di "ACP" nel contesto degli agenti di coding, si intende q
 
 ---
 
+## Prima di tutto: che cos'è un agente?
+
+### Definizione
+
+> Un **agente AI** è un sistema software in cui un **modello linguistico (LLM)** riceve un **obiettivo** e lo persegue **in autonomia**, decidendo da sé, passo dopo passo, quali **azioni** compiere (usando **strumenti**), osservandone i **risultati** e continuando finché l'obiettivo non è raggiunto o serve l'intervento di un umano.
+
+In una formula: **agente = modello + strumenti + ciclo decisionale + obiettivo**.
+
+### Il ciclo dell'agente
+
+<p align="center">
+  <img src="img/ciclo_agente.svg" alt="Il ciclo dell'agente: percepisce, ragiona, agisce, osserva e ripete finché l'obiettivo è raggiunto; l'utente supervisiona via ACP, gli strumenti sono raggiunti via MCP" width="720">
+</p>
+
+<p align="center"><em>Figura 1 — Il ciclo dell'agente. Il ciclo ragiona → agisce → osserva si ripete finché l'obiettivo è raggiunto; l'utente affida il compito e supervisiona (ACP), gli strumenti sono raggiunti tramite MCP.</em></p>
+
+### I componenti
+
+| Componente | Cosa fa | Esempio |
+|---|---|---|
+| **Modello (LLM)** | Il "cervello": interpreta, ragiona, decide | Claude, Gemini, GPT |
+| **Obiettivo** | Il compito da portare a termine | "Correggi il test che fallisce" |
+| **Strumenti (tool)** | Le "mani": permettono di agire sul mondo | leggere file, eseguire comandi, interrogare un DB |
+| **Memoria / contesto** | Ciò che l'agente sa in quel momento | cronologia, file aperti, risultati precedenti |
+| **Ciclo (loop)** | Ripete ragiona → agisce → osserva | più passi senza nuovi input dell'utente |
+| **Supervisione umana** | Permessi, approvazioni, interruzioni | "Posso eseguire `rm`?" → l'utente approva |
+
+### Agente vs chatbot vs workflow
+
+| | **Chatbot** | **Workflow automatizzato** | **Agente** |
+|---|---|---|---|
+| Chi decide i passi | Nessuno: una domanda, una risposta | Il programmatore, in anticipo | **Il modello**, durante l'esecuzione |
+| Usa strumenti | No (o al massimo uno) | Sì, in sequenza fissa | Sì, scelti dinamicamente |
+| Gestisce imprevisti | No | Solo quelli previsti | Sì, si adatta agli esiti |
+| Esempio | Risponde "come si scrive un for in Python?" | Pipeline fissa: riassumi → traduci → invia | Trova il bug, lo corregge, lancia i test, riprova se falliscono |
+
+### Perché serve per capire MCP e ACP
+
+Con questa definizione i due protocolli si collocano subito:
+
+- **MCP** standardizza le **mani** dell'agente: come accede agli *strumenti* e al *contesto*.
+- **ACP** standardizza la **postazione** dell'agente: come l'utente gli affida l'*obiettivo*, vede le sue azioni ed esercita la *supervisione* (permessi, diff, interruzioni) dall'editor.
+- **A2A** (sezione 5) standardizza i **colleghi**: come un agente delega compiti a *un altro agente*.
+
+---
+
 ## 1. L'idea in una frase
 
 - **MCP (Model Context Protocol)** → collega un **agente ai suoi strumenti e dati** (database, file, API, servizi).
