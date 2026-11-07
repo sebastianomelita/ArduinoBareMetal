@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 770 430" width="770" height="430" font-family="Helvetica, Arial, sans-serif">
+  <title>Il ciclo dell'agente AI</title>
+  <defs>
+    <marker id="freccia" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+    <marker id="frecciaViola" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7B6CD9"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="770" height="430" fill="#FFFFFF"/>
+
+  <!-- Utente / editor (ACP) -->
+  <rect x="20" y="30" width="170" height="62" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="105" y="56" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">Utente / editor</text>
+  <text x="105" y="76" text-anchor="middle" font-size="12" fill="#3B2F8F">via ACP</text>
+
+  <!-- 1. Percepisce -->
+  <rect x="20" y="175" width="150" height="70" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+  <text x="95" y="203" text-anchor="middle" font-size="15" font-weight="bold" fill="#1F3A8A">1. Percepisce</text>
+  <text x="95" y="224" text-anchor="middle" font-size="12" fill="#1F3A8A">obiettivo + contesto</text>
+
+  <!-- 2. Ragiona -->
+  <rect x="300" y="40" width="170" height="70" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="385" y="68" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">2. Ragiona</text>
+  <text x="385" y="89" text-anchor="middle" font-size="12" fill="#8A4B00">pianifica il passo successivo</text>
+
+  <!-- 3. Agisce -->
+  <rect x="430" y="250" width="170" height="70" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="515" y="278" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">3. Agisce</text>
+  <text x="515" y="299" text-anchor="middle" font-size="12" fill="#8A4B00">chiama uno strumento</text>
+
+  <!-- 4. Osserva -->
+  <rect x="170" y="250" width="170" height="70" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="255" y="278" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">4. Osserva</text>
+  <text x="255" y="299" text-anchor="middle" font-size="12" fill="#8A4B00">legge l'esito e si corregge</text>
+
+  <!-- Modello al centro -->
+  <circle cx="385" cy="195" r="42" fill="#FCE8D2" stroke="#E08A1E" stroke-width="2"/>
+  <text x="385" y="192" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">LLM</text>
+  <text x="385" y="210" text-anchor="middle" font-size="11" fill="#8A4B00">decide</text>
+
+  <!-- Risposta finale -->
+  <rect x="620" y="40" width="130" height="70" rx="10" fill="#E6F4EA" stroke="#2E8B57" stroke-width="2"/>
+  <text x="685" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#1E5E3A">Risposta</text>
+  <text x="685" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="#1E5E3A">finale</text>
+
+  <!-- Strumenti (MCP) -->
+  <rect x="470" y="360" width="180" height="55" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="560" y="384" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">Strumenti e dati</text>
+  <text x="560" y="403" text-anchor="middle" font-size="12" fill="#3B2F8F">via MCP</text>
+
+  <!-- Frecce -->
+  <!-- utente -> percepisce -->
+  <line x1="100" y1="92" x2="96" y2="172" stroke="#7B6CD9" stroke-width="2" marker-end="url(#frecciaViola)"/>
+  <text x="108" y="138" font-size="11" fill="#3B2F8F">affida il compito</text>
+
+  <!-- percepisce -> ragiona -->
+  <path d="M170,210 C235,210 240,75 297,75" fill="none" stroke="#444" stroke-width="2" marker-end="url(#freccia)"/>
+
+  <!-- ragiona -> agisce -->
+  <line x1="440" y1="110" x2="497" y2="247" stroke="#444" stroke-width="2" marker-end="url(#freccia)"/>
+  <!-- agisce -> osserva -->
+  <line x1="430" y1="285" x2="343" y2="285" stroke="#444" stroke-width="2" marker-end="url(#freccia)"/>
+  <!-- osserva -> ragiona -->
+  <line x1="270" y1="250" x2="328" y2="113" stroke="#444" stroke-width="2" marker-end="url(#freccia)"/>
+
+  <!-- ragiona -> risposta -->
+  <line x1="470" y1="75" x2="617" y2="75" stroke="#2E8B57" stroke-width="2" marker-end="url(#freccia)"/>
+  <text x="535" y="94" text-anchor="middle" font-size="11" fill="#1E5E3A">obiettivo raggiunto</text>
+
+  <!-- agisce <-> strumenti -->
+  <line x1="530" y1="322" x2="545" y2="357" stroke="#7B6CD9" stroke-width="2" stroke-dasharray="5 4" marker-start="url(#frecciaViola)" marker-end="url(#frecciaViola)"/>
+
+  <!-- supervisione: editor -> agisce (permessi) -->
+  <path d="M190,50 C300,5 600,5 600,120 L600,200 Q600,232 582,247" fill="none" stroke="#7B6CD9" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#frecciaViola)"/>
+  <text x="608" y="175" font-size="11" fill="#3B2F8F">approva /</text>
+  <text x="608" y="190" font-size="11" fill="#3B2F8F">interrompe</text>
+</svg>
