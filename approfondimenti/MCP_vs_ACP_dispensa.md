@@ -29,10 +29,10 @@ In una formula: **agente = modello + strumenti + ciclo decisionale + obiettivo**
 ### Il ciclo dell'agente
 
 <p align="center">
-  <img src="img/ciclo_agente.svg" alt="Il ciclo dell'agente: percepisce, ragiona, agisce, osserva e ripete finché l'obiettivo è raggiunto; l'utente supervisiona via ACP, gli strumenti sono raggiunti via MCP" width="720">
+  <img src="img/ciclo_agente.svg" alt="Il ciclo dell'agente: percepisce, ragiona, agisce, osserva e ripete finché l'obiettivo è raggiunto; l'utente supervisiona via ACP, gli strumenti sono raggiunti via MCP e le skill guidano le scelte del modello" width="720">
 </p>
 
-<p align="center"><em>Figura 1 — Il ciclo dell'agente. Il ciclo ragiona → agisce → osserva si ripete finché l'obiettivo è raggiunto; l'utente affida il compito e supervisiona (ACP), gli strumenti sono raggiunti tramite MCP.</em></p>
+<p align="center"><em>Figura 1 — Il ciclo dell'agente. Il ciclo ragiona → agisce → osserva si ripete finché l'obiettivo è raggiunto; l'utente affida il compito e supervisiona (ACP), gli strumenti sono raggiunti tramite MCP; le skill forniscono al modello le competenze per scegliere come agire.</em></p>
 
 ### I componenti
 
@@ -61,6 +61,65 @@ Con questa definizione i due protocolli si collocano subito:
 - **MCP** standardizza le **mani** dell'agente: come accede agli *strumenti* e al *contesto*.
 - **ACP** standardizza la **postazione** dell'agente: come l'utente gli affida l'*obiettivo*, vede le sue azioni ed esercita la *supervisione* (permessi, diff, interruzioni) dall'editor.
 - **A2A** (sezione 5) standardizza i **colleghi**: come un agente delega compiti a *un altro agente*.
+
+### E le skill?
+
+Accanto agli strumenti, un agente ha bisogno di **sapere come usarli bene**. A questo servono le skill.
+
+> Una **skill** (*Agent Skill*) è un **pacchetto di istruzioni e conoscenze riutilizzabili** che insegna a un agente a svolgere un certo tipo di compito: procedure, convenzioni, esempi e, se servono, script e file di supporto. L'agente la **carica solo quando il compito la richiede** [15].
+
+È un **concetto generico**, non legato a un solo prodotto. Nata in Claude, è stata pubblicata da Anthropic come **standard aperto** il 18 dicembre 2025 (specifica su agentskills.io) ed è adottata da molti agenti: Claude Code, Codex CLI, Gemini CLI, GitHub Copilot, Cursor, VS Code e altri [15][16].
+
+#### Com'è fatta
+
+Una skill è semplicemente una **cartella** [15][16]:
+
+```
+nome-skill/
+├── SKILL.md        ← obbligatorio: intestazione YAML (name, description) + istruzioni in Markdown
+├── scripts/        ← facoltativo: script eseguibili (Python, Bash, JS)
+├── references/     ← facoltativo: documentazione di approfondimento
+└── assets/         ← facoltativo: modelli, schemi, dati
+```
+
+Esempio minimo di `SKILL.md`:
+
+```markdown
+---
+name: modellazione-contenitori
+description: Usala quando l'utente chiede di modellare un contenitore stampabile in 3D (base + coperchio).
+---
+# Modellare un contenitore
+1. Crea la base come corpo separato chiamato "Base".
+2. Usa uno spessore di parete di almeno 2 mm.
+3. Dopo ogni blocco di lavorazioni, fai uno screenshot e verifica le misure.
+```
+
+#### Caricamento progressivo (*progressive disclosure*)
+
+Il punto chiave delle skill è che **non riempiono il contesto del modello** [15]:
+
+1. **All'avvio** l'agente legge solo `name` e `description` di ogni skill (poche decine di token ciascuna).
+2. **Quando un compito corrisponde** alla descrizione, carica il testo completo di `SKILL.md`.
+3. **Solo se servono**, apre i file in `references/` o esegue gli `scripts/`.
+
+Per questo la `description` è la parte più importante: è ciò che l'agente usa per decidere se attivare la skill.
+
+#### Skill vs tool MCP
+
+| | **Tool MCP** | **Skill** |
+|---|---|---|
+| Cos'è | Una **capacità**: una funzione che l'agente può invocare | Una **competenza**: istruzioni su *come* e *quando* fare le cose |
+| Dove gira | In un server esterno (processo separato) | Dentro il contesto dell'agente (testo + eventuali script locali) |
+| Formato | Server che parla JSON-RPC | Cartella con `SKILL.md` |
+| Metafora | Le **mani** (gli attrezzi) | Il **manuale di mestiere** (come usare gli attrezzi) |
+| Esempio | `execute("extrude", …)` | "Per un contenitore: prima la base, poi il coperchio, controlla con uno screenshot" |
+
+Le due cose si **combinano**: la skill dice all'agente *quale sequenza di tool* usare e con quali convenzioni; il tool MCP esegue materialmente l'azione.
+
+> **Esempio concreto — SolidCraft.** Il CAD SolidCraft espone i suoi comandi tramite un server MCP (`execute`, `batch`, `screenshot`, `export`...) e affianca una skill, `skills/solidcraft-modeling/reference.md`, che documenta parametri, convenzioni di nome ed espressioni: l'MCP dà all'agente la *possibilità* di modellare, la skill gli insegna a *farlo correttamente* [17].
+
+In sintesi, completando la formula di prima: **agente = modello + strumenti (MCP) + competenze (skill) + ciclo decisionale + obiettivo**, ospitato in un'interfaccia (ACP).
 
 ---
 
@@ -176,6 +235,51 @@ Sono **complementari e componibili**. Esempio tipico:
 
 Anzi, ACP prevede che l'editor possa **passare all'agente la configurazione dei server MCP** dell'utente: i due protocolli sono pensati per incastrarsi [3].
 
+### Caso di studio: SolidCraft (chat, prodotto software e agente)
+
+**SolidCraft** è un CAD 3D open source con una chat in cui si può collegare un agente esterno (Claude Code, Antigravity, Codex...). È un ottimo esempio perché **lo stesso programma ricopre due ruoli** [17][18]:
+
+- **client ACP**: la chat avvia l'agente come sottoprocesso e gli parla via ACP;
+- **server MCP**: il motore CAD espone i suoi comandi (`list_commands`, `execute`, `batch`, `inspect_design`, `screenshot`, `export`...) tramite il server `solidcraft-cli mcp --connect`, che SolidCraft passa all'agente all'apertura della sessione (`session/new`).
+
+L'agente, dunque, non "sa disegnare": riceve il prompt dalla chat (ACP), chiede al modello cosa fare (API del vendor) e **richiama SolidCraft** per eseguire le operazioni (MCP). Il cerchio si chiude sullo stesso prodotto.
+
+<p align="center">
+  <img src="img/solidcraft_sequenza.svg" alt="Diagramma di sequenza: l'utente scrive nella chat di SolidCraft, la chat inoltra il prompt all'agente via ACP, l'agente consulta il modello via API, chiama il motore CAD di SolidCraft via MCP, il gate chiede l'approvazione all'utente, il risultato torna all'agente e infine alla chat" width="820">
+</p>
+
+<p align="center"><em>Figura 2 — Un turno di conversazione in SolidCraft (semplificato da [17]). Blu: ACP; arancio: API del modello; viola: MCP; grigio: utente.</em></p>
+
+**Lettura passo per passo**
+
+| Passi | Chi parla con chi | Protocollo | Cosa succede |
+|---|---|---|---|
+| 1 | Utente → chat | — | L'utente scrive la richiesta nel pannello di SolidCraft |
+| 2 | Chat → agente | **ACP** | La chat inoltra il prompt (`session/prompt`) |
+| 3–4 | Agente ↔ modello | **API del vendor** | L'agente manda prompt, elenco dei tool e skill; il modello decide quale tool chiamare |
+| 5 | Agente → motore CAD | **MCP** | L'agente invoca il tool (es. `execute` con un'estrusione) |
+| 6–7 | Motore (gate) ↔ utente | — | Il controllo permessi (`gate.rs`) chiede conferma se la modalità è *Ask* (le altre sono *Edits* e *All*) |
+| 8 | Motore → agente | **MCP** | Il risultato torna all'agente, eventualmente con uno screenshot |
+| 9–10 | Agente ↔ modello | **API del vendor** | Il modello valuta l'esito: nuovo tool (si ripete il ciclo) o risposta finale |
+| 11–12 | Agente → chat → utente | **ACP** | Messaggi, `tool_call` e fine turno arrivano in streaming; la chat aggiorna conversazione e vista 3D |
+
+**Cosa notare**
+
+- I passi 3–10 sono il **ciclo dell'agente** della Figura 1: ragiona (3–4), agisce (5), osserva (8–9).
+- Nell'inizializzazione ACP SolidCraft **non concede all'agente accesso diretto a file system e terminale**: ogni modifica al modello passa per MCP, quindi per il gate dei permessi [17].
+- La **skill** `solidcraft-modeling` insegna all'agente parametri e convenzioni dei comandi: senza, l'agente avrebbe i tool ma non saprebbe usarli bene [17].
+- Il **modello** (Gemini, Claude...) non parla mai direttamente con SolidCraft: tutto passa per il programma agente.
+
+> **Nota — dove nasce la richiesta di permesso.** Nella figura, come nel diagramma originale di SolidCraft [17], la richiesta di approvazione (passi 6–7) parte dal **gate del motore CAD**, cioè dal lato MCP: è SolidCraft a controllare ogni tool call prima di eseguirla. Nella **specifica ACP generica**, invece, è l'**agente** a chiedere il permesso al client prima di un'azione delicata, con il metodo `session/request_permission`: la chat mostra la richiesta e restituisce la scelta dell'utente (consenti una volta, consenti sempre, rifiuta) [3].
+>
+> | | Permesso via ACP (generico) | Permesso via gate MCP (SolidCraft) |
+> |---|---|---|
+> | Chi decide di chiedere | L'agente | Il prodotto che esegue il tool |
+> | Messaggio | `session/request_permission` (agente → client) | Controllo interno (`gate.rs`) prima dell'esecuzione |
+> | Vantaggio | Funziona con qualsiasi editor ACP | Il controllo non dipende dalla "buona volontà" dell'agente |
+>
+> I due meccanismi non si escludono: un prodotto può usarli entrambi. Il gate lato esecuzione è però la difesa più robusta, perché si applica anche a un agente che non chiede il permesso.
+
 ---
 
 ## 5. E l'ACP di IBM (Agent Communication Protocol)?
@@ -232,6 +336,7 @@ Ogni protocollo possiede **un confine** [5][9]:
 3. Ruoli **invertiti**: in MCP l'agente è *client*; in ACP l'agente è *server/agent* e l'editor è *client*.
 4. Entrambi usano **JSON-RPC 2.0**, ma risolvono problemi diversi e **si usano insieme**.
 5. **ACP di IBM ≠ ACP di Zed**: quello di IBM era agente-agente ed è confluito in **A2A**.
+6. **Skill = manuale di mestiere dell'agente**: istruzioni riutilizzabili (standard aperto `SKILL.md`), caricate solo quando servono; non sono un protocollo ma si combinano con i tool MCP.
 
 ---
 
@@ -255,5 +360,9 @@ I numeri tra parentesi quadre nel testo rimandano a questo elenco.
 | [12] | Tessl — [*Zed debuts Agent Client Protocol*](https://tessl.io/blog/zed-debuts-agent-client-protocol-to-connect-ai-coding-agents-to-any-editor/) (set 2025) | Articolo |
 | [13] | Morph — [*What Is the Agent Client Protocol?*](https://www.morphllm.com/agent-client-protocol) (adozione per agente/editor) | Analisi |
 | [14] | Olostep — [*A2A Protocol (Agent2Agent)*](https://www.olostep.com/blog/a2a-protocol-agent2agent) (timeline A2A) | Articolo |
+| [15] | Firecrawl — [*Agent Skills Explained: How SKILL.md Files Work*](https://www.firecrawl.dev/blog/agent-skills) | Articolo |
+| [16] | [*Agent Skills* — specifica aperta](https://agentskills.io) | Specifica |
+| [17] | DeepWiki — [*SolidCraft: In-App Agent Chat and Skills*](https://deepwiki.com/tangency-labs/solidcraft/7.3-in-app-agent-chat-and-skills) | Documentazione |
+| [18] | DeepWiki — [*SolidCraft: Automation and Agent Integration*](https://deepwiki.com/tangency-labs/solidcraft/7-automation-and-agent-integration) | Documentazione |
 
 *Ultima consultazione delle fonti: 7 novembre 2026.*
