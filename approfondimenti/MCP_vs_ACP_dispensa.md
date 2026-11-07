@@ -567,15 +567,117 @@ Gli strumenti si distinguono per **dove gira l'agente** e **come si interagisce 
 4. **Verifica**: l'agente esegue test e controlli; l'umano rilegge i diff.
 5. **Consegna**: commit o pull request, con una revisione umana prima dell'unione.
 
+### Come rivedere il codice generato
+
+Rivedere non significa per forza leggere tutto riga per riga: conviene una **revisione proporzionata al rischio**, attenta dove un errore costa caro e più rapida dove il codice è ripetitivo.
+
+1. **Rivedere il piano prima del codice.** Chiedere all'agente un piano e correggerlo lì: un approccio sbagliato costa molto più di una riga sbagliata, e un piano si legge in pochi minuti.
+2. **Leggere il diff, non i file.** Guardare solo ciò che è cambiato (nell'editor via ACP o nella pull request), verificando prima di tutto che le modifiche **restino nel perimetro** del compito.
+3. **Usare i test come primo revisore, ma rivedere i test.** I test controllano il comportamento meglio dell'occhio umano; ma l'errore tipico di un agente è **modificare o indebolire un test pur di farlo passare**, quindi le modifiche ai test vanno lette con più attenzione del resto.
+4. **Riga per riga solo dove serve** (tabella sotto).
+5. **Valutare la forma, non solo la correttezza.** La soluzione è proporzionata al problema? Duplica codice esistente? Segue le convenzioni del progetto? Lasciato solo, un agente tende a produrre codice gonfio e fragile [28].
+6. **Farsi aiutare senza delegare la responsabilità.** Chiedere all'agente un riassunto delle modifiche e confrontarlo con il diff; usare un **secondo agente o modello come revisore**, partendo da un contesto pulito; **provare di persona** il risultato.
+7. **Rendere possibile la revisione.** Diff piccoli si leggono davvero: per questo SolidCraft impone **una PR = un solo argomento** [27].
+
+| Livello di attenzione | Dove |
+|---|---|
+| **Riga per riga** | Sicurezza e permessi, cancellazione o migrazione di dati, concorrenza, calcoli critici (in un CAD: geometria, unità di misura), interfacce pubbliche |
+| **Lettura attenta** | Logica applicativa nuova, gestione degli errori |
+| **Scorsa veloce** | Codice ripetitivo, formattazione, documentazione, codice che segue uno schema già presente |
+
+**Errori tipici degli agenti da cercare nel diff**
+
+- test modificati o indeboliti per farli passare;
+- errori "silenziati" (eccezioni catturate e ignorate);
+- funzioni o librerie inventate, dipendenze aggiunte senza motivo;
+- valori scritti a mano dove serviva un parametro;
+- codice morto o duplicato;
+- modifiche fuori dal compito richiesto.
+
+> **La regola di fondo:** la responsabilità del codice resta di **chi lo approva**. La revisione non deve essere più lunga, deve essere **mirata**.
+
+### Un esempio reale: il workflow Git di SolidCraft
+
+Il flusso appena descritto è una **pratica consolidata**, non uno standard formale: è il classico ciclo *branch → commit → pull request → CI → revisione* già usato tra persone, con l'agente al posto di chi scrive il codice [26]. Gli elementi standardizzati stanno *intorno* al flusso: il file **AGENTS.md** (una convenzione aperta letta da molti agenti, che spiega all'agente comandi di build, test e regole del progetto), le skill e MCP.
+
+SolidCraft ne è un esempio concreto e rigoroso: il suo `AGENTS.md` si rivolge esplicitamente ai *coding agent* e prescrive un flusso preciso [27].
+
+<p align="center">
+  <img src="img/workflow_git_solidcraft.svg" alt="Workflow Git di SolidCraft: issue, prenotazione con branch, commit vuoto claim e PR in bozza, lavoro dell'agente con cargo xtask ci prima di ogni commit, push e CI con ritorno in caso di CI rossa, prove con screenshot, squash merge su main" width="760">
+</p>
+
+<p align="center"><em>Figura 7 — Il workflow Git per agenti prescritto dall'AGENTS.md di SolidCraft.</em></p>
+
+| Fase | Regola in SolidCraft [27] |
+|---|---|
+| **Inizio sessione** | Leggere lo stato del progetto, il compito e la parte rilevante dell'architettura (cartella `plan/`, locale e mai committata) |
+| **Prenotare il lavoro** | Verificare che non ci siano già PR aperte sulla issue; branch dall'ultimo `origin/main`, commit vuoto `claim: #N`, PR in bozza `<sintesi> (#N)`. Se due PR insistono sulla stessa issue, **vince quella col numero più basso** |
+| **Qualità** | `cargo xtask ci` (formattazione, clippy, test, controlli sui livelli) **prima di ogni commit** |
+| **Pull request** | **Un solo argomento per PR**; *squash merge* quando la CI è verde |
+| **Allineamento** | Niente push solo per aggiornarsi; in caso di conflitto rebase su `main` e `--force-with-lease`; **mai** force-push su `main` |
+| **Prove** | Le modifiche visibili richiedono screenshot o brevi registrazioni |
+| **Mai committare** | `plan/`, cartelle di build, dati di riferimento generati |
+
+**Cosa notare**
+
+- Alcune regole sono pensate per **più agenti in parallelo**: il commit `claim: #N` e la regola "vince la PR col numero più basso" evitano che due agenti risolvano la stessa issue.
+- Per verificare il lavoro sull'interfaccia, gli agenti avviano SolidCraft con `--control PORT`, lo pilotano via JSON sulla porta locale e usano `ui.screenshot`: la **stessa infrastruttura di controllo** usata dal server MCP per gli agenti che *usano* SolidCraft. Lo stesso programma è **costruito** da agenti e **usato** da agenti: i due sensi di "programmazione agentica" nello stesso progetto.
+- `AGENTS.md` contiene anche **regole clean-room**: niente codice, icone o testi copiati da altri CAD, nessuna lettura di codice GPL (OpenCASCADE, FreeCAD); FreeCAD si può usare solo come programma esterno per calcolare valori di riferimento [27].
+
 ### Rischi da tenere presenti
 
 | Rischio | Come mitigarlo |
 |---|---|
-| Codice accettato senza rileggerlo | Rivedere sempre i diff; test automatici obbligatori |
+| Codice accettato senza rileggerlo | Revisione proporzionata al rischio (vedi "Come rivedere il codice generato"); test automatici obbligatori |
 | Azioni distruttive (cancellazioni, comandi pericolosi) | Modalità a permessi; lavorare su un branch o in una sandbox |
 | Costi in token che crescono | Vedi "Quanto costa il contesto": contesto snello, caching, chat brevi |
 | Dati riservati inviati al fornitore del modello | Sapere dove vive il contesto; modelli locali per i dati sensibili |
 | Dipendenza da un solo fornitore | Preferire strumenti liberi e standard aperti (MCP, ACP, skill) |
+
+### Il punto di vista di un programmatore esperto: antirez
+
+**Salvatore Sanfilippo** (*antirez*), il creatore di Redis, ha raccontato in due articoli molto letti come è cambiato il suo modo di programmare con l'AI. Sono utili perché mostrano un'**evoluzione**, non una posizione fissa.
+
+**Estate 2025 — "Coding with LLMs in the summer of 2025"** [28][30]
+
+- L'AI può scrivere parti di codice, ma **sotto stretta supervisione**: lasciata sola su obiettivi complessi produce codice gonfio, fragile e mal progettato.
+- Evitare il *vibe coding* puro su compiti non banali; usare l'AI per **revisione del codice, prototipi esplorativi, progettazione a due e parti di codice con specifiche chiare**.
+- **Dare molto contesto**: articoli di riferimento, ampie parti del codice, una descrizione dettagliata di come si è capito il problema, senza però saturare la finestra di contesto.
+- Diffidare degli strumenti che **gestiscono il contesto in modo nascosto** (compresi gli editor con agenti integrati): preferiva incollare in una chat esattamente ciò che serve.
+
+**Gennaio 2026 — "Don't fall into the anti-AI hype"** [29]
+
+- Racconta di aver completato in una settimana, soprattutto con **Claude Code**, lavori che a mano avrebbero richiesto settimane: per esempio la correzione di un deadlock intermittente nei test di Redis e la riscrittura del nucleo di Redis Streams a partire da un documento di progetto.
+- Gran parte del suo tempo è passata a **rivedere e approvare** le modifiche generate.
+- Consigli: non giudicare l'AI da qualche prova banale; usarla **per settimane su progetti reali**; diventare bravi a **rivedere il codice generato**; investire nei **test automatici**; spostarsi verso la **definizione dei problemi e la progettazione**.
+
+> **La lezione per la dispensa.** Le due posizioni non si contraddicono: in pochi mesi gli agenti sono diventati abbastanza capaci da reggere compiti medi, ma i principi restano gli stessi. **Supervisione umana, contesto curato, test e revisione**: esattamente ciò che il workflow di SolidCraft trasforma in regole scritte.
+
+### Per approfondire: corsi, guide e letture
+
+**Corsi (gratuiti)**
+
+- DeepLearning.AI — [*Claude Code: A Highly Agentic Coding Assistant*](https://learn.deeplearning.ai/courses/claude-code-a-highly-agentic-coding-assistant/information): corso breve (circa 2 ore) sulla programmazione agentica con Claude Code.
+- Anthropic Academy — [corsi gratuiti su Claude Code, API, MCP e Agent Skills](https://anthropic.skilljar.com) (panoramica in italiano: [articolo di P. Pillitteri](https://pasqualepillitteri.it/en/news/371/anthropic-academy-free-courses-claude)).
+- Hugging Face — [*AI Agents Course*](https://huggingface.co/learn/agents-course): corso aperto sugli agenti, dai fondamenti ai framework.
+
+**Guide dei produttori**
+
+- Anthropic — [*Claude Code: Best practices for agentic coding*](https://www.anthropic.com/engineering/claude-code-best-practices).
+- Anthropic — [*Building effective agents*](https://www.anthropic.com/research/building-effective-agents): quando serve davvero un agente e quali schemi usare.
+- OpenAI — [*A practical guide to building agents*](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf).
+- [AGENTS.md](https://agents.md): la convenzione per scrivere le istruzioni di progetto per gli agenti.
+
+**Libri e blog**
+
+- Addy Osmani — [*Beyond Vibe Coding*](https://www.oreilly.com/library/view/beyond-vibe-coding/9798341634749) (O'Reilly): dal "vibe coding" a un uso professionale dell'AI nello sviluppo.
+- antirez — [*Coding with LLMs in the summer of 2025*](https://antirez.com/news/154) e [*Don't fall into the anti-AI hype*](https://antirez.com/news/158).
+- Simon Willison — [weblog](https://simonwillison.net): uno dei diari più seguiti sull'uso pratico degli LLM per programmare.
+- Ultralytics — [*Agentic coding* (glossario, in italiano)](https://www.ultralytics.com/it/glossary/agentic-coding): definizione sintetica e flusso generale.
+
+**Un esempio reale da studiare**
+
+- [L'AGENTS.md di SolidCraft](https://raw.githubusercontent.com/tangency-labs/solidcraft/master/AGENTS.md): regole complete per agenti che sviluppano un progetto open source.
 
 ---
 
@@ -631,5 +733,10 @@ I numeri tra parentesi quadre nel testo rimandano a questo elenco.
 | [23] | DEV Community — [*Devin vs Cursor in 2026: Windsurf is now Devin Desktop*](https://dev.to/hassann/devin-vs-cursor-in-2026-windsurf-is-now-devin-desktop-ajo) | Articolo |
 | [24] | Cursor docs — [*CLI: ACP*](https://techdevnotes.com/releases/cursor-docs/20260626-202020Z-6c7064724f5e/content/pages/cli/acp.txt) (copia di giugno 2026) | Documentazione |
 | [25] | Google AI Mode — [sintesi sugli strumenti di programmazione agentica](https://share.google/aimode/Np6ulCXesw6kNicB6) (classificazione in quattro famiglie) | Sintesi AI |
+| [26] | Ultralytics — [*Agentic coding* (glossario)](https://www.ultralytics.com/it/glossary/agentic-coding) (21 mag 2026) | Glossario |
+| [27] | SolidCraft — [*AGENTS.md*](https://raw.githubusercontent.com/tangency-labs/solidcraft/master/AGENTS.md) | Documentazione |
+| [28] | antirez — [*Coding with LLMs in the summer of 2025*](https://antirez.com/news/154) | Blog |
+| [29] | antirez — [*Don't fall into the anti-AI hype*](https://antirez.com/news/158) (12 gen 2026) | Blog |
+| [30] | S. Willison — [sintesi del post di antirez](https://simonwillison.net/2025/Jul/21/coding-with-llms/) (21 lug 2025) | Blog |
 
 *Ultima consultazione delle fonti: 7 novembre 2026.*
