@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" width="820" height="340" font-family="Helvetica, Arial, sans-serif">
+  <title>I ruoli dell'agente: lato agent ACP, client MCP, client API</title>
+  <defs>
+    <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A6FD6"/></marker>
+    <marker id="mv" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7B6CD9"/></marker>
+    <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E08A1E"/></marker>
+  </defs>
+  <rect width="820" height="340" fill="#FFFFFF"/>
+
+  <!-- Contenitore SolidCraft -->
+  <rect x="20" y="20" width="240" height="300" rx="14" fill="#FAFAFA" stroke="#999" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="140" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#444">SolidCraft</text>
+  <text x="140" y="58" text-anchor="middle" font-size="11" fill="#777">(un solo programma)</text>
+
+  <!-- Chat -->
+  <rect x="40" y="72" width="200" height="82" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+  <text x="140" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#1F3A8A">Chat (pannello)</text>
+  <rect x="85" y="110" width="110" height="26" rx="13" fill="#4A6FD6"/>
+  <text x="140" y="128" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">client ACP</text>
+
+  <!-- Motore -->
+  <rect x="40" y="218" width="200" height="82" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+  <text x="140" y="244" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">Motore CAD</text>
+  <rect x="85" y="256" width="110" height="26" rx="13" fill="#7B6CD9"/>
+  <text x="140" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">server MCP</text>
+
+  <!-- Agente -->
+  <rect x="340" y="80" width="210" height="190" rx="12" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="445" y="106" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">Agente</text>
+  <text x="445" y="123" text-anchor="middle" font-size="11" fill="#8A4B00">es. agy_acp_server</text>
+  <rect x="380" y="138" width="130" height="26" rx="13" fill="#4A6FD6"/>
+  <text x="445" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">lato agent ACP</text>
+  <rect x="380" y="176" width="130" height="26" rx="13" fill="#E08A1E"/>
+  <text x="445" y="194" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">client API</text>
+  <rect x="380" y="214" width="130" height="26" rx="13" fill="#7B6CD9"/>
+  <text x="445" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">client MCP</text>
+
+  <!-- Modello -->
+  <rect x="620" y="140" width="180" height="76" rx="10" fill="#FCE8D2" stroke="#E08A1E" stroke-width="2"/>
+  <text x="710" y="166" text-anchor="middle" font-size="14" font-weight="bold" fill="#8A4B00">Modello LLM</text>
+  <text x="710" y="184" text-anchor="middle" font-size="11" fill="#8A4B00">Gemini / Claude</text>
+  <text x="710" y="200" text-anchor="middle" font-size="11" fill="#8A4B00">(server del vendor)</text>
+
+  <!-- Frecce -->
+  <line x1="243" y1="120" x2="337" y2="150" stroke="#4A6FD6" stroke-width="2.5" marker-start="url(#mb)" marker-end="url(#mb)"/>
+  <text x="290" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="#4A6FD6">ACP</text>
+
+  <line x1="243" y1="262" x2="337" y2="228" stroke="#7B6CD9" stroke-width="2.5" marker-start="url(#mv)" marker-end="url(#mv)"/>
+  <text x="290" y="266" text-anchor="middle" font-size="12" font-weight="bold" fill="#7B6CD9">MCP</text>
+
+  <line x1="553" y1="189" x2="617" y2="189" stroke="#E08A1E" stroke-width="2.5" marker-start="url(#mo)" marker-end="url(#mo)"/>
+  <text x="585" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#E08A1E">API</text>
+
+  <text x="445" y="300" text-anchor="middle" font-size="12" font-style="italic" fill="#555">un intermediario con tre ruoli</text>
+</svg>

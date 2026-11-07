@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" width="820" height="380" font-family="Helvetica, Arial, sans-serif">
+  <title>Lo stack dei protocolli agentici</title>
+  <defs>
+    <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A6FD6"/></marker>
+    <marker id="mv" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7B6CD9"/></marker>
+    <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2E8B57"/></marker>
+    <marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+  </defs>
+  <rect width="820" height="380" fill="#FFFFFF"/>
+
+  <!-- Interfacce -->
+  <rect x="20" y="150" width="170" height="64" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+  <text x="105" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="#1F3A8A">Editor / IDE</text>
+  <text x="105" y="197" text-anchor="middle" font-size="11" fill="#1F3A8A">Zed, JetBrains, SolidCraft…</text>
+
+  <rect x="250" y="20" width="170" height="64" rx="10" fill="#F2F2F2" stroke="#555" stroke-width="2"/>
+  <text x="335" y="48" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">App web / UI</text>
+  <text x="335" y="67" text-anchor="middle" font-size="11" fill="#333">interfaccia utente</text>
+
+  <!-- Agenti -->
+  <rect x="250" y="150" width="170" height="64" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="335" y="187" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">Agente A</text>
+
+  <rect x="610" y="150" width="170" height="64" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="695" y="179" text-anchor="middle" font-size="15" font-weight="bold" fill="#8A4B00">Agente B</text>
+  <text x="695" y="198" text-anchor="middle" font-size="11" fill="#8A4B00">anche di un altro vendor</text>
+
+  <!-- Tool -->
+  <rect x="250" y="290" width="170" height="64" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+  <text x="335" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">Tool / dati</text>
+  <text x="335" y="337" text-anchor="middle" font-size="11" fill="#3B2F8F">dell'agente A</text>
+
+  <rect x="610" y="290" width="170" height="64" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+  <text x="695" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">Tool / dati</text>
+  <text x="695" y="337" text-anchor="middle" font-size="11" fill="#3B2F8F">dell'agente B</text>
+
+  <!-- Frecce -->
+  <line x1="193" y1="182" x2="247" y2="182" stroke="#4A6FD6" stroke-width="2.5" marker-start="url(#mb)" marker-end="url(#mb)"/>
+  <text x="220" y="173" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6FD6">ACP</text>
+
+  <line x1="335" y1="87" x2="335" y2="147" stroke="#555" stroke-width="2.5" marker-start="url(#mk)" marker-end="url(#mk)"/>
+  <text x="345" y="122" font-size="13" font-weight="bold" fill="#555">AG-UI</text>
+
+  <line x1="423" y1="182" x2="607" y2="182" stroke="#2E8B57" stroke-width="2.5" marker-start="url(#mg)" marker-end="url(#mg)"/>
+  <text x="515" y="173" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E8B57">A2A</text>
+  <text x="515" y="202" text-anchor="middle" font-size="11" fill="#2E8B57">(ex ACP di IBM)</text>
+
+  <line x1="335" y1="217" x2="335" y2="287" stroke="#7B6CD9" stroke-width="2.5" marker-start="url(#mv)" marker-end="url(#mv)"/>
+  <text x="345" y="256" font-size="13" font-weight="bold" fill="#7B6CD9">MCP</text>
+  <line x1="695" y1="217" x2="695" y2="287" stroke="#7B6CD9" stroke-width="2.5" marker-start="url(#mv)" marker-end="url(#mv)"/>
+  <text x="705" y="256" font-size="13" font-weight="bold" fill="#7B6CD9">MCP</text>
+
+</svg>

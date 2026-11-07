@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 220" width="820" height="220" font-family="Helvetica, Arial, sans-serif">
+  <title>ACP e MCP: due livelli diversi</title>
+  <defs>
+    <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A6FD6"/></marker>
+    <marker id="mv" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7B6CD9"/></marker>
+  </defs>
+  <rect width="820" height="220" fill="#FFFFFF"/>
+
+  <rect x="20" y="30" width="220" height="110" rx="12" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+  <text x="130" y="60" text-anchor="middle" font-size="16" font-weight="bold" fill="#1F3A8A">Editor / IDE</text>
+  <text x="130" y="80" text-anchor="middle" font-size="12" fill="#1F3A8A">Zed, IntelliJ, Neovim, SolidCraft…</text>
+  <rect x="75" y="98" width="110" height="26" rx="13" fill="#4A6FD6"/>
+  <text x="130" y="116" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">client ACP</text>
+
+  <rect x="300" y="30" width="220" height="110" rx="12" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="410" y="60" text-anchor="middle" font-size="16" font-weight="bold" fill="#8A4B00">Agente AI</text>
+  <text x="410" y="80" text-anchor="middle" font-size="12" fill="#8A4B00">Claude Code, Gemini CLI…</text>
+  <rect x="320" y="98" width="86" height="26" rx="13" fill="#4A6FD6"/>
+  <text x="363" y="116" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">agent ACP</text>
+  <rect x="414" y="98" width="86" height="26" rx="13" fill="#7B6CD9"/>
+  <text x="457" y="116" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">client MCP</text>
+
+  <rect x="580" y="30" width="220" height="110" rx="12" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+  <text x="690" y="60" text-anchor="middle" font-size="16" font-weight="bold" fill="#3B2F8F">Tool / dati</text>
+  <text x="690" y="80" text-anchor="middle" font-size="12" fill="#3B2F8F">DB, GitHub, file system, API…</text>
+  <rect x="635" y="98" width="110" height="26" rx="13" fill="#7B6CD9"/>
+  <text x="690" y="116" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">server MCP</text>
+
+  <line x1="243" y1="85" x2="297" y2="85" stroke="#4A6FD6" stroke-width="2.5" marker-start="url(#mb)" marker-end="url(#mb)"/>
+  <text x="270" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6FD6">ACP</text>
+  <line x1="523" y1="85" x2="577" y2="85" stroke="#7B6CD9" stroke-width="2.5" marker-start="url(#mv)" marker-end="url(#mv)"/>
+  <text x="550" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#7B6CD9">MCP</text>
+
+  <text x="130" y="175" text-anchor="middle" font-size="13" font-style="italic" fill="#444">dove vive l'agente</text>
+  <text x="410" y="175" text-anchor="middle" font-size="13" font-style="italic" fill="#444">chi ragiona e agisce</text>
+  <text x="690" y="175" text-anchor="middle" font-size="13" font-style="italic" fill="#444">con cosa lavora</text>
+</svg>
