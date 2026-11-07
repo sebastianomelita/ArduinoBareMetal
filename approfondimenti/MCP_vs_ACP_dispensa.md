@@ -18,9 +18,9 @@ Oggi, quando si parla di "ACP" nel contesto degli agenti di coding, si intende q
 
 ---
 
-## Prima di tutto: che cos'è un agente?
+## Prima di tutto: agente, skill e contesto
 
-### Definizione
+### Che cos'è un agente?
 
 > Un **agente AI** è un sistema software in cui un **modello linguistico (LLM)** riceve un **obiettivo** e lo persegue **in autonomia**, decidendo da sé, passo dopo passo, quali **azioni** compiere (usando **strumenti**), osservandone i **risultati** e continuando finché l'obiettivo non è raggiunto o serve l'intervento di un umano.
 
@@ -41,7 +41,7 @@ In una formula: **agente = modello + strumenti + ciclo decisionale + obiettivo**
 | **Modello (LLM)** | Il "cervello": interpreta, ragiona, decide | Claude, Gemini, GPT |
 | **Obiettivo** | Il compito da portare a termine | "Correggi il test che fallisce" |
 | **Strumenti (tool)** | Le "mani": permettono di agire sul mondo | leggere file, eseguire comandi, interrogare un DB |
-| **Memoria / contesto** | Ciò che l'agente sa in quel momento | cronologia, file aperti, risultati precedenti |
+| **Contesto** | Ciò che il modello vede a ogni chiamata (vedi "E il contesto?") | cronologia, file aperti, risultati precedenti |
 | **Ciclo (loop)** | Ripete ragiona → agisce → osserva | più passi senza nuovi input dell'utente |
 | **Supervisione umana** | Permessi, approvazioni, interruzioni | "Posso eseguire `rm`?" → l'utente approva |
 
@@ -120,6 +120,100 @@ Le due cose si **combinano**: la skill dice all'agente *quale sequenza di tool* 
 > **Esempio concreto — SolidCraft.** Il CAD SolidCraft espone i suoi comandi tramite un server MCP (`execute`, `batch`, `screenshot`, `export`...) e affianca una skill, `skills/solidcraft-modeling/reference.md`, che documenta parametri, convenzioni di nome ed espressioni: l'MCP dà all'agente la *possibilità* di modellare, la skill gli insegna a *farlo correttamente* [17].
 
 In sintesi, completando la formula di prima: **agente = modello + strumenti (MCP) + competenze (skill) + ciclo decisionale + obiettivo**, ospitato in un'interfaccia (ACP).
+
+### E il contesto?
+
+Agente e skill funzionano solo grazie a un terzo elemento: il **contesto**.
+
+> Il **contesto** è **tutto il testo (e le immagini) che il modello riceve in una singola chiamata**: è l'unica cosa che il modello "vede" e "sa" in quel momento. Comprende le istruzioni di sistema, le definizioni dei tool, le skill caricate, la cronologia della conversazione, i file allegati e i risultati dei tool.
+
+| Parte del contesto | Esempio |
+|---|---|
+| **Istruzioni di sistema** | Regole dell'applicazione o dell'agente ("sei un assistente di modellazione CAD...") |
+| **Definizioni dei tool** | Gli schemi dei tool MCP disponibili (`execute`, `screenshot`...) |
+| **Skill** | `name` e `description` di tutte; il testo completo di quelle attivate |
+| **Cronologia** | Messaggi dell'utente e risposte del modello |
+| **Allegati** | File, immagini, viste del modello 3D |
+| **Risultati dei tool** | Output di comandi, screenshot, dati letti da un database |
+
+Il contesto ha un limite, la **finestra di contesto**, misurata in **token** (frammenti di parola: in italiano, in media poco meno di una parola ciascuno). Quando una conversazione si avvicina al limite, l'agente deve riassumere o scartare le parti vecchie.
+
+#### Il modello è senza stato
+
+Il punto chiave è che **il modello non ricorda nulla tra una chiamata e l'altra**: le API dei modelli sono *stateless*. La "memoria" di una conversazione esiste solo perché **qualcuno conserva il contesto e lo rimanda per intero a ogni chiamata**. Quel qualcuno è il **client dell'API del modello**, e **dove gira lui, lì vive il contesto**.
+
+#### Dove vive il contesto?
+
+| Scenario | Chi chiama il modello | Dove vive il contesto |
+|---|---|---|
+| **Agente locale**: Claude Code, Cursor, Antigravity, SolidCraft (ACP o MCP pura) | Il programma agente sul PC | **Sul PC**, nella memoria del programma agente (ed eventualmente nei suoi file di sessione) |
+| **Claude da browser** (claude.ai), app desktop e mobile | Il backend di Anthropic | **Sui server di Anthropic**: la conversazione è salvata nell'account |
+| **Programma proprio** che usa l'API | Il programma stesso | Dove lo memorizza il programmatore |
+
+**Il caso del browser.** Quando si usa Claude da claude.ai, il browser **non** conserva né rimanda il contesto: invia solo il nuovo messaggio e mostra la risposta. È il backend di Anthropic a ricostruire il contesto a ogni chiamata (cronologia, file caricati, istruzioni del progetto, eventuale memoria, definizioni dei tool) e a passarlo al modello, che resta comunque senza stato. Lo si capisce da un fatto semplice: la stessa chat si può riaprire da un altro dispositivo. Anche gli strumenti lavorano lato server: la ricerca web, l'esecuzione di codice in una sandbox e i connettori MCP remoti sono chiamati dai server di Anthropic, non dal PC. Fa eccezione l'app desktop, che può usare anche server MCP installati sul computer: la conversazione però resta comunque sui server.
+
+| | Agente locale (es. Claude Code, SolidCraft) | Claude da browser |
+|---|---|---|
+| Dove sta la conversazione | Sul PC | Sui server di Anthropic, nell'account |
+| Chi rimanda il contesto al modello | Il programma sul PC, via Internet | Il backend di Anthropic, internamente |
+| Dove girano i tool | Sul PC (file, terminale, server MCP locali) | Sui server (ricerca, sandbox, connettori remoti) |
+| Si riprende da un altro dispositivo? | No, salvo funzioni apposite | Sì |
+
+In entrambi i casi il **principio è lo stesso**: a ogni chiamata il modello rilegge tutto il contesto. Cambia solo **chi lo conserva** e **da dove parte**.
+
+> **Tre equivoci frequenti**
+> - **Prompt caching**: il fornitore conserva *per pochi minuti* la parte iniziale del contesto già inviata, che alla chiamata successiva costa meno. Il contesto viene comunque rimandato: è una cache, non una memoria della conversazione.
+> - **Cronologia dell'account e log**: alcuni servizi conservano le conversazioni (per la cronologia o secondo la loro politica sui dati), ma non le usano come contesto delle chiamate successive.
+> - **API con stato lato server**: alcune API permettono di lasciare la conversazione al fornitore e inviare solo il messaggio nuovo; anche così, di norma, i token del contesto si pagano a ogni chiamata. Se Antigravity usi questo meccanismo, la documentazione consultata non lo dice.
+
+#### Quanto costa il contesto
+
+Un'osservazione che si sente spesso: *"con Cursor e MCP il contesto vive sul PC e viene rimandato all'AI a ogni richiesta, quindi costa di più"*. È **vero a metà**.
+
+**Cosa è vero.** Le API dei modelli sono **senza stato**: il modello non ricorda nulla tra una chiamata e l'altra. A ogni chiamata il programma agente, che gira sul PC, rimanda **tutto il contesto**: istruzioni di sistema, definizioni dei tool, skill caricate, cronologia della conversazione e risultati dei tool. E siccome l'agente lavora in ciclo, **un solo turno può contenere molte chiamate**: un turno con 5 tool call richiede circa 6 chiamate al modello, ognuna con un contesto un po' più grande della precedente.
+
+> *Esempio puramente illustrativo:* se il contesto iniziale è di 10.000 token e ogni risultato di un tool aggiunge 2.000 token, le chiamate successive inviano 10k, 12k, 14k, 16k... token: il totale cresce molto più in fretta della singola conversazione.
+
+**Cosa non è vero.** Non è una caratteristica di Cursor né di MCP: **vale per qualsiasi agente** (Claude Code, Antigravity, Cursor, Claude da browser...), qualunque sia il protocollo usato per collegarlo. Il protocollo non decide il costo: lo decide **quanto materiale finisce nel contesto**.
+
+**Dove MCP pesa davvero**
+
+- **Definizioni dei tool**: ogni server MCP abilitato aggiunge i suoi schemi a *ogni* richiesta, anche quando non si usano.
+- **Risultati dei tool**: uno `screenshot` di SolidCraft è un'immagine, quindi molti token, e resta nella cronologia per le chiamate successive. Lo stesso vale per un'immagine allegata in chat.
+
+**Come si contiene il costo**
+
+| Tecnica | Come aiuta |
+|---|---|
+| **Prompt caching** | La parte iniziale del contesto, che non cambia, viene letta dalla cache del fornitore a una frazione del prezzo normale |
+| **Compattazione** | L'agente riassume la cronologia lunga invece di rimandarla per intero |
+| **Pochi server MCP attivi** | Meno definizioni di tool in ogni richiesta |
+| **Caricamento progressivo** | Skill e tool caricati solo quando servono (vedi le skill) |
+| **Chat nuove per compiti nuovi** | Si riparte da un contesto piccolo |
+| **Screenshot solo quando servono** | Le immagini sono tra gli elementi più costosi |
+
+**Chi paga e come.** Con le **API a consumo** si pagano direttamente i token in ingresso e in uscita. Con gli **abbonamenti** (Cursor, Claude Pro/Max, account Google per Antigravity) di solito non si paga a token, ma si consumano **quote o limiti d'uso**: un contesto grande li esaurisce prima.
+
+#### Dove vivono le skill?
+
+**Le skill vivono dove le cerca l'agente: di solito su disco, come cartelle.** Una skill è una cartella con `SKILL.md` (vedi sopra), quindi "vive" in un file system:
+
+| Dove | Esempio | Note |
+|---|---|---|
+| **Sul PC, a livello utente** | Claude Code: `~/.claude/skills/` | Disponibili in tutti i progetti |
+| **Sul PC, nel progetto** | Claude Code: `.claude/skills/` nella cartella del progetto | Condivisibili via repository con chi lavora al progetto |
+| **Dentro un prodotto o plugin** | SolidCraft: `skills/solidcraft-modeling/` nel suo repository [17] | Le distribuisce chi fa il prodotto |
+| **Nel cloud del fornitore** | Skill caricate nell'account Claude o tramite API | Vivono sui server del fornitore e i loro script girano nella sua sandbox |
+
+Indipendentemente da dove sono salvate, il percorso verso il modello è sempre lo stesso:
+
+1. **All'avvio** l'agente legge dal disco solo `name` e `description` e li mette nel contesto (poche decine di token per skill).
+2. **Quando serve**, legge il testo completo di `SKILL.md` e lo aggiunge al contesto: da quel momento **viaggia verso il modello a ogni chiamata**, come il resto della cronologia.
+3. Gli **script** della skill (`scripts/`) li esegue l'agente **sul PC** (per un agente locale): al modello arriva solo il loro output.
+
+#### La formula completa
+
+**agente = modello + contesto + strumenti (MCP) + competenze (skill) + ciclo decisionale + obiettivo**, ospitato in un'interfaccia (ACP o chat web).
 
 ---
 
@@ -331,57 +425,12 @@ Anche in modalità MCP pura il server ha protezioni proprie: ogni tool è classi
 
 > **Attenzione.** Le pagine di documentazione consultate non coincidono del tutto sul comando del ponte MCP (`--connect` in [17], `--control PORT` in [19]): prima di scrivere istruzioni operative conviene verificare il file `docs/mcp.md` del repository.
 
-### Il contesto e il costo in token
+### Contesto, costi e skill in SolidCraft
 
-Un'osservazione che si sente spesso: *"con Cursor e MCP il contesto vive sul PC e viene rimandato all'AI a ogni richiesta, quindi costa di più"*. È **vero a metà**.
+Dove vive il contesto, quanto costa in token e dove vivono le skill sono temi generali, trattati nella sezione **"E il contesto?"** all'inizio della dispensa. Per SolidCraft vale quanto segue:
 
-**Cosa è vero.** Le API dei modelli sono **senza stato**: il modello non ricorda nulla tra una chiamata e l'altra. A ogni chiamata il programma agente, che gira sul PC, rimanda **tutto il contesto**: istruzioni di sistema, definizioni dei tool, skill caricate, cronologia della conversazione e risultati dei tool. E siccome l'agente lavora in ciclo, **un solo turno può contenere molte chiamate**: un turno con 5 tool call richiede circa 6 chiamate al modello, ognuna con un contesto un po' più grande della precedente.
-
-> *Esempio puramente illustrativo:* se il contesto iniziale è di 10.000 token e ogni risultato di un tool aggiunge 2.000 token, le chiamate successive inviano 10k, 12k, 14k, 16k... token: il totale cresce molto più in fretta della singola conversazione.
-
-**Cosa non è vero.** Non è una caratteristica di Cursor né di MCP: **vale per qualsiasi agente** (Claude Code, Antigravity, Cursor...), in modalità ACP come in modalità MCP pura. Il protocollo non decide il costo: lo decide **quanto materiale finisce nel contesto**.
-
-**Dove MCP pesa davvero**
-
-- **Definizioni dei tool**: ogni server MCP abilitato aggiunge i suoi schemi a *ogni* richiesta, anche quando non si usano.
-- **Risultati dei tool**: uno `screenshot` di SolidCraft è un'immagine, quindi molti token, e resta nella cronologia per le chiamate successive. Lo stesso vale per un "Allega vista" in modalità ACP.
-
-**Come si contiene il costo**
-
-| Tecnica | Come aiuta |
-|---|---|
-| **Prompt caching** | La parte iniziale del contesto, che non cambia, viene letta dalla cache del fornitore a una frazione del prezzo normale |
-| **Compattazione** | L'agente riassume la cronologia lunga invece di rimandarla per intero |
-| **Pochi server MCP attivi** | Meno definizioni di tool in ogni richiesta |
-| **Caricamento progressivo** | Skill e tool caricati solo quando servono (vedi le skill) |
-| **Chat nuove per compiti nuovi** | Si riparte da un contesto piccolo |
-| **Screenshot solo quando servono** | Le immagini sono tra gli elementi più costosi |
-
-**Chi paga e come.** Con le **API a consumo** si pagano direttamente i token in ingresso e in uscita. Con gli **abbonamenti** (Cursor, Claude Pro/Max, account Google per Antigravity) di solito non si paga a token, ma si consumano **quote o limiti d'uso**: un contesto grande li esaurisce prima.
-
-### Dove vivono il contesto e le skill?
-
-**Il contesto vive sul PC, nel processo agente.** In modalità ACP come in modalità MCP pura, la cronologia, le definizioni dei tool, i risultati di `screenshot` e `inspect_design` e le viste allegate stanno nella memoria del programma agente (`agy_acp_server`, `claude-agent-acp`, Claude Code...) che gira sul computer dell'utente. ACP è un collegamento **locale** (stdin/stdout): non c'è nessun server remoto in mezzo. A ogni chiamata l'agente rimanda tutto al modello, perché le API sono senza stato. **ACP decide dove sta la chat, non dove sta il contesto.**
-
-> **Tre equivoci frequenti**
-> - **Prompt caching**: il fornitore conserva *per pochi minuti* la parte iniziale del contesto già inviata, che alla chiamata successiva costa meno. Il contesto viene comunque rimandato: è una cache, non una memoria della conversazione.
-> - **Cronologia dell'account e log**: alcuni servizi conservano le conversazioni (per la cronologia o secondo la loro politica sui dati), ma non le usano come contesto delle chiamate successive.
-> - **API con stato lato server**: alcune API permettono di lasciare la conversazione al fornitore e inviare solo il messaggio nuovo; anche così, di norma, i token del contesto si pagano a ogni chiamata. Se Antigravity usi questo meccanismo, la documentazione consultata non lo dice.
-
-**Le skill vivono dove le cerca l'agente: di solito su disco, come cartelle.** Una skill è una cartella con `SKILL.md` (sezione "E le skill?"), quindi "vive" in un file system:
-
-| Dove | Esempio | Note |
-|---|---|---|
-| **Sul PC, a livello utente** | Claude Code: `~/.claude/skills/` | Disponibili in tutti i progetti |
-| **Sul PC, nel progetto** | Claude Code: `.claude/skills/` nella cartella del progetto | Condivisibili via repository con chi lavora al progetto |
-| **Dentro un prodotto o plugin** | SolidCraft: `skills/solidcraft-modeling/` nel suo repository [17] | Le distribuisce chi fa il prodotto |
-| **Nel cloud del fornitore** | Skill caricate nell'account Claude o tramite API | Vivono sui server del fornitore e i loro script girano nella sua sandbox |
-
-Indipendentemente da dove sono salvate, il percorso verso il modello è sempre lo stesso:
-
-1. **All'avvio** l'agente legge dal disco solo `name` e `description` e li mette nel contesto (poche decine di token per skill).
-2. **Quando serve**, legge il testo completo di `SKILL.md` e lo aggiunge al contesto: da quel momento **viaggia verso il modello a ogni chiamata**, come il resto della cronologia.
-3. Gli **script** della skill (`scripts/`) li esegue l'agente **sul PC** (per un agente locale): al modello arriva solo il loro output.
+- in **entrambe** le modalità (ACP e MCP pura) il contesto vive **sul PC**, nella memoria del programma agente: ACP è un collegamento locale (stdin/stdout) e **decide dove sta la chat, non dove sta il contesto**;
+- gli elementi più costosi sono i **risultati dei tool** come `screenshot` e le viste allegate con "Allega vista", perché sono immagini e restano nella cronologia.
 
 > **Nel caso SolidCraft + ACP**, la skill deve trovarsi dove l'agente collegato la cerca (per esempio nelle cartelle delle skill di Claude Code). La documentazione consultata non dice se SolidCraft la passi automaticamente all'agente all'apertura della sessione [17]: se l'agente non la trova, avrà i tool MCP ma non il "manuale" per usarli bene.
 
