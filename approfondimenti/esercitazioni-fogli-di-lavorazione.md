@@ -66,6 +66,22 @@ Vale per tutti gli esercizi, e per qualunque scatola.
 
 </details>
 
+> **Box – Come si scelgono le quote**
+>
+> **Misure esterne.** Si parte sempre dall'interno e si aggiunge la parete: **esterno = interno + 2 × spessore**. Con l'origine nell'angolo interno, la cavità va da 0 a 60 e da 0 a 40; la parete da 2 la circonda, quindi il rettangolo esterno va da −2 a 62 e da −2 a 42. Un rettangolo si descrive con i due **angoli opposti**: dicono insieme posizione e misure.
+>
+> **Altezze.** Z = 0 sta sulla faccia interna del fondo, dove appoggiano i componenti: ogni altezza interna si legge direttamente, e il fondo resta sotto, da −2 a 0. L'altezza interna si ricava dalla catena delle altezze: **distanziali + scheda + componente più alto + margine per i cavi (3–5 mm) + labbro del coperchio**.
+>
+> **Raggi.** **Raggio interno = raggio esterno − spessore**: così la parete resta spessa uguale anche negli angoli. Il raggio esterno va scelto **almeno pari allo spessore** (con R = s l'angolo interno resta vivo), di solito **2–5 mm** per scatole di queste dimensioni, e non troppo grande, perché "mangia" l'angolo interno, dove spesso vanno le colonnine.
+>
+> **Origine.** Si mette dove partono la maggior parte delle quote:
+>
+> | Origine | Vantaggio | Quando |
+> | --- | --- | --- |
+> | Angolo interno del fondo | posizioni dei componenti lette direttamente | contenitori per elettronica (il caso tipico) |
+> | Angolo esterno | tutte le coordinate positive | pezzi visti "da fuori", lavorazioni meccaniche |
+> | Centro della scatola | simmetrie immediate con il comando *specchio* | scatole simmetriche, con fori o alette uguali |
+
 ---
 
 ## Esercizio 2 – Coperchio con labbro e viti
