@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" width="820" height="340" font-family="Helvetica, Arial, sans-serif">
+  <title>Il workflow Git agentico di SolidCraft</title>
+  <defs>
+    <marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#444"/></marker>
+    <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C0392B"/></marker>
+  </defs>
+  <rect width="820" height="340" fill="#FFFFFF"/>
+
+  <!-- Riga 1 -->
+  <rect x="20" y="40" width="230" height="84" rx="10" fill="#F2F2F2" stroke="#888" stroke-width="2"/>
+  <text x="135" y="66" text-anchor="middle" font-size="14" font-weight="bold" fill="#222">1. Issue #N</text>
+  <text x="135" y="86" text-anchor="middle" font-size="11" fill="#444">il compito su GitHub</text>
+  <text x="135" y="102" text-anchor="middle" font-size="11" fill="#444">(controllare che non ci siano PR aperte)</text>
+
+  <rect x="295" y="40" width="230" height="84" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+  <text x="410" y="64" text-anchor="middle" font-size="14" font-weight="bold" fill="#1F3A8A">2. Prenotazione</text>
+  <text x="410" y="83" text-anchor="middle" font-size="11" fill="#1F3A8A">branch da origin/main</text>
+  <text x="410" y="99" text-anchor="middle" font-size="11" fill="#1F3A8A">commit vuoto «claim: #N»</text>
+  <text x="410" y="115" text-anchor="middle" font-size="11" fill="#1F3A8A">PR in bozza «… (#N)»</text>
+
+  <rect x="570" y="40" width="230" height="84" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+  <text x="685" y="64" text-anchor="middle" font-size="14" font-weight="bold" fill="#8A4B00">3. Lavoro dell'agente</text>
+  <text x="685" y="83" text-anchor="middle" font-size="11" fill="#8A4B00">modifica il codice</text>
+  <text x="685" y="99" text-anchor="middle" font-size="11" fill="#8A4B00">cargo xtask ci prima</text>
+  <text x="685" y="115" text-anchor="middle" font-size="11" fill="#8A4B00">di ogni commit</text>
+
+  <!-- Riga 2 (da destra a sinistra) -->
+  <rect x="570" y="215" width="230" height="84" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+  <text x="685" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#3B2F8F">4. Push + CI</text>
+  <text x="685" y="260" text-anchor="middle" font-size="11" fill="#3B2F8F">i controlli girano sul server</text>
+  <text x="685" y="276" text-anchor="middle" font-size="11" fill="#3B2F8F">conflitti: rebase + --force-with-lease</text>
+
+  <rect x="295" y="215" width="230" height="84" rx="10" fill="#E0F4F4" stroke="#0F7F81" stroke-width="2"/>
+  <text x="410" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#0B5557">5. Prove e revisione</text>
+  <text x="410" y="260" text-anchor="middle" font-size="11" fill="#0B5557">screenshot o registrazioni</text>
+  <text x="410" y="276" text-anchor="middle" font-size="11" fill="#0B5557">per le modifiche visibili</text>
+
+  <rect x="20" y="215" width="230" height="84" rx="10" fill="#E6F4EA" stroke="#2E8B57" stroke-width="2"/>
+  <text x="135" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#1E5E3A">6. Squash merge</text>
+  <text x="135" y="260" text-anchor="middle" font-size="11" fill="#1E5E3A">su main, con CI verde</text>
+  <text x="135" y="276" text-anchor="middle" font-size="11" fill="#1E5E3A">una PR = un solo argomento</text>
+
+  <!-- Frecce -->
+  <line x1="252" y1="82" x2="292" y2="82" stroke="#444" stroke-width="2.5" marker-end="url(#mk)"/>
+  <line x1="527" y1="82" x2="567" y2="82" stroke="#444" stroke-width="2.5" marker-end="url(#mk)"/>
+  <line x1="640" y1="126" x2="640" y2="212" stroke="#444" stroke-width="2.5" marker-end="url(#mk)"/>
+  <path d="M740,213 C740,190 740,150 740,127" fill="none" stroke="#C0392B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mr)"/>
+  <text x="748" y="166" font-size="11" fill="#C0392B">CI rossa:</text>
+  <text x="748" y="180" font-size="11" fill="#C0392B">si corregge</text>
+  <line x1="567" y1="257" x2="528" y2="257" stroke="#444" stroke-width="2.5" marker-end="url(#mk)"/>
+  <line x1="292" y1="257" x2="253" y2="257" stroke="#444" stroke-width="2.5" marker-end="url(#mk)"/>
+  <text x="660" y="172" font-size="11" fill="#444">CI locale</text>
+  <text x="660" y="186" font-size="11" fill="#444">verde</text>
+
+  <text x="410" y="325" text-anchor="middle" font-size="11" fill="#777">Regole tratte dall'AGENTS.md di SolidCraft (tangency-labs/solidcraft)</text>
+</svg>
