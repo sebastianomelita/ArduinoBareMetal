@@ -130,15 +130,11 @@ In sintesi, completando la formula di prima: **agente = modello + strumenti (MCP
 
 Non sono concorrenti: **lavorano a livelli diversi e si usano insieme** [5][13].
 
-```
-  ┌──────────────┐   ACP    ┌──────────────┐   MCP    ┌──────────────────┐
-  │  Editor/IDE  │ ◄──────► │   Agente AI  │ ◄──────► │ Tool / dati      │
-  │ (Zed, IntelliJ│          │ (Claude Code,│          │ (DB, GitHub, FS, │
-  │  Neovim...)  │          │  Gemini CLI) │          │  API, Slack...)  │
-  └──────────────┘          └──────────────┘          └──────────────────┘
-     "dove vive                "chi ragiona              "con cosa
-      l'agente"                 e agisce"                 lavora"
-```
+<p align="center">
+  <img src="img/livelli_acp_mcp.svg" alt="Editor/IDE collegato via ACP all'agente AI, che è collegato via MCP a tool e dati: dove vive l'agente, chi ragiona e agisce, con cosa lavora" width="760">
+</p>
+
+<p align="center"><em>Figura 2 — ACP e MCP lavorano su due confini diversi.</em></p>
 
 ---
 
@@ -244,11 +240,35 @@ Anzi, ACP prevede che l'editor possa **passare all'agente la configurazione dei 
 
 L'agente, dunque, non "sa disegnare": riceve il prompt dalla chat (ACP), chiede al modello cosa fare (API del vendor) e **richiama SolidCraft** per eseguire le operazioni (MCP). Il cerchio si chiude sullo stesso prodotto.
 
+**I ruoli di ciascuno**
+
+L'agente è un **intermediario con tre ruoli**: riceve il lavoro (ACP), lo fa ragionare al modello (API) e lo fa eseguire (MCP).
+
+<p align="center">
+  <img src="img/ruoli_agente.svg" alt="SolidCraft contiene la chat, che è client ACP, e il motore CAD, che è server MCP; l'agente al centro è lato agent ACP, client API e client MCP; a destra il modello LLM sui server del vendor" width="760">
+</p>
+
+<p align="center"><em>Figura 3 — Chi è client e chi è server: SolidCraft compare ai due capi, con ruoli opposti.</em></p>
+
+| Collegamento | Ruolo dell'agente | Controparte |
+|---|---|---|
+| **ACP** | lato **agent** (in pratica fa da "server": viene avviato dal client e risponde alle sue richieste) | la chat di SolidCraft, **client ACP** |
+| **MCP** | **client** | il motore di SolidCraft, **server MCP** |
+| **API del vendor** | **client** | i server di Google o Anthropic che eseguono il modello |
+
+> **Precisazione terminologica.** La specifica ACP non usa la parola "server": le due parti si chiamano **client** e **agent** [3]. Il motivo è che in ACP le richieste JSON-RPC viaggiano **in entrambe le direzioni**: la chat invia `session/prompt` all'agente, ma anche l'agente può fare richieste alla chat, per esempio `session/request_permission` o la lettura di un file tramite l'editor. "Server ACP" va bene come intuizione, "lato agent" è il termine corretto.
+
+Nel caso di Antigravity: `agy_acp_server.exe` è il lato agent per SolidCraft, è client MCP verso `solidcraft-cli mcp --connect` ed è client dell'API Gemini.
+
+**Un turno di conversazione nel tempo**
+
+La Figura 3 mostra *chi* sono gli attori; la Figura 4 mostra *in che ordine* si parlano.
+
 <p align="center">
   <img src="img/solidcraft_sequenza.svg" alt="Diagramma di sequenza: l'utente scrive nella chat di SolidCraft, la chat inoltra il prompt all'agente via ACP, l'agente consulta il modello via API, chiama il motore CAD di SolidCraft via MCP, il gate chiede l'approvazione all'utente, il risultato torna all'agente e infine alla chat" width="820">
 </p>
 
-<p align="center"><em>Figura 2 — Un turno di conversazione in SolidCraft (semplificato da [17]). Blu: ACP; arancio: API del modello; viola: MCP; grigio: utente.</em></p>
+<p align="center"><em>Figura 4 — Un turno di conversazione in SolidCraft (semplificato da [17]). Blu: ACP; arancio: API del modello; viola: MCP; grigio: utente.</em></p>
 
 **Lettura passo per passo**
 
@@ -265,7 +285,7 @@ L'agente, dunque, non "sa disegnare": riceve il prompt dalla chat (ACP), chiede 
 
 **Cosa notare**
 
-- I passi 3–10 sono il **ciclo dell'agente** della Figura 1: ragiona (3–4), agisce (5), osserva (8–9).
+- I passi 3–10 della Figura 4 sono il **ciclo dell'agente** della Figura 1: ragiona (3–4), agisce (5), osserva (8–9).
 - Nell'inizializzazione ACP SolidCraft **non concede all'agente accesso diretto a file system e terminale**: ogni modifica al modello passa per MCP, quindi per il gate dei permessi [17].
 - La **skill** `solidcraft-modeling` insegna all'agente parametri e convenzioni dei comandi: senza, l'agente avrebbe i tool ma non saprebbe usarli bene [17].
 - Il **modello** (Gemini, Claude...) non parla mai direttamente con SolidCraft: tutto passa per il programma agente.
@@ -279,6 +299,91 @@ L'agente, dunque, non "sa disegnare": riceve il prompt dalla chat (ACP), chiede 
 > | Vantaggio | Funziona con qualsiasi editor ACP | Il controllo non dipende dalla "buona volontà" dell'agente |
 >
 > I due meccanismi non si escludono: un prodotto può usarli entrambi. Il gate lato esecuzione è però la difesa più robusta, perché si applica anche a un agente che non chiede il permesso.
+
+### Due modalità di collegamento: ACP oppure MCP puro
+
+SolidCraft si può collegare all'AI in **due modi**. Il server MCP del motore è lo stesso; cambia **dove sta la chat**, cioè chi gestisce la conversazione [17][18][19].
+
+<p align="center">
+  <img src="img/modalita_solidcraft.svg" alt="A sinistra la modalità ACP: la chat di SolidCraft avvia l'agente via ACP e l'agente usa il motore CAD via MCP. A destra la modalità MCP pura: Claude Code o Cursor contengono chat e agente e usano SolidCraft e altri server MCP solo via MCP" width="760">
+</p>
+
+<p align="center"><em>Figura 5 — Modalità ACP (chat dentro SolidCraft) e modalità MCP pura (chat nell'app dell'agente).</em></p>
+
+- **A — Modalità ACP.** È quella descritta finora: scrivi nel pannello di SolidCraft, che avvia l'agente e gli passa il proprio server MCP. Sono in gioco **ACP + MCP**.
+- **B — Modalità MCP pura.** La chat è in un'altra applicazione (Claude Code nel terminale, Claude Desktop, Cursor...). Nella sua configurazione si registra `solidcraft-cli mcp` come server MCP (stdio, JSON-RPC). **ACP sparisce**: SolidCraft è solo uno dei tool dell'agente. Il server ha due backend [19]:
+  - **Remote**: si collega via TCP locale (127.0.0.1, porta predefinita 27878, con un token salvato su disco) alla **finestra di SolidCraft già aperta** e lavora sul progetto che hai davanti;
+  - **Headless**: avvia una sessione SolidCraft interna, senza finestra, utile per automazioni.
+
+| | A — Modalità ACP | B — Modalità MCP pura |
+|---|---|---|
+| Dove scrivi | Pannello di SolidCraft | Terminale o app dell'agente |
+| Chi gestisce la conversazione | SolidCraft (client ACP) | L'app dell'agente |
+| Protocolli | ACP + MCP | Solo MCP |
+| Contesto visivo | Viste e selezioni allegabili dalla chat ("Allega vista/selezione") | Solo tramite i tool (`inspect_design`, `screenshot`) |
+| Permessi | Modalità *Ask / Edits / All* della chat di SolidCraft | Conferme dell'app dell'agente + limiti del server MCP |
+| Altri strumenti | Solo quelli passati da SolidCraft | Si combina con altri server MCP (GitHub, file system...) |
+| Uso tipico | Modellazione interattiva dentro il CAD | Flussi più ampi o automazione headless |
+
+Anche in modalità MCP pura il server ha protezioni proprie: ogni tool è classificato per effetto (*Edits* annullabile, *Replaces* che sostituisce il progetto in memoria, *ReadOnly*, *Files*) e l'accesso ai file è limitato alla cartella del progetto, a quella temporanea e ai percorsi autorizzati con `--allow-path` [19]. La documentazione non dice se il gate della chat (`gate.rs`) valga anche qui.
+
+**Si possono usare entrambe?** Sì, come alternative da scegliere di volta in volta: condividono la stessa infrastruttura di controllo. L'uso **contemporaneo** sullo stesso progetto non è documentato ed è meglio evitarlo: due agenti che modificano lo stesso modello possono interferire, soprattutto con i tool di tipo *Replaces*.
+
+> **Attenzione.** Le pagine di documentazione consultate non coincidono del tutto sul comando del ponte MCP (`--connect` in [17], `--control PORT` in [19]): prima di scrivere istruzioni operative conviene verificare il file `docs/mcp.md` del repository.
+
+### Il contesto e il costo in token
+
+Un'osservazione che si sente spesso: *"con Cursor e MCP il contesto vive sul PC e viene rimandato all'AI a ogni richiesta, quindi costa di più"*. È **vero a metà**.
+
+**Cosa è vero.** Le API dei modelli sono **senza stato**: il modello non ricorda nulla tra una chiamata e l'altra. A ogni chiamata il programma agente, che gira sul PC, rimanda **tutto il contesto**: istruzioni di sistema, definizioni dei tool, skill caricate, cronologia della conversazione e risultati dei tool. E siccome l'agente lavora in ciclo, **un solo turno può contenere molte chiamate**: un turno con 5 tool call richiede circa 6 chiamate al modello, ognuna con un contesto un po' più grande della precedente.
+
+> *Esempio puramente illustrativo:* se il contesto iniziale è di 10.000 token e ogni risultato di un tool aggiunge 2.000 token, le chiamate successive inviano 10k, 12k, 14k, 16k... token: il totale cresce molto più in fretta della singola conversazione.
+
+**Cosa non è vero.** Non è una caratteristica di Cursor né di MCP: **vale per qualsiasi agente** (Claude Code, Antigravity, Cursor...), in modalità ACP come in modalità MCP pura. Il protocollo non decide il costo: lo decide **quanto materiale finisce nel contesto**.
+
+**Dove MCP pesa davvero**
+
+- **Definizioni dei tool**: ogni server MCP abilitato aggiunge i suoi schemi a *ogni* richiesta, anche quando non si usano.
+- **Risultati dei tool**: uno `screenshot` di SolidCraft è un'immagine, quindi molti token, e resta nella cronologia per le chiamate successive. Lo stesso vale per un "Allega vista" in modalità ACP.
+
+**Come si contiene il costo**
+
+| Tecnica | Come aiuta |
+|---|---|
+| **Prompt caching** | La parte iniziale del contesto, che non cambia, viene letta dalla cache del fornitore a una frazione del prezzo normale |
+| **Compattazione** | L'agente riassume la cronologia lunga invece di rimandarla per intero |
+| **Pochi server MCP attivi** | Meno definizioni di tool in ogni richiesta |
+| **Caricamento progressivo** | Skill e tool caricati solo quando servono (vedi le skill) |
+| **Chat nuove per compiti nuovi** | Si riparte da un contesto piccolo |
+| **Screenshot solo quando servono** | Le immagini sono tra gli elementi più costosi |
+
+**Chi paga e come.** Con le **API a consumo** si pagano direttamente i token in ingresso e in uscita. Con gli **abbonamenti** (Cursor, Claude Pro/Max, account Google per Antigravity) di solito non si paga a token, ma si consumano **quote o limiti d'uso**: un contesto grande li esaurisce prima.
+
+### Dove vivono il contesto e le skill?
+
+**Il contesto vive sul PC, nel processo agente.** In modalità ACP come in modalità MCP pura, la cronologia, le definizioni dei tool, i risultati di `screenshot` e `inspect_design` e le viste allegate stanno nella memoria del programma agente (`agy_acp_server`, `claude-agent-acp`, Claude Code...) che gira sul computer dell'utente. ACP è un collegamento **locale** (stdin/stdout): non c'è nessun server remoto in mezzo. A ogni chiamata l'agente rimanda tutto al modello, perché le API sono senza stato. **ACP decide dove sta la chat, non dove sta il contesto.**
+
+> **Tre equivoci frequenti**
+> - **Prompt caching**: il fornitore conserva *per pochi minuti* la parte iniziale del contesto già inviata, che alla chiamata successiva costa meno. Il contesto viene comunque rimandato: è una cache, non una memoria della conversazione.
+> - **Cronologia dell'account e log**: alcuni servizi conservano le conversazioni (per la cronologia o secondo la loro politica sui dati), ma non le usano come contesto delle chiamate successive.
+> - **API con stato lato server**: alcune API permettono di lasciare la conversazione al fornitore e inviare solo il messaggio nuovo; anche così, di norma, i token del contesto si pagano a ogni chiamata. Se Antigravity usi questo meccanismo, la documentazione consultata non lo dice.
+
+**Le skill vivono dove le cerca l'agente: di solito su disco, come cartelle.** Una skill è una cartella con `SKILL.md` (sezione "E le skill?"), quindi "vive" in un file system:
+
+| Dove | Esempio | Note |
+|---|---|---|
+| **Sul PC, a livello utente** | Claude Code: `~/.claude/skills/` | Disponibili in tutti i progetti |
+| **Sul PC, nel progetto** | Claude Code: `.claude/skills/` nella cartella del progetto | Condivisibili via repository con chi lavora al progetto |
+| **Dentro un prodotto o plugin** | SolidCraft: `skills/solidcraft-modeling/` nel suo repository [17] | Le distribuisce chi fa il prodotto |
+| **Nel cloud del fornitore** | Skill caricate nell'account Claude o tramite API | Vivono sui server del fornitore e i loro script girano nella sua sandbox |
+
+Indipendentemente da dove sono salvate, il percorso verso il modello è sempre lo stesso:
+
+1. **All'avvio** l'agente legge dal disco solo `name` e `description` e li mette nel contesto (poche decine di token per skill).
+2. **Quando serve**, legge il testo completo di `SKILL.md` e lo aggiunge al contesto: da quel momento **viaggia verso il modello a ogni chiamata**, come il resto della cronologia.
+3. Gli **script** della skill (`scripts/`) li esegue l'agente **sul PC** (per un agente locale): al modello arriva solo il loro output.
+
+> **Nel caso SolidCraft + ACP**, la skill deve trovarsi dove l'agente collegato la cerca (per esempio nelle cartelle delle skill di Claude Code). La documentazione consultata non dice se SolidCraft la passi automaticamente all'agente all'apertura della sessione [17]: se l'agente non la trova, avrà i tool MCP ma non il "manuale" per usarli bene.
 
 ---
 
@@ -312,11 +417,11 @@ Ogni protocollo possiede **un confine** [5][9]:
 | Agente ↔ agente | **A2A** (che ha assorbito l'ACP di IBM) |
 | Agente ↔ interfaccia utente (app web) | **AG-UI** |
 
-```
-                 ┌──────────── A2A ────────────┐
-                 ▼                             ▼
- Editor ─ACP─► Agente A ─MCP─► tool       Agente B ─MCP─► tool
-```
+<p align="center">
+  <img src="img/stack_agentico.svg" alt="Lo stack agentico: l'editor si collega all'agente A via ACP, un'app web via AG-UI; l'agente A collabora con l'agente B via A2A; ciascun agente usa i propri tool via MCP" width="760">
+</p>
+
+<p align="center"><em>Figura 6 — Ogni protocollo possiede un confine.</em></p>
 
 ---
 
@@ -364,5 +469,6 @@ I numeri tra parentesi quadre nel testo rimandano a questo elenco.
 | [16] | [*Agent Skills* — specifica aperta](https://agentskills.io) | Specifica |
 | [17] | DeepWiki — [*SolidCraft: In-App Agent Chat and Skills*](https://deepwiki.com/tangency-labs/solidcraft/7.3-in-app-agent-chat-and-skills) | Documentazione |
 | [18] | DeepWiki — [*SolidCraft: Automation and Agent Integration*](https://deepwiki.com/tangency-labs/solidcraft/7-automation-and-agent-integration) | Documentazione |
+| [19] | DeepWiki — [*SolidCraft: MCP Server and CLI*](https://deepwiki.com/tangency-labs/solidcraft/7.2-mcp-server-and-cli) | Documentazione |
 
 *Ultima consultazione delle fonti: 7 novembre 2026.*
