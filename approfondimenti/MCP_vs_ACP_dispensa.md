@@ -18,7 +18,7 @@ Oggi, quando si parla di "ACP" nel contesto degli agenti di coding, si intende q
 
 ---
 
-## Prima di tutto: agente, skill e contesto
+## Prima di tutto: agente, skill, contesto e programmazione agentica
 
 ### Che cos'è un agente?
 
@@ -214,6 +214,36 @@ Indipendentemente da dove sono salvate, il percorso verso il modello è sempre l
 #### La formula completa
 
 **agente = modello + contesto + strumenti (MCP) + competenze (skill) + ciclo decisionale + obiettivo**, ospitato in un'interfaccia (ACP o chat web).
+
+### E la programmazione agentica?
+
+> La **programmazione agentica** (*agentic coding*) è lo **sviluppo di software delegato a un agente**: invece di chiedere al modello un frammento di codice da copiare, gli si affida un **obiettivo** e l'agente lo porta a termine da solo con il suo ciclo (ragiona → agisce → osserva). Legge i file del progetto, li modifica, esegue comandi e test, osserva gli errori, si corregge e ripete finché il compito è fatto; l'umano supervisiona.
+
+È la definizione di agente applicata alla programmazione:
+
+| Elemento dell'agente | Nella programmazione agentica |
+|---|---|
+| **Modello** | Ragiona sul codice e decide le modifiche |
+| **Contesto** | I file del progetto, la cronologia, gli errori dei test |
+| **Strumenti** | File system, terminale, test, git, server MCP (database, GitHub...) |
+| **Skill** | Convenzioni e procedure del progetto |
+| **Interfaccia** | L'editor (via ACP) o il terminale |
+
+**Confronto con i modi precedenti di usare l'AI per programmare**
+
+| | Completamento automatico | Chat assistita | Programmazione agentica |
+|---|---|---|---|
+| Cosa si chiede | Niente: suggerisce la riga successiva | "Scrivimi una funzione che…" | "Aggiungi il login e fai passare i test" |
+| Chi agisce sui file | L'utente, accettando il suggerimento | L'utente, copiando e incollando | **L'agente** |
+| Chi verifica | L'utente | L'utente | L'agente (esegue i test), poi l'utente |
+| Passi per richiesta | Uno | Uno | **Molti**, in ciclo |
+| Ruolo di chi programma | Scrive il codice | Scrive e integra | **Definisce, supervisiona, revisiona** |
+
+Il lavoro di chi programma si sposta: meno scrittura riga per riga, più **specificare bene l'obiettivo**, **approvare le azioni** (i permessi), **rileggere le modifiche** (i diff mostrati dall'editor) e **curare il contesto** (buone skill, istruzioni di progetto, pochi tool inutili).
+
+> **Due sensi del termine.** Si parla di programmazione agentica anche per indicare il **costruire agenti**: scrivere il ciclo, i server MCP, le skill, le integrazioni ACP. È il lato di chi sviluppa SolidCraft (che espone un server MCP e scrive una skill) o di chi sviluppa un agente come `agy_acp_server`. Chi *usa* gli agenti per programmare si appoggia a ciò che altri hanno *costruito*.
+>
+> Lo stesso schema vale fuori dal codice: nel caso SolidCraft le feature 3D non si disegnano a mano, si descrivono e l'agente le costruisce con i tool del CAD, mentre l'utente approva e controlla. Si potrebbe parlare di **modellazione agentica**.
 
 ---
 
@@ -474,16 +504,92 @@ Ogni protocollo possiede **un confine** [5][9]:
 
 ---
 
-## 7. Quale usare? Guida decisionale
+## 7. Programmazione agentica in pratica: gli strumenti
+
+La sezione iniziale ha definito la programmazione agentica; qui si guarda **con quali strumenti** la si fa e **come si collegano ai protocolli** visti nella dispensa.
+
+### Quattro famiglie di strumenti
+
+Gli strumenti si distinguono per **dove gira l'agente** e **come si interagisce con lui** [25]:
+
+| Famiglia | Come funziona | Esempi |
+|---|---|---|
+| **IDE "agent-first"** | L'agente è integrato nell'editor grafico | Cursor, Devin Desktop (ex Windsurf) |
+| **Agenti da terminale (CLI)** | L'agente gira da riga di comando sul PC, sui file locali | Claude Code, Codex CLI, Antigravity CLI |
+| **Agenti cloud asincroni** | Si affida un compito; l'agente lavora in una sandbox remota e avvisa a lavoro finito | Devin, Replit Agent, GitHub Copilot (agente cloud) |
+| **Open source "porta la tua chiave" (BYOK)** | Software libero che si collega al modello scelto con la propria chiave API, o a un modello locale | Aider, Cline, Roo Code, OpenCode, Goose |
+
+> Le famiglie si sovrappongono: molti strumenti esistono sia come CLI sia come estensione dell'editor, e grazie ad **ACP** una CLI può comparire *dentro* un editor (sezione 3).
+
+### Tabella di sintesi
+
+| Strumento | Interfaccia | Dove gira | Licenza | MCP | ACP | Ideale per… |
+|---|---|---|---|---|---|---|
+| **Cursor** | IDE grafico (+ CLI `agent`) | Locale / cloud | Proprietaria | ✓ | ✓ la CLI come agente (`agent acp`) [24] | Chi vuole un VS Code con un agente integrato |
+| **Devin Desktop** (ex Windsurf) | IDE grafico | Locale / cloud | Proprietaria | ✓ | ✓ come **client**: ospita Codex, Claude, OpenCode… [23] | Gestire più agenti dallo stesso editor |
+| **Claude Code** | Terminale (CLI) | Locale | Proprietaria | ✓ | ✓ tramite adattatore (`claude-agent-acp`) | Ragionamento multi-file su progetti complessi |
+| **Antigravity CLI** (`agy`) | Terminale (CLI) | Locale | Proprietaria | ✓ [22] | ✓ (`agy_acp_server`) | Ecosistema Google; ha sostituito Gemini CLI [22] |
+| **Replit Agent** | Browser | Sandbox cloud | Proprietaria | — | — | Prototipi rapidi senza configurare nulla |
+| **Devin** | Dashboard web | Sandbox cloud | Proprietaria | ✓ | — | Compiti lunghi in background |
+| **Aider** | Terminale (CLI) | Locale | **Libera** | ✗ non nativo [21] | — | Pair programming da terminale integrato con Git |
+| **Cline** | Estensione VS Code + CLI | Locale | **Libera** | ✓ [21] | ✓ (`cline --acp`) [20] | Agente libero dentro VS Code o in qualsiasi editor ACP |
+| **OpenCode** | Terminale (CLI) | Locale | **Libera** | ✓ [21] | ✓ [23] | Alternativa libera a Claude Code |
+
+*Legenda: ✓ supportato; ✗ non supportato; — non documentato nelle fonti consultate. Strumenti e supporto ai protocolli cambiano in fretta: verificare sempre la documentazione aggiornata.*
+
+### Focus: il software libero
+
+| Strumento | Tipo | Licenza* | MCP | ACP | Modelli utilizzabili |
+|---|---|---|---|---|---|
+| **Aider** | CLI | Apache 2.0 | ✗ non nativo [21] | — | Qualsiasi via API, anche locali |
+| **Cline** | Estensione VS Code + CLI | Apache 2.0 | ✓ [21] | ✓ `cline --acp` [20] | Qualsiasi via API, anche locali |
+| **Roo Code** | Estensione VS Code | Apache 2.0 | ✓ | — | Qualsiasi via API, anche locali |
+| **OpenCode** | CLI | MIT | ✓ [21] | ✓ [23] | Qualsiasi via API, anche locali |
+| **Goose** (Block) | CLI + app desktop | Apache 2.0 | ✓ (le estensioni sono server MCP) | ✓ nativo [13] | Qualsiasi via API, anche locali |
+| **OpenHands** | CLI + interfaccia web | MIT | ✓ | ✓ nativo [13] | Qualsiasi via API, anche locali |
+| **Codex CLI** (OpenAI) | CLI | Apache 2.0 | ✓ [21] | ✓ tramite adattatore | Soprattutto modelli OpenAI |
+
+*\*Licenze dei repository principali; verificarle nei repository prima di un uso didattico o aziendale.*
+
+> **Libero non significa gratuito.** Con il modello *BYOK* il software è libero, ma i token si pagano al fornitore del modello con la propria chiave API (con tutto quanto detto su contesto e costi). Per un ambiente **completamente libero e senza costi a consumo** si può collegare l'agente a un **modello locale** (per esempio tramite Ollama): in quel caso anche il contesto non lascia mai il PC, al prezzo di modelli in genere meno capaci e di un hardware adeguato.
+
+### Come si collegano ai protocolli
+
+- **MCP** è ormai la norma: quasi tutti gli agenti possono usare server MCP (database, GitHub, SolidCraft...). Fa eccezione Aider, che non lo supporta nativamente [21].
+- **ACP** divide gli strumenti in due ruoli: la maggior parte delle CLI (Cline, OpenCode, Goose, OpenHands, Antigravity, Cursor CLI) fa da **agente**; editor come Zed, JetBrains, Devin Desktop e SolidCraft fanno da **client** e possono ospitarle.
+- Ne segue una conseguenza pratica: **scegliere un agente non obbliga a scegliere un editor**. Lo stesso agente libero (per esempio Cline o OpenCode) può lavorare in Zed, in un IDE JetBrains o in SolidCraft.
+
+### Un flusso di lavoro tipo
+
+1. **Obiettivo chiaro**: descrivere *cosa* ottenere e *come verificarlo* ("aggiungi X; i test Y devono passare").
+2. **Piano**: chiedere all'agente di proporre un piano prima di modificare (molti strumenti hanno una modalità *plan*).
+3. **Esecuzione supervisionata**: approvare le azioni delicate (permessi), lasciando libere quelle sicure.
+4. **Verifica**: l'agente esegue test e controlli; l'umano rilegge i diff.
+5. **Consegna**: commit o pull request, con una revisione umana prima dell'unione.
+
+### Rischi da tenere presenti
+
+| Rischio | Come mitigarlo |
+|---|---|
+| Codice accettato senza rileggerlo | Rivedere sempre i diff; test automatici obbligatori |
+| Azioni distruttive (cancellazioni, comandi pericolosi) | Modalità a permessi; lavorare su un branch o in una sandbox |
+| Costi in token che crescono | Vedi "Quanto costa il contesto": contesto snello, caching, chat brevi |
+| Dati riservati inviati al fornitore del modello | Sapere dove vive il contesto; modelli locali per i dati sensibili |
+| Dipendenza da un solo fornitore | Preferire strumenti liberi e standard aperti (MCP, ACP, skill) |
+
+---
+
+## 8. Quale usare? Guida decisionale
 
 - **Vuoi dare al tuo agente accesso a un servizio (DB, CRM, filesystem, API)?** → scrivi/usa un **server MCP**.
 - **Hai costruito un agente di coding e vuoi che giri in Zed, JetBrains, Neovim...?** → implementa **ACP** (Agent Client Protocol).
 - **Stai costruendo un editor e vuoi supportare tanti agenti senza integrazioni custom?** → diventa **client ACP**.
 - **Vuoi che più agenti autonomi (anche di vendor diversi) si scambino compiti?** → **A2A** (non l'ACP di IBM, ormai archiviato).
+- **Vuoi programmare con un agente senza legarti a un fornitore?** → un agente **libero** (Cline, OpenCode, Goose...) con MCP per gli strumenti e ACP per usarlo nell'editor che preferisci (sezione 7).
 
 ---
 
-## 8. Riepilogo da ricordare
+## 9. Riepilogo da ricordare
 
 1. **MCP = mani e occhi dell'agente** (strumenti e contesto).
 2. **ACP (Zed) = la "scrivania" dell'agente** (l'editor dove lavora sotto la supervisione dell'utente).
@@ -519,5 +625,11 @@ I numeri tra parentesi quadre nel testo rimandano a questo elenco.
 | [17] | DeepWiki — [*SolidCraft: In-App Agent Chat and Skills*](https://deepwiki.com/tangency-labs/solidcraft/7.3-in-app-agent-chat-and-skills) | Documentazione |
 | [18] | DeepWiki — [*SolidCraft: Automation and Agent Integration*](https://deepwiki.com/tangency-labs/solidcraft/7-automation-and-agent-integration) | Documentazione |
 | [19] | DeepWiki — [*SolidCraft: MCP Server and CLI*](https://deepwiki.com/tangency-labs/solidcraft/7.2-mcp-server-and-cli) | Documentazione |
+| [20] | Cline — [*ACP (Agent Client Protocol)*](https://docs.cline.bot/usage/acp) | Documentazione |
+| [21] | Agents Compare — [*MCP Server Support*](https://agents-compare-three.vercel.app/feature/mcp-support) | Analisi |
+| [22] | Nowledge Mem — [*Gemini CLI Is Being Retired / Antigravity CLI*](https://mem.nowledge.co/integrations/antigravity-cli) | Documentazione |
+| [23] | DEV Community — [*Devin vs Cursor in 2026: Windsurf is now Devin Desktop*](https://dev.to/hassann/devin-vs-cursor-in-2026-windsurf-is-now-devin-desktop-ajo) | Articolo |
+| [24] | Cursor docs — [*CLI: ACP*](https://techdevnotes.com/releases/cursor-docs/20260626-202020Z-6c7064724f5e/content/pages/cli/acp.txt) (copia di giugno 2026) | Documentazione |
+| [25] | Google AI Mode — [sintesi sugli strumenti di programmazione agentica](https://share.google/aimode/Np6ulCXesw6kNicB6) (classificazione in quattro famiglie) | Sintesi AI |
 
 *Ultima consultazione delle fonti: 7 novembre 2026.*
