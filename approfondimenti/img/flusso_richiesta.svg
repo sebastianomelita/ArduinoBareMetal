@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" width="820" height="480" font-family="Helvetica, Arial, sans-serif">
+<title>Una richiesta attraverso gli 8 strati</title><defs>
+<marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#444"/></marker>
+<marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E08A1E"/></marker>
+</defs>
+<rect width="820" height="480" fill="#FFFFFF"/>
+<rect x="18.0" y="40" width="146" height="92" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+<circle cx="34.0" cy="58" r="11" fill="#4A6FD6"/><text x="34.0" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">1</text>
+<text x="50.0" y="63" font-size="13" font-weight="bold" fill="#1F3A8A">Domanda</text>
+<text x="28.0" y="85" font-size="10.5" fill="#333">il cliente scrive</text>
+<text x="28.0" y="100" font-size="10.5" fill="#333">nella chat</text>
+<rect x="177.5" y="40" width="146" height="92" rx="10" fill="#FDECEA" stroke="#C0392B" stroke-width="2"/>
+<circle cx="193.5" cy="58" r="11" fill="#C0392B"/><text x="193.5" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">2</text>
+<text x="209.5" y="63" font-size="13" font-weight="bold" fill="#8E2A1F">Guardrail in</text>
+<text x="187.5" y="85" font-size="10.5" fill="#333">cerca istruzioni</text>
+<text x="187.5" y="100" font-size="10.5" fill="#333">nascoste (injection)</text>
+<rect x="258.7" y="110" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#C0392B" stroke-width="1"/>
+<text x="288.1" y="122" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#8E2A1F">strato 6</text>
+<rect x="337.0" y="40" width="146" height="92" rx="10" fill="#F2F2F2" stroke="#555555" stroke-width="2"/>
+<circle cx="353.0" cy="58" r="11" fill="#555555"/><text x="353.0" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">3</text>
+<text x="369.0" y="63" font-size="13" font-weight="bold" fill="#333333">Identità</text>
+<text x="347.0" y="85" font-size="10.5" fill="#333">chi chiede? con</text>
+<text x="347.0" y="100" font-size="10.5" fill="#333">quali permessi?</text>
+<rect x="418.2" y="110" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#555555" stroke-width="1"/>
+<text x="447.6" y="122" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#333333">strato 5</text>
+<rect x="496.5" y="40" width="146" height="92" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+<circle cx="512.5" cy="58" r="11" fill="#E08A1E"/><text x="512.5" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">4</text>
+<text x="528.5" y="63" font-size="13" font-weight="bold" fill="#8A4B00">Router</text>
+<text x="506.5" y="85" font-size="10.5" fill="#333">risposta diretta,</text>
+<text x="506.5" y="100" font-size="10.5" fill="#333">modello piccolo o grande</text>
+<rect x="577.7" y="110" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#E08A1E" stroke-width="1"/>
+<text x="607.1" y="122" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#8A4B00">strato 7</text>
+<rect x="656.0" y="40" width="146" height="92" rx="10" fill="#E0F4F4" stroke="#0F7F81" stroke-width="2"/>
+<circle cx="672.0" cy="58" r="11" fill="#0F7F81"/><text x="672.0" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">5</text>
+<text x="688.0" y="63" font-size="13" font-weight="bold" fill="#0B5557">Contesto</text>
+<text x="666.0" y="85" font-size="10.5" fill="#333">system prompt (cache)</text>
+<text x="666.0" y="100" font-size="10.5" fill="#333">+ frammenti dal RAG</text>
+<rect x="692.4" y="110" width="103.6" height="16" rx="8" fill="#FFFFFF" stroke="#0F7F81" stroke-width="1"/>
+<text x="744.2" y="122" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#0B5557">strati 2 · 3 · 7</text>
+<line x1="166.0" y1="86.0" x2="174.5" y2="86.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="325.5" y1="86.0" x2="334.0" y2="86.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="485.0" y1="86.0" x2="493.5" y2="86.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="644.5" y1="86.0" x2="653.0" y2="86.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<rect x="18.0" y="195" width="150" height="92" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+<circle cx="34.0" cy="213" r="11" fill="#4A6FD6"/><text x="34.0" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">10</text>
+<text x="50.0" y="218" font-size="13" font-weight="bold" fill="#1F3A8A">Risposta</text>
+<text x="28.0" y="240" font-size="10.5" fill="#333">torna al cliente</text>
+<text x="28.0" y="255" font-size="10.5" fill="#333">con la fonte citata</text>
+<rect x="229.33333333333334" y="195" width="150" height="92" rx="10" fill="#E6F4EA" stroke="#2E8B57" stroke-width="2"/>
+<circle cx="245.33333333333334" cy="213" r="11" fill="#2E8B57"/><text x="245.33333333333334" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">9</text>
+<text x="261.33333333333337" y="218" font-size="13" font-weight="bold" fill="#1E5E3A">Traccia</text>
+<text x="239.33333333333334" y="240" font-size="10.5" fill="#333">domanda, documenti,</text>
+<text x="239.33333333333334" y="255" font-size="10.5" fill="#333">strumenti, costo</text>
+<rect x="314.53333333333336" y="265" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#2E8B57" stroke-width="1"/>
+<text x="343.9333333333334" y="277" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1E5E3A">strato 8</text>
+<rect x="440.6666666666667" y="195" width="150" height="92" rx="10" fill="#FDECEA" stroke="#C0392B" stroke-width="2"/>
+<circle cx="456.6666666666667" cy="213" r="11" fill="#C0392B"/><text x="456.6666666666667" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">8</text>
+<text x="472.6666666666667" y="218" font-size="13" font-weight="bold" fill="#8E2A1F">Guardrail out</text>
+<text x="450.6666666666667" y="240" font-size="10.5" fill="#333">maschera i dati</text>
+<text x="450.6666666666667" y="255" font-size="10.5" fill="#333">personali</text>
+<rect x="525.8666666666668" y="265" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#C0392B" stroke-width="1"/>
+<text x="555.2666666666668" y="277" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#8E2A1F">strato 6</text>
+<rect x="652.0" y="195" width="150" height="92" rx="10" fill="#FCE8D2" stroke="#C9741A" stroke-width="2"/>
+<circle cx="668.0" cy="213" r="11" fill="#C9741A"/><text x="668.0" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">6</text>
+<text x="684.0" y="218" font-size="13" font-weight="bold" fill="#7A3E00">Modello</text>
+<text x="662.0" y="240" font-size="10.5" fill="#333">ragiona e decide:</text>
+<text x="662.0" y="255" font-size="10.5" fill="#333">rispondere o agire?</text>
+<rect x="737.2" y="265" width="58.8" height="16" rx="8" fill="#FFFFFF" stroke="#C9741A" stroke-width="1"/>
+<text x="766.6" y="277" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#7A3E00">strato 1</text>
+<line x1="729.0" y1="134" x2="731.0" y2="192" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="650.0" y1="241.0" x2="593.6666666666667" y2="241.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="438.6666666666667" y1="241.0" x2="382.33333333333337" y2="241.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<line x1="227.33333333333334" y1="241.0" x2="171.0" y2="241.0" stroke="#444" stroke-width="2" marker-end="url(#mk)"/>
+<rect x="652.0" y="355" width="150" height="92" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+<circle cx="668.0" cy="373" r="11" fill="#7B6CD9"/><text x="668.0" y="377" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">7</text>
+<text x="684.0" y="378" font-size="13" font-weight="bold" fill="#3B2F8F">Strumento</text>
+<text x="662.0" y="400" font-size="10.5" fill="#333">via MCP, con i permessi</text>
+<text x="662.0" y="415" font-size="10.5" fill="#333">di chi chiede (+ conferma)</text>
+<rect x="714.8" y="425" width="81.19999999999999" height="16" rx="8" fill="#FFFFFF" stroke="#7B6CD9" stroke-width="1"/>
+<text x="755.4" y="437" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#3B2F8F">strati 4 · 5</text>
+<line x1="699.0" y1="290" x2="699.0" y2="352" stroke="#E08A1E" stroke-width="2.5" marker-end="url(#mo)"/>
+<line x1="755.0" y1="352" x2="755.0" y2="290" stroke="#E08A1E" stroke-width="2.5" marker-end="url(#mo)"/>
+<text x="691.0" y="325.0" text-anchor="end" font-size="11" fill="#8A4B00">chiama</text>
+<text x="763.0" y="325.0" font-size="11" fill="#8A4B00">risultato</text>
+<rect x="229.33333333333334" y="365" width="392.66666666666663" height="72" rx="10" fill="#FFF9F0" stroke="#E0B070" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="243.33333333333334" y="385" font-size="11" fill="#8A4B00">Ciclo dell'agente: i passi 6 e 7 si ripetono</text>
+<text x="243.33333333333334" y="400" font-size="11" fill="#8A4B00">finché la risposta è pronta (Figura 2 della</text>
+<text x="243.33333333333334" y="415" font-size="11" fill="#8A4B00">dispensa principale). Le azioni delicate</text>
+<text x="243.33333333333334" y="430" font-size="11" fill="#8A4B00">chiedono la conferma di una persona.</text>
+<text x="18" y="466" font-size="11" fill="#555">I colori riprendono la mappa: grigio, rosso e verde sono le colonne trasversali, che compaiono in più punti del percorso.</text>
+</svg>
