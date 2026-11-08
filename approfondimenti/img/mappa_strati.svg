@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 525" width="820" height="525" font-family="Helvetica, Arial, sans-serif">
+<title>Mappa a strati di un sistema agentico</title>
+<rect width="820" height="525" fill="#FFFFFF"/>
+<text x="305" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#555" letter-spacing="1">LIVELLI</text>
+<text x="705" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#555" letter-spacing="1">TRASVERSALI</text>
+<rect x="20" y="45" width="570" height="72" rx="10" fill="#E8F0FE" stroke="#4A6FD6" stroke-width="2"/>
+<circle cx="50" cy="81.0" r="17" fill="#4A6FD6"/>
+<text x="50" y="87.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">5</text>
+<text x="80" y="73" font-size="16" font-weight="bold" fill="#1F3A8A">Interfaccia</text>
+<text x="80" y="91" font-size="11" font-style="italic" fill="#1F3A8A">dove l'utente parla con l'agente</text>
+<text x="80" y="107" font-size="11.5" fill="#333">chat web · editor/IDE · CAD</text>
+<rect x="483.4" y="57" width="94.6" height="24" rx="12" fill="#FFFFFF" stroke="#4A6FD6" stroke-width="1.5"/>
+<text x="530.7" y="73" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1F3A8A">ACP · AG-UI</text>
+<rect x="20" y="125" width="570" height="72" rx="10" fill="#FFF4E5" stroke="#E08A1E" stroke-width="2"/>
+<circle cx="50" cy="161.0" r="17" fill="#E08A1E"/>
+<text x="50" y="167.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">4</text>
+<text x="80" y="153" font-size="16" font-weight="bold" fill="#8A4B00">Orchestrazione</text>
+<text x="80" y="171" font-size="11" font-style="italic" fill="#8A4B00">chi decide i passi</text>
+<text x="80" y="187" font-size="11.5" fill="#333">ciclo dell'agente · router · più agenti</text>
+<rect x="536.2" y="137" width="41.8" height="24" rx="12" fill="#FFFFFF" stroke="#E08A1E" stroke-width="1.5"/>
+<text x="557.1" y="153" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#8A4B00">A2A</text>
+<rect x="20" y="205" width="570" height="72" rx="10" fill="#E0F4F4" stroke="#0F7F81" stroke-width="2"/>
+<circle cx="50" cy="241.0" r="17" fill="#0F7F81"/>
+<text x="50" y="247.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">3</text>
+<text x="80" y="233" font-size="16" font-weight="bold" fill="#0B5557">Contesto</text>
+<text x="80" y="251" font-size="11" font-style="italic" fill="#0B5557">cosa il modello vede</text>
+<text x="80" y="267" font-size="11.5" fill="#333">system prompt · AGENTS.md · skill · RAG · cronologia</text>
+<rect x="424.0" y="217" width="154.0" height="24" rx="12" fill="#FFFFFF" stroke="#0F7F81" stroke-width="1.5"/>
+<text x="501.0" y="233" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#0B5557">SKILL.md · AGENTS.md</text>
+<rect x="20" y="285" width="570" height="72" rx="10" fill="#F1F0FB" stroke="#7B6CD9" stroke-width="2"/>
+<circle cx="50" cy="321.0" r="17" fill="#7B6CD9"/>
+<text x="50" y="327.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">2</text>
+<text x="80" y="313" font-size="16" font-weight="bold" fill="#3B2F8F">Strumenti</text>
+<text x="80" y="331" font-size="11" font-style="italic" fill="#3B2F8F">con cosa l'agente agisce</text>
+<text x="80" y="347" font-size="11.5" fill="#333">tool · server MCP · sistemi aziendali</text>
+<rect x="536.2" y="297" width="41.8" height="24" rx="12" fill="#FFFFFF" stroke="#7B6CD9" stroke-width="1.5"/>
+<text x="557.1" y="313" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#3B2F8F">MCP</text>
+<rect x="20" y="365" width="570" height="72" rx="10" fill="#FCE8D2" stroke="#C9741A" stroke-width="2"/>
+<circle cx="50" cy="401.0" r="17" fill="#C9741A"/>
+<text x="50" y="407.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">1</text>
+<text x="80" y="393" font-size="16" font-weight="bold" fill="#7A3E00">Modello</text>
+<text x="80" y="411" font-size="11" font-style="italic" fill="#7A3E00">chi ragiona</text>
+<text x="80" y="427" font-size="11.5" fill="#333">LLM via API · cache dei prompt</text>
+<rect x="443.8" y="377" width="134.2" height="24" rx="12" fill="#FFFFFF" stroke="#C9741A" stroke-width="1.5"/>
+<text x="510.9" y="393" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#7A3E00">API del fornitore</text>
+<rect x="610" y="45" width="58" height="392" rx="10" fill="#F2F2F2" stroke="#555555" stroke-width="2"/>
+<text x="639" y="241.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#555555" transform="rotate(-90 639 241.0)" dominant-baseline="middle">Permessi e identità</text>
+<rect x="678" y="45" width="58" height="392" rx="10" fill="#FDECEA" stroke="#C0392B" stroke-width="2"/>
+<text x="707" y="241.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#C0392B" transform="rotate(-90 707 241.0)" dominant-baseline="middle">Guardrail</text>
+<rect x="746" y="45" width="58" height="392" rx="10" fill="#E6F4EA" stroke="#2E8B57" stroke-width="2"/>
+<text x="775" y="241.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#2E8B57" transform="rotate(-90 775 241.0)" dominant-baseline="middle">Osservabilità e test</text>
+<text x="20" y="467" font-size="11.5" fill="#444"><tspan font-weight="bold">Etichette bianche:</tspan> gli standard che definiscono ciascun livello o i suoi confini.</text>
+<text x="20" y="485" font-size="11.5" fill="#444"><tspan font-weight="bold">Colonne:</tspan> responsabilità che attraversano tutti i livelli.</text>
+<text x="20" y="503" font-size="11" font-style="italic" fill="#777">Non è uno stack ISO/OSI: i livelli sono componenti e responsabilità, non strati che si incapsulano a vicenda.</text>
+</svg>
