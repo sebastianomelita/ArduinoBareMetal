@@ -28,5 +28,5 @@
 24. [Gateway LoRaWan con esp32- rete IP](gatewaylora-ip.md)
 25. [Esercizi](esercizi.md)
 26. [Esercizi riassuntivi](es_riassuntivi.md)
-27. Progettare con l'AI(progettare-con-ai.md)
+27. [Progettare con l'AI](progettare-con-ai.md)
 
