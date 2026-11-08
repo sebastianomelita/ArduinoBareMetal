@@ -40,6 +40,41 @@ Gli otto strati si collocano sulla stessa mappa usata nella dispensa principale.
 
 ---
 
+## Strati o processo? Tre modi di guardare il sistema
+
+Gli strati descrivono **cosa c'è**, non **cosa succede**: sono la *struttura* del sistema, come la planimetria di una casa. Si chiamano strati perché ognuno si aggiunge **intorno al modello** senza togliere i precedenti. Ma lo stesso sistema si può guardare anche come **processo**, e in due modi diversi:
+
+| Vista | Domanda a cui risponde | Dove la trovi |
+|---|---|---|
+| **Struttura** (gli strati) | Quali pezzi deve avere il sistema e dove stanno? | La mappa (Figura 1) |
+| **Processo di esecuzione** | Cosa succede a **ogni richiesta**? | Il flusso qui sotto (Figura 2); nella dispensa principale il ciclo dell'agente e la sequenza di SolidCraft |
+| **Processo di costruzione** | In che **ordine** si costruisce il sistema? | La numerazione degli 8 strati; nella dispensa principale il workflow Git |
+
+La struttura serve per **progettare** e per verificare che non manchi niente (è la vista delle domande da fare al fornitore). Il processo di esecuzione serve per **capire un errore** e per decidere **dove** mettere un controllo. Il processo di costruzione serve per **pianificare il lavoro**.
+
+### Una richiesta attraverso gli 8 strati
+
+<p align="center">
+  <img src="img/flusso_richiesta.svg" alt="Flusso di una richiesta: 1 domanda, 2 guardrail in ingresso, 3 identità, 4 router, 5 contesto con cache e RAG, 6 modello che chiama 7 uno strumento in ciclo, 8 guardrail in uscita, 9 traccia, 10 risposta al cliente. Ogni passo indica lo strato corrispondente" width="760">
+</p>
+
+<p align="center"><em>Figura 2 — Il percorso di una domanda di un cliente di SensoNet attraverso gli strati.</em></p>
+
+1. **Domanda.** Il cliente scrive a Elio nella chat (interfaccia).
+2. **Guardrail in ingresso** (strato 6): si cercano istruzioni nascoste nel messaggio e negli allegati.
+3. **Identità** (strato 5): si stabilisce chi sta chiedendo e con quali permessi.
+4. **Router** (strato 7): domanda semplice → risposta diretta o modello piccolo; domanda difficile → modello grande.
+5. **Contesto** (strati 2, 3 e 7): system prompt (letto dalla cache) più i frammenti di documento recuperati con il RAG.
+6. **Modello** (strato 1): ragiona e decide se rispondere o agire.
+7. **Strumento** (strati 4 e 5): se serve, il modello chiama uno strumento via MCP, **con i permessi di chi chiede**; le azioni delicate chiedono una conferma. I passi 6 e 7 si ripetono finché la risposta è pronta: è il **ciclo dell'agente**.
+8. **Guardrail in uscita** (strato 6): si mascherano i dati personali che chi legge non deve vedere.
+9. **Traccia** (strato 8): si registrano domanda, documenti usati, strumenti chiamati, tempi e costo. Nella figura compare alla fine, ma nella pratica la traccia **raccoglie dati da tutti i passi**.
+10. **Risposta** al cliente, con la fonte citata.
+
+> **Cosa insegna il flusso.** I passi non coincidono con gli strati: il passo 5 usa tre strati, e gli strati 5 e 6 compaiono **due volte** (identità prima, permessi sugli strumenti poi; guardrail in ingresso e in uscita). È il motivo per cui nella mappa permessi, guardrail e osservabilità sono disegnati come **colonne trasversali** e non come livelli: nel processo non stanno in un punto solo.
+
+---
+
 ## Strato 1 — Il modello
 
 **Cosa succede senza.** Niente: non c'è ancora nessuna AI.
