@@ -1,6 +1,10 @@
 # MCP vs ACP nella gestione degli agenti AI
 *Dispensa — aggiornata a novembre 2026*
 
+> **Scopo di questa dispensa.** Capire **come funzionano e come si collegano gli agenti AI**: che cosa sono agente, skill e contesto; quali protocolli li collegano agli strumenti (MCP), alle interfacce (ACP) e ad altri agenti (A2A); come si usano per programmare (programmazione agentica), con il caso di studio del CAD SolidCraft.
+>
+> **Dispensa compagna:** [Costruire un assistente AI aziendale in 8 strati](AI_aziendale_8_strati.md) — come si **progetta un assistente AI per un'azienda** (documenti con il RAG, permessi, guardrail, costi, test). Le due dispense condividono la stessa mappa a strati: questa approfondisce i **collegamenti** tra i componenti, quella i **pezzi da costruire** intorno al modello.
+
 ---
 
 ## La mappa d'insieme
@@ -24,7 +28,7 @@ Prima dei dettagli, una mappa di **tutti i pezzi** di un sistema agentico e di *
 
 > **Perché non è un vero stack ISO/OSI.** Nel modello ISO/OSI ogni livello parla solo con quelli adiacenti e "incapsula" il livello sottostante. Qui no: i livelli sono **componenti e responsabilità**, e i protocolli non sono livelli ma **confini** tra componenti (ACP tra interfaccia e agente, MCP tra agente e strumenti, A2A tra agenti). L'analogia con ISO/OSI serve solo a dare un ordine: dal "chi ragiona" in basso al "dove interagisce l'utente" in alto. Alcune responsabilità, poi, non stanno in un livello solo: **permessi, guardrail e osservabilità attraversano tutto**, per questo sono disegnati come colonne.
 >
-> La stessa mappa apre la dispensa compagna **"Costruire un assistente AI aziendale in 8 strati"** (`AI_aziendale_8_strati.md`), che approfondisce i livelli e le colonne qui solo accennati: RAG, permessi, guardrail, router, osservabilità.
+> La stessa mappa apre la dispensa compagna [**Costruire un assistente AI aziendale in 8 strati**](AI_aziendale_8_strati.md), che approfondisce i livelli e le colonne qui solo accennati: RAG, permessi, guardrail, router, osservabilità.
 
 ---
 

@@ -1,5 +1,9 @@
 # Costruire un assistente AI aziendale in 8 strati
-*Dispensa compagna di "MCP vs ACP nella gestione degli agenti AI" — novembre 2026*
+*Dispensa — novembre 2026*
+
+> **Scopo di questa dispensa.** Capire **cosa serve intorno a un modello linguistico** perché diventi un assistente affidabile per un'azienda: i documenti aziendali (RAG), gli strumenti, i permessi, le difese contro la prompt injection, il controllo dei costi, le tracce e i test. Serve sia a chi l'assistente lo **costruisce**, sia a chi lo **compra**.
+>
+> **Dispensa compagna:** [MCP vs ACP nella gestione degli agenti AI](MCP_vs_ACP_dispensa.md) — come **funzionano e si collegano gli agenti** (agente, skill, contesto, protocolli MCP, ACP e A2A, programmazione agentica). Conviene leggerla prima se termini come *contesto*, *MCP* o *ciclo dell'agente* non sono familiari. Le due dispense condividono la stessa mappa a strati.
 
 ---
 
@@ -17,7 +21,7 @@ Vale sia per chi l'assistente lo **costruisce**, sia per chi lo **compra**: in f
 
 ## La mappa
 
-Gli otto strati si collocano sulla stessa mappa usata nella dispensa principale.
+Gli otto strati si collocano sulla stessa mappa usata nella [dispensa principale](MCP_vs_ACP_dispensa.md#la-mappa-dinsieme).
 
 <p align="center">
   <img src="img/mappa_strati.svg" alt="Mappa a strati: cinque livelli (1 modello, 2 strumenti, 3 contesto, 4 orchestrazione, 5 interfaccia) con i rispettivi standard e tre colonne trasversali: permessi e identità, guardrail, osservabilità e test" width="760">
