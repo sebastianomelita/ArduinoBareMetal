@@ -30,24 +30,24 @@ In tutti gli esempi l'array è `int v[N]` con `N = 8`.
 
 **Regola: lo shift a destra si fa partendo dall'alto** (dall'ultimo indice verso il primo).
 
-Esempio: shift a destra di `k = 3` posizioni, posti scoperti riempiti con 0.
+Esempio: shift a destra di `k = 1` posizione, posto scoperto riempito con 0.
 
 | Indice | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Prima | 6 | 5 | 3 | 1 | 8 | 7 | 2 | 4 |
-| Dopo | **0** | **0** | **0** | 6 | 5 | 3 | 1 | 8 |
+| Dopo | **0** | 6 | 5 | 3 | 1 | 8 | 7 | 2 |
 
 <p align="center">
-  <img src="img/shift_destra_zeri.gif" alt="Animazione: shift a destra di 3 con zeri, partendo dall'alto">
+  <img src="img/shift_destra_zeri.gif" alt="Animazione: shift a destra di 1 con zero, partendo dall'alto">
 </p>
 
-I valori 7, 2, 4 escono dall'alto e vanno persi; i posti 0, 1, 2 sono scoperti e ricevono 0.
+Il valore 4 esce dall'alto e va perso; il posto 0 è scoperto e riceve 0.
 
 ### Perché si parte dall'alto
 
 Ogni copia `v[i] = v[i-k]` **sovrascrive** `v[i]`. Partendo dall'alto, la cella sovrascritta è già stata copiata più su, quindi il suo valore non serve più.
 
-Se invece si partisse dal basso, `v[3] = v[0]` cancellerebbe il valore 1 prima che venga copiato in `v[6]`. Alla fine l'array conterrebbe solo copie ripetute dei primi valori: 0 0 0 6 5 3 6 5.
+Se invece si partisse dal basso, `v[1] = v[0]` cancellerebbe il 5 prima che venga copiato in `v[2]`. Poi `v[2] = v[1]` copierebbe di nuovo il 6, e così via fino in cima. Alla fine il 6 sarebbe copiato su tutto l'array: 0 6 6 6 6 6 6 6.
 
 L'animazione mostra l'errore: le celle in rosso alla fine sono i valori sbagliati.
 
@@ -59,7 +59,7 @@ L'animazione mostra l'errore: le celle in rosso alla fine sono i valori sbagliat
 
 ```cpp
 const int N = 8;
-const int K = 3;
+const int K = 1;   // numero di posizioni dello shift
 
 // 1) copia dall'alto verso il basso
 for (int i = N - 1; i >= K; i--)
@@ -70,28 +70,28 @@ for (int i = 0; i < K; i++)
     v[i] = 0;
 ```
 
-Caso particolare frequente: shift di **una** posizione (`K = 1`) con `v[i] = v[i-1]` e `v[0] = 0`.
+Lo stesso codice vale per qualsiasi numero di posizioni: per lo shift di 3 basta scrivere `K = 3`, e 6 5 3 1 8 7 2 4 diventa 0 0 0 6 5 3 1 8.
 
 ## 3. Shift a sinistra con valore di default
 
 **Regola: lo shift a sinistra si fa partendo dal basso** (dal primo indice verso l'ultimo). È la regola simmetrica di quella dello shift a destra.
 
-Esempio: shift a sinistra di `k = 3` posizioni, posti scoperti riempiti con 0.
+Esempio: shift a sinistra di `k = 1` posizione, posto scoperto riempito con 0.
 
 | Indice | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Prima | 6 | 5 | 3 | 1 | 8 | 7 | 2 | 4 |
-| Dopo | 1 | 8 | 7 | 2 | 4 | **0** | **0** | **0** |
+| Dopo | 5 | 3 | 1 | 8 | 7 | 2 | 4 | **0** |
 
 <p align="center">
-  <img src="img/shift_sinistra_zeri.gif" alt="Animazione: shift a sinistra di 3 con zeri, partendo dal basso">
+  <img src="img/shift_sinistra_zeri.gif" alt="Animazione: shift a sinistra di 1 con zero, partendo dal basso">
 </p>
 
-I valori 6, 5, 3 escono dal basso e vanno persi; i posti 5, 6, 7 sono scoperti e ricevono 0.
+Il valore 6 esce dal basso e va perso; il posto 7 è scoperto e riceve 0.
 
 Anche qui il motivo è lo stesso: la copia `v[i] = v[i+k]` sovrascrive `v[i]`, e partendo dal basso quella cella è già stata copiata più giù (oppure è un valore che deve uscire).
 
-Se invece si partisse dall'alto, `v[4] = v[7]` cancellerebbe l'8 prima che venga copiato in `v[1]`. Il risultato sarebbe 2 4 7 2 4 0 0 0 invece di 1 8 7 2 4 0 0 0.
+Se invece si partisse dall'alto, `v[6] = v[7]` cancellerebbe il 2 prima che venga copiato in `v[5]`. Poi `v[5] = v[6]` copierebbe di nuovo il 4, e così via fino in fondo. Alla fine il 4 sarebbe copiato su tutto l'array: 4 4 4 4 4 4 4 0.
 
 <p align="center">
   <img src="img/shift_sinistra_errore.gif" alt="Animazione dell'errore: shift a sinistra partendo dall'alto">
@@ -108,6 +108,8 @@ for (int i = 0; i < N - K; i++)
 for (int i = N - K; i < N; i++)
     v[i] = 0;
 ```
+
+Con `K = 3` lo stesso codice trasforma 6 5 3 1 8 7 2 4 in 1 8 7 2 4 0 0 0.
 
 ### Regola da ricordare
 
