@@ -102,7 +102,40 @@ Prima del passo l'array è `1 3 5 6 7 8 | 2 4`, con `i = 6` e `x = 2`.
 
 Durante lo shift un valore compare due volte (ad esempio `8 8`): è normale, la copia in basso verrà sovrascritta al passo successivo o dall'inserimento finale. Il valore `x` non va perso perché è stato salvato all'inizio.
 
-L'ordine delle condizioni `j >= 0 && v[j] > x` è importante: se `j` arriva a -1, il controllo sul limite ferma il ciclo prima di leggere `v[-1]`.
+### Come fa `j` a diventare -1 se la condizione è `j >= 0`?
+
+Proprio perché `j >= 0` è la condizione per **continuare**, il ciclo si ferma sul primo valore di `j` che la rende falsa, cioè -1. In un `for` il controllo viene fatto **prima** di ogni giro, il `j--` **alla fine**:
+
+```
+inizializzazione → controllo → corpo → j-- → controllo → corpo → j-- → controllo → ...
+```
+
+Con `j = 0` il controllo è ancora vero; se anche `v[0] > x`, si esegue lo shift e poi `j--` porta `j` a -1. Il controllo successivo è falso e il ciclo esce. Esempio, passo 1 della simulazione (6 | 5, `x = 5`):
+
+| Momento | `j` | Controllo `j >= 0 && v[j] > x` | Cosa succede |
+| --- | --- | --- | --- |
+| inizializzazione `j = i - 1` | 0 | `0 >= 0` vero, `6 > 5` vero | si entra nel corpo |
+| corpo | 0 | | `v[1] = v[0]`: shift del 6 |
+| `j--` | -1 | | |
+| controllo | -1 | `-1 >= 0` falso | **stop**, `v[-1]` non viene letto |
+| dopo il ciclo | -1 | | `v[j + 1] = v[0] = 5` |
+
+`j = -1` non è un errore: è il valore con cui il ciclo esce, e serve, perché `v[j + 1]` diventa `v[0]`, il posto giusto per il valore più piccolo.
+
+### La valutazione a corto circuito
+
+`v[-1]` non viene mai letto grazie alla **valutazione a corto circuito** (*short-circuit evaluation*) degli operatori logici `&&` e `||`: il secondo operando viene valutato solo se serve a decidere il risultato.
+
+- con `a && b`, se `a` è falso il risultato è sicuramente falso e `b` **non viene valutato**;
+- con `a || b`, se `a` è vero il risultato è sicuramente vero e `b` **non viene valutato**.
+
+Per questo l'ordine delle condizioni conta:
+
+```cpp
+j >= 0 && v[j] > x    // corretto: con j = -1 si ferma prima di leggere v[-1]
+v[j] > x && j >= 0    // sbagliato: con j = -1 legge v[-1], fuori dall'array
+j >= 0 & v[j] > x     // sbagliato: & (bit a bit) valuta sempre entrambi i lati
+```
 
 ### Focus: perché si inserisce in `v[j + 1]`
 
@@ -224,3 +257,14 @@ Nell'animazione il buco è in arancione con l'etichetta `v[j]`, la freccia indic
 | Inserimento | `v[j + 1] = x` | `v[j] = a` |
 
 È lo stesso algoritmo scritto con un indice diverso: la `j` della versione con `j-1` vale sempre uno in più di quella della versione con `j+1`. Fanno gli stessi confronti e gli stessi shift.
+
+#### Fine corsa e corto circuito nella versione con `j-1`
+
+Qui la condizione per continuare è `j - 1 >= 0`, cioè `j > 0`: il ciclo esce con **`j = 0`**, non con -1. Con `j = 1` il controllo è vero; se anche `a < v[0]`, si esegue lo shift `v[1] = v[0]` e poi `j--` porta `j` a 0. Il controllo successivo `0 - 1 >= 0` è falso e il ciclo esce; l'inserimento `v[j] = a` scrive in `v[0]`.
+
+Anche qui vale la **valutazione a corto circuito**: con `j = 0` la prima condizione è falsa, quindi `a < v[j - 1]` non viene valutata e `v[-1]` non viene mai letto. L'ordine conta allo stesso modo:
+
+```cpp
+j - 1 >= 0 && a < v[j - 1]    // corretto: con j = 0 si ferma prima di leggere v[-1]
+a < v[j - 1] && j - 1 >= 0    // sbagliato: con j = 0 legge v[-1], fuori dall'array
+```
