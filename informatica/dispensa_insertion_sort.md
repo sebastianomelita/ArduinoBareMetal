@@ -184,3 +184,24 @@ Output: `6 5 3 1 8 7 2 4` diventa `1 2 3 4 5 6 7 8`.
 La variante con gli scambi è più semplice da scrivere ma fa più assegnamenti: ogni scambio ne richiede tre, lo shift uno solo.
 
 Nella variante con gli ordinati in alto i ruoli si invertono: l'insieme ordinato è `v[i+1..N-1]`, il separatore `i` scende, e ogni nuovo elemento viene fatto **salire** al suo posto.
+
+### La variante con j e j-1 in azione
+
+In questa variante il valore da inserire non viene salvato in `x` e non c'è nessun buco. Il valore scende al suo posto con una serie di **scambi** tra `v[j-1]` e `v[j]`: finché il vicino di sotto è più grande, i due si scambiano e `j` scende di uno.
+
+```cpp
+for (int i = 1; i < N; i++)
+    for (int j = i; j > 0 && v[j - 1] > v[j]; j--) {
+        int t = v[j];          // scambio v[j] e v[j-1]
+        v[j] = v[j - 1];
+        v[j - 1] = t;
+    }
+```
+
+Qui `j` si può dichiarare dentro il `for`, perché dopo il ciclo non serve più: non c'è un `x` da mettere in `v[j + 1]`. Il valore da inserire si trova sempre in `v[j]`.
+
+<p align="center">
+  <img src="img/insertion_sort_j_meno_1.gif" alt="Animazione: insertion sort con scambi tra v[j-1] e v[j]">
+</p>
+
+Nell'animazione il valore da inserire è in arancione e la freccia indica `j`; a ogni scambio il valore più grande passa sopra e quello da inserire sotto. Su 6 5 3 1 8 7 2 4 servono **16 scambi**, cioè 48 assegnamenti. La versione con `x` e gli shift fa lo stesso lavoro con 16 shift più 2 assegnamenti per passo (salvare `x` e inserirlo): 30 assegnamenti in tutto.
