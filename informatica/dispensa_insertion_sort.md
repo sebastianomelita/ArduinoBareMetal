@@ -94,6 +94,47 @@ Durante lo shift un valore compare due volte (ad esempio `8 8`): è normale, la 
 
 L'ordine delle condizioni `j >= 0 && v[j] > x` è importante: se `j` arriva a -1, il controllo sul limite ferma il ciclo prima di leggere `v[-1]`.
 
+### Focus: perché si inserisce in `v[j + 1]`
+
+La chiave è il **buco**, cioè la cella libera in cui finirà `x`. Durante tutto il ciclo interno vale questa regola: **il buco è sempre `v[j + 1]`**.
+
+1. **All'inizio** `j = i - 1`, quindi `j + 1 = i`. Il buco è proprio `v[i]`: il suo valore è stato salvato in `x`, quindi la cella si può sovrascrivere.
+2. **A ogni passo** `v[j]` è maggiore di `x` e viene copiato nel buco con `v[j + 1] = v[j]`. Ora è `v[j]` a contenere una copia inutile: è lui il nuovo buco. Con `j--` l'indice scende di uno e il buco torna a essere `v[j + 1]`.
+3. **Alla fine** il ciclo si ferma e il buco è ancora in `v[j + 1]`. Lì va `x`.
+
+In altre parole, `j` indica l'elemento che si sta confrontando con `x`, e `j + 1` la cella libera subito sopra di lui. I due scendono insieme.
+
+<p align="center">
+  <img src="img/focus_buco_passo6.gif" alt="Animazione: il buco v[j + 1] scende insieme a j nel passo 6">
+</p>
+
+### Perché `v[j + 1]` è il posto giusto
+
+Quando il ciclo si ferma, l'insieme ordinato è diviso in due parti attorno al buco:
+
+- sotto il buco, da `v[0]` a `v[j]`, ci sono i valori **minori o uguali** a `x`: non sono stati toccati;
+- sopra il buco, da `v[j + 2]` a `v[i]`, ci sono i valori **maggiori** di `x`: sono stati spostati in su di una posizione.
+
+Mettendo `x` nel buco l'ordine è rispettato su entrambi i lati. Il ciclo si può fermare in tre modi, e la stessa istruzione `v[j + 1] = x` funziona in tutti:
+
+| Caso | Esempio dall'animazione | Dove si ferma `j` | Perché si ferma | `x` va in |
+| --- | --- | --- | --- | --- |
+| Trova un elemento non maggiore di `x` | passo 6, `x = 2` | `j = 0` (`v[0] = 1`) | `1 > 2` è falso | `v[1]` |
+| `x` è il più piccolo di tutti | passo 3, `x = 1` | `j = -1` | `j >= 0` è falso | `v[0]` |
+| `x` è già al suo posto | passo 4, `x = 8` | `j = 3` (`v[3] = 6`), nessuno shift | `6 > 8` è falso | `v[4]`, la sua cella di partenza |
+
+Nel secondo caso si vede perché non si può scrivere `v[j] = x`: con `j = -1` si scriverebbe fuori dall'array.
+
+<p align="center">
+  <img src="img/focus_buco_passo3.gif" alt="Animazione: nel passo 3 j arriva a -1 e x va in v[0]">
+</p>
+
+### L'errore tipico: `v[j] = x`
+
+Nel passo 6, dopo gli shift l'array è `1 3 3 5 6 7 8 | 4`, con `j = 0` e il buco in `v[1]`. Scrivendo `v[j] = x` il 2 finisce in `v[0]`: l'1 viene cancellato e in `v[1]` resta la copia inutile del 3. Il risultato è `2 3 3 5 6 7 8`, che ha perso l'1. Con `v[j + 1] = x` invece si ottiene `1 2 3 5 6 7 8`.
+
+Regola da ricordare: **`j` si ferma sull'ultimo elemento da lasciare dov'è; `x` va subito sopra, in `j + 1`.**
+
 Per la teoria completa degli shift e dell'inserimento ordinato vedi la *Dispensa: gli shift negli array*.
 
 ## 5. Il programma completo e le varianti
