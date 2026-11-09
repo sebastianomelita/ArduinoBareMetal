@@ -290,9 +290,9 @@ Sequenza ordinata 1 3 5 6 8 (`n = 5`), valore da inserire `x = 4`.
 
 ```cpp
 // 1) ricerca del posto giusto
-int p = 0;
-while (p < n && v[p] <= x)
-    p++;
+int p;
+for (p = 0; p < n && v[p] <= x; p++)
+    ;   // corpo vuoto: il for serve solo a far avanzare p
 
 // 2) shift a destra di una posizione, dall'alto
 for (int i = n; i > p; i--)
@@ -310,18 +310,96 @@ n++;
 La ricerca si può fare anche **dall'alto**, scorrendo la sequenza da `v[n-1]` verso il basso. Ogni elemento maggiore di `x` incontrato viene subito spostato a destra; ci si ferma al primo elemento non maggiore. Le fasi 1 e 2 diventano un solo ciclo.
 
 ```cpp
-int j = n - 1;
-while (j >= 0 && v[j] > x) {
-    v[j + 1] = v[j];   // shift a destra
-    j--;               // ricerca verso il basso
-}
-v[j + 1] = x;          // inserimento
+int j;                                   // dichiarata fuori: serve dopo il for
+for (j = n - 1; j >= 0 && v[j] > x; j--)
+    v[j + 1] = v[j];                     // shift a destra, la ricerca scende con j--
+v[j + 1] = x;                            // inserimento
 n++;
 ```
 
-È esattamente il ciclo interno dell'**insertion sort**: l'ordinamento ripete l'inserimento ordinato per ogni elemento dell'array (vedi la dispensa sull'insertion sort).
+Il `for` riunisce partenza dall'alto (`j = n - 1`), condizione (`j >= 0 && v[j] > x`) e discesa (`j--`). La variabile `j` va dichiarata **prima** del `for`, perché serve ancora nella riga `v[j + 1] = x`.
+
+È esattamente il ciclo interno dell'**insertion sort**: l'ordinamento ripete l'inserimento ordinato per ogni elemento dell'array.
 
 Usare `>` e non `>=` rende l'inserimento **stabile**: un valore uguale a uno già presente viene messo dopo di esso.
+
+### Focus: perché si inserisce in `v[j + 1]`
+
+La chiave è il **buco**, cioè la cella libera in cui finirà `x`. Durante tutto il ciclo vale questa regola: **il buco è sempre `v[j + 1]`**.
+
+1. **All'inizio** `j = n - 1`, quindi `j + 1 = n`: il buco è la prima cella libera in alto.
+2. **A ogni passo** `v[j]` è maggiore di `x` e viene copiato nel buco con `v[j + 1] = v[j]`. Ora è `v[j]` a contenere una copia inutile: è lui il nuovo buco. Con `j--` l'indice scende di uno e il buco torna a essere `v[j + 1]`.
+3. **Alla fine** il ciclo si ferma e il buco è ancora in `v[j + 1]`. Lì va `x`.
+
+In altre parole, `j` indica l'elemento che si sta confrontando con `x`, e `j + 1` la cella libera subito sopra di lui. I due scendono insieme.
+
+<p align="center">
+  <img src="img/inserimento_buco_x4.gif" alt="Animazione: inserimento di x = 4, il buco v[j + 1] scende insieme a j">
+</p>
+
+### Perché `v[j + 1]` è il posto giusto
+
+Quando il ciclo si ferma, la sequenza è divisa in due parti attorno al buco:
+
+- sotto il buco, da `v[0]` a `v[j]`, ci sono i valori **minori o uguali** a `x`: non sono stati toccati;
+- sopra il buco, da `v[j + 2]` a `v[n]`, ci sono i valori **maggiori** di `x`: sono stati spostati in su di una posizione.
+
+Mettendo `x` nel buco l'ordine è rispettato su entrambi i lati. Con la sequenza 1 3 5 6 8 il ciclo si può fermare in tre modi, e la stessa istruzione `v[j + 1] = x` funziona in tutti:
+
+| Caso | `x` | Dove si ferma `j` | Perché si ferma | `x` va in | Risultato |
+| --- | --- | --- | --- | --- | --- |
+| Trova un elemento non maggiore di `x` | 4 | `j = 1` (`v[1] = 3`) | `3 > 4` è falso | `v[2]` | 1 3 4 5 6 8 |
+| `x` è il più piccolo di tutti | 0 | `j = -1` | `j >= 0` è falso | `v[0]` | 0 1 3 5 6 8 |
+| `x` è il più grande di tutti | 9 | `j = 4` (`v[4] = 8`), nessuno shift | `8 > 9` è falso | `v[5]`, in coda | 1 3 5 6 8 9 |
+
+Nel secondo caso si vede perché non si può scrivere `v[j] = x`: con `j = -1` si scriverebbe fuori dall'array.
+
+<p align="center">
+  <img src="img/inserimento_buco_x0.gif" alt="Animazione: inserimento di x = 0, j arriva a -1 e x va in v[0]">
+</p>
+
+### Come fa `j` a diventare -1 se la condizione è `j >= 0`?
+
+Proprio perché `j >= 0` è la condizione per **continuare**, il ciclo si ferma sul primo valore di `j` che la rende falsa, cioè -1. In un `for` il controllo viene fatto **prima** di ogni giro, il `j--` **alla fine**:
+
+```
+inizializzazione → controllo → corpo → j-- → controllo → corpo → j-- → controllo → ...
+```
+
+Con `j = 0` il controllo è ancora vero; se anche `v[0] > x`, si esegue lo shift e poi `j--` porta `j` a -1. Il controllo successivo è falso e il ciclo esce. Ecco gli ultimi momenti dell'inserimento di `x = 0` in 1 3 5 6 8, quando 8, 6, 5 e 3 sono già stati spostati in su:
+
+| Momento | `j` | Controllo `j >= 0 && v[j] > x` | Cosa succede |
+| --- | --- | --- | --- |
+| dopo il `j--` precedente | 0 | `0 >= 0` vero, `1 > 0` vero | si entra nel corpo |
+| corpo | 0 | | `v[1] = v[0]`: shift dell'1 |
+| `j--` | -1 | | |
+| controllo | -1 | `-1 >= 0` falso | **stop**, `v[-1]` non viene letto |
+| dopo il ciclo | -1 | | `v[j + 1] = v[0] = 0` |
+
+`j = -1` non è un errore: è il valore con cui il ciclo esce, e serve, perché `v[j + 1]` diventa `v[0]`, il posto giusto per il valore più piccolo.
+
+### La valutazione a corto circuito
+
+`v[-1]` non viene mai letto grazie alla **valutazione a corto circuito** (*short-circuit evaluation*) degli operatori logici `&&` e `||`: il secondo operando viene valutato solo se serve a decidere il risultato.
+
+- con `a && b`, se `a` è falso il risultato è sicuramente falso e `b` **non viene valutato**;
+- con `a || b`, se `a` è vero il risultato è sicuramente vero e `b` **non viene valutato**.
+
+Per questo l'ordine delle condizioni conta:
+
+```cpp
+j >= 0 && v[j] > x    // corretto: con j = -1 si ferma prima di leggere v[-1]
+v[j] > x && j >= 0    // sbagliato: con j = -1 legge v[-1], fuori dall'array
+j >= 0 & v[j] > x     // sbagliato: & (bit a bit) valuta sempre entrambi i lati
+```
+
+Lo stesso vale per la ricerca della versione a fasi separate, `p < n && v[p] <= x`: quando `p` arriva a `n` il ciclo si ferma prima di leggere `v[n]`, che non fa parte della sequenza.
+
+### L'errore tipico: `v[j] = x`
+
+Con `x = 4`, dopo gli shift l'array è `1 3 5 5 6 8`, con `j = 1` e il buco in `v[2]`. Scrivendo `v[j] = x` il 4 finisce in `v[1]`: il 3 viene cancellato e in `v[2]` resta la copia inutile del 5. Il risultato è `1 4 5 5 6 8`, che ha perso il 3. Con `v[j + 1] = x` invece si ottiene `1 3 4 5 6 8`.
+
+Regola da ricordare: **`j` si ferma sull'ultimo elemento da lasciare dov'è; `x` va subito sopra, in `j + 1`.**
 
 ## 7. Errori tipici
 
@@ -332,4 +410,4 @@ Usare `>` e non `>=` rende l'inserimento **stabile**: un valore uguale a uno gi�
 | Limiti del ciclo sbagliati | lettura di `v[-1]` o `v[N]`, fuori dall'array | a destra `i > 0`, a sinistra `i < N-1` |
 | Shift circolare senza salvare il valore | il valore che esce va perso | salvarlo in una variabile **prima** dello shift |
 | Inserimento ordinato in un array pieno | scrittura di `v[N]` | controllare `n < N` prima di inserire |
-| Condizione `v[j] > x && j >= 0` | legge `v[-1]` quando `j` arriva a -1 | mettere prima il controllo sul limite: `j >= 0 && v[j] > x` |
+| Condizione `v[j] > x && j >= 0` | legge `v[-1]` quando `j` arriva a -1 | mettere prima il controllo sul limite (valutazione a corto circuito): `j >= 0 && v[j] > x` |
