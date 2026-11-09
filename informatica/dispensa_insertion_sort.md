@@ -177,31 +177,40 @@ Output: `6 5 3 1 8 7 2 4` diventa `1 2 3 4 5 6 7 8`.
 
 | Variante | Insieme ordinato | Loop esterno | Loop interno |
 | --- | --- | --- | --- |
-| j e j+1 (quella sopra) | in basso | `i` da 1 a N-1 | salva `x`, shift `v[j+1] = v[j]`, inserisce `x` alla fine |
-| j e j-1 | in basso | `i` da 1 a N-1 | parte da `j = i`, scambia `v[j]` e `v[j-1]` finché `v[j-1] > v[j]` |
+| j e j+1 (quella sopra) | in basso | `i` da 1 a N-1 | salva `x`, il buco è `v[j+1]`: shift `v[j+1] = v[j]`, poi `v[j+1] = x` |
+| j e j-1 | in basso | `i` da 1 a N-1 | salva `a`, il buco è `v[j]`: shift `v[j] = v[j-1]` finché `a < v[j-1]`, poi `v[j] = a` |
 | Ordinati in alto | in alto | `i` da N-2 a 0 | parte da `j = i`, scambia `v[j]` e `v[j+1]` finché `v[j] > v[j+1]` |
 
-La variante con gli scambi è più semplice da scrivere ma fa più assegnamenti: ogni scambio ne richiede tre, lo shift uno solo.
+La variante con gli ordinati in alto, così come è scritta qui, usa gli scambi: è più semplice da scrivere ma fa più assegnamenti, perché ogni scambio ne richiede tre e lo shift uno solo.
 
 Nella variante con gli ordinati in alto i ruoli si invertono: l'insieme ordinato è `v[i+1..N-1]`, il separatore `i` scende, e ogni nuovo elemento viene fatto **salire** al suo posto.
 
-### La variante con j e j-1 in azione
+### La variante con j e j-1, solo shift
 
-In questa variante il valore da inserire non viene salvato in `x` e non c'è nessun buco. Il valore scende al suo posto con una serie di **scambi** tra `v[j-1]` e `v[j]`: finché il vicino di sotto è più grande, i due si scambiano e `j` scende di uno.
+Anche con `j` e `j-1` si usa lo shift, non gli scambi. La differenza è che qui `j` indica direttamente il **buco**: il buco è `v[j]`, e il valore da inserire, salvato in `a`, si confronta con il vicino di sotto `v[j-1]`.
 
 ```cpp
-for (int i = 1; i < N; i++)
-    for (int j = i; j > 0 && v[j - 1] > v[j]; j--) {
-        int t = v[j];          // scambio v[j] e v[j-1]
-        v[j] = v[j - 1];
-        v[j - 1] = t;
-    }
+for (i = 1; i < n; i++) {
+    a = v[i];                                  // v[i] diventa il buco
+    for (j = i; j - 1 >= 0 && a < v[j - 1]; j--)
+        v[j] = v[j - 1];                       // shift a destra, il buco scende in v[j-1]
+    v[j] = a;                                  // inserisco a nel buco
+}
 ```
 
-Qui `j` si può dichiarare dentro il `for`, perché dopo il ciclo non serve più: non c'è un `x` da mettere in `v[j + 1]`. Il valore da inserire si trova sempre in `v[j]`.
-
 <p align="center">
-  <img src="img/insertion_sort_j_meno_1.gif" alt="Animazione: insertion sort con scambi tra v[j-1] e v[j]">
+  <img src="img/insertion_sort_j_meno_1.gif" alt="Animazione: insertion sort con j e j-1, solo shift: il buco è v[j]">
 </p>
 
-Nell'animazione il valore da inserire è in arancione e la freccia indica `j`; a ogni scambio il valore più grande passa sopra e quello da inserire sotto. Su 6 5 3 1 8 7 2 4 servono **16 scambi**, cioè 48 assegnamenti. La versione con `x` e gli shift fa lo stesso lavoro con 16 shift più 2 assegnamenti per passo (salvare `x` e inserirlo): 30 assegnamenti in tutto.
+Nell'animazione il buco è in arancione con l'etichetta `v[j]`, la freccia indica `j` e in azzurro c'è il vicino `v[j-1]` con cui si confronta `a`. Su 6 5 3 1 8 7 2 4 servono 16 shift, come nella versione con `j` e `j+1`.
+
+| | Versione con `j` e `j+1` | Versione con `j` e `j-1` |
+| --- | --- | --- |
+| Partenza | `j = i - 1` | `j = i` |
+| Il buco è | `v[j + 1]` | `v[j]` |
+| Confronto | `v[j] > x` | `a < v[j - 1]` |
+| Controllo sul limite | `j >= 0` | `j - 1 >= 0`, cioè `j > 0` |
+| Shift | `v[j + 1] = v[j]` | `v[j] = v[j - 1]` |
+| Inserimento | `v[j + 1] = x` | `v[j] = a` |
+
+È lo stesso algoritmo scritto con un indice diverso: la `j` della versione con `j-1` vale sempre uno in più di quella della versione con `j+1`. Fanno gli stessi confronti e gli stessi shift.
