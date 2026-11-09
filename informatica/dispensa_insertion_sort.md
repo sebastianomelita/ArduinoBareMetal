@@ -76,6 +76,16 @@ v[j + 1] = x;          // inserisco nel posto liberato
 
 Il `for` riunisce in una riga i tre elementi del ciclo: partenza dall'alto (`j = i - 1`), condizione di continuazione (`j >= 0 && v[j] > x`) e discesa (`j--`). La variabile `j` va dichiarata **prima** del `for`: se fosse dichiarata dentro, non esisterebbe più nella riga `v[j + 1] = x`, dove serve per sapere dove inserire.
 
+### Simulazione completa
+
+L'animazione mostra l'ordinamento completo di 6 5 3 1 8 7 2 4 con questo codice: tutti i 7 inserimenti, uno dopo l'altro. Per ogni passo si vede `x` salvato a parte, il buco `v[j + 1]` in arancione, la freccia su `j` e in azzurro l'elemento `v[j]` confrontato con `x`. La linea verticale separa l'insieme ordinato da quello non ordinato.
+
+<p align="center">
+  <img src="img/insertion_sort_j_piu_1.gif" alt="Animazione: insertion sort completo con j e j+1, solo shift">
+</p>
+
+In tutto servono 16 shift. Nei passi 1, 2 e 3 `x` è il più piccolo dell'insieme ordinato: `j` scende fino a -1, fuori dall'array, e `x` va in `v[0]`. Il passo 6 è analizzato riga per riga nell'esempio che segue.
+
 ### Esempio: il passo 6 dell'animazione
 
 Prima del passo l'array è `1 3 5 6 7 8 | 2 4`, con `i = 6` e `x = 2`.
