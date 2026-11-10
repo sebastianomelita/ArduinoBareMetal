@@ -266,3 +266,19 @@ Anche qui vale la **valutazione a corto circuito**: con `j = 0` la prima condizi
 j - 1 >= 0 && a < v[j - 1]    // corretto: con j = 0 si ferma prima di leggere v[-1]
 a < v[j - 1] && j - 1 >= 0    // sbagliato: con j = 0 legge v[-1], fuori dall'array
 ```
+
+#### I tre casi di blocco nella versione con `j-1`
+
+Anche qui il ciclo si può fermare in tre modi, e la stessa istruzione `v[j] = a` funziona in tutti. Gli esempi sono gli stessi passi 6, 3 e 4 della versione con `j+1`:
+
+| Caso | Esempio | Dove si ferma `j` | Perché si ferma | `a` va in |
+| --- | --- | --- | --- | --- |
+| Trova un elemento non maggiore di `a` | passo 6, `a = 2` | `j = 1` (`v[0] = 1`) | `2 < 1` è falso | `v[1]` |
+| `a` è il più piccolo di tutti | passo 3, `a = 1` | `j = 0` | `0 - 1 >= 0` è falso | `v[0]` |
+| `a` è già al suo posto | passo 4, `a = 8` | `j = 4` (`v[3] = 6`), nessuno shift | `8 < 6` è falso | `v[4]`, la sua cella di partenza |
+
+In ogni caso `j` vale uno in più che nella versione con `j+1` (1 invece di 0, 0 invece di -1, 4 invece di 3), perché qui `j` indica il buco e non l'elemento confrontato. L'animazione mostra i tre casi uno dopo l'altro: nel momento del blocco compaiono la freccia rossa su `j` e la condizione `j - 1 >= 0 && a < v[j - 1]` calcolata con i valori.
+
+<p align="center">
+  <img src="img/tre_casi_blocco_j_meno_1.gif" alt="I tre casi di blocco nella versione con j e j-1: passi 6, 3 e 4">
+</p>
