@@ -17,7 +17,7 @@ Questa dispensa tratta le due operazioni che cambiano un elemento **già present
 | Cosa cambia | un elemento sparisce | un elemento cambia valore |
 | `n` | diminuisce: `n--` (o `n -= k`) | resta uguale |
 | Ricerca | serve: dov'è `x`? | di solito no: si conosce già `p` |
-| Shift | a sinistra, **dal basso** | a sinistra se il valore cresce, a destra se cala |
+| Shift | a sinistra, **dal basso** (oppure `INT_MAX` e riordino) | a sinistra se il valore cresce, a destra se cala |
 | Nel caso peggiore | `n - 1` shift | `n - 1` shift |
 
 Gli esempi usano l'elenco `1 3 5 6 8` (con `N = 8`), e le sue varianti `1 3 5 5 5 6 8` (con valori ripetuti) e `1 3 5 6 8 9`.
@@ -93,7 +93,73 @@ Con tre cancellazioni separate gli shift sarebbero 4 + 3 + 2 = 9; con lo shift d
 
 `p` e `q` si possono trovare anche con la ricerca binaria: sono il **lower bound** e l'**upper bound** di `x` (dispensa sull'inserimento).
 
-## 4. La modifica mediante shift
+## 4. Cancellazione con un valore massimo e riordino
+
+C'è un modo più semplice da scrivere, che non usa lo shift: il valore da cancellare viene **sostituito con un valore massimo**, più grande di tutti quelli che possono stare nell'elenco; un **ordinamento** lo porta in cima; a quel punto basta **escluderlo** con `n--`.
+
+Come valore massimo si usa `INT_MAX`, il più grande `int`, definito in `<climits>`. Per ordinare si usa il bubble sort con la bandierina `scambiato`: a ogni passata il valore più grande sale in cima, quindi già la prima passata porta `INT_MAX` in `v[n - 1]`.
+
+```cpp
+#include <climits>                        // per INT_MAX
+...
+int p;
+for (p = 0; p < n && v[p] < x; p++)       // 1) ricerca di x
+    ;
+if (p < n && v[p] == x) {
+    v[p] = INT_MAX;                       // 2) x diventa il valore massimo
+    bool scambiato = true;                // 3) bubble sort: INT_MAX sale in cima
+    for (int i = 0; i < n - 1 && scambiato; i++) {
+        scambiato = false;
+        for (int j = 0; j < n - 1 - i; j++)
+            if (v[j] > v[j + 1]) {
+                int t = v[j];
+                v[j] = v[j + 1];
+                v[j + 1] = t;
+                scambiato = true;
+            }
+    }
+    n--;                                  // 4) INT_MAX è in v[n - 1]: lo escludo
+}
+```
+
+L'ordine delle fasi conta: il sort va fatto su **tutti** gli `n` elementi, e solo dopo si scrive `n--`. Se si decrementasse `n` prima, il sort non vedrebbe l'ultimo elemento, e `INT_MAX` resterebbe dentro l'elenco.
+
+<p align="center">
+  <img src="img/cancellazione_max_bubble.gif" alt="Animazione: cancellazione di 5 da 1 3 5 6 8 con v[p] = MAX, bubble sort con la bandierina e n--">
+</p>
+
+Nella prima passata `INT_MAX` viene scambiato con tutti i valori che lo seguono e arriva in cima; la seconda passata non fa scambi e la bandierina ferma l'ordinamento. Il resto dell'elenco era già ordinato, quindi non serve altro.
+
+Lo stesso schema cancella **tutte le occorrenze** in un colpo: si sostituiscono con `INT_MAX` tutti i valori uguali a `x`, si ordina e si toglie il numero `k` di valori sostituiti.
+
+```cpp
+int k = 0;
+for (int j = 0; j < n; j++)
+    if (v[j] == x) {
+        v[j] = INT_MAX;                   // ogni occorrenza diventa il massimo
+        k++;
+    }
+// ... bubble sort su n elementi, come sopra ...
+n -= k;                                   // i k massimi sono in cima: li escludo
+```
+
+Il risultato è lo stesso della cancellazione con lo shift, ma il lavoro no:
+
+| Cancellazione | Con lo shift (sezioni 2 e 3) | Con `INT_MAX` + bubble sort |
+| --- | --- | --- |
+| `x = 5` da 1 3 5 6 8 | 2 shift | 7 confronti, 2 scambi, 2 passate |
+| `x = 1` da 1 3 5 6 8 (in testa) | 4 shift | 7 confronti, 4 scambi, 2 passate |
+| `x = 8` da 1 3 5 6 8 (in coda) | 0 shift | 4 confronti, 0 scambi, 1 passata |
+| tutti i 5 da 1 3 5 5 5 6 8 | 2 shift di 3 posizioni | 18 confronti, 6 scambi, 4 passate |
+
+In più ogni scambio costa tre assegnamenti, contro uno solo per uno shift. È la stessa idea dell'inserimento in coda con riordino (dispensa sull'inserimento): **più semplice da scrivere**, perché riusa un ordinamento già pronto, ma **più costosa**.
+
+Due cautele:
+
+- `INT_MAX` non deve poter essere un valore vero dell'elenco: altrimenti, dopo il sort, non si distinguerebbe da un elemento da tenere;
+- funziona così solo su un elenco **ordinato**. Su un elenco non ordinato il sort riordinerebbe anche tutti gli altri valori: il risultato conterrebbe gli elementi giusti, ma non più nell'ordine di partenza.
+
+## 5. La modifica mediante shift
 
 **Definizione.** La *modifica ordinata* cambia il valore di un elemento `v[p]` in un nuovo valore `x`, spostandolo nella posizione giusta perché l'elenco resti ordinato.
 
@@ -134,9 +200,11 @@ Come sempre, il controllo sull'indice va scritto per primo: `j < n - 1` evita di
 
 È la stessa tecnica dell'inserimento ordinato e dell'insertion sort: un buco che si sposta finché il valore non trova il suo posto.
 
+Si potrebbe anche scrivere `v[p] = x` e poi riordinare tutto, come nella sezione 4, ma il bubble sort con il massimo che sale fa scendere un valore di una sola posizione per passata: se il valore cala molto servono molte passate. Lo spostamento diretto del buco fa esattamente gli spostamenti necessari.
+
 Se invece della posizione `p` si conosce il **vecchio valore** ("cambia il 3 in 7"), prima lo si cerca, con la ricerca sequenziale o binaria, e poi si procede come sopra.
 
-## 5. E in un elenco non ordinato?
+## 6. E in un elenco non ordinato?
 
 Se l'ordine non conta, cancellare e modificare costa pochissimo:
 
@@ -158,17 +226,18 @@ Nella cancellazione l'ultimo elemento si sposta nel buco: un solo assegnamento i
 | Modifica | 1 assegnamento | fino a `n - 1` shift |
 | Ricerca dell'elemento | esaustiva: `n` confronti se non c'è | binaria: circa `log₂ n` confronti |
 
-## 6. Riepilogo
+## 7. Riepilogo
 
 | Operazione | Ricerca | Spostamenti nel caso peggiore | Attenzione a |
 | --- | --- | --- | --- |
 | Cancellazione ordinata | ricerca di `x` | `n - 1` shift a sinistra, dal basso | `i < n - 1`; `n--`; se `x` non c'è, nulla |
 | Cancellazione di tutte le occorrenze | `p` e `q` | `n - k` shift di `k` posizioni | `v[i] = v[i + k]`, `i < n - k`; `n -= k` |
 | Modifica diretta | nessuna: si conosce `p` | `n - 1` shift in una sola direzione | decidere la direzione prima di sovrascrivere `v[p]` |
+| Cancellazione con `INT_MAX` + bubble sort | ricerca di `x` | un ordinamento completo | sort su tutti gli `n`, poi `n--`; `INT_MAX` non deve essere un valore vero |
 | Cancella + inserisci | ricerca del posto per `x` | due shift, quasi `2n` | funziona, ma fa più lavoro |
 | Elenco non ordinato | esaustiva | nessuno | cancellazione: l'ultimo nel buco |
 
-## 7. Errori tipici
+## 8. Errori tipici
 
 | Errore | Effetto | Correzione |
 | --- | --- | --- |
@@ -177,6 +246,7 @@ Nella cancellazione l'ultimo elemento si sposta nel buco: un solo assegnamento i
 | Cancellare senza controllare che `x` ci sia | si cancella il primo elemento maggiore di `x` (o, se `x` è più grande di tutti, l'ultimo, con il solo `n--`) | `if (p < n && v[p] == x)` |
 | Dimenticare `n--` (o `n -= k`) | l'ultimo valore compare due volte | aggiornare `n` alla fine |
 | Tutte le occorrenze con tre cancellazioni in un ciclo che fa `p++` dopo ogni cancellazione | il valore scalato in `v[p]` non viene ricontrollato: alcune occorrenze restano | un solo shift di `k`, oppure non avanzare `p` dopo una cancellazione |
+| Cancellazione con `INT_MAX`: `n--` prima del sort | il sort non vede l'ultimo elemento: `INT_MAX` resta nell'elenco e l'ultimo valore si perde | prima il sort su `n` elementi, poi `n--` |
 | Modifica che confronta `x` con `v[p]` dopo averlo sovrascritto | la direzione dello shift viene scelta male | decidere la direzione prima di toccare `v[p]` |
 | Modifica con `v[j + 1] < x && j < n - 1` | quando il buco arriva in cima si legge `v[n]` | `j < n - 1 && v[j + 1] < x` |
 | "Cancellazione veloce" (l'ultimo nel buco) su un elenco ordinato | l'elenco non è più ordinato | in un elenco ordinato serve lo shift |
