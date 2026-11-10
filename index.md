@@ -29,4 +29,5 @@
 25. [Esercizi](esercizi.md)
 26. [Esercizi riassuntivi](es_riassuntivi.md)
 27. [Progettare con l'AI](approfondimenti/progettare-con-ai.md)
+28. [Algoritmi base in C++](informatica/indice.md)
 
