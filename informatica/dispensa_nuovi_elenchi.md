@@ -175,6 +175,8 @@ Solo uno dei due cicli finali viene eseguito davvero: quando si arriva lì, alme
   <img src="img/fusione.gif" alt="Animazione: fusione di a = 1 4 6 9 e b = 2 3 6 8 11 in c">
 </p>
 
+Nell'animazione `a` e il suo indice `i` sono in **blu**, `b` e `j` in **arancione**. Il riquadro a destra mostra a ogni passo la condizione `a[i] <= b[j]`: se è **vera** diventa blu, si prende `a[i]` e avanza solo `i`; se è **falsa** diventa arancione, si prende `b[j]` e avanza solo `j`. L'elemento scelto, il più piccolo dei due, viene contornato con il colore del suo elenco.
+
 | Confronto | Preso | `c` dopo il passo |
 | --- | --- | --- |
 | `a[0] = 1` e `b[0] = 2` | 1 da `a` | 1 |
