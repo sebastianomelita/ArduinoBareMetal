@@ -78,7 +78,7 @@ Il `for` riunisce in una riga i tre elementi del ciclo: partenza dall'alto (`j =
 
 ### Simulazione completa
 
-L'animazione mostra l'ordinamento completo di 6 5 3 1 8 7 2 4 con questo codice: tutti i 7 inserimenti, uno dopo l'altro. Per ogni passo si vede `x` salvato a parte, il buco `v[j + 1]` in arancione, la freccia su `j` e in azzurro l'elemento `v[j]` confrontato con `x`. La linea verticale separa l'insieme ordinato da quello non ordinato.
+L'animazione mostra l'ordinamento completo di 6 5 3 1 8 7 2 4 con questo codice: tutti i 7 inserimenti, uno dopo l'altro. Per ogni passo si vede `x` salvato a parte, il buco in arancione con l'etichetta `v[j + 1]`, la freccia su `j` e in azzurro, con l'etichetta `v[j]`, l'elemento confrontato con `x`. La linea verticale separa l'insieme ordinato da quello non ordinato.
 
 <p align="center">
   <img src="img/insertion_sort_j_piu_1.gif" alt="Animazione: insertion sort completo con j e j+1, solo shift">
@@ -147,8 +147,10 @@ La chiave è il **buco**, cioè la cella libera in cui finirà `x`. Durante tutt
 
 In altre parole, `j` indica l'elemento che si sta confrontando con `x`, e `j + 1` la cella libera subito sopra di lui. I due scendono insieme.
 
+L'animazione mostra i tre modi in cui il ciclo può fermarsi, presi dai passi 6, 3 e 4 dell'ordinamento. Nel momento del blocco compaiono la freccia rossa su `j` e la condizione calcolata con i valori di quel momento.
+
 <p align="center">
-  <img src="img/focus_buco_passo6.gif" alt="Animazione: il buco v[j + 1] scende insieme a j nel passo 6">
+  <img src="img/tre_casi_blocco_insertion_sort.gif" alt="I tre casi di blocco dell'inserimento ordinato: passi 6, 3 e 4">
 </p>
 
 ### Perché `v[j + 1]` è il posto giusto
@@ -167,10 +169,6 @@ Mettendo `x` nel buco l'ordine è rispettato su entrambi i lati. Il ciclo si pu�
 | `x` è già al suo posto | passo 4, `x = 8` | `j = 3` (`v[3] = 6`), nessuno shift | `6 > 8` è falso | `v[4]`, la sua cella di partenza |
 
 Nel secondo caso si vede perché non si può scrivere `v[j] = x`: con `j = -1` si scriverebbe fuori dall'array.
-
-<p align="center">
-  <img src="img/focus_buco_passo3.gif" alt="Animazione: nel passo 3 j arriva a -1 e x va in v[0]">
-</p>
 
 ### L'errore tipico: `v[j] = x`
 
@@ -245,7 +243,7 @@ for (i = 1; i < n; i++) {
   <img src="img/insertion_sort_j_meno_1.gif" alt="Animazione: insertion sort con j e j-1, solo shift: il buco è v[j]">
 </p>
 
-Nell'animazione il buco è in arancione con l'etichetta `v[j]`, la freccia indica `j` e in azzurro c'è il vicino `v[j-1]` con cui si confronta `a`. Su 6 5 3 1 8 7 2 4 servono 16 shift, come nella versione con `j` e `j+1`.
+Nell'animazione il buco è in arancione con l'etichetta `v[j]`, la freccia indica `j` e in azzurro, con l'etichetta `v[j - 1]`, c'è il vicino con cui si confronta `a`. Su 6 5 3 1 8 7 2 4 servono 16 shift, come nella versione con `j` e `j+1`.
 
 | | Versione con `j` e `j+1` | Versione con `j` e `j-1` |
 | --- | --- | --- |

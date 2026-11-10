@@ -283,7 +283,7 @@ Sequenza ordinata 1 3 5 6 8 (`n = 5`), valore da inserire `x = 4`.
 | 3) Inserimento `v[2] = 4` | 1 | 3 | **4** | 5 | 6 | 8 |
 
 <p align="center">
-  <img src="img/inserimento_ordinato.gif" alt="Animazione: inserimento ordinato di 4 nella sequenza 1 3 5 6 8">
+  <img src="img/inserimento_ordinato.gif" alt="Animazione: inserimento ordinato di 4 nella sequenza 1 3 5 6 8, con il buco v[j + 1]">
 </p>
 
 ### Codice C++ con le fasi separate
@@ -333,8 +333,10 @@ La chiave è il **buco**, cioè la cella libera in cui finirà `x`. Durante tutt
 
 In altre parole, `j` indica l'elemento che si sta confrontando con `x`, e `j + 1` la cella libera subito sopra di lui. I due scendono insieme.
 
+L'animazione mostra i tre modi in cui il ciclo può fermarsi, con `x = 4`, `x = 0` e `x = 9`. Nel momento del blocco compaiono la freccia rossa su `j` e la condizione calcolata con i valori di quel momento.
+
 <p align="center">
-  <img src="img/inserimento_buco_x4.gif" alt="Animazione: inserimento di x = 4, il buco v[j + 1] scende insieme a j">
+  <img src="img/tre_casi_blocco_inserimento.gif" alt="I tre casi di blocco dell'inserimento ordinato in 1 3 5 6 8: x = 4, x = 0, x = 9">
 </p>
 
 ### Perché `v[j + 1]` è il posto giusto
@@ -353,10 +355,6 @@ Mettendo `x` nel buco l'ordine è rispettato su entrambi i lati. Con la sequenza
 | `x` è il più grande di tutti | 9 | `j = 4` (`v[4] = 8`), nessuno shift | `8 > 9` è falso | `v[5]`, in coda | 1 3 5 6 8 9 |
 
 Nel secondo caso si vede perché non si può scrivere `v[j] = x`: con `j = -1` si scriverebbe fuori dall'array.
-
-<p align="center">
-  <img src="img/inserimento_buco_x0.gif" alt="Animazione: inserimento di x = 0, j arriva a -1 e x va in v[0]">
-</p>
 
 ### Come fa `j` a diventare -1 se la condizione è `j >= 0`?
 
