@@ -1,6 +1,10 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: gli shift negli array
 
 9 novembre 2026
+
+<a id="s1"></a>
 
 ## 1. Che cos'è uno shift
 
@@ -25,6 +29,8 @@ Cosa mettere nei posti scoperti distingue i due tipi di shift:
 | Shift circolare | riempiti con i valori usciti dall'altro lato | rientrano, nessuno si perde |
 
 In tutti gli esempi l'array è `int v[N]` con `N = 8`.
+
+<a id="s2"></a>
 
 ## 2. Shift a destra con valore di default
 
@@ -67,6 +73,8 @@ v[0] = 0;
 ```
 
 Il ciclo si ferma a `i = 1`: con `i = 0` si leggerebbe `v[-1]`, fuori dall'array.
+
+<a id="s3"></a>
 
 ## 3. Shift a sinistra con valore di default
 
@@ -114,6 +122,8 @@ Il ciclo si ferma a `i = N - 2`: con `i = N - 1` si leggerebbe `v[N]`, fuori dal
 | A sinistra | dal basso (`i = 0` e sale fino a N-2) | `v[i] = v[i+1]` |
 
 In entrambi i casi **si parte dal lato verso cui i valori si spostano**.
+
+<a id="s4"></a>
 
 ## 4. Shift di più posizioni
 
@@ -208,6 +218,8 @@ inverti(v, K, N - 1);   // 3) restanti
 
 Ogni elemento viene scambiato al massimo due volte, quindi anche qui il costo è proporzionale a `N` e non dipende da `K`.
 
+<a id="s5"></a>
+
 ## 5. Shift circolari
 
 Nello **shift circolare** (o rotazione) i valori che escono da un lato rientrano dall'altro: nessun valore si perde e i posti scoperti vengono riempiti proprio con loro.
@@ -258,6 +270,8 @@ for (int i = 0; i < N - 1; i++) // 2) shift dal basso
 v[N - 1] = primo;               // 3) rientra in alto
 ```
 
+<a id="s6"></a>
+
 ## 6. Applicazione: l'inserimento ordinato
 
 **Definizione.** L'*inserimento ordinato* è l'operazione che aggiunge un nuovo valore `x` a una sequenza **già ordinata** di `n` elementi, collocandolo nella posizione corretta, in modo che dopo l'inserimento la sequenza di `n+1` elementi sia ancora ordinata.
@@ -305,6 +319,13 @@ v[p] = x;
 n++;
 ```
 
+La condizione del primo `for` ha due parti, con ruoli diversi:
+
+- `p < n` è la **guardia di fine corsa**: impedisce di andare oltre l'ultimo elemento (in letteratura si parla di *condizione di guardia*, o di *controllo dei limiti*; in inglese *bounds check*);
+- `v[p] <= x` è la **condizione di avanzamento** (o di permanenza nel ciclo): `p` va avanti finché il valore la rispetta.
+
+All'uscita `p` è il **primo indice che rompe la condizione di avanzamento** (o di permanenza), cioè l'indice successivo all'ultimo valore `<= x`: è proprio il posto di `x`. Se nessun valore la rompe, `p` si ferma sul fine corsa, `n`, e `x` va in coda.
+
 ### Versione compatta: ricerca e shift insieme
 
 La ricerca si può fare anche **dall'alto**, scorrendo la sequenza da `v[n-1]` verso il basso. Ogni elemento maggiore di `x` incontrato viene subito spostato a destra; ci si ferma al primo elemento non maggiore. Le fasi 1 e 2 diventano un solo ciclo.
@@ -317,7 +338,7 @@ v[j + 1] = x;                            // inserimento
 n++;
 ```
 
-Il `for` riunisce partenza dall'alto (`j = n - 1`), condizione (`j >= 0 && v[j] > x`) e discesa (`j--`). La variabile `j` va dichiarata **prima** del `for`, perché serve ancora nella riga `v[j + 1] = x`.
+Il `for` riunisce partenza dall'alto (`j = n - 1`), condizione (`j >= 0 && v[j] > x`) e discesa (`j--`). Nella condizione `j >= 0` è la **guardia di fine corsa** (scendendo, la corsa finisce dopo `v[0]`) e `v[j] > x` è la **condizione di avanzamento**. All'uscita `j` è il primo indice che, scendendo, rompe la condizione di avanzamento (o di permanenza), oppure -1, il fine corsa: `x` va subito sopra, in `v[j + 1]`. La variabile `j` va dichiarata **prima** del `for`, perché serve ancora nella riga `v[j + 1] = x`.
 
 È esattamente il ciclo interno dell'**insertion sort**: l'ordinamento ripete l'inserimento ordinato per ogni elemento dell'array.
 
@@ -391,13 +412,15 @@ v[j] > x && j >= 0    // sbagliato: con j = -1 legge v[-1], fuori dall'array
 j >= 0 & v[j] > x     // sbagliato: & (bit a bit) valuta sempre entrambi i lati
 ```
 
-Lo stesso vale per la ricerca della versione a fasi separate, `p < n && v[p] <= x`: quando `p` arriva a `n` il ciclo si ferma prima di leggere `v[n]`, che non fa parte della sequenza.
+In generale la **guardia di fine corsa** va sempre scritta **prima** della condizione di avanzamento. Lo stesso vale per la ricerca della versione a fasi separate, `p < n && v[p] <= x`: quando `p` arriva a `n` il ciclo si ferma prima di leggere `v[n]`, che non fa parte della sequenza.
 
 ### L'errore tipico: `v[j] = x`
 
 Con `x = 4`, dopo gli shift l'array è `1 3 5 5 6 8`, con `j = 1` e il buco in `v[2]`. Scrivendo `v[j] = x` il 4 finisce in `v[1]`: il 3 viene cancellato e in `v[2]` resta la copia inutile del 5. Il risultato è `1 4 5 5 6 8`, che ha perso il 3. Con `v[j + 1] = x` invece si ottiene `1 3 4 5 6 8`.
 
 Regola da ricordare: **`j` si ferma sull'ultimo elemento da lasciare dov'è; `x` va subito sopra, in `j + 1`.**
+
+<a id="s7"></a>
 
 ## 7. Errori tipici
 

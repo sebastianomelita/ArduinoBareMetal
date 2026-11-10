@@ -1,6 +1,10 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: selection sort
 
 10 novembre 2026
+
+<a id="s1"></a>
 
 ## 1. L'idea
 
@@ -27,6 +31,8 @@ L'animazione mostra l'ordinamento completo di 6 5 3 1 8 7 2 4. La linea vertical
   <img src="img/selection_sort.gif" alt="Animazione: selection sort completo, il minimo va in v[i]">
 </p>
 
+<a id="s2"></a>
+
 ## 2. Passo per passo
 
 Ogni riga mostra l'array **dopo** la passata `i`. La barra `|` separa l'insieme ordinato (a sinistra) da quello non ordinato (a destra).
@@ -45,6 +51,8 @@ Ogni riga mostra l'array **dopo** la passata `i`. La barra `|` separa l'insieme 
 Nella passata 2 il minimo, il 3, è già in `v[2]`: `pmin` resta uguale a `i` e non serve nessuno scambio.
 
 Lo scambio sposta lontano anche il valore che si trovava in `v[i]`. Nella passata 0, per esempio, il 6 finisce in `v[3]`, al posto dell'1: per lui non è ancora la posizione giusta, ci arriverà in una passata successiva.
+
+<a id="s3"></a>
 
 ## 3. Il loop esterno: `i` è il separatore
 
@@ -66,6 +74,8 @@ Le passate sono `N - 1`: quando gli `N - 1` valori più piccoli sono al loro pos
 La proprietà "*prima di ogni passata, `v[0..i-1]` contiene gli `i` valori più piccoli, in ordine*" è l'**invariante del ciclo**: è vera all'inizio (con `i = 0` l'insieme è vuoto), ogni passata la conserva e alla fine garantisce il risultato.
 
 Qui il separatore vale `i` usando `i++`, perché l'insieme ordinato cresce dal basso. Nella variante della sezione 5, in cui l'insieme ordinato cresce dall'alto, il separatore vale di nuovo `i`, ma usando `i--`.
+
+<a id="s4"></a>
 
 ## 4. Il loop interno: la ricerca del minimo
 
@@ -126,6 +136,8 @@ Nella passata 0 `min` diventa 1 e l'1 viene scritto in `v[0]`, ma il 6 che stava
 ### Lo scambio a distanza
 
 Lo scambio è lo stesso del bubble sort, con la variabile d'appoggio `t`, ma tra due celle che possono essere **lontane**: `v[i]` e `v[pmin]`. Il controllo `if (pmin != i)` evita lo scambio quando il minimo è già al suo posto, come nella passata 2. Senza il controllo il programma resterebbe corretto, perché scambiare una cella con se stessa non cambia niente, ma farebbe 3 assegnamenti inutili.
+
+<a id="s5"></a>
 
 ## 5. Il programma completo e la variante con il massimo in alto
 
@@ -213,6 +225,8 @@ Le due versioni a confronto:
 | Scambio | `v[i]` ↔ `v[pmin]` | `v[i]` ↔ `v[pmax]` |
 | Confronti e scambi sull'esempio | 28 e 6 | 28 e 6 |
 
+<a id="s6"></a>
+
 ## 6. Perché non ci si può fermare prima
 
 Nel bubble sort una bandierina permette di fermarsi quando l'array è già ordinato. Nel selection sort no: per essere sicuri di aver trovato il minimo bisogna **guardare tutti** i valori rimasti, anche se sono già in ordine. Il numero di confronti è quindi sempre lo stesso, `N · (N - 1) / 2`, cioè 28 con `N = 8`. Cambia solo il numero di scambi:
@@ -224,6 +238,8 @@ Nel bubble sort una bandierina permette di fermarsi quando l'array è già ordin
 | 8 7 6 5 4 3 2 1 (al rovescio) | 28 | 4 |
 
 Gli scambi sono al massimo `N - 1`, uno per passata. È il punto di forza del selection sort: scrive pochissimo nell'array.
+
+<a id="s7"></a>
 
 ## 7. Il selection sort non è stabile
 
@@ -238,6 +254,8 @@ Esempio con due 5, chiamati 5a e 5b per distinguerli: 5a 5b 2.
 | 1 | 5b in `v[1]` | nessuno | 2 5b 5a |
 
 Alla fine 5b viene prima di 5a: l'ordine dei due 5 si è invertito. L'insertion sort e il bubble sort (con il confronto `>`) invece sono stabili, perché spostano i valori solo tra vicini e mai oltre un valore uguale.
+
+<a id="s8"></a>
 
 ## 8. I tre algoritmi a confronto
 
@@ -254,6 +272,8 @@ Sullo stesso array 6 5 3 1 8 7 2 4:
 | Stabile | sì | sì | no |
 
 Il selection sort fa sempre tanti confronti, ma è quello che scrive meno nell'array; l'insertion sort è il più veloce quando l'array è già quasi ordinato; il bubble sort è il più semplice da scrivere, ma in genere il più lento. Nel caso peggiore tutti e tre fanno circa `N² / 2` confronti.
+
+<a id="s9"></a>
 
 ## 9. Errori tipici
 

@@ -1,3 +1,5 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: la ricerca in un elenco
 
 10 novembre 2026
@@ -5,6 +7,8 @@
 Un **elenco** è un array `v` di capacità `N` in cui sono usati i primi `n` elementi, da `v[0]` a `v[n - 1]`, con `n <= N`. In un **elenco ordinato** i valori sono in ordine crescente.
 
 Cercare un valore `x` vuol dire stabilire se è nell'elenco e, se c'è, in quale posizione. Questa dispensa tratta la ricerca di un **valore esatto** e, per i valori ripetuti, della sua **prima** e **ultima occorrenza**. La ricerca del posto in cui *inserire* un valore è trattata nella dispensa sull'inserimento.
+
+<a id="s1"></a>
 
 ## 1. Mappa dei casi
 
@@ -37,6 +41,8 @@ Gli esempi usano dieci valori: lo stesso insieme scritto in disordine per la ric
 
 La ricerca binaria non vince sempre: se `x` è tra i primi elementi, la sequenziale lo trova prima. Ma nel caso peggiore la binaria fa al massimo 4 confronti su 10 elementi, e la differenza cresce enormemente con elenchi lunghi (sezione 4).
 
+<a id="s2"></a>
+
 ## 2. La ricerca esaustiva (elenco non ordinato)
 
 In un elenco non ordinato la posizione di un valore non dice niente sugli altri: dopo aver visto `v[j]` non si sa nulla di `v[j + 1]`. Per concludere che `x` **non c'è**, quindi, bisogna guardare **tutti** gli elementi.
@@ -49,6 +55,8 @@ for (int j = 0; j < n && pos == -1; j++)
 ```
 
 La variabile `pos` fa anche da bandierina: finché vale -1 la ricerca continua; appena `x` viene trovato, `pos == -1` diventa falso e il ciclo si ferma alla **prima occorrenza**.
+
+La condizione del `for` ha due parti: `j < n` è la **guardia di fine corsa**, che impedisce di andare oltre l'ultimo elemento (in letteratura si parla di *condizione di guardia*, o di *controllo dei limiti*; in inglese *bounds check*), e `pos == -1` è la **condizione di avanzamento** (o di permanenza nel ciclo), qui sotto forma di bandierina. La ricerca finisce quando si arriva a fine corsa (`x` non c'è) oppure quando `x` viene trovato.
 
 <p align="center">
   <img src="img/ricerca_esaustiva.gif" alt="Animazione: ricerca esaustiva di 56 (trovato) e di 40 (non trovato) in un elenco non ordinato">
@@ -63,6 +71,8 @@ for (int j = 0; j < n; j++)
         cont++;
 ```
 
+<a id="s3"></a>
+
 ## 3. La ricerca sequenziale su un elenco ordinato
 
 Se l'elenco è ordinato, appena si incontra un valore **più grande** di `x` ci si può fermare: tutti quelli successivi sono ancora più grandi, quindi `x` non può essere tra loro.
@@ -74,7 +84,14 @@ for (j = 0; j < n && v[j] < x; j++)
 bool trovato = (j < n && v[j] == x);
 ```
 
-Il ciclo si ferma sul primo elemento **non minore** di `x`. A quel punto ci sono tre possibilità: `v[j] == x` (trovato), `v[j] > x` (non c'è) oppure `j == n` (non c'è, ed è più grande di tutti). Come sempre `j < n` va scritto per primo: con `j == n` la valutazione a corto circuito evita di leggere `v[n]`.
+La condizione del `for` ha due parti, con ruoli diversi:
+
+- `j < n` è la **guardia di fine corsa**: impedisce di andare oltre l'ultimo elemento;
+- `v[j] < x` è la **condizione di avanzamento** (o di permanenza nel ciclo): `j` va avanti finché il valore la rispetta.
+
+All'uscita `j` è il **primo indice che rompe la condizione di avanzamento** (o di permanenza), cioè l'indice successivo all'ultimo valore minore di `x`. A quel punto ci sono tre possibilità: `v[j] == x` (trovato), `v[j] > x` (non c'è) oppure `j == n`, il fine corsa (non c'è, ed è più grande di tutti). La guardia va scritta per prima: con `j == n` la valutazione a corto circuito evita di leggere `v[n]`.
+
+In un elenco ordinato i valori che rispettano `v[j] < x` stanno tutti all'inizio, uno dopo l'altro: l'indice in cui la condizione smette di valere separa l'elenco in due parti, e in letteratura si chiama **punto di partizione** (*partition point*; in C++ c'è la funzione `partition_point`).
 
 <p align="center">
   <img src="img/ricerca_sequenziale_ordinata.gif" alt="Animazione: ricerca sequenziale di 56 e di 40 in un elenco ordinato">
@@ -85,6 +102,8 @@ Le differenze rispetto alla ricerca esaustiva:
 - **si ferma prima anche quando `x` non c'è**: per `x = 40` si ferma sul 56, dopo 8 confronti invece di 10; per `x = 10` dopo 4;
 - **trova la prima occorrenza**: se `x` è ripetuto, `j` si ferma sul primo dei valori uguali, perché quelli prima sono tutti minori;
 - **funziona solo se l'elenco è ordinato**: su un elenco in disordine si fermerebbe al primo valore più grande di `x`, anche se `x` si trova più avanti.
+
+<a id="s4"></a>
 
 ## 4. La ricerca binaria
 
@@ -146,6 +165,8 @@ La formula più intuitiva per l'elemento centrale è `(inf + sup) / 2`, ma con a
 
 Con `inf = 1 500 000 000` e `sup = 2 000 000 000`, per esempio, `inf + sup = 3 500 000 000` non sta in un `int`. La formula `inf + (sup - inf) / 2` calcola lo stesso valore (1 750 000 000) senza mai superare `sup`, perché somma a `inf` solo metà della **distanza** tra i due indici. Gli esempi di questa dispensa usano `(inf + sup) / 2`, più semplice da leggere: con elenchi di qualche migliaio di elementi le due formule danno sempre lo stesso risultato. Con elenchi molto grandi, invece, va usata `inf + (sup - inf) / 2`.
 
+<a id="s5"></a>
+
 ## 5. Prima e ultima occorrenza
 
 Se `x` è ripetuto, la ricerca binaria del valore esatto si ferma su **una** delle sue occorrenze, non necessariamente la prima: in `1 3 5 5 5 6 8`, cercando 5, trova subito `v[3]`, cioè il 5 di mezzo.
@@ -200,6 +221,8 @@ else {                                    // v[med] >= x: si va comunque a sinis
 
 Senza quel controllo, con `1 3 5 5 5 6 8` e `x = 4` (che non c'è) la prima occorrenza risulta 2, cioè il primo 5; l'errore simmetrico nell'ultima occorrenza dà 1, cioè il 3.
 
+<a id="s6"></a>
+
 ## 6. Riepilogo
 
 | Ricerca | Elenco | Confronti nel caso peggiore | Risultato | Attenzione a |
@@ -209,6 +232,8 @@ Senza quel controllo, con `1 3 5 5 5 6 8` e `x = 4` (che non c'è) la prima occo
 | Binaria, valore esatto | ordinato | circa `log₂ n` | una occorrenza qualsiasi, o -1 | `sup = n - 1`, `inf <= sup`, `med ± 1` |
 | Binaria, prima occorrenza | ordinato | circa `log₂ n` | la prima, o -1 | trovato: `pos = med`, `sup = med - 1` |
 | Binaria, ultima occorrenza | ordinato | circa `log₂ n` | l'ultima, o -1 | trovato: `pos = med`, `inf = med + 1` |
+
+<a id="s7"></a>
 
 ## 7. Errori tipici
 

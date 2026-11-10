@@ -1,6 +1,10 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: bubble sort
 
 10 novembre 2026
+
+<a id="s1"></a>
 
 ## 1. L'idea
 
@@ -23,6 +27,8 @@ L'animazione mostra l'ordinamento completo di 6 5 3 1 8 7 2 4. La linea vertical
   <img src="img/bubble_sort_j_piu_1.gif" alt="Animazione: bubble sort completo con j e j+1, il massimo sale in alto">
 </p>
 
+<a id="s2"></a>
+
 ## 2. Passo per passo
 
 Ogni riga mostra l'array **dopo** la passata `i`. La barra `|` separa l'insieme non ordinato (a sinistra) da quello ordinato (a destra).
@@ -41,6 +47,8 @@ Ogni riga mostra l'array **dopo** la passata `i`. La barra `|` separa l'insieme 
 Nella passata 0 la "bolla" non è sempre lo stesso valore: il 6 sale finché non incontra l'8, che è più grande; da lì è l'8 a continuare a salire fino in cima. In ogni passata quindi sale il massimo, qualunque sia il valore da cui si parte.
 
 Dalla passata 5 l'array è già ordinato, ma l'algoritmo continua a confrontare. Nella sezione 6 si vede come evitarlo con una bandierina.
+
+<a id="s3"></a>
 
 ## 3. Il loop esterno: `i` conta le passate
 
@@ -106,6 +114,8 @@ Con `i--` il codice è il più semplice da leggere, perché `i` dice direttament
 
 Nella direzione "minimo in basso" (sezione 5) succede il contrario: il minimo della passata scende in `v[i]`, quindi il separatore è direttamente `i` quando si usa `i++` partendo da 0.
 
+<a id="s4"></a>
+
 ## 4. Il loop interno: confronto tra vicini e scambio
 
 Il loop interno esegue una passata: scorre l'insieme non ordinato dal basso verso l'alto, confronta ogni coppia di vicini e la scambia se è nell'ordine sbagliato.
@@ -162,6 +172,8 @@ Uno scambio costa **3 assegnamenti**. In C++ esiste anche la funzione `swap(v[j]
 ### Bubble sort e shift
 
 Una bolla che sale di più posizioni con scambi successivi equivale a uno **shift circolare a sinistra** del tratto che attraversa. Nella passata 0, per esempio, l'8 parte da `v[4]` e arriva in `v[7]` con tre scambi: il tratto `v[4..7]` passa da 8 7 2 4 a 7 2 4 8. Il risultato è lo stesso di uno shift circolare, ma ottenuto con 3 scambi (9 assegnamenti) invece che con 3 copie più il salvataggio e il rientro dell'8 (5 assegnamenti).
+
+<a id="s5"></a>
 
 ## 5. Il programma completo e le varianti
 
@@ -280,6 +292,8 @@ La notazione dell'indice (`j+1` o `j-1`) e la direzione (massimo in alto o minim
 
 La notazione cambia solo i limiti del `for` interno; la direzione decide dove si forma l'insieme ordinato. Sull'esempio tutte e quattro fanno 28 confronti e 16 scambi.
 
+<a id="s6"></a>
+
 ## 6. Ottimizzazione con la bandierina: fermarsi quando una passata non scambia
 
 Se in una passata non avviene **nessuno scambio**, ogni coppia di vicini è già in ordine: l'array è ordinato e le passate successive sono inutili. Per accorgersene si usa una **bandierina** (in inglese *flag*): una variabile booleana, `scambiato`, che si "alza" (`true`) appena avviene uno scambio. L'ottimizzazione è mostrata per un caso solo, la versione con `j` e `j+1` e il massimo in alto; nelle altre varianti si aggiunge allo stesso modo.
@@ -300,6 +314,8 @@ for (int i = 0; i < N - 1 && scambiato; i++) {
 
 All'inizio di ogni passata `scambiato` torna a `false`; il primo scambio lo mette a `true`. Se a fine passata è ancora `false`, la condizione del `for` esterno diventa falsa e l'ordinamento finisce.
 
+La condizione del `for` esterno ha due parti, come quelle delle ricerche: `i < N - 1` è la **guardia di fine corsa** (al massimo `N - 1` passate) e `scambiato` è la **condizione di avanzamento** (o di permanenza nel ciclo), qui sotto forma di bandierina. Il ciclo si ferma quando una delle due viene rotta.
+
 L'animazione usa l'array quasi ordinato 1 3 2 4 5 6 7 8: la passata 0 scambia 3 e 2, la passata 1 non scambia nulla e l'algoritmo si ferma. In basso a destra si vede il valore di `scambiato`.
 
 <p align="center">
@@ -313,6 +329,8 @@ L'animazione usa l'array quasi ordinato 1 3 2 4 5 6 7 8: la passata 0 scambia 3 
 | 1 2 3 4 5 6 7 8 (già ordinato) | 1 | 28 | 7 |
 
 Senza `scambiato` il bubble sort fa sempre `N · (N - 1) / 2` confronti, cioè 28 con `N = 8`, anche se l'array è già ordinato. Con `scambiato`, su un array già ordinato basta una passata: `N - 1` confronti.
+
+<a id="s7"></a>
 
 ## 7. Bubble sort e insertion sort a confronto
 
@@ -329,6 +347,8 @@ Sullo stesso array 6 5 3 1 8 7 2 4:
 Scambi e shift sono entrambi 16 perché l'array contiene 16 **inversioni**: coppie di valori in cui il più grande sta prima del più piccolo, come (6, 5) o (8, 2). Ogni scambio di due vicini e ogni shift sistemano esattamente un'inversione, quindi ne servono tanti quante sono le inversioni.
 
 Il bubble sort è più semplice da scrivere, ma fa più lavoro: più confronti e, soprattutto, scambi che costano tre assegnamenti invece di uno. Nel caso peggiore, con l'array ordinato al contrario, entrambi fanno circa `N² / 2` confronti.
+
+<a id="s8"></a>
 
 ## 8. Errori tipici
 

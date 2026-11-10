@@ -1,6 +1,10 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: insertion sort
 
 9 novembre 2026
+
+<a id="s1"></a>
 
 ## 1. L'idea, dall'animazione
 
@@ -19,6 +23,8 @@ Quando l'insieme non ordinato è vuoto, l'intero array è ordinato.
 
 **Definizione.** L'*insertion sort* (ordinamento per inserimento) ordina un array inserendo, uno alla volta, ciascun elemento dell'insieme non ordinato nell'insieme ordinato, con la tecnica dell'*inserimento ordinato*.
 
+<a id="s2"></a>
+
 ## 2. Passo per passo
 
 Ogni riga mostra l'array **dopo** l'inserimento dell'elemento `x = v[i]`. La barra `|` separa l'insieme ordinato (a sinistra) da quello non ordinato (a destra).
@@ -35,6 +41,8 @@ Ogni riga mostra l'array **dopo** l'inserimento dell'elemento `x = v[i]`. La bar
 | 7 | 7 | 4 | 1 2 3 4 5 6 7 8 | 4 (5, 6, 7, 8) |
 
 Con `N = 8` elementi servono `N - 1 = 7` passi: il primo elemento non va inserito. Il numero di shift dipende da quanto il valore è piccolo rispetto a quelli già ordinati: l'8 non ne richiede nessuno, il 2 ne richiede 5.
+
+<a id="s3"></a>
 
 ## 3. Il loop esterno: l'indice separatore
 
@@ -57,6 +65,8 @@ All'uscita `i = N`: l'insieme non ordinato è vuoto e tutto l'array è ordinato.
 
 La proprietà "*prima di ogni iterazione, `v[0..i-1]` è ordinato*" si chiama **invariante del ciclo**: è vera all'inizio, ogni iterazione la conserva, e alla fine garantisce il risultato.
 
+<a id="s4"></a>
+
 ## 4. Il loop interno: l'inserimento ordinato
 
 Il loop interno esegue l'**inserimento ordinato** di `x = v[i]` nell'insieme ordinato `v[0..i-1]`. Inserire in modo ordinato richiede due cose:
@@ -74,7 +84,14 @@ for (j = i - 1; j >= 0 && v[j] > x; j--)
 v[j + 1] = x;          // inserisco nel posto liberato
 ```
 
-Il `for` riunisce in una riga i tre elementi del ciclo: partenza dall'alto (`j = i - 1`), condizione di continuazione (`j >= 0 && v[j] > x`) e discesa (`j--`). La variabile `j` va dichiarata **prima** del `for`: se fosse dichiarata dentro, non esisterebbe più nella riga `v[j + 1] = x`, dove serve per sapere dove inserire.
+Il `for` riunisce in una riga i tre elementi del ciclo: partenza dall'alto (`j = i - 1`), condizione (`j >= 0 && v[j] > x`) e discesa (`j--`). La condizione ha due parti, con ruoli diversi:
+
+- `j >= 0` è la **guardia di fine corsa**: scendendo, impedisce di andare sotto `v[0]` (in letteratura si parla di *condizione di guardia*, o di *controllo dei limiti*; in inglese *bounds check*);
+- `v[j] > x` è la **condizione di avanzamento** (o di permanenza nel ciclo): finché il valore la rispetta, viene spostato in su e `j` scende.
+
+All'uscita `j` è il primo indice che, scendendo, rompe la condizione di avanzamento (o di permanenza), oppure -1 se nessuno la rompe (fine corsa). In entrambi i casi `x` va subito sopra, in `v[j + 1]`.
+
+La variabile `j` va dichiarata **prima** del `for`: se fosse dichiarata dentro, non esisterebbe più nella riga `v[j + 1] = x`, dove serve per sapere dove inserire.
 
 ### Simulazione completa
 
@@ -124,7 +141,7 @@ Con `j = 0` il controllo è ancora vero; se anche `v[0] > x`, si esegue lo shift
 
 ### La valutazione a corto circuito
 
-`v[-1]` non viene mai letto grazie alla **valutazione a corto circuito** (*short-circuit evaluation*) degli operatori logici `&&` e `||`: il secondo operando viene valutato solo se serve a decidere il risultato.
+La guardia va scritta **prima** della condizione di avanzamento: `v[-1]` non viene mai letto grazie alla **valutazione a corto circuito** (*short-circuit evaluation*) degli operatori logici `&&` e `||`: il secondo operando viene valutato solo se serve a decidere il risultato.
 
 - con `a && b`, se `a` è falso il risultato è sicuramente falso e `b` **non viene valutato**;
 - con `a || b`, se `a` è vero il risultato è sicuramente vero e `b` **non viene valutato**.
@@ -177,6 +194,8 @@ Nel passo 6, dopo gli shift l'array è `1 3 3 5 6 7 8 | 4`, con `j = 0` e il buc
 Regola da ricordare: **`j` si ferma sull'ultimo elemento da lasciare dov'è; `x` va subito sopra, in `j + 1`.**
 
 Per la teoria completa degli shift e dell'inserimento ordinato vedi la *Dispensa: gli shift negli array*.
+
+<a id="s5"></a>
 
 ## 5. Il programma completo e le varianti
 

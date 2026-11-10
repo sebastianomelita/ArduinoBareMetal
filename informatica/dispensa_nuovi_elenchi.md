@@ -1,3 +1,5 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: creare nuovi elenchi da elenchi esistenti
 
 10 novembre 2026
@@ -15,6 +17,8 @@ k++;                                      // ...e c ha un elemento in più
 
 Alla fine `k` è il numero di elementi di `c`. L'array `c` deve avere una capacità sufficiente per il caso peggiore, in cui vengono copiati tutti gli elementi.
 
+<a id="s1"></a>
+
 ## 1. Mappa
 
 <p align="center">
@@ -25,6 +29,8 @@ Gli esempi usano:
 
 - l'elenco non ordinato `v = 23 5 91 12 2 56 8 72 38 16` e la sua versione ordinata `2 5 8 12 16 23 38 56 72 91`;
 - gli insiemi `a = {1, 4, 6, 9}` e `b = {2, 3, 6, 8, 11}`, scritti in disordine (`a = 9 4 1 6`, `b = 8 2 11 6 3`) oppure in ordine.
+
+<a id="s2"></a>
 
 ## 2. Il filtraggio
 
@@ -56,6 +62,8 @@ Cambiando la condizione si ottengono filtraggi diversi:
 
 Il filtraggio **conserva l'ordine**: se `v` è ordinato, anche `c` lo è. Filtrando `2 5 8 12 16 23 38 56 72 91` con `v[j] > 20` si ottiene `23 38 56 72 91`, già in ordine.
 
+<a id="s3"></a>
+
 ## 3. La suddivisione
 
 **Definizione.** La *suddivisione* distribuisce gli elementi di `v` in **due** nuovi elenchi: quelli che soddisfano la condizione nel primo, tutti gli altri nel secondo.
@@ -77,6 +85,8 @@ for (int j = 0; j < n; j++)
 
 Con `v = 23 5 91 12 2 56 8 72 38 16` si ottengono `pari = 12 2 56 8 72 38 16` (`np = 7`) e `dispari = 23 5 91` (`nd = 3`). Ognuno dei due elenchi deve poter contenere fino a `n` elementi, perché in un caso estremo vanno tutti nello stesso.
 
+<a id="s4"></a>
+
 ## 4. La ricerca di un elemento in un altro elenco
 
 Spesso la condizione per copiare un elemento non riguarda il suo valore, ma la sua **presenza** in un altro elenco: "copio `a[i]` solo se c'è anche in `b`". Per saperlo serve una **ricerca**. Se `b` non è ordinato, l'unica possibile è la ricerca esaustiva, che conviene scrivere una volta per tutte come funzione:
@@ -91,6 +101,8 @@ bool presente(int b[], int m, int x) {
     return trovato;
 }
 ```
+
+Nella condizione del `for`, `j < m` è la **guardia di fine corsa** (in letteratura *condizione di guardia*, o *controllo dei limiti*) e `!trovato` è la **condizione di avanzamento** (o di permanenza nel ciclo), sotto forma di bandierina: la ricerca finisce a fine corsa oppure appena `x` viene trovato.
 
 Con questa funzione le operazioni sugli insiemi diventano dei filtraggi.
 
@@ -145,6 +157,8 @@ for (int j = 0; j < n; j++)
 
 Con `v = 3 7 3 1 7 7 2 1` si ottiene `c = 3 7 1 2`. La ricerca si fa sui soli `k` elementi già copiati, non su tutto l'array `c`: le celle da `c[k]` in poi non contengono ancora niente di significativo.
 
+<a id="s5"></a>
+
 ## 5. La fusione di due elenchi ordinati
 
 Se gli elenchi di partenza sono **ordinati**, non serve cercare ogni elemento nell'altro elenco: basta scorrerli insieme, con un indice per ciascuno.
@@ -169,7 +183,7 @@ for ( ; j < m; j++, k++)                  // ciò che resta di b
     c[k] = b[j];
 ```
 
-Solo uno dei due cicli finali viene eseguito davvero: quando si arriva lì, almeno uno dei due elenchi è già finito.
+La condizione del primo `for` è fatta di **due guardie di fine corsa**, una per elenco: `i < n && j < m` vuol dire "finché nessuno dei due elenchi è finito". Solo uno dei due cicli finali viene eseguito davvero: quando si arriva lì, almeno uno dei due elenchi è già finito.
 
 <p align="center">
   <img src="img/fusione.gif" alt="Animazione: fusione di a = 1 4 6 9 e b = 2 3 6 8 11 in c">
@@ -190,6 +204,8 @@ Nell'animazione `a` e il suo indice `i` sono in **blu**, `b` e `j` in **arancion
 | — | 11, il resto di `b` | 1 2 3 4 6 6 8 9 11 |
 
 La fusione fa al massimo `n + m - 1` confronti (qui 8) e sempre `n + m` copie (qui 9). Con `<=` a parità di valore si prende prima da `a`: i valori uguali mantengono l'ordine di partenza.
+
+<a id="s6"></a>
 
 ## 6. Unione, intersezione e differenza di elenchi ordinati
 
@@ -289,6 +305,8 @@ for (int j = 0; j < n; j++)
 
 Con `1 1 2 3 3 3 7` si ottiene `1 2 3 7`. `k == 0` va scritto per primo: quando `c` è vuoto, la valutazione a corto circuito evita di leggere `c[-1]`.
 
+<a id="s7"></a>
+
 ## 7. Riepilogo
 
 | Operazione | Elenchi di partenza | Lavoro | Dimensione massima di `c` |
@@ -300,6 +318,8 @@ Con `1 1 2 3 3 3 7` si ottiene `1 2 3 7`. `k == 0` va scritto per primo: quando 
 | Intersezione, differenza, unione | non ordinati | ricerca nell'altro elenco: circa `n · m` confronti | `n` (intersezione, differenza), `n + m` (unione) |
 | Fusione | ordinati | al massimo `n + m - 1` confronti, `n + m` copie | `n + m` |
 | Unione, intersezione, differenza | ordinati | al massimo `n + m` passi | `n + m` (unione), `n` (intersezione, differenza) |
+
+<a id="s8"></a>
 
 ## 8. Errori tipici
 

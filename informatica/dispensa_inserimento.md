@@ -1,3 +1,5 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: l'inserimento in un elenco ordinato
 
 10 novembre 2026
@@ -5,6 +7,8 @@
 Un **elenco** è un array `v` di capacità `N` in cui sono usati i primi `n` elementi, da `v[0]` a `v[n - 1]`, con `n <= N`. In un **elenco ordinato** i valori sono in ordine crescente, e un inserimento deve lasciarli in ordine.
 
 L'inserimento ordinato si costruisce con due mattoni: la **ricerca del posto** (dove andrebbe messo il valore) e lo **shift** (fare posto). C'è anche una strada più semplice da scrivere: mettere il valore in fondo e poi riordinare tutto. Cancellazione e modifica sono trattate in una dispensa a parte, così come la creazione di nuovi elenchi (filtraggio, fusione, operazioni sugli insiemi).
+
+<a id="s1"></a>
 
 ## 1. Mappa: come si inserisce un valore
 
@@ -23,6 +27,8 @@ Le due strade portano allo stesso risultato, un elenco di `n + 1` elementi ancor
 
 Gli esempi usano l'elenco `1 3 5 6 8` (con `N = 8`) e, per la ricerca binaria, l'elenco di dieci valori `2 5 8 12 16 23 38 56 72 91`.
 
+<a id="s2"></a>
+
 ## 2. Trovare il punto di inserimento
 
 Il **punto di inserimento** di `x` è la posizione del **primo elemento maggiore o uguale a `x`**: è lì che `x` va messo perché l'elenco resti ordinato. Se `x` è più grande di tutti, il punto di inserimento è `n`, una posizione oltre l'ultimo.
@@ -38,7 +44,14 @@ for (j = 0; j < n && v[j] < x; j++)
 // j è il punto di inserimento; se j < n && v[j] == x, x c'è già
 ```
 
-Con `1 3 5 6 8` e `x = 4` il ciclo si ferma su `v[2] = 5`: il 4 va in `v[2]`. `j < n` va scritto per primo: con `j == n` la valutazione a corto circuito evita di leggere `v[n]`.
+La condizione del `for` ha due parti, con ruoli diversi:
+
+- `j < n` è la **guardia di fine corsa**: impedisce di andare oltre l'ultimo elemento (in letteratura si parla di *condizione di guardia*, o di *controllo dei limiti*; in inglese *bounds check*);
+- `v[j] < x` è la **condizione di avanzamento** (o di permanenza nel ciclo): `j` va avanti finché il valore la rispetta.
+
+All'uscita `j` è il **primo indice che rompe la condizione di avanzamento** (o di permanenza), cioè l'indice successivo all'ultimo valore minore di `x`: è il punto di inserimento. Con `1 3 5 6 8` e `x = 4` il ciclo si ferma su `v[2] = 5`: il 4 va in `v[2]`. Se `x` è più grande di tutti, `j` si ferma sul fine corsa, `n`. La guardia va scritta per prima: con `j == n` la valutazione a corto circuito evita di leggere `v[n]`.
+
+In letteratura l'indice in cui, in un elenco ordinato, la condizione smette di valere si chiama **punto di partizione** (*partition point*): separa i valori che la rispettano da quelli che non la rispettano.
 
 ### Con la ricerca binaria: il lower bound
 
@@ -106,6 +119,8 @@ else
 
 In C++ le due ricerche sono già pronte nella libreria `<algorithm>`: `lower_bound(v, v + n, x) - v` e `upper_bound(v, v + n, x) - v` restituiscono le stesse posizioni.
 
+<a id="s3"></a>
+
 ## 3. L'inserimento ordinato
 
 **Definizione.** L'*inserimento ordinato* aggiunge un valore `x` a un elenco ordinato di `n` elementi, mettendolo nella posizione giusta, in modo che l'elenco di `n + 1` elementi sia ancora ordinato.
@@ -130,6 +145,8 @@ if (n < N) {
 }
 ```
 
+Qui il ciclo scende: `j >= 0` è la **guardia di fine corsa** (non si va sotto `v[0]`) e `v[j] > x` è la **condizione di avanzamento**. All'uscita `j` è il primo indice che, scendendo, rompe la condizione di avanzamento (o di permanenza), oppure -1: `x` va subito sopra, in `v[j + 1]`.
+
 <p align="center">
   <img src="img/inserimento_ordinato.gif" alt="Animazione: inserimento ordinato di 4 nell'elenco 1 3 5 6 8">
 </p>
@@ -151,6 +168,8 @@ La ricerca binaria riduce i confronti, ma gli shift restano gli stessi: nel caso
 | In testa | `x = 0` → 0 1 3 5 6 8 | 5, tutti |
 | In coda | `x = 9` → 1 3 5 6 8 9 | 0 |
 | Elenco pieno (`n == N`) | — | l'inserimento va rifiutato |
+
+<a id="s4"></a>
 
 ## 4. Inserimento in coda e riordino con un sort
 
@@ -190,6 +209,8 @@ Il risultato è lo stesso dell'inserimento ordinato, ma il lavoro no:
 
 Ogni scambio, poi, costa tre assegnamenti, mentre uno shift ne costa uno solo. Inserire in coda e riordinare è quindi **più semplice da scrivere** (si riusa un ordinamento già pronto) ma **fa più lavoro**, e la differenza cresce con la lunghezza dell'elenco. Diventa conveniente quando si devono aggiungere **molti valori**: si mettono tutti in coda e si ordina **una volta sola** alla fine, invece di fare un inserimento ordinato per ciascuno.
 
+<a id="s5"></a>
+
 ## 5. Ordinato o non ordinato?
 
 Tenere un elenco ordinato ha un costo: ogni inserimento richiede degli shift. In un elenco **non** ordinato, invece, inserire costa pochissimo, perché l'ordine non va rispettato:
@@ -208,6 +229,8 @@ n++;
 
 La scelta dipende dall'uso: se l'elenco si consulta molto più spesso di quanto si modifica, conviene tenerlo ordinato; se si aggiungono molti valori e si cerca raramente, può convenire lasciarlo in disordine e, se serve, ordinarlo una volta sola.
 
+<a id="s6"></a>
+
 ## 6. Riepilogo
 
 | Operazione | Fase di ricerca | Spostamenti nel caso peggiore | Attenzione a |
@@ -216,6 +239,8 @@ La scelta dipende dall'uso: se l'elenco si consulta molto più spesso di quanto 
 | Punto di inserimento, binaria (lower bound) | circa `log₂ n` confronti | — | `sup = n`, `inf < sup`, `sup = med` |
 | Inserimento ordinato | ricerca del posto | `n` shift a destra, dall'alto | `n < N`, poi `n++` |
 | Inserimento in coda + bubble sort | nessuna | un ordinamento completo | `n < N`; più lavoro, codice più semplice |
+
+<a id="s7"></a>
 
 ## 7. Errori tipici
 

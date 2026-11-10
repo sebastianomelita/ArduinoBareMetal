@@ -1,3 +1,5 @@
+[← Indice delle dispense](indice.md)
+
 # Dispensa: cancellazione e modifica in un elenco ordinato
 
 10 novembre 2026
@@ -5,6 +7,8 @@
 Un **elenco** è un array `v` di capacità `N` in cui sono usati i primi `n` elementi, da `v[0]` a `v[n - 1]`, con `n <= N`. In un **elenco ordinato** i valori sono in ordine crescente, e ogni operazione deve lasciarli in ordine.
 
 Questa dispensa tratta le due operazioni che cambiano un elemento **già presente**: la **cancellazione**, che lo toglie e accorcia l'elenco, e la **modifica**, che ne cambia il valore e lo sposta al posto giusto. Entrambe usano lo **shift**: la cancellazione per chiudere un buco, la modifica per far viaggiare un buco fino al posto del nuovo valore.
+
+<a id="s1"></a>
 
 ## 1. Mappa
 
@@ -21,6 +25,8 @@ Questa dispensa tratta le due operazioni che cambiano un elemento **già present
 | Nel caso peggiore | `n - 1` shift | `n - 1` shift |
 
 Gli esempi usano l'elenco `1 3 5 6 8` (con `N = 8`), e le sue varianti `1 3 5 5 5 6 8` (con valori ripetuti) e `1 3 5 6 8 9`.
+
+<a id="s2"></a>
 
 ## 2. La cancellazione ordinata
 
@@ -43,7 +49,7 @@ if (p < n && v[p] == x) {                 // trovato in v[p]
 }
 ```
 
-La ricerca sfrutta l'ordine: si ferma sul primo elemento non minore di `x`, e se quell'elemento non è `x` allora `x` non c'è. Al suo posto si può usare la ricerca binaria, che fa meno confronti; gli shift però restano gli stessi.
+La ricerca sfrutta l'ordine. Nella condizione `p < n` è la **guardia di fine corsa**, che impedisce di andare oltre l'ultimo elemento (in letteratura si parla di *condizione di guardia*, o di *controllo dei limiti*; in inglese *bounds check*), e `v[p] < x` è la **condizione di avanzamento**. All'uscita `p` è il primo indice che rompe la condizione di avanzamento (o di permanenza), cioè il primo elemento non minore di `x`: se quell'elemento non è `x` (o se `p` è arrivato a fine corsa), allora `x` non c'è. Al suo posto si può usare la ricerca binaria, che fa meno confronti; gli shift però restano gli stessi.
 
 Lo shift parte **dal basso**: `v[p]` viene coperto da `v[p + 1]`, poi `v[p + 1]` da `v[p + 2]` e così via. Ogni valore viene letto prima di essere sovrascritto. Il ciclo si ferma a `i < n - 1` perché l'ultimo assegnamento è `v[n - 2] = v[n - 1]`: con `i < n` si leggerebbe `v[n]`, che non fa parte dell'elenco.
 
@@ -59,6 +65,8 @@ Dopo lo shift, `v[n - 1]` contiene ancora una copia dell'ultimo valore, ma con `
 | In testa | `x = 1` → 3 5 6 8 | 4, tutti gli altri |
 | In coda | `x = 8` → 1 3 5 6 | 0: basta `n--` |
 | `x` non c'è | `x = 4` → 1 3 5 6 8 | 0: l'elenco non cambia |
+
+<a id="s3"></a>
 
 ## 3. Cancellare tutte le occorrenze
 
@@ -76,7 +84,7 @@ for (int i = p; i < n - k; i++)           // 3) shift a sinistra di k posizioni,
 n -= k;                                   // 4) k elementi in meno
 ```
 
-Gli elementi da cancellare sono `v[p..q-1]`. Ogni elemento che li segue scende di `k` posizioni: `v[i] = v[i + k]`.
+I due `for` di ricerca hanno la stessa forma: una guardia di fine corsa (`p < n`, `q < n`) seguita da una condizione di avanzamento (`v[p] < x`, `v[q] == x`). All'uscita ciascun indice è il primo che rompe la sua condizione di avanzamento (o di permanenza): `p` è il primo elemento non minore di `x`, `q` il primo diverso da `x`, cioè l'indice successivo all'ultimo `x`. Gli elementi da cancellare sono quindi `v[p..q-1]`. Ogni elemento che li segue scende di `k` posizioni: `v[i] = v[i + k]`.
 
 <p align="center">
   <img src="img/cancellazione_tutte_occorrenze.gif" alt="Animazione: cancellazione di tutti i 5 da 1 3 5 5 5 6 8 con un unico shift di 3 posizioni">
@@ -92,6 +100,8 @@ Gli elementi da cancellare sono `v[p..q-1]`. Ogni elemento che li segue scende d
 Con tre cancellazioni separate gli shift sarebbero 4 + 3 + 2 = 9; con lo shift di `k` sono 2. Se `x` non c'è, `k` vale 0: lo shift copia ogni elemento su se stesso e `n` non cambia. Si può comunque evitare il lavoro inutile con un `if (k > 0)`.
 
 `p` e `q` si possono trovare anche con la ricerca binaria: sono il **lower bound** e l'**upper bound** di `x` (dispensa sull'inserimento).
+
+<a id="s4"></a>
 
 ## 4. Cancellazione con un valore massimo e riordino
 
@@ -159,6 +169,8 @@ Due cautele:
 - `INT_MAX` non deve poter essere un valore vero dell'elenco: altrimenti, dopo il sort, non si distinguerebbe da un elemento da tenere;
 - funziona così solo su un elenco **ordinato**. Su un elenco non ordinato il sort riordinerebbe anche tutti gli altri valori: il risultato conterrebbe gli elementi giusti, ma non più nell'ordine di partenza.
 
+<a id="s5"></a>
+
 ## 5. La modifica mediante shift
 
 **Definizione.** La *modifica ordinata* cambia il valore di un elemento `v[p]` in un nuovo valore `x`, spostandolo nella posizione giusta perché l'elenco resti ordinato.
@@ -187,7 +199,7 @@ v[j] = x;                                 // il nuovo valore va nel buco
 
 Il confronto `x > v[p]` si fa prima di toccare l'elenco, quando `v[p]` contiene ancora il vecchio valore. Il buco, qui, è sempre `v[j]`. Se il valore non cambia (`x == v[p]`) si entra nel ramo `else`, il ciclo si ferma subito e `v[p] = x` lascia tutto com'è.
 
-Come sempre, il controllo sull'indice va scritto per primo: `j < n - 1` evita di leggere `v[n]` quando il buco arriva in cima, `j > 0` evita di leggere `v[-1]` quando arriva in fondo.
+Le due condizioni hanno la solita forma. Le **guardie di fine corsa** sono `j < n - 1` (il buco non può salire oltre `v[n - 1]`) e `j > 0` (non può scendere sotto `v[0]`); le **condizioni di avanzamento** sono `v[j + 1] < x` e `v[j - 1] > x`. All'uscita il buco `v[j]` è proprio il posto di `x`. Come sempre la guardia va scritta per prima: `j < n - 1` evita di leggere `v[n]` quando il buco arriva in cima, `j > 0` evita di leggere `v[-1]` quando arriva in fondo.
 
 <p align="center">
   <img src="img/modifica_ordinata.gif" alt="Animazione: modifica di 3 in 7 (il buco sale) e di 8 in 2 (il buco scende) nell'elenco 1 3 5 6 8 9">
@@ -203,6 +215,8 @@ Come sempre, il controllo sull'indice va scritto per primo: `j < n - 1` evita di
 Si potrebbe anche scrivere `v[p] = x` e poi riordinare tutto, come nella sezione 4, ma il bubble sort con il massimo che sale fa scendere un valore di una sola posizione per passata: se il valore cala molto servono molte passate. Lo spostamento diretto del buco fa esattamente gli spostamenti necessari.
 
 Se invece della posizione `p` si conosce il **vecchio valore** ("cambia il 3 in 7"), prima lo si cerca, con la ricerca sequenziale o binaria, e poi si procede come sopra.
+
+<a id="s6"></a>
 
 ## 6. E in un elenco non ordinato?
 
@@ -226,6 +240,8 @@ Nella cancellazione l'ultimo elemento si sposta nel buco: un solo assegnamento i
 | Modifica | 1 assegnamento | fino a `n - 1` shift |
 | Ricerca dell'elemento | esaustiva: `n` confronti se non c'è | binaria: circa `log₂ n` confronti |
 
+<a id="s7"></a>
+
 ## 7. Riepilogo
 
 | Operazione | Ricerca | Spostamenti nel caso peggiore | Attenzione a |
@@ -236,6 +252,8 @@ Nella cancellazione l'ultimo elemento si sposta nel buco: un solo assegnamento i
 | Cancellazione con `INT_MAX` + bubble sort | ricerca di `x` | un ordinamento completo | sort su tutti gli `n`, poi `n--`; `INT_MAX` non deve essere un valore vero |
 | Cancella + inserisci | ricerca del posto per `x` | due shift, quasi `2n` | funziona, ma fa più lavoro |
 | Elenco non ordinato | esaustiva | nessuno | cancellazione: l'ultimo nel buco |
+
+<a id="s8"></a>
 
 ## 8. Errori tipici
 
