@@ -40,7 +40,7 @@ Ogni riga mostra l'array **dopo** la passata `i`. La barra `|` separa l'insieme 
 
 Nella passata 0 la "bolla" non è sempre lo stesso valore: il 6 sale finché non incontra l'8, che è più grande; da lì è l'8 a continuare a salire fino in cima. In ogni passata quindi sale il massimo, qualunque sia il valore da cui si parte.
 
-Dalla passata 5 l'array è già ordinato, ma l'algoritmo continua a confrontare. Nella sezione 6 si vede come evitarlo.
+Dalla passata 5 l'array è già ordinato, ma l'algoritmo continua a confrontare. Nella sezione 6 si vede come evitarlo con una bandierina.
 
 ## 3. Il loop esterno: `i` conta le passate
 
@@ -59,6 +59,52 @@ for (int i = 0; i < N - 1; i++) {
 Le passate sono `N - 1` e non `N`: quando gli `N - 1` valori più grandi sono in cima, quello che resta in `v[0]` è il più piccolo ed è già al suo posto.
 
 La proprietà "*prima di ogni passata, `v[N-i..N-1]` contiene gli `i` valori più grandi, in ordine*" è l'**invariante del ciclo**: è vera all'inizio (con `i = 0` l'insieme è vuoto), ogni passata la conserva e alla fine garantisce il risultato.
+
+### Il separatore: `i` oppure `N - i`
+
+A ogni passata il loop esterno **sposta il separatore** tra la parte non ordinata e quella ordinata. Conviene chiamare separatore la cella in cui la passata deposita il massimo: è l'ultima cella della parte non ordinata, il ciclo interno confronta le coppie fino ad arrivare a lei, e dopo la passata entra a far parte dell'insieme ordinato.
+
+Come si scrive il separatore dipende da come si scrive il loop esterno:
+
+- con **`i--`** il separatore **è `i`**: `i` parte dall'ultima cella e scende di uno a ogni passata;
+- con **`i++`** `i` conta le passate già fatte e il separatore vale **`N - i`**.
+
+```cpp
+// con i--: il separatore è i
+for (int i = N - 1; i > 0; i--)
+    for (int j = 0; j < i; j++)
+        if (v[j] > v[j + 1]) {
+            int t = v[j];
+            v[j] = v[j + 1];
+            v[j + 1] = t;
+        }
+
+// con i++: il separatore è N - i
+for (int i = 1; i < N; i++)
+    for (int j = 0; j < N - i; j++)
+        if (v[j] > v[j + 1]) {
+            int t = v[j];
+            v[j] = v[j + 1];
+            v[j + 1] = t;
+        }
+```
+
+In entrambi i casi il ciclo interno è `j < separatore`, e il massimo della passata finisce in `v[separatore]`. Il codice di questa dispensa usa `i++` partendo da 0: il separatore è allora `N - 1 - i`, e il ciclo interno è `j < N - 1 - i`. Sono tre modi di scrivere lo stesso algoritmo, con le stesse passate, gli stessi 28 confronti e gli stessi 16 scambi.
+
+| Passata | `i` con `i--` | `i` con `i++` da 1 | `i` con `i++` da 0 | Separatore (dove finisce il massimo) |
+| --- | --- | --- | --- | --- |
+| 1ª | 7 | 1 | 0 | 7 |
+| 2ª | 6 | 2 | 1 | 6 |
+| 3ª | 5 | 3 | 2 | 5 |
+| 4ª | 4 | 4 | 3 | 4 |
+| 5ª | 3 | 5 | 4 | 3 |
+| 6ª | 2 | 6 | 5 | 2 |
+| 7ª | 1 | 7 | 6 | 1 |
+| **Formula del separatore** | `i` | `N - i` | `N - 1 - i` | |
+
+Con `i--` il codice è il più semplice da leggere, perché `i` dice direttamente fin dove arriva la passata. Con l'indice `j` e `j-1` il ciclo interno diventa `for (j = 1; j <= i; j++)` con `i--`, e `for (j = 1; j <= N - i; j++)` con `i++` da 1.
+
+Nella direzione "minimo in basso" (sezione 5) succede il contrario: il minimo della passata scende in `v[i]`, quindi il separatore è direttamente `i` quando si usa `i++` partendo da 0.
 
 ## 4. Il loop interno: confronto tra vicini e scambio
 
@@ -117,7 +163,7 @@ Uno scambio costa **3 assegnamenti**. In C++ esiste anche la funzione `swap(v[j]
 
 Una bolla che sale di più posizioni con scambi successivi equivale a uno **shift circolare a sinistra** del tratto che attraversa. Nella passata 0, per esempio, l'8 parte da `v[4]` e arriva in `v[7]` con tre scambi: il tratto `v[4..7]` passa da 8 7 2 4 a 7 2 4 8. Il risultato è lo stesso di uno shift circolare, ma ottenuto con 3 scambi (9 assegnamenti) invece che con 3 copie più il salvataggio e il rientro dell'8 (5 assegnamenti).
 
-## 5. Il programma completo e la variante con `j` e `j-1`
+## 5. Il programma completo e le varianti
 
 ```cpp
 #include <iostream>
@@ -153,24 +199,64 @@ int main() {
 
 Output: `6 5 3 1 8 7 2 4` diventa `1 2 3 4 5 6 7 8`.
 
-### La variante con `j` e `j-1`: il minimo scende in basso
+### La variante con `j` e `j-1`: il massimo sale in alto
 
-Si può anche scorrere l'array **dall'alto verso il basso**, confrontando `v[j - 1]` con `v[j]`. In questo caso a ogni passata è il valore **più piccolo** a scendere in fondo, e l'insieme ordinato si forma **in basso**.
+Lo stesso algoritmo si può scrivere confrontando `v[j - 1]` con `v[j]`. Il massimo continua a salire in alto: cambia solo il significato di `j`, che ora indica il **secondo** elemento della coppia invece del primo.
 
 ```cpp
 for (int i = 0; i < N - 1; i++)
-    for (int j = N - 1; j > i; j--)
+    for (int j = 1; j < N - i; j++)
         if (v[j - 1] > v[j]) {
-            int t = v[j];          // scambio v[j] e v[j - 1]
+            int t = v[j];          // scambio v[j - 1] e v[j]
             v[j] = v[j - 1];
             v[j - 1] = t;
         }
 ```
 
-Qui l'insieme ordinato è `v[0] … v[i - 1]`. Il ciclo interno parte da `j = N - 1` e scende finché `j > i`: l'ultima coppia confrontata è `v[i]`, `v[i + 1]`, e il minimo della passata si ferma in `v[i]`. Con `j > i` vale sempre `j - 1 >= 0`, quindi `v[-1]` non viene mai letto.
+Il ciclo interno parte da `j = 1`, perché con `j = 0` il primo confronto leggerebbe `v[-1]`. Arriva fino a `j = N - 1 - i` (condizione `j < N - i`), così l'ultima coppia è ancora `v[N - 2 - i]`, `v[N - 1 - i]`, la stessa della versione con `j+1`.
 
 <p align="center">
-  <img src="img/bubble_sort_j_meno_1.gif" alt="Animazione: bubble sort completo con j e j-1, il minimo scende in basso">
+  <img src="img/bubble_sort_j_meno_1.gif" alt="Animazione: bubble sort completo con j e j-1, il massimo sale in alto">
+</p>
+
+| | Versione con `j` e `j+1` | Versione con `j` e `j-1` |
+| --- | --- | --- |
+| `j` indica | il primo elemento della coppia | il secondo elemento della coppia |
+| Partenza | `j = 0` | `j = 1` |
+| Condizione del `for` interno | `j < N - 1 - i` | `j < N - i` |
+| Confronto | `v[j] > v[j + 1]` | `v[j - 1] > v[j]` |
+| Scambio | `v[j]` e `v[j + 1]` | `v[j - 1]` e `v[j]` |
+
+È lo stesso algoritmo scritto con un indice diverso: la `j` della versione con `j-1` vale sempre uno in più. Le passate, i confronti e gli scambi sono identici: 28 e 16 sull'esempio.
+
+### Un'altra direzione: il minimo scende in basso
+
+Si può anche scorrere l'array **dall'alto verso il basso**. In questo caso a ogni passata è il valore **più piccolo** a scendere in fondo, e l'insieme ordinato si forma **in basso**, in `v[0] … v[i - 1]`. Anche questa direzione si può scrivere con entrambe le notazioni:
+
+```cpp
+// con j e j-1: j scende da N - 1 a i + 1
+for (int i = 0; i < N - 1; i++)
+    for (int j = N - 1; j > i; j--)
+        if (v[j - 1] > v[j]) {
+            int t = v[j];
+            v[j] = v[j - 1];
+            v[j - 1] = t;
+        }
+
+// con j e j+1: j scende da N - 2 a i
+for (int i = 0; i < N - 1; i++)
+    for (int j = N - 2; j >= i; j--)
+        if (v[j] > v[j + 1]) {
+            int t = v[j];
+            v[j] = v[j + 1];
+            v[j + 1] = t;
+        }
+```
+
+In entrambe l'ultima coppia confrontata è `v[i]`, `v[i + 1]`, e il minimo della passata si ferma in `v[i]`. L'animazione usa la versione con `j` e `j-1`.
+
+<p align="center">
+  <img src="img/bubble_sort_minimo_in_basso.gif" alt="Animazione: bubble sort completo con il minimo che scende in basso">
 </p>
 
 | Passata `i` | Array dopo la passata | Scende in fondo |
@@ -183,20 +269,20 @@ Qui l'insieme ordinato è `v[0] … v[i - 1]`. Il ciclo interno parte da `j = N 
 | 5 | 1 2 3 4 5 6 \| 7 8 | 6 in `v[5]` |
 | 6 | 1 2 3 4 5 6 7 \| 8 | 7 in `v[6]` |
 
-Le due varianti a confronto:
+### Le quattro combinazioni
 
-| | Versione con `j` e `j+1` | Versione con `j` e `j-1` |
+La notazione dell'indice (`j+1` o `j-1`) e la direzione (massimo in alto o minimo in basso) sono due scelte indipendenti:
+
+| | Indice `j` e `j+1` | Indice `j` e `j-1` |
 | --- | --- | --- |
-| Insieme ordinato | in alto, `v[N-i..N-1]` | in basso, `v[0..i-1]` |
-| Ogni passata porta | il massimo in `v[N - 1 - i]` | il minimo in `v[i]` |
-| `j` | sale da 0 a `N - 2 - i` | scende da `N - 1` a `i + 1` |
-| Confronto | `v[j] > v[j + 1]` | `v[j - 1] > v[j]` |
-| Condizione del `for` interno | `j < N - 1 - i` | `j > i` |
-| Confronti e scambi sull'esempio | 28 e 16 | 28 e 16 |
+| **Massimo in alto** | `for (j = 0; j < N - 1 - i; j++)`<br>`if (v[j] > v[j + 1])` | `for (j = 1; j < N - i; j++)`<br>`if (v[j - 1] > v[j])` |
+| **Minimo in basso** | `for (j = N - 2; j >= i; j--)`<br>`if (v[j] > v[j + 1])` | `for (j = N - 1; j > i; j--)`<br>`if (v[j - 1] > v[j])` |
 
-## 6. Ottimizzazione: fermarsi quando una passata non scambia
+La notazione cambia solo i limiti del `for` interno; la direzione decide dove si forma l'insieme ordinato. Sull'esempio tutte e quattro fanno 28 confronti e 16 scambi.
 
-Se in una passata non avviene **nessuno scambio**, ogni coppia di vicini è già in ordine: l'array è ordinato e le passate successive sono inutili. Per accorgersene si usa una variabile booleana, `scambiato`:
+## 6. Ottimizzazione con la bandierina: fermarsi quando una passata non scambia
+
+Se in una passata non avviene **nessuno scambio**, ogni coppia di vicini è già in ordine: l'array è ordinato e le passate successive sono inutili. Per accorgersene si usa una **bandierina** (in inglese *flag*): una variabile booleana, `scambiato`, che si "alza" (`true`) appena avviene uno scambio. L'ottimizzazione è mostrata per un caso solo, la versione con `j` e `j+1` e il massimo in alto; nelle altre varianti si aggiunge allo stesso modo.
 
 ```cpp
 bool scambiato = true;                       // true per entrare nella prima passata
@@ -252,6 +338,7 @@ Il bubble sort è più semplice da scrivere, ma fa più lavoro: più confronti e
 | Ciclo interno con `j < N` | con `j = N - 1` si legge `v[N]`, fuori dall'array | `j < N - 1 - i` |
 | Ciclo interno senza `- i` | confronti inutili sulla parte già ordinata: il risultato è giusto ma più lento | `j < N - 1 - i` |
 | Confronto con `>=` invece di `>` | scambia anche i valori uguali: più scambi, e l'ordinamento non è più *stabile* (valori uguali non restano nell'ordine di partenza) | `v[j] > v[j + 1]` |
-| Nella variante con `j-1`, condizione `j >= i` | con `i = 0` arriva a `j = 0` e legge `v[-1]` | `j > i` |
+| Con `j` e `j-1` e il massimo in alto, `j` che parte da 0 | il primo confronto legge `v[-1]` | `for (j = 1; j < N - i; j++)` |
+| Con `j` e `j-1` e il minimo in basso, condizione `j >= i` | con `i = 0` arriva a `j = 0` e legge `v[-1]` | `j > i` |
 | `scambiato = false` non rimesso a ogni passata | dopo il primo scambio resta `true` per sempre: l'ottimizzazione non funziona | `scambiato = false;` come prima istruzione della passata |
 | `scambiato` inizializzato a `false` | non si entra mai nel ciclo esterno: l'array non viene ordinato | `bool scambiato = true;` |
