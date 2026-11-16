@@ -69,3 +69,13 @@ AGGIORNAMENTO: versione da interno con SGP41, BME688 e ZE07-CO, senza GPS
 - Correzione: il labbro del coperchio (alto 3, sotto il bordo) toccava lo
   ZE07 (alto fino a Z 21.3) nell'angolo Y 1..1.9: interrompi il labbro
   sopra lo ZE07, X 49..76.4 (taglio Y -1..2).
+
+ALLOGGIAMENTO DEL CCS811 (scheda CJMCU-811, 20 x 15 x 2 mm) - opzionale
+Sul fondo del vano sensori, a sinistra, davanti alle asole della parete in basso.
+La scheda sta IN PIEDI, di taglio, in una fessura larga 2,8 mm formata da due guide
+a sezione a C alte 10,25 mm, distanti 20,8 mm, con lo zoccolo che unisce le due guide
+e tiene il bordo inferiore sollevato di 2 mm dal fondo (passa aria sotto la scheda).
+Le guide coprono 2,5 mm dei bordi laterali: la scheda non ha fori di fissaggio.
+Ingombro totale 24,8 x 6,8 mm, angolo in basso a sinistra a X 6,6 e Y 3.
+I pin restano in alto, liberi: i fili vanno alla Heltec passando dalla tacca della piastra.
+Sta lontano dalla piastra (29 mm) perche' il CCS811 scalda e falserebbe SCD41 e BME688.

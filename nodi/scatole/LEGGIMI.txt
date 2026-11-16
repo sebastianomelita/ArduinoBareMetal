@@ -39,7 +39,8 @@ sds011_sezione.scad                  libreria del vano SDS011 (non si apre da so
 =====================================================================
 INTERNO (coperchio senza pannelli, piatto, aerazione; USB; niente GPS)
 Sensori: SCD41, SGP41, BME688 oppure MPL3115A2 (fori alternativi), ZE07-CO.
-aerazione = "massima" o "ridotta".
+aerazione = "massima" o "ridotta". ccs = true aggiunge la fessura per il
+CCS811 (CJMCU-811) sul fondo del vano, a sinistra: vedi disegni/ccs811_alloggiamento.png.
 =====================================================================
 nodo_lorawan_case_v4_interno.scad                 SQUADRATA, 82 x 78,5.
 nodo_lorawan_case_v4_interno_rs485.scad           SQUADRATA con modulo RS485 (per

@@ -37,5 +37,6 @@ guide_l   = 1.2;       // costole corte: i distanziali delle schedine stanno vic
 // SCD41, SGP41, BME688 e, sullo STESSO posto del BME688, il foro alternativo della MPL3115A2
 // (centrata nella sagoma del BME688: monti l'una o l'altra)
 plate_boards = [[1, scd_holes], [28, scd_holes], [55, scd_holes], [55 + (25.4 - mpl_w)/2, mpl_holes]];
+ccs       = true;      // CCS811 (CJMCU-811) in piedi nella fessura sul fondo, a sinistra: false se non lo monti
 ze07      = true;
 ze07_xy   = [50, 1];

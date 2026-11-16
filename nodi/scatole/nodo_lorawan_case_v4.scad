@@ -381,6 +381,7 @@ module sensor_chamber() {
         below_rim(-seal_gap);
     }
     if (sensor_plate) plate_guides();
+    if (ccs) ccs_holder();
     if (ze07) ze07_pocket();
     else if (!sensor_plate) {   // senza piastra estraibile: distanziali sulla parete fissa
         for (h = scd_holes) sensor_boss(scd_x + h[0], board_z + h[1]);
@@ -388,6 +389,38 @@ module sensor_chamber() {
         translate([mpl_x0, sw_y - so_h - 2.1, 0]) cube([mpl_w, so_h + 2.1, board_z]);   // mensola sotto la MPL
     }
 }
+/* [CCS811 / CJMCU-811 (solo versione da interno)] */
+// Scheda 20 x 15 x 2 mm tenuta IN PIEDI in una fessura, sul fondo del vano
+// sensori, davanti alle asole della parete in basso e LONTANO dalla piastra:
+// il CCS811 scalda e falserebbe SCD41 e BME688. Non ha fori di fissaggio,
+// quindi la si infila di taglio tra due guide a C; i pin restano in alto.
+ccs      = false;
+ccs_size = [20, 15, 2];   // larghezza, altezza, spessore della scheda
+ccs_xy   = [9, 5];        // X del bordo sinistro, Y della faccia davanti
+ccs_clr  = 0.4;           // gioco della fessura (0,2 per lato)
+ccs_lift = 2;             // bordo inferiore sollevato dal fondo: aria sotto
+ccs_grip = 2.5;           // quanto le guide coprono i bordi laterali
+ccs_rw   = 2;             // spessore delle guide
+// guida a C con l'apertura verso +X; origine sull'angolo della fessura
+module ccs_rail_c() {
+    sw = ccs_size[2] + 2*ccs_clr;
+    rh = ccs_lift + ccs_size[1]*0.55;
+    difference() {
+        translate([-ccs_rw, -1.6, 0]) cube([ccs_rw + ccs_grip, sw + 3.2, rh]);
+        translate([0, 0, ccs_lift]) cube([ccs_grip + 1, sw, rh]);
+    }
+}
+module ccs_holder() {
+    w = ccs_size[0]; sw = ccs_size[2] + 2*ccs_clr;
+    x0 = ccs_xy[0] - ccs_clr; y0 = ccs_xy[1] - ccs_clr;
+    translate([x0 - ccs_rw, y0 - 1.6, 0]) cube([w + 2*ccs_clr + 2*ccs_rw, sw + 3.2, ccs_lift]);
+    translate([x0, y0, 0]) ccs_rail_c();
+    translate([x0 + w + 2*ccs_clr, y0, 0]) mirror([1, 0, 0]) ccs_rail_c();
+}
+module ccs_dummy() {
+    translate([ccs_xy[0], ccs_xy[1], ccs_lift]) cube([ccs_size[0], ccs_size[2], ccs_size[1]]);
+}
+
 // sensore di CO ZE07-CO (25,4 x 22,4 x 18,3) coricato sul fondo del vano, davanti alla piastra:
 // quattro piedini (sotto ci sono i pin) e quattro battute a L agli angoli, lati liberi per i fili
 ze07 = false;
@@ -773,6 +806,7 @@ module dummies() {
     for (bd = plate_boards) color(bd[1] == mpl_holes ? "Red" : "Purple", 0.6)
         translate([bd[0], sw_y - so_h - 1.6, board_z]) cube([bd[1] == mpl_holes ? mpl_w : scd_w, 1.6, bd[1] == mpl_holes ? mpl_h : scd_h]);
     if (ze07) color("SteelBlue", 0.6) translate([ze07_xy[0], ze07_xy[1], ze07_pad]) cube(ze07_size);
+    if (ccs) color("ForestGreen", 0.6) ccs_dummy();
 }
 
 // coperchio in posizione di stampa: faccia esterna sul piatto
