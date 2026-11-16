@@ -209,14 +209,18 @@ Così si vede il ruolo di ciascun passo:
 - il passo 1 **non mette a posto nessun valore**, ma porta B davanti e A dietro, entrambi rovesciati;
 - i passi 2 e 3 rimettono ogni blocco nel suo ordine: ogni scambio porta due valori al posto finale. Il valore al centro di un blocco di lunghezza dispari non si muove, perché è già al suo posto.
 
-**Le tre inversioni con le mani.** Bentley suggerisce di provarle con le proprie mani. Si appoggiano le due mani sul tavolo, dorso in su, una accanto all'altra: le dieci dita sono i dieci elementi, letti da sinistra a destra, e ogni mano è un blocco. Invertire un blocco vuol dire **girare la mano**: le sue dita compaiono in ordine inverso. Per ruotare a destra di 5:
+**Le tre inversioni con due strisce di cartoncino.** Si possono rifare sul banco con due strisce di cartoncino, ciascuna divisa in cinque caselle: sulla striscia A si scrivono 1 2 3 4 5, sulla striscia B 6 7 8 9 10. Ogni numero va scritto **su tutte e due le facce, nella stessa casella**. Le due strisce, accostate, sono l'array di dieci elementi, letto da sinistra a destra.
 
-1. si girano **insieme** le due mani, come se fossero un pezzo unico: la mano destra passa a sinistra e viceversa, entrambe col palmo in su (inverto tutto);
-2. si gira la mano che ora sta a sinistra (inverto i primi `K`);
-3. si gira la mano che ora sta a destra (inverto gli altri `N - K`).
+Girare una striscia, facendola ruotare da un capo all'altro come si gira una pagina, vuol dire **invertirla**: guardando il retro, le sue caselle compaiono in ordine inverso. Per ruotare a destra di 5:
+
+1. si girano le due strisce **insieme**, tenendole accostate come se fossero un foglio unico. Girando, il foglio porta B a sinistra e A a destra, ed entrambe sono rovesciate: `10 9 8 7 6 5 4 3 2 1` (inverto tutto);
+2. si gira la striscia che ora sta a sinistra: `6 7 8 9 10` (inverto i primi `K`);
+3. si gira la striscia che ora sta a destra: `1 2 3 4 5` (inverto gli altri `N - K`).
+
+Lo spostamento di B davanti ad A non è una mossa in più: è l'effetto del primo giro, perché girando il foglio intero ciò che stava a destra finisce a sinistra.
 
 <p align="center">
-  <img src="img/rotazione_mani.gif" alt="Animazione: le tre inversioni con le mani, rotazione a destra di 5 di dieci elementi">
+  <img src="img/rotazione_strisce.gif" alt="Animazione: due strisce di cartoncino girate prima insieme e poi una alla volta, rotazione a destra di 5 di dieci elementi">
 </p>
 
 ```cpp
