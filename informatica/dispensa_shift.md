@@ -199,7 +199,24 @@ Nella rotazione nessun valore deve andare perso, quindi la copia diretta `v[i] =
 | 3) Inverto gli altri 5 | 7 2 4 6 5 3 1 8 |
 
 <p align="center">
-  <img src="img/rotazione_3_tre_inversioni.gif" alt="Animazione: rotazione a destra di 3 con tre inversioni">
+  <img src="img/rotazione_3_tre_inversioni.gif" alt="Animazione: rotazione a destra di 3 con tre inversioni, con i blocchi A e B colorati e le posizioni finali in verde">
+</p>
+
+Nell'animazione l'array è diviso in due **blocchi**: A, i primi `N - K` elementi, con i numeri in **blu**, e B, gli ultimi `K`, in **arancione**. In alto c'è l'**obiettivo**, cioè l'array ruotato: B davanti, A dietro, ciascuno nel suo ordine. Le celle **grigie** contengono valori che non sono ancora al loro posto; quando un valore arriva al posto finale la sua cella diventa **verde**, e si colora di verde anche la cella corrispondente dell'obiettivo.
+
+Così si vede il ruolo di ciascun passo:
+
+- il passo 1 **non mette a posto nessun valore**, ma porta B davanti e A dietro, entrambi rovesciati;
+- i passi 2 e 3 rimettono ogni blocco nel suo ordine: ogni scambio porta due valori al posto finale. Il valore al centro di un blocco di lunghezza dispari non si muove, perché è già al suo posto.
+
+**Le tre inversioni con le mani.** Bentley suggerisce di provarle con le proprie mani. Si appoggiano le due mani sul tavolo, dorso in su, una accanto all'altra: le dieci dita sono i dieci elementi, letti da sinistra a destra, e ogni mano è un blocco. Invertire un blocco vuol dire **girare la mano**: le sue dita compaiono in ordine inverso. Per ruotare a destra di 5:
+
+1. si girano **insieme** le due mani, come se fossero un pezzo unico: la mano destra passa a sinistra e viceversa, entrambe col palmo in su (inverto tutto);
+2. si gira la mano che ora sta a sinistra (inverto i primi `K`);
+3. si gira la mano che ora sta a destra (inverto gli altri `N - K`).
+
+<p align="center">
+  <img src="img/rotazione_mani.gif" alt="Animazione: le tre inversioni con le mani, rotazione a destra di 5 di dieci elementi">
 </p>
 
 ```cpp
