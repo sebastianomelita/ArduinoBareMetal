@@ -1,0 +1,307 @@
+Costruisci in SolidCraft il contenitore del nodo LoRaWAN, VERSIONE 4 LUNGA
+con SDS011, montaggio a muro, usando i corpi "Base", "LidA", "LidB",
+"Plate" e "Plug". Ogni lavorazione deve essere una feature separata e modificabile.
+Lavora a blocchi: dopo ogni blocco fermati e mostrami il risultato. Unità: mm.
+
+RIFERIMENTO: origine = angolo interno della cavità sul piano del fondo.
+X = lato lungo (0..182.4), Y = lato corto (0..75, parete frontale a Y=0),
+Z = profondità dal fondo verso l'esterno. Pareti e fondo 2.4, coperchio 2.4.
+Spigoli esterni R4. Installata, la parete frontale (Y=0) guarda in basso.
+A sinistra (X 0..77): dal basso vano sensori, striscia elettronica
+(boost 5 V, MOS, condensatore), batteria + BMS, Heltec con il GPS accanto.
+Poi una parete interna (X 77..79.4) e a destra il vano dell'SDS011.
+
+PIANO DEL BORDO: è il piano su cui appoggia il coperchio. Contiene la retta
+parallela a X che passa per (Y 0, Z 36) ed è inclinato di 11.5°: scende
+verso la parete in alto. Formula: Z = 36 - 0.20345 * Y.
+Quindi la scatola è profonda 36 sulla parete in basso (Y=0) e 20.74 su
+quella in alto (Y=75). La profondità la decide l'SDS011: spesso 24 sulla
+ventola (fino a 38 dal suo bordo basso), poi 15. Tutto quello che va "fino
+al coperchio" si fa più alto del necessario e poi si TAGLIA con questo piano.
+
+=== BLOCCO 1 · GUSCIO E COLONNINE D'ANGOLO ===
+10. Guscio: rettangolo (-2.4,-2.4)-(184.8,77.4), raggio 4 sugli spigoli
+    verticali, estruso da Z=-2.4 a Z=40.
+20. Svuotamento: tasca (0,0)-(182.4,75), raggio 1.6, da Z=0 verso l'alto.
+25. Colonnine d'angolo concentriche con gli spigoli R4: 4 cilindri Ø8 da
+    Z=0 a Z=40, centri (1.6,1.6) (180.8,1.6) (1.6,73.4) (180.8,73.4).
+    Sono le uniche 4 viti della scatola.
+27. TAGLIO: elimina tutto quello che sta sopra il PIANO DEL BORDO. Le
+    colonnine in basso restano alte 35.67, quelle in alto 21.07.
+28. Fori pilota VERTICALI Ø2.6 profondi 12 dalla cima di ogni colonnina
+    (viti M3x12 inox a TESTA A BOTTONE ISO 7380, testa 5.7 x 1.65).
+
+=== BLOCCO 2 · PARTE SINISTRA: HELTEC, BATTERIA, BMS, GPS, MILLEFORI ===
+30. Colonnine Heltec V4 RASTREMATE, centri (23,53.9) (23,67.9) (52,53.9)
+    (52,67.9). Ognuna è l'unione di un tronco di cono da Ø7 (a Z=0) a Ø4.2
+    (a Z=2.5) e di un cilindro Ø4.2 da Z=0 a Z=5.5. Foro pilota Ø1.8
+    profondo 5 dall'alto (viti M2x6). (Scheda: X 6..57.6, Y 48.1..73.7.)
+40. Culla batteria 14500 A SCATTO (asse lungo X a Y=38.65, Z=8.25; cella
+    da X 7.5 a X 60.5):
+    - selle X 13.5..21.5 e X 46.5..54.5, Y 30.5..47.5, alte 11, con scavo
+      cilindrico Ø15.1 coassiale alla batteria (apertura in cima 14.1: la
+      batteria entra a scatto, senza fascette);
+    - due TASCHINE per le lamelle di contatto a slitta (piastrine 12 x 14,
+      lamiera 0.6), blocchi spessi 3 in X, larghi 15.8 (Y 30.75..46.55),
+      alti 13.25: a sinistra X 0..3 (contro la parete, lamella con la molla, -),
+      a destra X 61.5..64.5 (lamella piatta, +). Tra le due facce 58.5 mm. In ognuna:
+      · fessura per la lamella larga 1.0 nel mezzo dello spessore (X 1..2
+        e X 62.5..63.5), lunga 12.6 in Y (Y 32.35..44.95), dal fondo
+        Z 1.05 fino in cima (la lamella entra dall'alto);
+      · finestra sulla parete verso la cella, larga 9 (Y 34.15..43.15), da
+        Z 2.55 in su: ci passa la molla o il bottoncino;
+      · scasso sulla parete dietro, largo 6, da Z 8.25 in su: linguetta da
+        saldare e filo verso il BMS.
+50. Fessura BMS in piedi (scheda X 13.5..48.7, Y 48.1..50.1, Z 0.5..4.7):
+    - parete verso la batteria X 22..47, Y 47.1..47.9, alta 4;
+    - pareti verso la Heltec, alte 4, Y 50.3..51.1, a tratti: X 13.3..19 e
+      X 27..44;
+    - fermi alle estremità, alti 3: X 12.6..13.3, Y 47.9..50.3 e
+      X 48.9..49.6, Y 47.9..50.1.
+60. Supporto del GPS (L76K, 17.5 x 16.5 x 5.5) IN PIEDI, X 58.4..75.9,
+    Y 48.3..53.8, Z 0..16.5, antenna ceramica verso la parete in alto (+Y):
+    - guida sul fondo: due pareti spesse 0.8 e alte 1.5, X 59.9..76.1, a
+      Y 47.3..48.1 e Y 54.0..54.8;
+    - guida verticale a destra, alta 15.5: fondo della U X 76.1..76.9,
+      Y 47.3..54.8, più due pareti X 73.6..76.1 a Y 47.3..48.1 e 54.0..54.8.
+    - alette alte 15.5 anche all'estremità sinistra: X 58.4..60.9 a
+      Y 47.3..48.1 e Y 54.0..54.8 (il lato del connettore resta libero).
+62. Striscia ELETTRONICA (Y 16.5..30.5): millefori 60 x 12 (boost 5 V, MOS,
+    condensatore coricato) su due colonnine Ø4.5 alte 3 in (11, 23.5) e
+    (65, 23.5), con foro Ø1.8 per viti M2.
+65. Millefori DIODI (20 x 12, un diodo Schottky per pannello + morsetto)
+    nel corridoio a destra del vano: colonnine Ø4.5 alte 3 in (59, 9) e
+    (73, 9), foro Ø1.8.
+
+=== BLOCCO 3 · VANO SENSORI STAGNO (in basso a sinistra) ===
+70. Parete destra del vano, piena: X 50..52, Y 0..16.5. Falla alta 40 e
+    TAGLIALA con il PIANO DEL BORDO abbassato di 0.6 (spazio per il cordone
+    di silicone); per Y<2.2 tagliala con il piano abbassato di 3.3 (passa il
+    labbro del coperchio).
+75. Guide della PIASTRA DEI SENSORI (la parete tra il vano e il resto è un
+    pezzo a parte, 80): costole spesse 0.8 e alte 12, alle due estremità
+    (X 0..3 e X 47.5..50), una davanti a Y 13.55..14.35 e una dietro a
+    Y 16.65..17.45. La piastra scorre in mezzo dall'alto.
+    (Nella BASE non ci sono distanziali ne' mensola dei sensori: stanno
+    tutti sulla piastra.)
+80. PIASTRA DEI SENSORI (corpo "Plate"): lastra X 0.2..49.85,
+    Y 14.65..16.35 (spessa 1.7), da Z 0 fino al PIANO DEL BORDO abbassato
+    di 0.6; in alto a sinistra (X<2.2) abbassata di 3.3 per il labbro.
+    Sulla faccia verso il vano (Y=14.65) i distanziali Ø4.5 lunghi 4
+    (fino a Y 10.65), asse lungo Y, con foro CIECO Ø1.8 profondo 5:
+    - SCD41 coricato, centri (X,Z) (10.54,3.54) (30.86,3.54) (10.54,16.26)
+      (30.86,16.26);
+    - MPL3115A2, chip verso la piastra: uno in (X 43, Z 14.5).
+    Si stampa stesa sul retro (Y=16.35 sul piatto), distanziali in su. I
+    sensori si avvitano sul tavolo; poi la piastra si infila dall'alto tra
+    le guide e, dopo il cablaggio, un cordone di silicone neutro sui bordi
+    (in alto e ai lati) richiude il vano.
+85. Passacavi Ø3.5 da sigillare, lungo X nella parete destra del vano:
+    MPL in (Y 4, Z 5), SCD41 in (Y 4, Z 14).
+
+=== BLOCCO 4 · PARETE INTERNA E VANO SDS011 ===
+86. Parete interna X 77..79.4, Y 0..75, alta 40, TAGLIATA con il piano
+    abbassato di 0.6; alle due estremità (Y<2.2 e Y>72.8) tagliata con il
+    piano abbassato di 3.3 (passa il labbro). Passacavo Ø10 lungo X in
+    (Y 64, Z 10): ci passano i fili dell'SDS011 (5 V, GND, TX, RX), del
+    DS18B20, del pannello 2 e il cavetto IPEX dell'antenna. Da sigillare.
+87. Divisorio nel canale di scarico: X 79.4..91.0, Y 50..52, alto 40,
+    tagliato con il piano abbassato di 0.6. Sotto scende l'aria della
+    ventola, sopra resta la tasca dell'antenna e del passacavo.
+88. Appoggio dell'SDS011 (sensore 71 x 70, X 91.4..162.4, Y 3.5..73.5,
+    ventola in basso, beccuccio a destra):
+    - quattro piedini 8 x 8 alti 3 in (91.4,3.5) (154.4,3.5) (91.4,65.5)
+      (154.4,65.5) (angolo in basso a sinistra di ciascuno);
+    - battute alte 5, spesse 1.6, a 0.4 dal sensore: sotto X 97.4..109.4 e
+      144.4..156.4 a Y 1.5..3.1; sopra le stesse X a Y 73.9..75.5;
+      a sinistra Y 9.5..21.5 e 55.5..67.5 a X 89.4..91.0; a destra le
+      stesse Y a X 162.8..164.4.
+89. Tubo di aspirazione (silicone 6 x 8): due mollette a U con centro in
+    X 172.4, Y 8 e Y 36.8. Ognuna è un blocchetto X 166.4..178.4, spesso 4
+    in Y, alto 17, con un foro Ø8.2 lungo Y a Z 15 e una fessura larga 6.8
+    da Z 15 in su (il tubo entra dall'alto a pressione).
+
+=== BLOCCO 5 · APERTURE ===
+90.  Finestra USB-C, parete sinistra (X -2.4..0): asola 12 x 6.5 con
+     estremità arrotondate, centro Y=60.9, Z=8.8. Si chiude con il tappo 95.
+95.  Tappo a scatto (corpo "Plug"): aletta a forma di asola 14.6 x 9.1
+     spessa 1.2; corpo 11.8 x 6.3 lungo altri 3.4, cavo (pareti 0.8),
+     tagliato a metà per il lungo dal punto 2.6 in su; dentino che sporge
+     0.3 tutto intorno a 3.75 dalla base; linguetta 5 x 5 sull'aletta.
+100. Feritoia del vano sensori, parete frontale (Y -2.4..0): asola
+     X 14..36, Z 1.2..3.7.
+102. Ingresso aria SDS011, parete frontale: collare esterno Ø13 lungo 4
+     (Y -6.4..-2.4) con centro X 172.4, Z 15; foro Ø8.4 passante nel
+     collare e nella parete. Fai uscire il tubo 2-3 cm sotto il collare.
+104. Griglia di scarico, parete frontale: cinque asole 3 x 20 (Z 4..24) a
+     X 79.9, 84.9, 89.9, 94.9, 99.9 (bordo sinistro di ciascuna).
+110. Foro DS18B20: Ø4.5 sulla parete frontale, X 162.4, Z 12 (accanto
+     all'ingresso dell'aria, all'ombra sotto la scatola).
+115. Foro per un PRESSACAVO PG7 (sensore del terreno o altri sensori
+     esterni): Ø12.5 sulla parete destra (X 182.4..184.8), centro Y 60,
+     Z 12, sopra la curva del tubo. Dentro c'è posto per il dado
+     (X 177..182.4). Nel coperchio, scarico del labbro davanti al dado:
+     X 178.9..183.4, Y 50..70 (solo nel labbro). I fili passano nel vano
+     principale dal passacavo della parete interna, ora Ø10.
+     Se non serve si chiude col TAPPO a scatto (corpo "Plug2", si stampa col
+     coperchio): aletta Ø16.5 spessa 1.2, corpo Ø12.3 lungo altri 3.4, cavo
+     (pareti 0.8) e tagliato a croce dal punto 2.6 in su, dentino conico che
+     sporge 0.3 a 3.75 dalla base, linguetta 5 x 5.
+116. Foro sigillato Ø4.5 per il DS18B20 del TERRENO sulla parete destra,
+     centro Y 45, Z 12 (sotto il pressacavo, sopra le mollette del tubo).
+120. Antenna SMA sulla parete IN ALTO (Y 75..77.4): foro Ø6.6 in X 85, Z 8,
+     sopra la tasca del canale di scarico (non davanti al GPS).
+
+=== BLOCCO 6 · ALETTE A MURO ED ETICHETTE ===
+130. Due alette spesse 4, da Z=-2.4 a Z=1.6, centrate in Y=37.5, una oltre
+     X=-2.4 e una oltre X=184.8: larghe 20 alla parete, sporgono 12, punta
+     arrotondata R5; foro Ø4.5 a 6 dalla parete.
+140. Etichette incise 0.6 sul fondo, bold, centrate (altezza testo; X,Y):
+     "HELTEC V4" (3; 37.5,60.9)   "14500" (4; 34,38.65)   "GPS" (3; 67.15,60.3)
+     "BMS" (1.6; 31.1,49.1)   "SENSORI" (3; 25,4.5)   "DIODI" (2.5; 66,9)
+     "BOOST  MOS  C" (3; 38,23.5)   "SDS011" (6; 126.9,38.5)
+     "J34" (2.5; 85.4,30) ruotata 90°   "DS" (2.2; 162.4,4)
+
+=== BLOCCO 7 · COPERCHIO A, 2 PANNELLI CORICATI (corpo LidA) ===
+Lavora su un PIANO DI SCHIZZO coincidente con il PIANO DEL BORDO. Su questo
+piano usa due coordinate: X (come la scatola) e v = distanza lungo la
+pendenza, misurata dalla retta (Y 0, Z 36) verso la parete in alto
+(v = Y / cos 11.5° = Y * 1.0205). Lo spessore si estrude PERPENDICOLARE al
+piano, verso l'esterno: w = 0 faccia interna, w = 7.5 faccia esterna.
+150. Piastra: rettangolo X -2.4..184.8, v -2.45..78.99, raggio 4, estrusa
+     7.5 (faccia esterna tutta piana).
+155. Visiera davanti a feritoia, ingresso aria e griglia: rettangolo
+     X -1.9..184.3, v -14.70..-1.45, spesso 7.5, unito alla piastra.
+157. Due nervature triangolari spesse 2 sotto la visiera, a X -1.9..0.1 e
+     182.3..184.3: vertici (v, w) (-3.05,0) (-3.05,-6) (-14.70,-2) (-14.70,0).
+160. Labbro VERTICALE: anello con profilo esterno (0.3,0.3)-(182.1,74.7),
+     raggio 1.3, spesso 1.6, tagliato tra il PIANO DEL BORDO e lo stesso
+     piano abbassato di 3. Scarichi SOLO nel labbro: cilindri Ø9 sui 4
+     centri delle colonnine; davanti al tappo USB X -1..2, Y 53.9..67.9.
+165. Quattro tamponi che tengono giù l'SDS011: cilindri verticali Ø8 in
+     (101.4,13.5) e (152.4,13.5) da Z 27.3, in (101.4,63.5) e (152.4,63.5)
+     da Z 18.3, fino dentro la piastra. Sopra metti un velo di gomma.
+170. Viti VERTICALI: fori Ø3.4 passanti sui 4 centri. Sede della testa Ø6.2
+     con FONDO PIANO orizzontale a Z 36.88 per le due in basso (Y 1.6) e a
+     Z 22.27 per le due in alto (Y 73.4), aperta verso l'esterno (pozzetto).
+190. Fori Ø5 per i fili, perpendicolari al coperchio, in X 41 e X 130.9,
+     v 44.01 (sotto i contatti al centro dei pannelli).
+195. Due SEDI A INCASTRO con GOLA PROFONDA, rettangoli base X 0.6..81.4 e
+     X 90.5..171.3, da v 21.31 fino OLTRE il bordo alto (aperte in alto):
+     - w 2.4..3.9 (intercapedine): rettangolo più stretto di 1.9 per lato
+       e di 1.5 sul fondo;
+     - w 3.9..6.5 (GOLA): rettangolo pieno;
+     - w 6.5..7.5 (labbro): rientrato di 2.2 sui lati e 2.0 sul fondo,
+       allargato a 45° fino a 1.2 / 1.0 sulla faccia esterna;
+     - scoli larghi 4 a w 2.4..3.9, a X 18.8..22.8, 59.2..63.2,
+       108.7..112.7, 149.1..153.1, dal fondo delle sedi al bordo basso.
+     I pannelli si fermano col bordo alto a v 66.51.
+196. LINGUETTE A SCATTO LATERALI (lamelle). Per ogni bordo laterale di una
+     sede, al livello del bordo alto del pannello. Chiamo xe la X del bordo
+     della sede e "fuori" il verso che si allontana dal pannello:
+     - lamella: striscia spessa 1.0 subito fuori da xe (tra xe e xe+1 verso
+       fuori), alta da w 3.9 alla faccia esterna, lunga 14 lungo v, da
+       v 55.11 a v 69.11; attaccata al coperchio solo in basso (v 55.11);
+     - fessura dietro: larga 1.2 subito fuori dalla lamella, da w 3.3 fino
+       alla faccia esterna, da v 55.11 a v 69.71;
+     - fessura in cima: v 69.11..69.71, da w 3.3 alla faccia esterna, dal fondo
+       della fessura dietro fino a 2.6 dentro la sede;
+     - luce sotto la lamella: w 3.3..3.9, dal fondo della fessura dietro a
+       0.3 dentro la sede, da v 55.11 a v 69.71;
+     - sopra il fianco del pannello, lungo la lamella (v 55.11..69.71), togli il
+       labbro della sede per 2.6 verso l'interno (da w 6.4 in su);
+     - dentino sulla faccia interna della lamella, alto da w 3.9 a 6.4: entra
+       di 1.0 nella sede con la faccia di arresto a v 66.81 (sopra l'angolo del
+       pannello) e torna a filo con una rampa fino a v 68.81, dal lato da cui
+       il pannello entra.
+     La lamella si piega di lato, nel piano del coperchio: si stampa a
+     strati nel verso giusto e, lunga 14, non si rompe.
+     Qui: xe 0.6 e xe 90.5 (fuori verso sinistra), xe 81.4 e xe 171.3
+     (fuori verso destra). Le fessure in cima finiscono 0.5 prima dei
+     pozzetti delle viti in alto.
+
+=== BLOCCO 8 · COPERCHIO B, 4 PANNELLI IN PIEDI (corpo LidB) ===
+Stessa Base, stesso piano di schizzo. Uguale al coperchio A tranne:
+150. Piastra larga: rettangolo X -11.4..193.8, v -16.69..78.99, raggio 4,
+     estrusa 7.5 (sporge 9 per lato e scende 14 sotto la scatola).
+155. Niente visiera a parte: la piastra 150 copre già tutto.
+157. Nervature a X -11.4..-9.4 e 191.8..193.8, vertici (-3.05,0) (-3.05,-6)
+     (-16.69,-2) (-16.69,0).
+190. Quattro fori Ø5 in X 14.7, 65.7, 116.7, 167.7, v 25.
+195. Quattro sedi per pannelli 45 x 80 in piedi, rettangoli base
+     X -8.2..37.6, 42.8..88.6, 93.8..139.6, 144.8..190.6, da v -13.69 fino
+     oltre il bordo alto; scoli a X 1.25..5.25, 24.15..28.15, 52.25..56.25,
+     75.15..79.15, 103.25..107.25, 126.15..130.15, 154.25..158.25,
+     177.15..181.15. I pannelli si fermano a v 66.51 (6 mm tra due vicini).
+196. Lamelle come la 196 di A, stesse quote in v e w, ai bordi:
+     xe -8.2, 42.8, 93.8, 144.8 (fuori verso sinistra) e xe 37.6, 88.6,
+     139.6, 190.6 (fuori verso destra).
+I pannelli coprono le viti in basso: per aprire, prima spingi in fuori le
+lamelle con un cacciavite piccolo e sfili i pannelli verso l'alto, poi
+sviti. Le teste a bottone restano 0.5 sotto il retro dei pannelli.
+
+PANNELLI in parallelo: un diodo Schottky (1N5817 o SS14) in serie sul
+positivo di ciascuno, sulla millefori DIODI, poi al connettore solare della
+Heltec (4.7-6 V). Fili saldati prima di infilare i pannelli, fori sigillati
+con silicone, cordone di silicone sul bordo alto delle sedi.
+
+Stampa: Base col fondo sul piatto (con le alette è larga 211: centrala bene
+su un piatto da 220). LidA / LidB con la faccia esterna sul piatto; labbro,
+nervature e tamponi salgono. Il fondo sotto i pannelli è un ponte lungo:
+attiva i SUPPORTI SOLO DAL PIATTO (salgono dalla finestra delle sedi e si
+sfilano dall'alto). Plug con l'aletta sul piatto.
+
+=== VERIFICA FINALE ===
+Controlla che Base e coperchi non si compenetrino, che niente superi il
+piano del bordo (aria minima: 0.55 sopra la ventola dell'SDS011, 3 sopra
+la sua parte alta), che il labbro passi attorno alle colonnine e sopra i
+tratti abbassati della parete interna e del vano, che il tubo (Ø8 in
+X 168.4..176.4) non tocchi la colonnina in basso a destra, che sopra le
+pareti interne restino 0.6 mm sotto il coperchio e che nei coperchi, a ogni
+angolo, restino il foro Ø3.4 e il fondo della sede della testa.
+
+=====================================================================
+VARIANTE CON MODULO RS485 (rs485_lunga = true)
+=====================================================================
+R1. La scatola si allunga di 22 mm: interno 204.4 x 75 (era 182.4 x 75).
+    La parete interna passa da X 77 a X 99 e TUTTO il vano dell'SDS011
+    (canale di scarico, divisorio, sensore, tubo, griglie, pressacavo e
+    fori della parete destra, colonnine d'angolo a destra) si sposta di
+    +22 in X. Anche il foro dell'antenna SMA (ora X 107) e, nel coperchio
+    A, il secondo pannello (centro X 152.9). La parte sinistra (X 0..77)
+    non cambia.
+R2. VANO DEL MODULO RS485 tra X 77 e X 99. Modulo MAX485 (basetta
+    44 x 14) coricato lungo Y, ingombro X 82.5..96.5, Y 8..52:
+    - due appoggi di traverso alti 7.5: Y 15..17 e Y 43..45, X 82.5..96.5;
+    - due incavi ciechi nel fondo profondi 1.4 per i pin: Y 8..13 e
+      Y 47..52, X 83.5..95.5;
+    - quattro battute a L agli angoli, a 0.5 dalla basetta, spesse 1.2,
+      bracci lunghi 5, alte 11.5.
+    Scritta "RS485" lungo Y. Morsetto verde in basso (verso Y 0), bocche
+    verso sinistra.
+R3. SECONDO PRESSACAVO PG7 sulla parete in BASSO: foro Ø12.5 in X 88,
+    Z 12 (asse lungo Y). Stampa un tappo in piu'.
+
+=====================================================================
+OPZIONE: BACCELLO PER IL SENSORE UV (VEML6075, scheda 18,2 x 10,5 x 2)
+=====================================================================
+(Nella lunga la parete in alto e' a Y 75..77.4: l'interno e' alto 75.)
+UV1. Sulla parete in ALTO, fuori dalla scatola, centrato in X 38
+     (X 27..49), un parallelepipedo che sporge 5.3 dalla faccia esterna
+     (Y 77.4..82.7), largo 22 (X), alto 14.3 (Z -2.4..11.9). Il fondo e'
+     a filo del fondo della scatola; unito alla scatola.
+UV2. Dentro il baccello, aperte verso l'esterno (+Y):
+     - sede della scheda: X 28.1..46.9, Z -0.8..10.3, da Y 80.4 a 82.7
+       (18.8 x 11.1, profonda 2.3);
+     - cavita' sotto: stessa X, Z 0.4..9.1 (restano due appoggi di 1.2),
+       da Y 77.4 a 80.4 (profonda 3).
+UV3. Foro Ø5 per i 4 fili: in X 38, Z 4.75, attraverso la parete in alto
+     (Y 74..77.4), fino alla cavita' sotto la scheda. Si sigilla con silicone.
+UV4. COPERCHIETTO (pezzo a parte): piastra 22 x 14.3 x 2.4; apertura
+     passante 16 x 9 al centro; sulla faccia esterna una sede 19 x 11.5
+     profonda 1.2 per il vetrino trasparente agli UV (PMMA UV-T o PTFE,
+     max 1.2). Si stampa con la faccia interna sul piatto. Si incolla
+     col silicone sul baccello (Y 82.7..85.1).
+UV5. La scheda va con il sensore verso l'alto (il cielo) e i fili saldati
+     sui pin, tagliati a filo: sotto la scheda c'e' la cavita' per le
+     saldature.

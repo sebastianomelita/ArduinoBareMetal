@@ -1,0 +1,102 @@
+VERSIONE 4 DA INTERNO "TARTARUGA" (guscio tondo)
+Da costruire DOPO la versione da interno (prompt_solidcraft_v4_interno.txt,
+con l'AGGIORNAMENTO in fondo): la scatola da interno resta IDENTICA e
+INTERA (fondo con le scritte, pareti con le asole, tutto l'interno, senza
+alette); fuori la copre un guscio tondo. Tra guscio e scatola resta
+un'intercapedine vuota.
+
+Assi come sempre: X verso destra, Y verso l'alto della scatola appesa,
+Z uscente dal muro. Fondo da Z -2.4 a Z 0. Scatola interna 82 x 78.5,
+pareti 2.4 (esterno X -2.4..84.4, Y -2.4..80.9), alta fino a Z 22.5.
+Piano di chiusura PIATTO a Z 22.5. Centro della pianta: X 41, Y 39.25.
+
+=====================================================================
+FORMA DEL GUSCIO (serve sia alla scatola sia al coperchio)
+=====================================================================
+400. GUSCIO PIENO "ShellOut": loft (o "raccordo") attraverso rettangoli
+     arrotondati CENTRATI in (X 41, Y 39.25). Ogni sezione e' il
+     rettangolo 52 x 48.5 ingrossato di R (cioe' misure 52+2R x 48.5+2R,
+     raggio degli angoli R):
+          Z      R
+        -2.40  32.00     (contro il muro: pianta 116 x 112.5)
+        11.17  31.23
+        20.57  28.96
+        27.91  25.22
+        33.25  20.08
+        35.66  15.87
+        37.11  10.90
+        37.56   6.64
+        37.60   4.00     (cima: 60 x 56.5, raggio 4)
+     Il fianco sale verticale dal muro e si chiude tondo in cima.
+     Sopra, una bombatura dolce di 3 (paraboloide): sezioni della cima
+     scalate verso il centro, Z = 37.6 + 3 * (1 - scala^2):
+     scala 0.79 a Z 38.74, 0.58 a Z 39.61, 0.36 a Z 40.21, 0.15 a Z 40.53.
+410. GUSCIO INTERNO "ShellIn": stessa cosa piu' piccola di 2.4:
+          Z      R
+        -2.40  29.60
+        10.35  28.90
+        19.20  26.82
+        26.10  23.40
+        31.11  18.70
+        33.37  14.85
+        34.74  10.31
+        35.16   6.42
+        35.20   4.00
+     e la stessa bombatura di 3 (Z = 35.2 + 3 * (1 - scala^2)).
+     (Spessore del guscio 2.4 dappertutto.)
+
+=====================================================================
+BASE "BaseShell"
+=====================================================================
+420. (ShellOut tagliato sotto Z 22.5) meno (ShellIn sopra Z 0) meno la
+     pianta della scatola sotto Z 0 (rettangolo X -2.4..84.4,
+     Y -2.4..80.9, raggio 4, da Z -3.4 a Z 0): resta il guscio con il
+     fondo pieno nell'intercapedine.
+430. UNISCI la scatola da interno intera (vedi sopra).
+440. LABBRO sulla META' ESTERNA delle pareti: anello largo 1.2
+     (da X -2.4 a -1.2, ecc.; lato esterno raggio 4, lato interno
+     raggio 2.8), da Z 22.5 a Z 25.5. Taglialo con cilindri Ø9 sulle
+     quattro colonnine (X 1.6 e 80.4, Y 1.6 e 76.9).
+450. TUNNEL (passano l'intercapedine, aperti fuori):
+     - USB-C, fianco sinistro: vuoto 16 (in Y) x 12 (in Z), angoli
+       raggio 2, centrato in Y 64.4, Z 8.8, da fuori fino alla parete
+       (X -2.4), con pareti spesse 1.6 tagliate dalla forma ShellOut;
+     - antenna, parete in alto: vuoto 12.5 x 12.5, angoli raggio 2,
+       centrato in X 70, Z 6.5, dalla parete (Y 80.9) verso fuori, con
+       pareti 1.6.
+     L'asola USB e il foro della SMA nella parete restano quelli della
+     scatola.
+460. FORI ESAGONALI nei fianchi del guscio (SOLO nel guscio: estrusi da
+     fuori fino alla faccia esterna della parete della scatola).
+     Esagoni con un vertice in alto, raggio al vertice 2.6, passo 6;
+     tre file a Z 5, 10.2, 15.4; la seconda fila spostata di 3:
+       - in basso (Y): X 8..74
+       - sinistra (X): Y 6..28
+       - destra (X):   Y 36..72
+       - in alto (Y):  X 8..58
+470. ASOLE A CHIAVE nel fondo (come prima): foro Ø9 in (X 20, Y 12) e
+     (X 70, Y 64), ognuno con un'asola larga 4.6 che sale di 9 in +Y.
+
+=====================================================================
+COPERCHIO "LidShell"
+=====================================================================
+500. (ShellOut sopra Z 22.5) meno ShellIn.
+510. "TENDA": parete verticale da Z 22.5 fino al guscio, lato esterno =
+     rettangolo X -0.9..82.9, Y -0.9..79.4 (raggio 2.5), lato interno =
+     rettangolo X 1.2..80.8, Y 1.2..77.3 (raggio 1). Si appoggia sulle
+     pareti della scatola e il labbro ci entra con 0.3 di gioco.
+520. TORRETTE: cilindri Ø8 sulle quattro colonnine, da Z 22.5 fino al
+     guscio (tagliati con ShellOut). Fori Ø3.4 passanti; sede della testa
+     Ø6.2 da Z 24.5 verso l'alto (sotto la testa restano 2 mm; la testa
+     sta in fondo a un pozzetto di circa 9.5: serve un cacciavite lungo).
+530. NIDO D'APE (fori passanti verticali): esagoni con un vertice verso
+     +Y, raggio al vertice 2.6; centri a X = 6 + 6i (+3 nelle righe
+     dispari), Y = 4 + 5.196 j, solo dove X <= 76, Y <= 74.5 e a piu'
+     di 8.6 dal centro delle colonnine.
+     Aerazione "ridotta": solo le righe con Y < 30 (sopra il vano sensori).
+540. STAMPA: piano di chiusura (Z 22.5) sul piatto, cupola in alto, con
+     SUPPORTI AD ALBERO SOLO DENTRO (il soffitto della cupola e' sospeso);
+     la scatola si stampa normale, senza supporti.
+     Riempimento normale (15-20 %): il guscio e' sottile, non pieno.
+
+PIASTRA DEI SENSORI: identica alla versione da interno.

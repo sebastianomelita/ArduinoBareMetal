@@ -1,0 +1,249 @@
+Costruisci in SolidCraft il contenitore COMPATTO del nodo LoRaWAN (versione 2),
+montaggio a muro, usando i corpi "Base", "Lid" e, per i pannelli solari, "Roof" (tettoia, blocco 7)
+oppure "Visor" (portapannelli inclinato, blocco 8), oppure il coperchio prolungato
+con i pannelli verticali (blocco 9), oppure il coperchio a cuneo in un pezzo unico
+(blocco 10 con due pannelli, 10B con uno: due coperchi intercambiabili),
+oppure un pannello sul bordo superiore (blocco 11). Ogni lavorazione deve essere
+una feature separata e modificabile. Lavora a blocchi: dopo ogni blocco fermati
+e mostrami il risultato. Unità: mm.
+
+RIFERIMENTO: origine = angolo interno della cavità sul piano del fondo.
+X = lato lungo (0..105.5), Y = lato corto (0..44.5, parete frontale a Y=0),
+Z = altezza (0..22.5). Pareti, fondo e coperchio 2.4. Spigoli esterni R4.
+Installata, la parete frontale (Y=0) guarda in basso, la posteriore in alto.
+
+=== BLOCCO 1 · GUSCIO E COLONNINE D'ANGOLO ===
+10. Guscio: rettangolo (-2.4,-2.4)-(107.9,46.9), raggio 4 sugli spigoli
+    verticali, estruso da Z=-2.4 a Z=22.5.
+20. Svuotamento: tasca (0,0)-(105.5,44.5), raggio 1.6, da Z=0 verso l'alto.
+25. Colonnine d'angolo per le viti del coperchio, CONCENTRICHE con gli
+    spigoli esterni R4 (non sporgono dal contorno): 4 cilindri Ø8 da Z=0 a
+    Z=22.5, centri (1.6,1.6) (103.9,1.6) (1.6,42.9) (103.9,42.9). In ognuno
+    un foro pilota Ø2.6 profondo 14 dall'alto (viti M3x12 autofilettanti).
+
+=== BLOCCO 2 · HELTEC, BATTERIA, BMS, GPS ===
+30. Colonnine Heltec V4 RASTREMATE, centri (23,23.4) (23,37.4) (52,23.4)
+    (52,37.4). Ognuna è l'unione di:
+    - un tronco di cono da Ø7 (a Z=0) a Ø4.2 (a Z=2.5);
+    - un cilindro Ø4.2 da Z=0 a Z=5.5.
+    Foro pilota Ø1.8 profondo 5 dall'alto (viti M2x6).
+    (La scheda va da X 6 a 57.6 e da Y 17.6 a 43.2. Il cono resta sotto
+    i connettori della scheda, che scendono fino a Z 1.9.)
+40. Culla batteria 14500 (asse lungo X a Y=8.15, Z=8.25):
+    - selle X 14..22 e X 47..55, Y 0..17, alte 9.25, con scavo
+      cilindrico Ø15.1 coassiale e fessura per fascetta larga 4 e alta 1.8
+      (Z 0..1.8), centrata nella sella, passante lungo Y;
+    - fermi X 6..8 e X 61..63, Y 1..15.3, alti 8.7.
+50. Fessura BMS (la scheda 35.2 x 4.2 x 2 sta IN PIEDI): due pareti spesse
+    1.2, alte 6, da Y=8 a Y=44.4, a X 63.9..65.1 e X 67.9..69.1
+    (spazio interno 2.8). Estremità aperte.
+60. Colonnine GPS: Ø5, alte 5, centri (72,20.5) (97,20.5) (72,40.5)
+    (97,40.5); foro Ø1.8 da Z=1 in su.
+
+=== BLOCCO 3 · VANO SENSORI STAGNO ===
+70. Pareti del vano, piene, alte fino a Z=21.9:
+    - parete sinistra X 69.5..71.5, Y 0..16.5;
+    - parete dei sensori Y 14.5..16.5, X 69.5..105.5.
+    Dove queste pareti toccano le pareti esterne (Y<2.2 per la sinistra,
+    X>103.3 per quella dei sensori) abbassale a Z=19.2: lì passa il labbro
+    del coperchio.
+80. SCD41 CORICATO sulla parete dei sensori: distanziali cilindrici Ø4.5
+    lunghi 4 sulla faccia Y=14.5, verso il vano (Y 10.5..14.5), asse lungo
+    Y, centri (X,Z): (82.04,3.54) (102.36,3.54) (82.04,16.26) (102.36,16.26).
+    In ognuno un foro CIECO Ø1.8 profondo 5 a partire dalla faccia Y=10.5.
+82. MPL3115A2 IN PIEDI sulla parete sinistra del vano: un distanziale Ø4.5
+    lungo 4 sulla faccia X=71.5, verso il vano (X 71.5..75.5), asse lungo
+    X, centro (Y 8, Z 14.5), con foro CIECO Ø1.8 profondo 5 dalla faccia
+    X=75.5. Battuta d'appoggio sotto la scheda: blocchetto X 71.5..77.6,
+    Y 2..14, Z 0..1.
+85. Passacavi da sigillare con silicone dopo il cablaggio, fori passanti
+    Ø3.5:
+    - SCD41: nella parete dei sensori, lungo Y, in (X 84.5, Z 9.9);
+    - MPL: nella parete sinistra del vano, lungo X, in (Y 5, Z 4).
+
+=== BLOCCO 4 · APERTURE ===
+90.  Finestra USB-C, parete sinistra (X -2.4..0): asola 13 x 7.5 con
+     estremità arrotondate, centro Y=30.4, Z=8.8.
+100. UNICA feritoia del vano sensori, parete frontale (Y -2.4..0):
+     asola X 77.5..99.5, Z 1.2..3.7.
+110. Foro per il cavo DS18B20: Ø4.5 sulla parete frontale, X=66.5, Z=12
+     (si sigilla con gommino o silicone).
+115. Foro per il cavo dei pannelli solari: Ø4.5 sulla parete posteriore,
+     X=10, Z=14 (riparato dalla tettoia, si sigilla con silicone).
+120. Antenna SMA: foro Ø6.6 sulla parete posteriore, X=63.5, Z=12.
+
+=== BLOCCO 5 · ALETTE A MURO ED ETICHETTE ===
+130. Due alette spesse 4, da Z=-2.4 a Z=1.6, centrate in Y=22.25, una oltre
+     X=-2.4 e una oltre X=107.9: larghe 20 alla parete, sporgono 12 e si
+     restringono verso una punta arrotondata R5; foro Ø4.5 a 6 dalla parete.
+140. Etichette incise 0.6 sul fondo (da Z=0 verso il basso), bold, centrate
+     (altezza testo; centro X,Y):
+     "HELTEC V4" (3; 37.5,30.4)   "14500" (4; 34.5,8.15)   "GPS" (4; 84.5,30.5)
+     "BMS" (2.2; 62.5,26.2) ruotata 90°   "SENSORI" (3; 88.5,4.5)
+     "DS18B20" (2.2; 66.5,6) ruotata 90°
+
+=== BLOCCO 6 · COPERCHIO (corpo Lid) ===
+150. Piastra: stesso profilo esterno del guscio, (-2.4,-2.4)-(107.9,46.9)
+     R4, da Z=22.5 a Z=24.9.
+160. Labbro sotto la piastra, Z 19.5..22.5: anello con profilo esterno
+     (0.3,0.3)-(105.2,44.2), raggio 1.3, spesso 1.6. Scava il labbro con
+     cilindri Ø9 attorno ai 4 centri delle colonnine d'angolo.
+170. Fori viti Ø3.4 passanti ai 4 centri delle colonnine d'angolo, con sede
+     Ø6.2 profonda 1.6 dall'alto (testa bombata fino a 6 mm).
+180. Fori Ø3 passanti per i due pulsanti della Heltec in (9.45,22.7) e
+     (9.45,38.1); accanto, incisa 0.6 sulla faccia superiore, "BTN" alta 3
+     in (16.45,22.7) e (16.45,38.1).
+
+=== BLOCCO 7 · TETTOIA PER DUE PANNELLI SOLARI 80 x 45 (corpo Roof) ===
+Montata a muro sopra la scatola, sul lato opposto alla feritoia. Il muro è il
+piano Z=-2.4 (dove appoggia il fondo della scatola); Y sale verso l'alto.
+190. Piastra a muro: blocco X 6.9..120.1, Y 48..97.2, Z -2.4..1.6.
+200. Vaschetta inclinata di 45° verso l'esterno: piastra spessa 5, larga
+     113.2 lungo X (X 6.9..120.1), lunga 84.6 lungo la pendenza. La faccia
+     inferiore parte dalla linea (Y 73.2, Z 1.6) e scende verso l'esterno
+     a 45° (per ogni mm che si allontana dal muro scende di 1 mm). Prolunga
+     la vaschetta di 8 mm dentro la piastra e taglia tutto ciò che va oltre
+     Z=-2.4 (dietro il muro).
+     Lavorazioni sulla faccia superiore, quote lungo la vaschetta misurate
+     dal bordo verso il muro:
+     - due tasche 45.6 x 80.6 profonde 3 (pannelli 45 x 80, lato lungo in
+       pendenza), a 2 dal bordo verso il muro, in X 8.9..54.5 e 72.5..118.1;
+     - fessura passante per l'antenna, X 56.5..70.5, per tutta la lunghezza;
+     - sul bordo basso di ogni tasca, due scoli larghi 6 alla quota del fondo
+       della tasca, a 1/4 e 3/4 della sua larghezza;
+     - un foro Ø5 passante per i fili di ogni pannello, al centro della
+       tasca in X, a 17 dal bordo verso il muro.
+210. Quattro nervature triangolari spesse 2 sotto la vaschetta, nel piano
+     YZ, a X 6.9..8.9, 54.5..56.5, 70.5..72.5, 118.1..120.1. Vertici (Y,Z):
+     (48, 1.6) (73.7, 1.6) (50.7, 24.6).
+220. Due asole a buco di serratura passanti nella piastra, a X 26.9 e
+     X 100.1: foro Ø8.5 centrato in Y 85.2 e asola larga 4.5 da Y 85.2 a
+     Y 91.2. La tettoia si appende a due viti lasciate sporgere 4.5 mm e si
+     sfila verso l'alto per aprire il coperchio.
+Stampa: piastra appoggiata sul piatto; la vaschetta sale a 45° e non
+servono supporti.
+
+=== BLOCCO 8 · ALTERNATIVA AL BLOCCO 7: PORTAPANNELLI SUL COPERCHIO (corpo Visor) ===
+Fai il blocco 7 OPPURE questo. Con questa alternativa:
+- nella Base salta la lavorazione 115 (il cavo entra dal coperchio);
+- nel Lid salta la 180 (i pulsanti restano coperti e si premono a
+  coperchio aperto) e fai invece fori passanti Ø2.4 in (15.25,20)
+  (90.25,20) (15.25,36) (90.25,36) e un foro Ø4.5 in (52.75,30) per il
+  cavo dei pannelli, da sigillare con silicone.
+Il Visor poggia sulla faccia superiore del coperchio (Z=24.9), scende oltre
+la parete in basso davanti alla feritoia ed è inclinato di 15° verso l'alto.
+Lavora nel piano YZ ed estrudi lungo X.
+230. Piastra: parallelogramma nel piano YZ con vertici (Y,Z) (46.9,24.9)
+     (-43.9,49.2) (-43.12,52.13) (47.68,27.8) (lunga 94, spessa 3,
+     inclinata di 15° dalla verticale), estruso da X 11.75 a X 93.75.
+     I due pannelli si incollano sulla faccia esterna, uno sotto l'altro,
+     col lato lungo orizzontale.
+240. Due fianchi triangolari spessi 2, vertici (Y,Z) (46.9,24.9)
+     (-2.4,24.9) (-43.9,49.2), estrusi in X 11.75..13.75 e X 91.75..93.75
+     (uniscili alla piastra).
+250. Quattro piedini cilindrici Ø7 verticali (asse lungo Z) da Z=24.9 fino
+     dentro la piastra, centri (15.25,20) (90.25,20) (15.25,36) (90.25,36),
+     ognuno con foro pilota Ø1.8 profondo 4 dal basso (viti M2x6 messe da
+     dentro il coperchio).
+260. Due fori Ø6 perpendicolari alla piastra per i fili dei pannelli, a
+     X=52.75, con centro sulla faccia interna in (Y 24.2, Z 31.0) e
+     (Y -21.2, Z 43.1).
+Stampa: faccia esterna della piastra sul piatto; fianchi e piedini salgono,
+niente supporti.
+
+=== BLOCCO 9 · ALTERNATIVA: PANNELLI VERTICALI SUL COPERCHIO PROLUNGATO ===
+Fai il blocco 7, l'8 OPPURE questo: è la soluzione con meno sbalzo e senza
+pezzi in più. Il coperchio continua verso il basso, davanti alla feritoia,
+e i pannelli si incollano piatti sulla sua faccia superiore.
+- Nella Base salta la 115 e fai invece la 116: foro Ø4.5 sulla parete
+  frontale (Y -2.4..0) in X 52.75, Z 16.5, per il cavo del pannello basso
+  (riparato dal prolungamento, da sigillare).
+- Nel Lid tieni i fori dei pulsanti (180) ma non incidere "BTN": le scritte
+  finirebbero sotto il pannello.
+270. Prolungamento del coperchio: blocco X 11.75..93.75, Y -47.1..-1.4,
+     Z 22.5..24.9, unito alla piastra (stessa faccia superiore piana).
+280. Due nervature spesse 2 sotto il prolungamento, a X 11.75..13.75 e
+     X 91.75..93.75. Profilo nel piano YZ, vertici (Y,Z): (-2.9,22.5)
+     (-2.9,16.5) (-47.1,20.5) (-47.1,22.5). Restano 0.5 mm staccate
+     dalla parete in basso, così il coperchio si toglie tirandolo in fuori.
+290. Fori Ø4.5 passanti per i fili: (52.75,23.4) nel coperchio, sotto il
+     pannello alto; (52.75,-23.6) nel prolungamento, sotto il pannello basso.
+Pannelli (col lato lungo orizzontale, X 12.75..92.75): il primo in
+Y 0.9..45.9, il secondo in Y -46.1..-1.1.
+Stampa: il coperchio come sempre, faccia superiore sul piatto; il
+prolungamento è sullo stesso piano e le nervature salgono, niente supporti.
+
+=== BLOCCO 10 · ALTERNATIVA: COPERCHIO A CUNEO IN UN PEZZO UNICO ===
+Pannelli col lato lungo (80) in pendenza, affiancati, inclinati di 15° verso
+l'alto, tutt'uno col coperchio. Fai il blocco 7, l'8, il 9 OPPURE questo.
+- Nella Base salta la 115 (i fili entrano dal coperchio).
+- Nel Lid salta la 180 (i pulsanti restano coperti dal cuneo).
+Lavora nel piano YZ ed estrudi lungo X, poi unisci tutto al Lid.
+300. Piastra dei pannelli: parallelogramma nel piano YZ con vertici (Y,Z)
+     (46.9,24.9) (-32.31,46.12) (-31.53,49.02) (47.68,27.8) (lunga 82,
+     spessa 3, inclinata di 15° dalla verticale), estruso da X -2.4 a
+     X 107.9. Raccorda R4 i suoi quattro spigoli (nel piano della piastra).
+310. Cuneo pieno tra coperchio e piastra: triangolo nel piano YZ con
+     vertici (46.9,24.9) (-2.4,24.9) (-2.4,38.11), estruso da X -2.4 a
+     X 107.9 e raccordato R4 sugli spigoli verticali come il coperchio.
+320. Pozzetti Ø7 verticali (asse lungo Z) sui 4 centri delle colonnine
+     d'angolo, da Z 23.3 fino a uscire dalla piastra: da lì si avvitano
+     le viti del coperchio.
+330. Fori Ø5 verticali per i fili dei pannelli in (29.25,32.4) e
+     (76.25,32.4), da Z 21.5 fino a uscire dalla piastra.
+340. Canaline sulla faccia esterna della piastra, larghe 4 e profonde 1.5,
+     centrate in X 29.25 e X 76.25, lungo la pendenza da 5 a 77 mm dal
+     bordo alto: ci passano i fili dietro ai pannelli fino ai fori.
+Pannelli: incollati sulla faccia esterna in X 6.75..51.75 e 53.75..98.75,
+a 1 mm dal bordo alto.
+Stampa: faccia esterna della piastra sul piatto; il cuneo pieno sostiene
+il coperchio, niente supporti. Riempimento 15-20%, 3 perimetri.
+
+=== BLOCCO 10B · SECONDO COPERCHIO A CUNEO: UN SOLO PANNELLO CORICATO ===
+Stessa Base (nessuna modifica): i due coperchi a cuneo sono intercambiabili.
+Corpo separato "Lid_1P", costruito come il Lid (blocco 6, senza la 180) più:
+300B. Piastra del pannello: parallelogramma nel piano YZ con vertici (Y,Z)
+      (46.9,24.9) (-12.99,40.95) (-12.21,43.84) (47.68,27.8) (lunga 62,
+      spessa 3, inclinata di 15° dalla verticale), estruso da X -2.4 a
+      X 107.9, spigoli raccordati R4 nel piano della piastra.
+310B. Cuneo pieno: uguale alla 310.
+320B. Pozzetti delle viti: uguali alla 320.
+330B. Un solo foro Ø5 verticale per i fili in (52.75,32.4), da Z 21.5
+      fino a uscire dalla piastra.
+340B. Una sola canalina larga 4, profonda 1.5, centrata in X 52.75, lungo
+      la pendenza da 5 a 42 mm dal bordo alto.
+Pannello 80 x 45 coricato (lato lungo in orizzontale) incollato in
+X 12.75..92.75, da 1 a 46 mm dal bordo alto. Gli ultimi 15 mm della
+piastra restano liberi e scendono 10.6 mm sotto la scatola, davanti alla
+feritoia. Sporgenza dal muro circa 46 mm.
+Stampa: come il blocco 10.
+
+=== BLOCCO 11 · ALTERNATIVA: UN PANNELLO SUL BORDO SUPERIORE ===
+Un pannello 80 x 45 coricato, rivolto al cielo, sul lato opposto alla
+feritoia. La parete in alto della Base prosegue oltre il coperchio come
+un'aletta che porta il pannello e ripara la giunzione del coperchio.
+Fai il 7, l'8, il 9, il 10 OPPURE questo.
+- Nella Base salta la 115 e la 120 (in alto ora c'è il pannello) e fai:
+121. Antenna SMA sulla parete DESTRA (X 105.5..107.9): foro Ø6.6 in
+     Y 30, Z 12. Usa un'antenna a gomito o snodata, girata verso l'alto.
+350. Aletta: blocco X 10.75..94.75, Y 44.5..46.9, Z 22.5..42.6, unito
+     alla parete posteriore.
+360. Piazzola del pannello: blocco X 11.75..93.75, Y 46.9..48.4,
+     Z -2.4..42.6 (45 = il lato corto del pannello).
+370. Foro per i fili Ø4.5 passante (parete e piazzola), lungo Y, in
+     X 15.75, Z 14.
+380. Canaline nella piazzola, profonde quanto lei (1.5): orizzontale
+     X 13.75..54.75, Z 12..16; verticale X 50.75..54.75, Z 1..39.6.
+- Nel Lid:
+390. Tacca passante nel bordo alto del coperchio: togli X 10.45..95.05,
+     Y 44.2..47.9 (lì passa l'aletta). I fori dei pulsanti (180) restano.
+Stampa: la Base come sempre, fondo sul piatto: l'aletta è la parete che
+continua verso l'alto, niente supporti.
+
+=== VERIFICA FINALE ===
+Controlla che Base e Lid non si compenetrino, che le colonnine d'angolo non
+sporgano dal contorno esterno, che il labbro passi sopra i tratti abbassati
+delle pareti del vano e attorno alle colonnine, che sopra le pareti del vano
+restino 0.6 mm sotto il coperchio (sede del cordone di silicone) e che non ci
+siano corpi in più oltre a Base, Lid e Roof/Visor. Controlla anche che la tettoia resti
+almeno 3 mm sopra la scatola e che la fessura sia sopra il foro SMA.

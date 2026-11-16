@@ -1,0 +1,20 @@
+VERSIONE 4 DA INTERNO CON MODULO RS485
+Costruisci la versione da interno (prompt_solidcraft_v4_interno.txt con
+l'AGGIORNAMENTO) con queste differenze:
+
+1. Interno 82 x 100.5 (era 82 x 78.5), sempre profondo 22.5, coperchio piatto.
+2. Tra la piastra dei sensori e la pila c'e' una striscia in piu' di 22 mm
+   (Y 34..56): tutto quello che sta sopra Y 34 (pila con le taschine, BMS,
+   colonnine della Heltec, finestra USB, foro dell'antenna, colonnine
+   d'angolo in alto, alette, asole di aerazione della zona schede nella
+   scatola e nel coperchio) si sposta di +22 in Y. Il vano sensori resta
+   dov'e'.
+3. ALLOGGIO DEL MODULO RS485 (MAX485, basetta 44 x 14, pin in giu'),
+   ingombro X 28..72, Y 36..50:
+   - due appoggi di traverso alti 7.5: X 35..37 e X 63..65, Y 36..50;
+   - due incavi ciechi nel fondo profondi 1.4 per i pin: X 28..33 e
+     X 67..72, Y 37..49;
+   - quattro battute a L agli angoli, a 0.5 dalla basetta, spesse 1.2,
+     bracci lunghi 5, alte 11.5.
+   Scritta "RS485". Morsetto verde a destra, bocche verso la pila.
+4. FORO DEL CAVO Ø7 nella parete destra: Y 37.5, Z 12 (asse lungo X).

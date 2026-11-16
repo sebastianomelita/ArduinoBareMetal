@@ -1,0 +1,73 @@
+NODO LoRaWAN v4 - TUTTE LE SCATOLE
+Heltec WiFi LoRa 32 V4, pila 14500 con BMS. Stampa 3D, OpenSCAD / SolidCraft.
+
+COME SI USA
+1. Scompatta TUTTO lasciando i file .scad nella STESSA cartella (non spostarli
+   in sottocartelle e non cambiare i nomi): ogni scatola "include" gli altri file.
+   Se un file manca, la console di OpenSCAD scrive "MANCA ...".
+2. Apri il file della scatola che vuoi. In cima trovi le opzioni; il Customizer
+   (Finestra > Customizer) le mostra come menu.
+3. F5 = anteprima, F6 + F7 = esporta STL. Un pezzo alla volta, scegliendo "part":
+      base     la scatola
+      lid      il coperchio (gia' capovolto per la stampa) e i tappi
+      plate    la piastra estraibile dei sensori
+      print    scatola e coperchio affiancati
+      assembly tutto montato (solo per guardare)
+4. In "prompt_solidcraft" ci sono gli stessi progetti scritti per SolidCraft.
+
+=====================================================================
+ESTERNO (solare, a muro, pendenza del bordo 8 gradi, coperchio con pannello)
+=====================================================================
+nodo_lorawan_case_v4.scad            CORTA. coperchio = A (1 pannello coricato)
+                                     o B (2 pannelli in piedi). La scatola e'
+                                     la stessa. E' anche il file comune: non
+                                     toglierlo mai dalla cartella.
+                                     Opzioni: gland (pressacavo PG7), soil_ds,
+                                     sensor_plate, sma_side, uv_pod (sensore UV).
+nodo_lorawan_case_v4_lunga.scad      LUNGA con SDS011 (polveri). coperchio_lunga =
+                                     A (2 pannelli coricati) o B (4 in piedi).
+                                     rs485_lunga = true allunga di 22 mm per il
+                                     modulo RS485. uv_pod = true per il sensore UV.
+                                     Serve anche sds011_sezione.scad.
+nodo_lorawan_case_v4_rs485.scad      CORTA con modulo RS485 (MAX485 col morsetto
+                                     verde), 22 mm piu' larga, secondo pressacavo.
+                                     Non intercambiabile con la corta normale.
+nodo_lorawan_uv_testa.scad           Testina separata per il sensore UV VEML6075
+                                     (alternativa al baccello uv_pod).
+sds011_sezione.scad                  libreria del vano SDS011 (non si apre da sola).
+
+=====================================================================
+INTERNO (coperchio senza pannelli, piatto, aerazione; USB; niente GPS)
+Sensori: SCD41, SGP41, BME688 oppure MPL3115A2 (fori alternativi), ZE07-CO.
+aerazione = "massima" o "ridotta".
+=====================================================================
+nodo_lorawan_case_v4_interno.scad                 SQUADRATA, 82 x 78,5.
+nodo_lorawan_case_v4_interno_rs485.scad           SQUADRATA con modulo RS485 (per
+                                                  caldaie, condizionatori, Modbus),
+                                                  82 x 100,5. Foro del cavo da 7 mm.
+INTERNO TONDE (stesso interno della squadrata, forma esterna diversa; si appendono
+con due asole a chiave nel fondo, senza alette):
+nodo_lorawan_case_v4_interno_tondo_1_ciottolo.scad       ciottolo, fianco inclinato
+                                                  dritto verso il muro, cupola di 8 mm.
+nodo_lorawan_case_v4_interno_tondo_2_curvo_griglie.scad  ciottolo, fianco curvo
+                                                  (gola), una griglia ad arco per lato.
+nodo_lorawan_case_v4_interno_tondo_3_tartaruga.scad      guscio tondo "a tartaruga" con
+                                                  fori esagonali, intercapedine.
+                                                  Piu' grande: 116 x 112,5, sporge 41.
+
+NOTE DI STAMPA
+- Coperchi con cupola (tonde): piano di chiusura sul piatto, supporti ad albero
+  solo DENTRO.
+- Coperchi con pannello: "supporti solo dal piatto" per la sede del pannello.
+- Scatola e coperchio vanno incollati/sigillati col silicone dove c'e' scritto.
+- Le viti: M3 x 12 a testa bombata (ISO 7380); M2 autofilettanti per le schede.
+
+SENSORI: vedi documenti/Sensori_nodo_LoRaWAN_v4.docx (elenco per esterno e interno,
+indirizzi I2C, collegamenti).
+
+DISEGNI: cartella "disegni" (schizzi di coperchi, piante, sensore UV, tartaruga).
+VECCHIE VERSIONI: v2, v3, v5, v5_sds, solo per riferimento (non servono alle v4).
+
+NON ANCORA VERIFICATO: i file sono stati scritti e controllati con calcoli, ma non
+renderizzati con OpenSCAD. Guarda ogni scatola con F5 prima di stampare e
+segnalami quello che non torna.

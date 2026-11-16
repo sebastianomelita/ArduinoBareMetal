@@ -1,0 +1,125 @@
+VERSIONE 4 DA INTERNO "TONDA" (ciottolo, fianco curvo e griglie ad arco)
+Da costruire DOPO la versione da interno (prompt_solidcraft_v4_interno.txt,
+con l'AGGIORNAMENTO in fondo): l'interno e' identico, cambiano solo la forma
+esterna, l'attacco al muro e il coperchio.
+
+Assi come sempre: X verso destra, Y verso l'alto della scatola appesa
+(Y = 0 parete in basso), Z uscente dal muro. Z = 0 e' la faccia interna del
+fondo, il fondo va da Z -2.4 a Z 0. Interno 82 x 78.5, profondo 22.5.
+Il piano tra scatola e coperchio e' PIATTO a Z 22.5.
+
+=====================================================================
+BASE "BaseRound"
+=====================================================================
+200. Parti dalla BASE della versione da interno, SENZA le alette (niente
+     fori nelle alette) e senza le asole di aerazione nelle pareti (le
+     rifai al punto 230, piu' lunghe).
+
+210. FASCIA ESTERNA che si allarga verso il muro (corpo pieno da unire):
+     a) "Piede": rettangolo arrotondato X -12.4..94.4, Y -12.4..90.9,
+        raggio 18, estruso da Z -2.4 a Z -1.2 (bordo verticale di 1.2).
+     b) LOFT CURVO (gola) dal piede fino alla spalla, attraverso queste
+        sezioni (rettangoli arrotondati, che rientrano uguale sui 4 lati):
+          Z -1.20  X -12.40..94.40  Y -12.40..90.90  raggio 18.0
+          Z -0.75  X  -9.81..91.81  Y  -9.81..88.31  raggio 14.9
+          Z  0.57  X  -7.40..89.40  Y  -7.40..85.90  raggio 12.0
+          Z  2.67  X  -5.33..87.33  Y  -5.33..83.83  raggio  9.5
+          Z  5.40  X  -3.74..85.74  Y  -3.74..82.24  raggio  7.6
+          Z  8.58  X  -2.74..84.74  Y  -2.74..81.24  raggio  6.4
+          Z 12.00  X  -2.40..84.40  Y  -2.40..80.90  raggio  6.0
+        Il profilo e' un quarto di cerchio concavo (raggio 10 in pianta,
+        13.2 in altezza): quasi piatto contro il muro, verticale in cima.
+        In alternativa: fianco dritto e un raccordo CONCAVO (gola) tra il
+        piede largo e il fianco.
+     c) Estrusione verticale dello stesso rettangolo (raggio 6) da Z 12 a
+        Z 22.5.
+     Dal corpo a+b+c TOGLI il vuoto interno: rettangolo X 0..82,
+     Y 0..78.5, raggio 1.6, da Z 0 a Z 30 (cosi' resta il fondo e tutto
+     quello che c'e' dentro). Poi UNISCI alla base.
+     (La fascia e' piena: in stampa riempimento 10-15 %.)
+
+220. LABBRO DI CENTRAGGIO sulla scatola, attaccato alla faccia interna
+     delle pareti: anello largo 1.6 (lato esterno = rettangolo X 0..82,
+     Y 0..78.5, raggio 1.6), da Z 19.5 a Z 25.5 (3 sotto il piano e 3
+     sopra). Sopra Z 22.5 taglialo con cilindri Ø9 centrati sulle colonnine
+     (X 1.6 e 80.4, Y 1.6 e 76.9). Sotto Z 22.5 interrompilo sopra lo
+     ZE07: togli X 49..76.4, Y -1..2.
+     (Le estremita' della piastra dei sensori sono gia' ribassate di 3.3.)
+
+230. AEREAZIONE: UNA GRIGLIA PER LATO, con cornice e arco in cima.
+     Ogni finestra e' un rettangolo con sopra un arco ribassato (freccia 6):
+     la parte dritta va da Z 2.5 a Z 12.5, l'arco da Z 12.5 a Z 18.5.
+       lato       lungo        finestra            arco: raggio, centro
+       in basso   X            6..76               105.08, X 41, Z -86.58
+       sinistra   Y            4..28                15.00, Y 16, Z   3.50
+       destra     Y            34..50                8.33, Y 42, Z  10.17
+       in alto    X            6..60                63.75, X 33, Z -45.25
+     Per ogni finestra:
+     a) CORNICE (da unire): striscia larga 2 tutto intorno alla finestra
+        (offset esterno di 2 del profilo, meno il profilo), estrusa
+        perpendicolare alla parete solo FUORI dalla parete, e tagliata
+        con la forma esterna ingrossata di 1.2: sporge 1.2 dalla
+        superficie curva e la segue.
+     b) NICCHIA (da togliere): il profilo della finestra, estruso da fuori
+        fino alla faccia esterna della parete (Y -2.4, Y 80.9, X -2.4,
+        X 84.4): la fascia sparisce dentro la finestra; e' profonda in
+        basso e si annulla in alto.
+     c) ASOLE (da togliere) attraverso la parete, verticali, larghe 3,
+        passo 5, dentro il profilo ristretto di 1.2 (seguono l'arco):
+          in basso: X 9.5, 14.5 ... 69.5 (13 asole)
+          sinistra: Y 7, 12, 17, 22 (4)
+          destra:   Y 35.5, 40.5, 45.5 (3)
+          in alto:  X 9, 14 ... 54 (10)
+        (il numero e' il bordo sinistro / basso di ogni asola)
+
+240. USB-C sul fianco sinistro:
+     - asola come nella v4: 12 x 6.5 con le estremita' tonde, centro
+       Y 64.4, Z 8.8, attraverso la parete (X -2.4..0);
+     - NICCHIA dall'esterno nella fascia: parallelepipedo X -17.4..-2.4,
+       Y 55.4..73.4, Z 2.3..15.3 (lo spinotto arriva alla presa).
+
+250. ANTENNA SMA sulla parete in alto:
+     - foro Ø6.6 in X 70, Z 6, attraverso la parete (Y 78.5..80.9);
+     - NICCHIA Ø14 coassiale, da Y 80.9 verso l'esterno fino a Y 96.
+
+260. ASOLE A CHIAVE nel fondo (per appendere, al posto delle alette):
+     due, in (X 20, Y 12) e (X 70, Y 64). Ognuna: foro passante Ø9 nel
+     fondo + asola larga 4.6 che parte dal centro del foro e sale di 9 in
+     +Y. Viti nel muro a testa piana fino a Ø8: le infili nel foro grande
+     e abbassi la scatola.
+
+=====================================================================
+COPERCHIO "LidRound" (cupola)
+=====================================================================
+300. Fianco dritto: rettangolo arrotondato X -2.4..84.4, Y -2.4..80.9,
+     raggio 6, da Z 22.5 a Z 26.5.
+310. CUPOLA sopra: mezzo ellissoide appoggiato su quel rettangolo, alto 8
+     al centro (cima a Z 34.5, centro in X 41, Y 39.25). In SolidCraft:
+     loft attraverso sezioni dello stesso rettangolo scalate rispetto al
+     centro, per esempio
+        Z 26.5 scala 1.00 | Z 28.5 scala 0.97 | Z 30.5 scala 0.87
+        Z 32.5 scala 0.66 | Z 33.7 scala 0.44 | Z 34.5 scala 0.08
+     oppure un raccordo grande sullo spigolo superiore che dia lo stesso
+     effetto.
+320. SVUOTA: stesso vuoto ma piu' piccolo di uno spessore: rettangolo
+     X 0..82, Y 0..78.5, raggio 1.6, da Z 21.5 a Z 26.5, poi cupola alta
+     5.6 (stesse scale, cima a Z 32.1). Spessore in cima 2.4.
+     In basso, SEDE DEL LABBRO: allarga il vuoto di 0.3 (X -0.3..82.3,
+     Y -0.3..78.8, raggio 1.9) da Z 22.5 a Z 25.8.
+330. TORRETTE DELLE VITI: cilindri Ø8 ai quattro angoli (X 1.6 e 80.4,
+     Y 1.6 e 76.9) da Z 22.5 fino a toccare la cupola (tagliali con la
+     forma esterna, cosi' non sporgono).
+340. FORI: Ø3.4 passanti nelle torrette; sede della testa Ø6.2 da
+     Z 24.5 verso l'alto (sotto la testa restano 2 mm).
+350. ASOLE nella cupola, larghe 2 in X, passanti in verticale:
+     - sopra il vano sensori: X 8, 12 ... 72 (17 asole), Y 2.5..30;
+     - (aerazione "massima") sopra le schede, due file: X 8, 12 ... 72,
+       Y 38..53 e Y 56..73.5.
+     Per l'aerazione "ridotta" ometti le due file sopra le schede.
+360. STAMPA: il piano Z 22.5 sul piatto e la cupola in alto, con SUPPORTI
+     AD ALBERO SOLO DENTRO (il soffitto della cupola e' sospeso).
+     Il tappo USB a scatto si stampa accanto, come nella v4.
+
+=====================================================================
+PIASTRA DEI SENSORI: identica alla versione da interno.
+=====================================================================

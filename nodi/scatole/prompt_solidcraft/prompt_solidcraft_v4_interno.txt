@@ -1,0 +1,71 @@
+VERSIONE 4 CORTA DA INTERNO (da costruire DOPO la v4 corta, con lo stesso
+prompt: blocchi 1-5 per la Base, poi questo invece dei blocchi 6-7).
+Stessi assi e stesso PIANO DEL BORDO (Z = 22.5 - 0.14054 * Y).
+
+BASE, differenze dalla v4 corta:
+- niente fori 110 (DS18B20), 115 (pressacavo) e 116 (DS18B20 del terreno);
+- AEREAZIONE (asole passanti larghe 3, passo 5):
+  · parete in basso, davanti al vano sensori: X 8, 13, 18, 23, 28, 33,
+    38, 43 (bordo sinistro), da Z 2 a Z 18.5;
+  · parete in basso, sotto il corridoio: X 55, 60, 65, 70, Z 2..18.5;
+  · fianco sinistro del vano (X -2.4..0): asole larghe 2.5 a Y 7..9.5 e
+    Y 10.5..13, Z 3..16.5;
+  · parete destra (X 82..84.4), ingressi bassi della zona schede: asole
+    larghe 2.5 a Y 18, 22, 26, 30, da Z 3 fino a 15.6 / 15.1 / 14.5 / 13.9;
+  · parete in alto (Y 61..63.4), uscite: X 8, 13, ... 58 (11 asole), Z 2..10.4.
+
+COPERCHIO "LidC" (piatto, senza pannelli):
+150. Piastra sul PIANO DEL BORDO: rettangolo X -2.4..84.4, v -2.42..64.02,
+     raggio 4, spessa 2.4 (niente visiera, niente nervature).
+160. Labbro verticale come nella v4 (con gli scarichi sulle colonnine e
+     davanti al tappo USB).
+170. Viti verticali: fori Ø3.4; sede della testa Ø6.2 a fondo piano a
+     Z 23.66 (in basso) e 15.53 (in alto).
+180. Asole passanti larghe 2, perpendicolari al coperchio:
+     - sopra il vano sensori: X 6, 10, ... 42 (10 asole), v 2.5..12.6;
+     - sopra le schede, due file: X 8, 12, ... 72 (17 asole), v 20.7..35.9
+       e v 38.9..56.6.
+Con la scatola appesa l'aria fresca entra dalle asole in basso, scalda
+passando sulle schede ed esce dalle asole in alto: il vano sensori sta
+sotto e non riceve il caldo.
+
+=====================================================================
+AGGIORNAMENTO: versione da interno con SGP41, BME688 e ZE07-CO, senza GPS
+(sostituisce le quote sopra dove sono diverse)
+=====================================================================
+- Coperchio PIATTO: niente inclinazione, il PIANO DEL BORDO è Z = 22.5
+  ovunque. Scatola interna 82 x 78.5 x 22.5 (esterna 86.8 x 83.3).
+- Niente GPS e niente millefori DIODI.
+- Vano sensori: Y 0..32, largo quanto la scatola (niente parete destra del
+  vano). Piastra dei sensori estraibile X 0.2..81.85, Y 32.15..33.85, alta
+  21.9, con:
+  · tre schedine 25.4 x 17.8 (fori a 2.54 dagli angoli, come l'SCD41):
+    SCD41 a X 1, SGP41 a X 28, BME688 a X 55 (bordo sinistro); distanziali
+    Ø4.5 lunghi 4 verso il vano, centri Z 3.54 e 16.26, X = bordo + 2.54 e
+    bordo + 22.86, fori ciechi Ø1.8;
+  · in ALTERNATIVA al BME688, sullo stesso posto, il distanziale della
+    MPL3115A2: Ø4.5 lungo 4 in (X 67.7, Z 14.5), foro cieco Ø1.8
+    (monti l'uno o l'altro);
+  · due tacche in cima larghe 6 e profonde 5 a X 27.2 e 54.2 per i fili;
+  · in cima a sinistra e a destra (X<2.2 e X>79.8) ribassata di 3.3 per
+    il labbro del coperchio.
+  Costole di guida lunghe 1.2 in X alle due estremità, davanti a
+  Y 31.05..31.85 e dietro a Y 34.15..34.95, alte 12.
+- ZE07-CO coricato sul fondo davanti alla piastra, ingombro X 50..75.4,
+  Y 1..23.4: quattro piedini 5 x 5 alti 3 agli angoli e quattro battute a
+  L (gambe lunghe 5, spesse 1.2, alte 7) a 0.5 dall'ingombro; i lati restano
+  liberi per i fili.
+- Pila, BMS e Heltec salgono di 17.5 (stack: tutto quello che nella corta
+  stava a Y = y, qui sta a y + 17.5). USB a Y 64.4.
+- Aerazione: asole della parete in basso X 8..73 (passo 5), fianco destro
+  Y 35.5, 39.5, 43.5, 47.5, parete in alto X 8..58; coperchio: asole
+  sopra il vano X 6..74 (passo 4) v 2.5..30, sopra le schede due file
+  Y 38..53 e Y 56..73.5.
+
+- Aerazione "ridotta" (variante): coperchio senza le due file di asole
+  sopra le schede; restano quelle sopra il vano sensori e tutte quelle
+  delle pareti.
+
+- Correzione: il labbro del coperchio (alto 3, sotto il bordo) toccava lo
+  ZE07 (alto fino a Z 21.3) nell'angolo Y 1..1.9: interrompi il labbro
+  sopra lo ZE07, X 49..76.4 (taglio Y -1..2).
