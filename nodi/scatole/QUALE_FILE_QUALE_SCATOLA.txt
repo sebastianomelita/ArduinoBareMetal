@@ -1,0 +1,159 @@
+NODO LoRaWAN v4 - QUALE FILE E' QUALE SCATOLA
+=============================================
+
+In tutto ci sono 10 file .scad: 8 scatole, 1 accessorio, 1 libreria.
+UV e RS485 NON sono file a parte: sono opzioni dentro il file, una riga da
+mettere a true. Si vedono anche nel Customizer di OpenSCAD.
+
+Tutti i file .scad devono stare NELLA STESSA CARTELLA e con i nomi originali:
+ogni scatola richiama le altre con "include".
+
+
+ESTERNO - 3 FILE
+----------------
+1) nodo_lorawan_case_v4.scad          CORTA
+   Opzioni:  coperchio = "A"   1 pannello solare coricato
+             coperchio = "B"   2 pannelli in piedi
+             uv_pod = true     baccello del sensore UV (VEML6075) sulla
+                               parete in alto, accanto alla Heltec
+   E' anche il file comune a tutte le scatole: non toglierlo mai dalla cartella.
+
+2) nodo_lorawan_case_v4_lunga.scad    LUNGA (con SDS011, polveri sottili)
+   Opzioni:  coperchio_lunga = "A"   2 pannelli coricati
+             coperchio_lunga = "B"   4 pannelli in piedi
+             rs485_lunga = true      allunga di 22 mm per il modulo RS485
+                                     e aggiunge il secondo pressacavo
+             uv_pod = true           baccello del sensore UV
+   Ha bisogno anche di sds011_sezione.scad.
+
+3) nodo_lorawan_case_v4_rs485.scad    CORTA con modulo RS485
+   Opzioni:  coperchio = "A" oppure "B"
+             uv_pod = true
+   Perche' ha un file suo: nella corta il modulo RS485 non ci stava, quindi
+   la scatola e' 22 mm piu' larga (inner_w 83) e ha il secondo pressacavo.
+   Non e' intercambiabile con la corta normale.
+   Nella lunga, invece, lo spazio c'era gia': bastava allungarla, e per
+   questo la "lunga RS485" e' solo un'opzione e non un file.
+
+Da questi 3 file escono 8 scatole diverse:
+   corta                       v4.scad
+   corta + UV                  v4.scad            con uv_pod = true
+   corta RS485                 v4_rs485.scad
+   corta RS485 + UV            v4_rs485.scad      con uv_pod = true
+   lunga                       v4_lunga.scad
+   lunga + UV                  v4_lunga.scad      con uv_pod = true
+   lunga RS485                 v4_lunga.scad      con rs485_lunga = true
+   lunga RS485 + UV            v4_lunga.scad      con rs485_lunga = true e uv_pod = true
+Ognuna, poi, con il coperchio A oppure B.
+
+
+INTERNO - 5 FILE
+----------------
+Stesso interno in tutte e cinque (piastra con SCD41, SGP41, BME688 oppure
+MPL3115A2; ZE07-CO sul fondo; CCS811 in piedi nella fessura a sinistra con
+ccs = true), coperchio piatto, alimentazione USB. Cambia la forma esterna.
+Nessuna ha il sensore UV: in casa i vetri e le luci danno quasi nessun UV.
+Opzione comune:  aerazione = "massima" oppure "ridotta"
+
+4) nodo_lorawan_case_v4_interno.scad                       squadrata, 82 x 78,5
+5) nodo_lorawan_case_v4_interno_rs485.scad                 squadrata con modulo
+      RS485 (caldaie, condizionatori, Modbus), 82 x 100,5, cavo da 7 mm
+6) nodo_lorawan_case_v4_interno_tondo_1_ciottolo.scad      ciottolo, fianco
+      inclinato dritto verso il muro, cupola di 8 mm
+7) nodo_lorawan_case_v4_interno_tondo_2_curvo_griglie.scad ciottolo a fianco
+      curvo, una griglia ad arco per lato
+8) nodo_lorawan_case_v4_interno_tondo_3_tartaruga.scad     guscio a tartaruga
+      con fori esagonali, 116 x 112,5, sporge 41
+
+
+GLI ALTRI 2 FILE
+----------------
+9)  nodo_lorawan_uv_testa.scad   testina UV separata, con le orecchie per le
+    viti M3: alternativa al baccello uv_pod, si collega con un cavo e si puo'
+    usare con qualunque scatola.
+10) sds011_sezione.scad          libreria del vano dell'SDS011. Non si apre da
+    sola: serve alla lunga.
+
+
+COME SI CAMBIA UN'OPZIONE
+-------------------------
+Due modi, uguali per tutti i file.
+
+A) A MANO. Apri il file e cerca la riga dell'opzione: sta in cima, dopo la
+   riga "include". Cambi solo il valore e salvi. Esempio, per aggiungere il
+   baccello del sensore UV:
+        baccello_uv = "no";   diventa    baccello_uv = "si";
+   (la riga uv_pod subito sotto si regola da sola: non toccarla)
+   Dove stanno le righe gia' pronte:
+        baccello_uv   corta riga 32 · lunga riga 83 · corta RS485 riga 23
+        coperchio     corta riga 25 · corta RS485 riga 21
+                      (nella lunga si chiama coperchio_lunga, riga 30)
+        rs485_lunga   lunga riga 34
+        ccs           interno riga 40 (e quindi tutte e cinque le da interno)
+        aerazione     interno riga 25
+        part          in cima a ogni file
+   I numeri di riga valgono per i file come te li ho consegnati: se li
+   modifichi, cerca il nome dell'opzione con Ctrl+F.
+
+B) COL CUSTOMIZER (il pannello delle opzioni, a destra).
+   1. Se non si vede: menu Finestra (Window) > Customizer. Nelle versioni in
+      cui la voce si chiama "Nascondi customizer" (Hide customizer), togli
+      la spunta: e' un interruttore.
+   2. Se la voce non c'e' del tutto (OpenSCAD vecchio): Modifica (Edit) >
+      Preferenze (Preferences) > scheda Features > spunta "customizer",
+      poi chiudi e riapri OpenSCAD.
+   3. Le opzioni compaiono raggruppate per sezione, con menu a tendina e
+      caselle da spuntare. Cambi il valore e il disegno si aggiorna da solo
+      se e' spuntato "Automatic Preview"; altrimenti premi F5.
+   4. Con i pulsanti dei preset puoi salvare una combinazione di valori e
+      richiamarla (li scrive in un file .json accanto allo .scad).
+
+   Il Customizer non fa vedere tutto. Mostra soltanto:
+   - le opzioni del file che hai APERTO, non quelle dei file inclusi.
+     Aprendo una delle tonde, quindi, NON vedi "aerazione" e "ccs", che
+     stanno in nodo_lorawan_case_v4_interno.scad: quelle le cambi a mano
+     (modo A), oppure aggiungi la riga in fondo al file della tonda.
+   - le righe che stanno PRIMA del primo "module" del file: li' OpenSCAD
+     smette di leggere le opzioni. Nel file della corta il primo module e'
+     alla riga 229 (function rim), ed e' per questo che uv_pod sta in cima,
+     subito sotto part, e non in fondo accanto agli altri parametri del
+     baccello.
+   - valori semplici: numeri, testo, true/false. Le formule non compaiono.
+
+LA REGOLA DELL'INCLUDE
+----------------------
+Ogni scatola comincia con una riga come:
+        include <nodo_lorawan_case_v4.scad>
+Vuol dire: "prendi tutto quello che c'e' in quel file, poi continua qui".
+I file sono in catena: le cinque da interno includono il file dell'interno
+squadrata, che a sua volta include il file comune della corta.
+
+Da questo vengono tre regole pratiche.
+
+1. VALE SEMPRE L'ULTIMA RIGA. In OpenSCAD, se una variabile e' assegnata piu'
+   volte, conta l'assegnamento che viene DOPO. E' cosi' che la lunga o la
+   versione da interno cambiano le misure della corta senza riscriverla.
+   Quindi: OGNI RIGA CHE AGGIUNGI VA MESSA DOPO L'INCLUDE. Se la metti prima,
+   il file incluso la sovrascrive e sembra che non funzioni niente.
+
+2. SCRIVI UN NUMERO, NON UNA FORMULA. Nelle righe che aggiungi usa valori
+   gia' fatti (uv_x = 41;), non espressioni che dipendono da altre variabili
+   (uv_x = inner_l/2;): quelle vengono calcolate alla fine, con i valori
+   finali, e il risultato puo' non essere quello che ti aspetti.
+
+3. TUTTI I FILE .scad NELLA STESSA CARTELLA, con i nomi originali.
+   "include" cerca il file accanto a quello aperto: non spostarli in
+   sottocartelle e non rinominarli. Se ne manca uno, OpenSCAD lo dice nella
+   console in basso (messaggio "MANCA ...") oppure segnala una variabile
+   sconosciuta.
+
+
+COME SI ESPORTA UN STL
+----------------------
+Un pezzo alla volta, scegliendo "part" in cima al file:
+   base      la scatola
+   lid       il coperchio (gia' capovolto per la stampa) e i tappi
+   plate     la piastra estraibile dei sensori
+   print     scatola e coperchio affiancati
+   assembly  tutto montato, solo per guardare
+Poi F6 (render) e F7 (esporta STL). F5 e' la sola anteprima.

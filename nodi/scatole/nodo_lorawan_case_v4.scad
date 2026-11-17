@@ -28,6 +28,11 @@ aerazione = "massima"; // [massima, ridotta] da interno: "ridotta" toglie le aso
 part = "assembly"; // [assembly, base, lid, plate, print]   (plate = piastra estraibile dei sensori)
 explode = 20;
 
+/* [Sensore UV] */
+baccello_uv = "no";  // [no, si] "si" = baccello del sensore UV (VEML6075) sulla parete in alto
+uv_x   = 41;       // centro del baccello lungo X (meta' di inner_l = 82)
+uv_pod = (baccello_uv == "si");   // non toccare: la comanda la voce qui sopra
+
 /* [Scatola] */
 inner_l = 82;      // lunghezza interna (X): Heltec + GPS accanto + passaggio cavi
 inner_w = 61;      // larghezza interna (Y): vano 16,5 + culla batteria 17 + Heltec 25,6 + margini
@@ -564,8 +569,8 @@ module ear(side) {
 //  si stampa a parte) con apertura 16 x 9 e sede a filo per il vetrino trasparente agli UV 19 x 11,5 (max 1,2).
 //  I 4 fili (3,3 V, GND, SCL, SDA) entrano nella scatola da un foro Ø5 nella parete, da sigillare con silicone.
 // ---------------------------------------------------------------------
-uv_pod = false;           // true = aggiunge il baccello UV
-uv_x = inner_l/2;         // centro del baccello lungo X
+// uv_pod e uv_x stanno in cima al file, nella sezione [Sensore UV]: cosi' il
+// Customizer li vede (si ferma al primo module).
 uv_board = [18.2, 10.5, 2];   // scheda UV misurata col calibro (lunghezza, larghezza, spessore)
 uv_clr = 0.3;  uv_wall = 1.6;  uv_under = 3;  uv_rail = 1.2;
 uv_cap_t = 2.4;  uv_open = [16, 9];  uv_pane = [19, 11.5];  uv_pane_t = 1.2;

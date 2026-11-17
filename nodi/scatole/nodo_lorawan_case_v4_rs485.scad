@@ -20,6 +20,9 @@ assert(!is_undef(rs485_size), "MANCA nodo_lorawan_case_v4.scad aggiornato: metti
 part = "assembly"; // [assembly, base, lid, plate, print]
 coperchio = "A";   // [A, B]  A = 1 pannello coricato, B = 2 pannelli in piedi
 rs485   = true;
+baccello_uv = "no";  // [no, si] "si" = baccello del sensore UV sulla parete in alto
+uv_x    = 41;      // centro del baccello lungo X
+uv_pod  = (baccello_uv == "si");   // non toccare: la comanda la voce qui sopra
 gland2  = true;    // secondo pressacavo PG7 sulla parete sinistra, per il sensore capacitivo del terreno
 strip_h = 22;      // striscia: 18 per il modulo + 4 di canale per i fili davanti al morsetto
 inner_w = 83;      // 61 + 22

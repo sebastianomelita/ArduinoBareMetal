@@ -80,8 +80,9 @@ sds_need_h = max(sds_pad_h + sds_mod[2] + 0.5 + (m_y0 + sds_fan_h) * tan(box_til
 assert(inner_h >= sds_need_h - 0.01, str("inner_h deve essere almeno ", sds_need_h));
 echo(str("profondita' minima per l'SDS011: ", sds_need_h, " (inner_h = ", inner_h, ")"));
 
-uv_pod = false;   // true = baccello del sensore UV sulla parete in alto, accanto alla Heltec
+baccello_uv = "no";  // [no, si] "si" = baccello del sensore UV sulla parete in alto, accanto alla Heltec
 uv_x   = 38;      // al centro del vano della Heltec (X 0..77)
+uv_pod = (baccello_uv == "si");   // non toccare: la comanda la voce qui sopra
 part = "assembly"; // [assembly, base, lid, plate, print]   (plate = piastra estraibile dei sensori)
 
 // parete interna: fino a 0,6 sotto il coperchio, con le tacche per il labbro alle due estremita'

@@ -14,6 +14,11 @@ COME SI USA
       print    scatola e coperchio affiancati
       assembly tutto montato (solo per guardare)
 4. In "prompt_solidcraft" ci sono gli stessi progetti scritti per SolidCraft.
+5. Per cambiare un'opzione (baccello_uv, coperchio, rs485_lunga, ccs, aerazione):
+   cambi il valore nella riga che trovi in cima al file, DOPO l'include, oppure
+   spunti la casella nel Customizer. Ogni riga che aggiungi tu va messa DOPO
+   l'include, altrimenti il file incluso la sovrascrive.
+   Il dettaglio sta in QUALE_FILE_QUALE_SCATOLA.txt.
 
 =====================================================================
 ESTERNO (solare, a muro, pendenza del bordo 8 gradi, coperchio con pannello)
@@ -23,17 +28,17 @@ nodo_lorawan_case_v4.scad            CORTA. coperchio = A (1 pannello coricato)
                                      la stessa. E' anche il file comune: non
                                      toglierlo mai dalla cartella.
                                      Opzioni: gland (pressacavo PG7), soil_ds,
-                                     sensor_plate, sma_side, uv_pod (sensore UV).
+                                     sensor_plate, sma_side, baccello_uv (sensore UV).
 nodo_lorawan_case_v4_lunga.scad      LUNGA con SDS011 (polveri). coperchio_lunga =
                                      A (2 pannelli coricati) o B (4 in piedi).
                                      rs485_lunga = true allunga di 22 mm per il
-                                     modulo RS485. uv_pod = true per il sensore UV.
+                                     modulo RS485. baccello_uv = "si" per il sensore UV.
                                      Serve anche sds011_sezione.scad.
 nodo_lorawan_case_v4_rs485.scad      CORTA con modulo RS485 (MAX485 col morsetto
                                      verde), 22 mm piu' larga, secondo pressacavo.
                                      Non intercambiabile con la corta normale.
 nodo_lorawan_uv_testa.scad           Testina separata per il sensore UV VEML6075
-                                     (alternativa al baccello uv_pod).
+                                     (alternativa al baccello della scatola).
 sds011_sezione.scad                  libreria del vano SDS011 (non si apre da sola).
 
 =====================================================================
