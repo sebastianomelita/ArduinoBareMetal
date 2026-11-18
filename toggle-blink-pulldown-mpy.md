@@ -345,6 +345,129 @@ NSTEP  = 60    # mcm(20, 30)
 Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
 step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
 
+## 6. Versione con interrupt: il gestore registra i fronti, il ciclo decide
+
+Il gestore è attivo su entrambi i fronti: salva l'istante di ogni fronte, rimbalzi compresi, e
+alza `segnale` quando il pulsante risulta premuto. Il ciclo principale chiama la callback della
+pressione e, quando il pin è rilasciato e da più di 50 ms non ci sono fronti, quella del
+rilascio. Le callback girano nel ciclo; la pressione viene registrata anche se il ciclo è
+occupato.
+
+```python
+from machine import Pin
+import time
+
+P1       = Pin(12, Pin.IN)    # pulsante (pull-down)
+LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
+LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
+stato = False
+segnale = False   # pressione segnalata dal gestore
+tFronte = 0       # istante dell'ultimo fronte (anche rimbalzi)
+attivo = False    # pressione in corso
+precBlink = 0
+
+def doOnRise():
+    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def blink(pin):
+    pin.value(not pin.value())   # inverte il LED lampeggiante
+
+def isrChange(pin):
+    global segnale, tFronte
+    tFronte = time.ticks_ms()     # registra ogni fronte
+    if pin.value():
+        segnale = True            # pressione
+
+P1.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=isrChange)
+
+while True:
+    # task 1: pulsante (eventi registrati dal gestore)
+    if segnale and not attivo:
+        attivo = True
+        doOnRise()
+    if attivo and not P1.value() and \
+       time.ticks_diff(time.ticks_ms(), tFronte) > 50:
+        attivo = False
+        segnale = False
+        doOnFall()
+
+    # task 2: blink ogni 1000 ms
+    if time.ticks_diff(time.ticks_ms(), precBlink) >= 1000:
+        precBlink = time.ticks_ms()
+        blink(LEDBLINK)
+```
+
+## 7. Versione con interrupt: tutto nel gestore, fronti alternati
+
+Il gestore è attivo su un fronte alla volta: prima la pressione, poi il rilascio. Ogni fronte
+viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le callback girano nel
+gestore e devono restare brevi; il ciclo principale contiene solo il blink.
+
+```python
+from machine import Pin
+import time
+
+P1       = Pin(12, Pin.IN)    # pulsante (pull-down)
+LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
+LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
+stato = False
+tUltimo = time.ticks_ms() - 100  # ultimo fronte accettato
+precBlink = 0
+
+def doOnRise():
+    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+    # Eseguita nel gestore: breve!
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+    # Eseguita nel gestore: breve!
+    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def blink(pin):
+    pin.value(not pin.value())   # inverte il LED lampeggiante
+
+def isrPress(pin):                # armato sulla pressione
+    global tUltimo
+    if time.ticks_diff(time.ticks_ms(), tUltimo) > 50:
+        tUltimo = time.ticks_ms()
+        doOnRise()
+        P1.irq(trigger=Pin.IRQ_FALLING, handler=isrRel)
+
+def isrRel(pin):                  # armato sul rilascio
+    global tUltimo
+    if time.ticks_diff(time.ticks_ms(), tUltimo) > 50:
+        tUltimo = time.ticks_ms()
+        doOnFall()
+        P1.irq(trigger=Pin.IRQ_RISING, handler=isrPress)
+
+P1.irq(trigger=Pin.IRQ_RISING, handler=isrPress)
+
+while True:
+    # task 1: gestito interamente dai gestori di interrupt
+
+    # task 2: blink ogni 1000 ms
+    if time.ticks_diff(time.ticks_ms(), precBlink) >= 1000:
+        precBlink = time.ticks_ms()
+        blink(LEDBLINK)
+```
+
+Per il pull-up, nelle sezioni 6 e 7 oltre al `not` davanti a `P1.value()` (e `pin.value()`)
+vanno scambiati `Pin.IRQ_RISING` e `Pin.IRQ_FALLING`.
+
 ## Riferimenti
 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): versione Arduino della libreria

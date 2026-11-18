@@ -96,10 +96,14 @@ bool stato = LOW;
 unsigned long precBlink = 0;
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende t ms,
-  // poi ripete finché il pin non è LOW
+  // come in urutils.h: attende il LOW,
+  // poi altri t ms, e ricontrolla:
+  // esce solo con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != LOW);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != LOW);
 }
 
@@ -131,7 +135,6 @@ void loop() {
     doOnRise();
     waitUntilInputLow(P1, 50);    // loop() fermo finché il pulsante è premuto
     doOnFall();
-    delay(50);                    // attesa fine rimbalzi del rilascio
   }
 
   // task 2: blink ogni 1000 ms
@@ -399,6 +402,151 @@ ogni 30 tick:
 
 Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
 step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
+
+## 6. Versione con interrupt: la ISR registra i fronti, il loop() decide
+
+La ISR è armata su entrambi i fronti (`CHANGE`): salva l'istante di ogni fronte, rimbalzi
+compresi, e alza `segnale` quando il pulsante risulta premuto. Il `loop()` chiama la callback
+della pressione e, quando il pin è rilasciato e da più di 50 ms non ci sono fronti, quella del
+rilascio. Le callback girano nel `loop()`; la pressione viene registrata anche se il `loop()`
+è occupato. Il pulsante va su un pin con interrupt (Arduino Uno: 2 o 3).
+
+```cpp
+const byte P1       = 2;    // pulsante (pull-down), pin con interrupt
+const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
+const byte LEDBLINK = 12;   // task 2: LED lampeggiante
+bool stato = LOW;
+volatile bool segnale = false;    // pressione segnalata dalla ISR
+volatile unsigned long tFronte;   // istante dell'ultimo fronte (anche rimbalzi)
+bool attivo = false;              // pressione in corso
+unsigned long precBlink = 0;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
+}
+
+void isrChange() {
+  tFronte = millis();             // registra ogni fronte
+  if (digitalRead(P1) == HIGH) {
+    segnale = true;               // pressione
+  }
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(LEDBLINK, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(P1), isrChange, CHANGE);
+}
+
+void loop() {
+  // task 1: pulsante (eventi registrati dalla ISR)
+  if (segnale && !attivo) {
+    attivo = true;
+    doOnRise();
+  }
+  if (attivo) {
+    noInterrupts();               // copia protetta di tFronte
+    unsigned long t = tFronte;
+    interrupts();
+    if (digitalRead(P1) == LOW && millis() - t > 50) {
+      attivo = false;
+      segnale = false;
+      doOnFall();
+    }
+  }
+
+  // task 2: blink ogni 1000 ms
+  if (millis() - precBlink >= 1000) {
+    precBlink = millis();
+    blink(LEDBLINK);
+  }
+}
+```
+
+## 7. Versione con interrupt: tutto nella ISR, fronti alternati
+
+La ISR è armata su un fronte alla volta: prima la pressione, poi il rilascio. Ogni fronte
+viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le callback girano
+nella ISR e devono restare brevi; il `loop()` contiene solo il blink, e il toggle funziona anche
+se il `loop()` è bloccato.
+
+```cpp
+const byte P1       = 2;    // pulsante (pull-down), pin con interrupt
+const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
+const byte LEDBLINK = 12;   // task 2: LED lampeggiante
+volatile bool stato = LOW;
+unsigned long tUltimo = 0;        // ultimo fronte accettato (solo nelle ISR)
+unsigned long precBlink = 0;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+  // Eseguita nella ISR: breve!
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+  // Eseguita nella ISR: breve!
+  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
+}
+
+void isrRel();
+
+void isrPress() {                 // armata sulla pressione
+  if (millis() - tUltimo > 50) {
+    tUltimo = millis();
+    doOnRise();
+    attachInterrupt(digitalPinToInterrupt(P1), isrRel, FALLING);
+  }
+}
+
+void isrRel() {                   // armata sul rilascio
+  if (millis() - tUltimo > 50) {
+    tUltimo = millis();
+    doOnFall();
+    attachInterrupt(digitalPinToInterrupt(P1), isrPress, RISING);
+  }
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(LEDBLINK, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(P1), isrPress, RISING);
+}
+
+void loop() {
+  // task 1: gestito interamente dalle ISR
+
+  // task 2: blink ogni 1000 ms
+  if (millis() - precBlink >= 1000) {
+    precBlink = millis();
+    blink(LEDBLINK);
+  }
+}
+```
+
+Per il pull-up, nelle sezioni 6 e 7 oltre al `!` davanti a `digitalRead(P1)` vanno scambiati
+`RISING` e `FALLING`.
 
 ## Riferimenti
 
