@@ -1,22 +1,35 @@
 import time
 
 
+def waitUntil(cond, t):
+    # attesa bloccante finché cond() non diventa vera, ricontrollando ogni t ms.
+    # In Python un bool non si passa per riferimento: si passa una funzione,
+    # ad esempio waitUntil(lambda: pronto, 10)
+    while not cond():
+        time.sleep_ms(t)
+
+
 def waitUntilInputLow(btn, t):
     # attesa bloccante del rilascio (pull-down): ricontrolla ogni t ms
-    # finché il pin è alto, poi attende altri t ms perché finiscano
-    # i rimbalzi del rilascio
-    while btn.value():
-        time.sleep_ms(t)
-    time.sleep_ms(t)
+    # finché il pin è alto, poi attende altri t ms e ricontrolla.
+    # Se il pin è tornato alto (rimbalzo o contatto che si è aperto
+    # per un attimo) ricomincia: esce solo con un rilascio confermato.
+    while True:
+        while btn.value():
+            time.sleep_ms(t)
+        time.sleep_ms(t)  # attesa fine rimbalzi del rilascio
+        if not btn.value():
+            return
 
 
 def waitUntilInputHigh(btn, t):
-    # attesa bloccante del rilascio (pull-up): ricontrolla ogni t ms
-    # finché il pin è basso, poi attende altri t ms perché finiscano
-    # i rimbalzi del rilascio
-    while not btn.value():
-        time.sleep_ms(t)
-    time.sleep_ms(t)
+    # come sopra, per il rilascio in pull-up (pin che torna alto)
+    while True:
+        while not btn.value():
+            time.sleep_ms(t)
+        time.sleep_ms(t)  # attesa fine rimbalzi del rilascio
+        if btn.value():
+            return
 
 
 def waitUntilNB(d, c, t):
