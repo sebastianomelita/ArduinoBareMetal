@@ -237,11 +237,12 @@ void loop() {
 ## 5. Versione con schedulatore non bloccante
 
 Un solo tempo base `TBASE` scandisce entrambi i task: il pulsante viene campionato a ogni
-tick, il blink scatta ogni `NBLINK` tick.
+tick, il blink scatta ogni `NSTEP` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
+e poi riparte, quindi non cresce mai e non va in overflow.
 
 ```cpp
 #define TBASE 50              // periodo base in ms (> durata dei rimbalzi)
-#define NBLINK (1000 / TBASE) // tick per un semiperiodo del blink
+#define NSTEP (1000 / TBASE)  // tick in un semiperiodo del blink
 
 const byte P1       = 2;    // pulsante (pull-down esterno)
 const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
@@ -249,7 +250,7 @@ const byte LEDBLINK = 12;   // task 2: LED lampeggiante
 bool stato = LOW;
 unsigned long precm = 0;
 byte precval = LOW, val;
-unsigned step = 0;            // contatore dei tick
+byte step = 0;                // contatore circolare dei tick: 0 .. NSTEP-1
 
 void doOnRise() {
   // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
@@ -276,7 +277,7 @@ void setup() {
 void loop() {
   if (millis() - precm >= TBASE) {    // un tick ogni TBASE ms
     precm = millis();
-    step++;
+    step = (step + 1) % NSTEP;      // conteggio circolare, al massimo NSTEP-1
 
     // task 1: pulsante, campionato a ogni tick
     val = digitalRead(P1);
@@ -287,8 +288,8 @@ void loop() {
     }
     precval = val;
 
-    // task 2: blink ogni NBLINK tick (1000 ms)
-    if (step % NBLINK == 0) {
+    // task 2: blink ogni NSTEP tick (1000 ms)
+    if (step == 0) {
       blink(LEDBLINK);
     }
   }
