@@ -13,6 +13,7 @@ alla pressione (facoltative, qui lasciata vuota); in quella del **rilascio** van
 al rilascio (qui, come esempio, un toggle del LED).
 
 > Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md)
+> Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown.md](toggle-blink-pulldown.md)
 
 ## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
 
@@ -558,3 +559,4 @@ pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria
 - [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md): esempi di pulsante toggle
 - [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md): versioni corte, solo azione al rilascio
+- [toggle-blink-pulldown.md](toggle-blink-pulldown.md): toggle e blink come due task concorrenti

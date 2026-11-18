@@ -4,6 +4,7 @@ Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-d
 `doOnRise()` nel pull-up. Senza azione alla pressione il codice si accorcia.
 
 > Versioni complete, con azione alla pressione e al rilascio: [pulsanti-rilascio.md](pulsanti-rilascio.md)
+> Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown.md](toggle-blink-pulldown.md)
 
 Per riconoscere il rilascio bisogna comunque ricordare che prima il pulsante era premuto.
 Nella maggior parte delle tecniche questa memoria c'è già, senza variabili booleane in più:
@@ -440,3 +441,4 @@ void loop() {
 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria
 - [pulsanti-rilascio.md](pulsanti-rilascio.md): versioni complete, con azione alla pressione e al rilascio
+- [toggle-blink-pulldown.md](toggle-blink-pulldown.md): toggle e blink come due task concorrenti
