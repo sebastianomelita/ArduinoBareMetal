@@ -321,8 +321,11 @@ void loop() {
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-Il secondo argomento è la condizione "pulsante rilasciato". Il conteggio parte dalla
-prima pressione: un rimbalzo lungo al rilascio può far scattare l'azione due volte.
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premuto`. Il conteggio
+parte dalla prima pressione: un rimbalzo lungo al rilascio può far scattare l'azione due volte.
+`waitUntilNB()` segnala solo il rilascio: la callback della pressione si chiama controllando
+`debt.timerState` prima della chiamata. Il timer è disarmato solo al primo giro di pressione,
+perché subito dopo lo arma `waitUntilNB()`.
 
 <table>
 <tr>
@@ -344,8 +347,7 @@ void doOnRise() {
   // PRESSIONE (fronte di salita):
   // qui vanno le azioni immediate
   // alla pressione.
-  // Qui non viene chiamata:
-  // vedi la variante sotto.
+  // Lasciatela vuota se non serve.
 }
 
 void doOnFall() {
@@ -363,9 +365,15 @@ void setup() {
 }
 
 void loop() {
-  // rilasciato = LOW
+  // pull-down: premuto = HIGH
+  bool premuto = digitalRead(P1);
+  if (premuto &&
+      !debt.timerState) {
+    doOnRise();
+  }
+  // c = "rilasciato"
   if (waitUntilNB(debt,
-        !digitalRead(P1), 50)) {
+        !premuto, 50)) {
     doOnFall();
   }
 }
@@ -386,8 +394,7 @@ void doOnFall() {
   // PRESSIONE (fronte di discesa):
   // qui vanno le azioni immediate
   // alla pressione.
-  // Qui non viene chiamata:
-  // vedi la variante sotto.
+  // Lasciatela vuota se non serve.
 }
 
 void doOnRise() {
@@ -405,9 +412,15 @@ void setup() {
 }
 
 void loop() {
-  // rilasciato = HIGH
+  // pull-up: premuto = LOW
+  bool premuto = !digitalRead(P1);
+  if (premuto &&
+      !debt.timerState) {
+    doOnFall();
+  }
+  // c = "rilasciato"
   if (waitUntilNB(debt,
-        digitalRead(P1), 50)) {
+        !premuto, 50)) {
     doOnRise();
   }
 }
@@ -416,22 +429,6 @@ void loop() {
 </td>
 </tr>
 </table>
-
-Se oltre all'azione al rilascio ne serve una immediata alla pressione, basta controllare
-`debt.timerState` prima della chiamata: il timer è disarmato solo al primo giro di pressione.
-Esempio per il pull-down:
-
-```cpp
-void loop() {
-  bool premuto = digitalRead(P1);
-  if (premuto && !debt.timerState) {
-    doOnRise();                  // azione immediata alla pressione
-  }
-  if (waitUntilNB(debt, !premuto, 50)) {
-    doOnFall();                  // azione al rilascio
-  }
-}
-```
 
 ## 5. Versione con schedulatore non bloccante
 
