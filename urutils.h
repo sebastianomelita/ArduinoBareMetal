@@ -5,38 +5,24 @@
 void waitUntil(bool &c, unsigned t)
 {
     while(!c){
-	delay(t);
-    }
-}
-
-void waitUntilInputLow(int btn, unsigned t)
-{
-	do{
 		delay(t);
-	}while(digitalRead(btn)!=LOW);
+    }
+	delay(t); // attesa fine rimbalzi del rilascio
+}
+void waitUntilInputLow(int btn, unsigned t) {
+  do {
+    delay(t);
+  } while (digitalRead(btn) != LOW);
+  delay(t);   // attesa fine rimbalzi del rilascio
 }
 
-void waitUntilInputHigh(int btn, unsigned t)
-{
-	do{
-		delay(t);
-	}while(digitalRead(btn)!=HIGH);
-}
-/*
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	delay(t);
-    }
+void waitUntilInputHigh(int btn, unsigned t) {
+  do {
+    delay(t);
+  } while (digitalRead(btn) != HIGH);
+  delay(t);   // attesa fine rimbalzi del rilascio
 }
 
-void waitUntilInputHigh(int btn, unsigned t)
-{
-    while(digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-*/
 struct DiffTimer
 {
 	volatile unsigned long elapsed, last;
@@ -124,18 +110,17 @@ struct DiffTimer2
 
 bool waitUntilNB(DiffTimer &d, bool c, unsigned t);
 
-bool waitUntilNB(DiffTimer &d, bool c, unsigned t){
-	bool ok = false;
-	if (!c) {// fronte di salita condizione contraria
-		d.start(); // campionamento singleton del tempo
-	}
-	// fronte di discesa condizione voluta dopo rimbalzi
-	if((unsigned long) d.get() > t && c){
-		// disabilitazione fino al prossimo fronte di salita
-		d.stop();
-		d.reset();
-		ok = true;
-	}
-	return ok;
+bool waitUntilNB(DiffTimer &d, bool c, unsigned t) {
+  bool ok = false;
+  if (!c) {
+    d.start();
+    d.reset();   // il timer riparte a ogni chiamata con c falsa
+  }
+  if (d.get() > t && c) {
+    d.stop();
+    d.reset();
+    ok = true;
+  }
+  return ok;
 }
 #endif
