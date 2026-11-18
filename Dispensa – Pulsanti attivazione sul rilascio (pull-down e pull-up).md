@@ -112,6 +112,8 @@ Rispetto alla versione pull-down cambiano solo tre cose: il livello testato nell
 
 `waitUntilInputLow()` e `waitUntilInputHigh()` ricontrollano il pin ogni 50 ms. Restano nel ciclo `while` finché il pin non cambia livello. La pausa tra due letture fa da debounce: i rimbalzi durano meno di 50 ms e quasi sempre vengono saltati.
 
+Le due funzioni sono già in [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h), con la stessa firma `(int btn, unsigned t)`. La versione della libreria usa un ciclo `do { delay(t); } while (…)`: aspetta sempre almeno `t` ms prima di leggere il pin. Se includete `urutils.h`, togliete dagli esempi le definizioni di `waitUntilInputLow()` e `waitUntilInputHigh()`: definirle due volte dà errore di compilazione.
+
 Il limite è che il codice è **bloccante**. Finché il pulsante resta premuto, `loop()` è fermo:
 
 - non si leggono altri ingressi;
@@ -189,14 +191,14 @@ void loop() {
 
 ## Versione con urutils.h (DiffTimer)
 
-`DiffTimer` di `urutils.h` incapsula il calcolo con `millis()` visto sopra. La logica non cambia: il timer si arma alla pressione e l'azione parte dopo 50 ms di pulsante rilasciato. Gli esempi seguono lo stile di [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md) e usano solo i membri che compaiono lì.
+`DiffTimer` di [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h) incapsula il calcolo con `millis()` visto sopra. La logica non cambia: il timer si arma alla pressione e l'azione parte dopo 50 ms di pulsante rilasciato. Gli esempi seguono lo stile di [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md).
 
 | Membro | Effetto |
 | --- | --- |
-| `start()` | arma il timer e inizia a contare |
-| `get()` | millisecondi contati dall'ultimo `start()` o `reset()` |
-| `reset()` | azzera il conteggio; se il timer è armato continua a contare |
-| `stop()` | disarma il timer |
+| `start()` | se il timer è disarmato lo arma e memorizza l'istante di partenza; se è già armato non fa nulla |
+| `get()` | timer armato: tempo accumulato + ms dall'ultimo `start()` o `reset()`; timer disarmato: solo il tempo accumulato |
+| `reset()` | azzera il tempo accumulato e riparte da adesso; non cambia `timerState` |
+| `stop()` | disarma il timer e aggiunge al tempo accumulato i ms trascorsi |
 | `timerState` | `true` se il timer è armato |
 
 **Pull-down: azione sul fronte di discesa**
@@ -320,4 +322,11 @@ void loop() {
 }
 ```
 
-I pin 27 e 12 sono quelli di toggle.md, pensati per ESP32; su Arduino Uno usate pin che esistono sulla scheda. Il file `urutils.h` non è pubblicato in quella pagina: la tabella dei membri descrive come vengono usati negli esempi, non la loro implementazione.
+I pin 27 e 12 sono quelli di toggle.md, pensati per ESP32; su Arduino Uno usate pin che esistono sulla scheda.
+
+`urutils.h` offre anche `waitUntilNB(d, c, t)`, che fa lo stesso controllo in una sola chiamata: arma il timer quando `c` è falsa e restituisce `true` una volta sola, quando `c` è vera e sono passati più di `t` ms. Per il pull-down si scrive `if (waitUntilNB(debt, !digitalRead(P1), 50)) doOnFall();`. A differenza degli esempi sopra, conta i 50 ms dalla prima pressione e non dall'ultima lettura di pulsante premuto: un rimbalzo lungo al rilascio può riarmare il timer e far scattare l'azione una seconda volta. Per questo negli esempi sopra `debt.reset()` viene chiamato a ogni lettura di pulsante premuto.
+
+## Riferimenti
+
+- [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria con `DiffTimer`, `waitUntilInputLow()`, `waitUntilInputHigh()` e `waitUntilNB()`
+- [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md): esempi di pulsante toggle da cui riprendono lo stile gli esempi con `DiffTimer`
