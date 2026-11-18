@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-rilascio-corte.md)
->
 # Pulsanti in MicroPython: versioni corte, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
@@ -38,16 +36,11 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 ```python
 from machine import Pin
 import time
+from urutils import waitUntilInputLow
 
 P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
-
-def waitUntilInputLow(btn, t):
-    # come in urutils: ripete
-    # finché il pin non è basso
-    while btn.value():
-        time.sleep_ms(t)
 
 def doOnFall():
     # RILASCIO (fronte di discesa):
@@ -70,16 +63,11 @@ while True:
 ```python
 from machine import Pin
 import time
+from urutils import waitUntilInputHigh
 
 P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
-
-def waitUntilInputHigh(btn, t):
-    # ripete finché il pin
-    # non è alto
-    while not btn.value():
-        time.sleep_ms(t)
 
 def doOnRise():
     # RILASCIO (fronte di salita):
@@ -182,8 +170,8 @@ while True:
 
 `start()` non fa nulla se il timer è già armato, quindi si può chiamare a ogni giro. A timer
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
-Per le correzioni da fare a `urutils.py` vedi la sezione 3 di
-[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md).
+Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
+[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
 
 <table>
 <tr>
@@ -260,10 +248,9 @@ while True:
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
+con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
+rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
 
 <table>
 <tr>
@@ -276,23 +263,12 @@ a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ulti
 ```python
 from machine import Pin
 import time
-from urutils import DiffTimer
+from urutils import DiffTimer, waitUntilNB
 
 P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 debt = DiffTimer()
-
-def waitUntilNB(d, c, t):
-    # come waitUntilNB di urutils.h
-    ok = False
-    if not c:
-        d.start()
-    if d.get() > t and c:
-        d.stop()
-        d.reset()
-        ok = True
-    return ok
 
 def doOnFall():
     # RILASCIO (fronte di discesa):
@@ -307,8 +283,6 @@ while True:
     premuto = P1.value()
     if waitUntilNB(debt, not premuto, 50):
         doOnFall()
-    if premuto:
-        debt.reset()
 ```
 
 </td>
@@ -317,23 +291,12 @@ while True:
 ```python
 from machine import Pin
 import time
-from urutils import DiffTimer
+from urutils import DiffTimer, waitUntilNB
 
 P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 debt = DiffTimer()
-
-def waitUntilNB(d, c, t):
-    # come waitUntilNB di urutils.h
-    ok = False
-    if not c:
-        d.start()
-    if d.get() > t and c:
-        d.stop()
-        d.reset()
-        ok = True
-    return ok
 
 def doOnRise():
     # RILASCIO (fronte di salita):
@@ -348,8 +311,6 @@ while True:
     premuto = not P1.value()
     if waitUntilNB(debt, not premuto, 50):
         doOnRise()
-    if premuto:
-        debt.reset()
 ```
 
 </td>

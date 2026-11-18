@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in C++](toggle-blink-pulldown.md)
->
 ###  **PULSANTE TOGGLE**
 
 Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressioni successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
@@ -89,18 +87,13 @@ si ferma. Questo esempio mostra il limite del codice bloccante con più task.
 ```python
 from machine import Pin
 import time
+from urutils import waitUntilInputLow
 
 P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
 LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
 LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
 stato = False
 precBlink = 0
-
-def waitUntilInputLow(btn, t):
-    # come in urutils: ripete
-    # finché il pin non è basso
-    while btn.value():
-        time.sleep_ms(t)
 
 def doOnRise():
     # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
@@ -178,8 +171,8 @@ while True:
 
 ## 3. Versione non bloccante con DiffTimer
 
-Prima di usare `urutils.py` vanno fatte due piccole correzioni, descritte nella sezione 3 di
-[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md).
+Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
+[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
 
 ```python
 from machine import Pin
@@ -229,18 +222,16 @@ while True:
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-`waitUntilNB()` è definita nello script, con la stessa logica di `urutils.h`. La callback della
-pressione viene chiamata controllando `debt.timerState` prima di `waitUntilNB()`, che da sola
-segnala solo il rilascio.
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+La callback della pressione viene chiamata controllando `debt.timerState` prima di
+`waitUntilNB()`, che da sola segnala solo il rilascio.
+`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
+con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
+rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
 
 ```python
 from machine import Pin
 import time
-from urutils import DiffTimer
+from urutils import DiffTimer, waitUntilNB
 
 P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
 LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
@@ -249,17 +240,6 @@ stato = False
 debt = DiffTimer()
 t1 = DiffTimer()
 t1.start()
-
-def waitUntilNB(d, c, t):
-    # come waitUntilNB di urutils.h
-    ok = False
-    if not c:
-        d.start()
-    if d.get() > t and c:
-        d.stop()
-        d.reset()
-        ok = True
-    return ok
 
 def doOnRise():
     # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
@@ -283,8 +263,6 @@ while True:
         doOnRise()                       # azione immediata alla pressione
     if waitUntilNB(debt, not premuto, 50):
         doOnFall()                       # azione al rilascio
-    if premuto:
-        debt.reset()                     # conta dall'ultima lettura "premuto"
 
     # task 2: blink ogni 1000 ms
     if t1.get() > 1000:

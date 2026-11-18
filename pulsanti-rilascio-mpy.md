@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-rilascio.md)
->
 # Pulsanti in MicroPython: attivazione sul rilascio (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
@@ -26,8 +24,8 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 
 ## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
 
-Le funzioni di attesa sono definite nello script. Finché il pulsante resta premuto il ciclo
-principale è fermo.
+Le funzioni di attesa vengono da `urutils.py`: dopo il rilascio attendono altri `t` ms perché
+finiscano i rimbalzi. Finché il pulsante resta premuto il ciclo principale è fermo.
 
 <table>
 <tr>
@@ -40,16 +38,11 @@ principale è fermo.
 ```python
 from machine import Pin
 import time
+from urutils import waitUntilInputLow
 
 P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
-
-def waitUntilInputLow(btn, t):
-    # come in urutils: ripete
-    # finché il pin non è basso
-    while btn.value():
-        time.sleep_ms(t)
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -80,16 +73,11 @@ while True:
 ```python
 from machine import Pin
 import time
+from urutils import waitUntilInputHigh
 
 P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
-
-def waitUntilInputHigh(btn, t):
-    # ripete finché il pin
-    # non è alto
-    while not btn.value():
-        time.sleep_ms(t)
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):
@@ -216,12 +204,9 @@ e non produce un falso fronte.
 
 ## 3. Versione non bloccante con DiffTimer
 
-> `urutils.py` è la versione MicroPython di `urutils.h` con la classe `DiffTimer`.
-> Due correzioni da fare nel file prima di usarlo:
-> - la classe ha **due** `__init__`: in Python vale solo l'ultimo, quindi `DiffTimer(100)` dà errore. Basta tenerne uno solo, `def __init__(self, elapsed=0):`;
-> - in `set()` va scritto `self.reset()`, non `reset()`.
->
-> Inoltre `get()` e `stop()` calcolano `time.ticks_ms() - self.last`: per non sbagliare quando il contatore di `ticks_ms()` ricomincia da capo è meglio `time.ticks_diff(time.ticks_ms(), self.last)`.
+> Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
+> `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, l'attesa di fine rimbalzi in
+> `waitUntilInputLow()` / `waitUntilInputHigh()` e il timer che riparte in `waitUntilNB()`.
 
 <table>
 <tr>
@@ -316,13 +301,10 @@ while True:
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-`waitUntilNB()` non è nel tuo `urutils.py`, quindi è definita nello script, con la stessa
-logica di `urutils.h`. Il secondo argomento è la condizione "pulsante rilasciato", cioè
-`not premuto`.
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
+`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
+con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
+rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
 La callback della pressione si chiama controllando
 `debt.timerState` prima della chiamata: il timer è disarmato solo al primo giro di pressione.
 
@@ -337,23 +319,12 @@ La callback della pressione si chiama controllando
 ```python
 from machine import Pin
 import time
-from urutils import DiffTimer
+from urutils import DiffTimer, waitUntilNB
 
 P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 debt = DiffTimer()
-
-def waitUntilNB(d, c, t):
-    # come waitUntilNB di urutils.h
-    ok = False
-    if not c:
-        d.start()
-    if d.get() > t and c:
-        d.stop()
-        d.reset()
-        ok = True
-    return ok
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -378,8 +349,6 @@ while True:
     # c = "rilasciato"
     if waitUntilNB(debt, not premuto, 50):
         doOnFall()
-    if premuto:
-        debt.reset()  # conta dall'ultima lettura "premuto"
 ```
 
 </td>
@@ -388,23 +357,12 @@ while True:
 ```python
 from machine import Pin
 import time
-from urutils import DiffTimer
+from urutils import DiffTimer, waitUntilNB
 
 P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 debt = DiffTimer()
-
-def waitUntilNB(d, c, t):
-    # come waitUntilNB di urutils.h
-    ok = False
-    if not c:
-        d.start()
-    if d.get() > t and c:
-        d.stop()
-        d.reset()
-        ok = True
-    return ok
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):
@@ -429,8 +387,6 @@ while True:
     # c = "rilasciato"
     if waitUntilNB(debt, not premuto, 50):
         doOnRise()
-    if premuto:
-        debt.reset()  # conta dall'ultima lettura "premuto"
 ```
 
 </td>
