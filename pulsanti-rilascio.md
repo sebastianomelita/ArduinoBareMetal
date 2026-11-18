@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsantememorylesspy.md)
+>
 # Pulsanti: attivazione sul rilascio (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
