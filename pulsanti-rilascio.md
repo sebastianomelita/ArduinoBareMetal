@@ -1,12 +1,16 @@
 # Pulsanti: attivazione sul rilascio (pull-down e pull-up)
 
-In entrambe le versioni l'azione parte quando il pulsante viene **rilasciato**.
+In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
 Cambia solo il livello letto dal pin, che dipende dal collegamento della resistenza.
 
 | Collegamento | Riposo | Premuto | Pressione | Rilascio |
 | --- | --- | --- | --- | --- |
 | Pull-down (resistenza verso GND) | LOW | HIGH | fronte di salita | fronte di discesa |
 | Pull-up (resistenza verso Vcc o `INPUT_PULLUP`) | HIGH | LOW | fronte di discesa | fronte di salita |
+
+In ogni esempio ci sono due callback: in quella della **pressione** vanno le azioni immediate
+alla pressione (facoltative, qui lasciata vuota); in quella del **rilascio** vanno le azioni
+al rilascio (qui, come esempio, un toggle del LED).
 
 ## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
 
@@ -29,10 +33,17 @@ const byte LED = 13;
 bool stato = LOW;
 
 void doOnRise() {
-  // pressione
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
 }
 
 void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
   stato = !stato;
   digitalWrite(LED, stato);
 }
@@ -62,10 +73,17 @@ const byte LED = 13;
 bool stato = LOW;
 
 void doOnFall() {
-  // pressione
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
 }
 
 void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
   stato = !stato;
   digitalWrite(LED, stato);
 }
@@ -99,9 +117,32 @@ void loop() {
 <td>
 
 ```cpp
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 unsigned long t0 = 0;
 bool armato = false;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
@@ -122,9 +163,32 @@ void loop() {
 <td>
 
 ```cpp
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 unsigned long t0 = 0;
 bool armato = false;
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
 
 void loop() {
   if (digitalRead(P1) == LOW) {
@@ -161,8 +225,31 @@ e non produce un falso fronte.
 ```cpp
 #include "urutils.h"
 
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 DiffTimer debt;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
@@ -186,8 +273,31 @@ void loop() {
 ```cpp
 #include "urutils.h"
 
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 DiffTimer debt;
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
 
 void loop() {
   if (digitalRead(P1) == LOW) {
@@ -225,11 +335,31 @@ prima pressione: un rimbalzo lungo al rilascio può far scattare l'azione due vo
 ```cpp
 #include "urutils.h"
 
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 DiffTimer debt;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Qui non viene chiamata:
+  // vedi la variante sotto.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
 
 void setup() {
   pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
 }
 
 void loop() {
@@ -247,11 +377,31 @@ void loop() {
 ```cpp
 #include "urutils.h"
 
-const byte P1 = 2;
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
 DiffTimer debt;
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Qui non viene chiamata:
+  // vedi la variante sotto.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
 
 void setup() {
   pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
 }
 
 void loop() {
@@ -266,6 +416,141 @@ void loop() {
 </td>
 </tr>
 </table>
+
+Se oltre all'azione al rilascio ne serve una immediata alla pressione, basta controllare
+`debt.timerState` prima della chiamata: il timer è disarmato solo al primo giro di pressione.
+Esempio per il pull-down:
+
+```cpp
+void loop() {
+  bool premuto = digitalRead(P1);
+  if (premuto && !debt.timerState) {
+    doOnRise();                  // azione immediata alla pressione
+  }
+  if (waitUntilNB(debt, !premuto, 50)) {
+    doOnFall();                  // azione al rilascio
+  }
+}
+```
+
+## 5. Versione con schedulatore non bloccante
+
+Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pin a
+intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
+letture il segnale si è stabilizzato. I fronti si riconoscono confrontando la lettura
+attuale `val` con quella precedente `precval`.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+#define TBASE 50  // ms, > rimbalzi
+
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+unsigned long precm = 0;
+byte precval = LOW;  // riposo
+byte val;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (millis() - precm >= TBASE) {
+    precm = millis();
+    val = digitalRead(P1);
+    if (precval == LOW &&
+        val == HIGH) {   // salita
+      doOnRise();
+    } else if (precval == HIGH &&
+               val == LOW) { // discesa
+      doOnFall();
+    }
+    precval = val;
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+#define TBASE 50  // ms, > rimbalzi
+
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+unsigned long precm = 0;
+byte precval = HIGH; // riposo
+byte val;
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (millis() - precm >= TBASE) {
+    precm = millis();
+    val = digitalRead(P1);
+    if (precval == HIGH &&
+        val == LOW) {    // discesa
+      doOnFall();
+    } else if (precval == LOW &&
+               val == HIGH) { // salita
+      doOnRise();
+    }
+    precval = val;
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+Il ritardo massimo nel riconoscere un fronte è `TBASE`. Una pressione più breve di
+`TBASE` può cadere tra due campioni e non essere vista.
 
 ## Riferimenti
 
