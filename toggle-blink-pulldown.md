@@ -237,12 +237,13 @@ void loop() {
 ## 5. Versione con schedulatore non bloccante
 
 Un solo tempo base `TBASE` scandisce entrambi i task: il pulsante viene campionato a ogni
-tick, il blink scatta ogni `NSTEP` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
+tick, il blink scatta ogni `NBLINK` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
 e poi riparte, quindi non cresce mai e non va in overflow.
 
 ```cpp
 #define TBASE 50              // periodo base in ms (> durata dei rimbalzi)
-#define NSTEP (1000 / TBASE)  // tick in un semiperiodo del blink
+#define NBLINK (1000 / TBASE) // periodo del blink in tick (semiperiodo 1000 ms)
+#define NSTEP NBLINK           // lunghezza del ciclo: mcm dei periodi dei task
 
 const byte P1       = 2;    // pulsante (pull-down esterno)
 const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
@@ -288,13 +289,36 @@ void loop() {
     }
     precval = val;
 
-    // task 2: blink ogni NSTEP tick (1000 ms)
-    if (step == 0) {
+    // task 2: blink ogni NBLINK tick (1000 ms)
+    if (step % NBLINK == 0) {
       blink(LEDBLINK);
     }
   }
 }
 ```
+
+**Più task periodici.** Se lo schedulatore deve gestire più task periodici, `NSTEP` va
+scelto come minimo comune multiplo dei loro periodi in tick. Ogni task poi controlla
+`step % N_task == 0`, dove `N_task` è il suo periodo in tick. Così il ciclo si chiude
+senza sfasare nessun task. Per esempio, con un blink ogni 20 tick e un secondo task
+ogni 30 tick:
+
+```cpp
+#define NBLINK 20                // 1000 ms con TBASE = 50
+#define NTASK2 30                // 1500 ms con TBASE = 50
+#define NSTEP  60                // mcm(20, 30)
+
+    step = (step + 1) % NSTEP;
+    if (step % NBLINK == 0) {    // a step 0, 20, 40
+      blink(LEDBLINK);
+    }
+    if (step % NTASK2 == 0) {    // a step 0, 30
+      task2();
+    }
+```
+
+Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
+step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
 
 ## Riferimenti
 
