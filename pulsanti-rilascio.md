@@ -12,6 +12,8 @@ In ogni esempio ci sono due callback: in quella della **pressione** vanno le azi
 alla pressione (facoltative, qui lasciata vuota); in quella del **rilascio** vanno le azioni
 al rilascio (qui, come esempio, un toggle del LED).
 
+> Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md)
+
 ## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
 
 Le funzioni di attesa sono in `urutils.h`: non ridefinitele se includete la libreria.
@@ -555,3 +557,4 @@ pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria
 - [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md): esempi di pulsante toggle
+- [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md): versioni corte, solo azione al rilascio
