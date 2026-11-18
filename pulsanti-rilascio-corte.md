@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-rilascio-corte-mpy.md)
+
 # Pulsanti: versioni corte, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,

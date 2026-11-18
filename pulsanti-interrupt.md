@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-interrupt-mpy.md)
+
 # Pulsanti con interrupt: attivazione sul rilascio (pull-down e pull-up)
 
 Le tecniche sono quelle della parte sugli interrupt di

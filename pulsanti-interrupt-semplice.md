@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-interrupt-semplice-mpy.md)
+
 # Pulsanti con interrupt: versione semplificata
 
 Fra le tante tecniche a interrupt, qui ci sono solo le due più affidabili, con le convenzioni

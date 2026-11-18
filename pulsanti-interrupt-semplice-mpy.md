@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-interrupt-semplice.md)
+
 # Pulsanti con interrupt in MicroPython: versione semplificata
 
 Versione MicroPython di [pulsanti-interrupt-semplice.md](pulsanti-interrupt-semplice.md): solo le

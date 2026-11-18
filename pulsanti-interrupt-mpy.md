@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-interrupt.md)
+
 # Pulsanti con interrupt in MicroPython: attivazione sul rilascio (pull-down e pull-up)
 
 Versione MicroPython di [pulsanti-interrupt.md](pulsanti-interrupt.md), con le stesse tecniche e
