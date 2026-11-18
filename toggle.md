@@ -214,6 +214,68 @@ void loop() {                                              | void loop() {
 - **```50 msec```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
 
+## Debounce con millis()
+
+| Fronte di SALITA | Fronte di DISCESA |
+|---|---|
+| Esegue `doOnRise()` subito sul fronte, `doOnFall()` dopo 50 ms di stato basso | Esegue `doOnFall()` subito sul fronte, `doOnRise()` dopo 50 ms di stato alto |
+
+### Approccio con millis() – fronte di salita
+
+```cpp
+int P1 = 2;
+unsigned long t0 = 0;   // istante di armo del timer
+bool armato = false;    // equivalente di deb.timerState
+
+void loop() {
+  if (digitalRead(P1)) {
+    if (!armato) {             // timer non armato
+      armato = true;           // deb.start()
+      t0 = millis();
+      doOnRise();
+    }
+  } else if (armato && millis() - t0 > 50) { // deb.get() > 50
+    armato = false;            // deb.stop() + deb.reset()
+    doOnFall();
+    // Altre operazioni possibili
+  }
+}
+```
+
+### Approccio con millis() – fronte di discesa
+
+```cpp
+int P1 = 2;
+unsigned long t0 = 0;   // istante di armo del timer
+bool armato = false;    // equivalente di deb.timerState
+
+void loop() {
+  if (!digitalRead(P1)) {
+    if (!armato) {             // timer non armato
+      armato = true;           // deb.start()
+      t0 = millis();
+      doOnFall();
+    }
+  } else if (armato && millis() - t0 > 50) { // disarmo del timer al timeout
+    armato = false;            // deb.stop() + deb.reset()
+    doOnRise();
+    // Altre operazioni possibili
+  }
+}
+```
+
+### Corrispondenze DiffTimer → millis()
+
+| DiffTimer | millis() |
+|---|---|
+| `deb.start()` | `armato = true; t0 = millis();` |
+| `deb.timerState` | `armato` |
+| `deb.get()` | `millis() - t0` |
+| `deb.stop(); deb.reset();` | `armato = false;` |
+
+> **Nota:** `millis() - t0` va sempre scritto come sottrazione tra `unsigned long`.
+> Così il conteggio resta corretto anche quando `millis()` riparte da zero, dopo circa 49 giorni.
+
 ## **Attivazione immediata di una logica qualsiasi su un fronte senza debouncer**
 
 ```C++
