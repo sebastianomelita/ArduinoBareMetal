@@ -8,9 +8,9 @@
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
-<li><a href="pulsanti-rilascio.md">Gestione pulsanti su due fronti</a></li>  
-<li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti su un solo fronte</a></li>  
-<li><a href="toggle-blink-pulldown.md">Esempi toggle + blink bloccanti e non bloccanti</a></li>   
+<li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling su due fronti</a></li>  
+<li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling su un solo fronte</a></li>  
+<li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
 <li><a href="toggle.md">Dissertazione toggle e rilevatori di transito completa</a></li>
 <li><a href="encoder.md">Encoder rotativo</a></li>
 <li><a href="joistick.md">Joistick</a></li>
