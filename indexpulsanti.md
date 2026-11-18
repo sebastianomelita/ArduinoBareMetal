@@ -11,7 +11,7 @@
 <li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling su due fronti</a></li>  
 <li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling su un solo fronte</a></li>  
 <li><a href="pulsanti-interrupt-semplice">Gestione pulsanti con interrupt base</a></li>  
-<li><a href="pulsanti-interrupt">Gestione pulsanti con interrupt avanzati<</a></li>  
+<li><a href="pulsanti-interrupt">Gestione pulsanti con interrupt avanzati</a></li>  
 <li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
 <li><a href="toggle.md">Dissertazione toggle e rilevatori di transito completa</a></li>
 <li><a href="encoder.md">Encoder rotativo</a></li>
