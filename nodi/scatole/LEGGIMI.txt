@@ -40,6 +40,16 @@ nodo_lorawan_case_v4_rs485.scad      CORTA con modulo RS485 (MAX485 col morsetto
 nodo_lorawan_uv_testa.scad           Testina separata per il sensore UV VEML6075
                                      (alternativa al baccello della scatola).
 sds011_sezione.scad                  libreria del vano SDS011 (non si apre da sola).
+nodo_lorawan_piastra_palo.scad       PIASTRA DA PALO: fa da muro tra palo e
+                                     scatola, per tutte le scatole da esterno.
+                                     scatola = corta / corta RS485 / lunga /
+                                     lunga RS485. Due aste dietro: va su
+                                     qualunque palo da 18 mm in su, anche
+                                     quadro. Spessore 9,5 mm.
+                                     2 viti M4 + 2 fascette: stringitubo in
+                                     acciaio oppure nylon da 9 mm nero
+                                     stabilizzato UV. Sempre due, mai una.
+                                     Dettagli in QUALE_FILE_QUALE_SCATOLA.txt.
 
 =====================================================================
 INTERNO (coperchio senza pannelli, piatto, aerazione; USB; niente GPS)

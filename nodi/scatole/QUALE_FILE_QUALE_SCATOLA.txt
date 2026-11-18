@@ -1,7 +1,7 @@
 NODO LoRaWAN v4 - QUALE FILE E' QUALE SCATOLA
 =============================================
 
-In tutto ci sono 10 file .scad: 8 scatole, 1 accessorio, 1 libreria.
+In tutto ci sono 11 file .scad: 8 scatole, 2 accessori, 1 libreria.
 UV e RS485 NON sono file a parte: sono opzioni dentro il file, una riga da
 mettere a true. Si vedono anche nel Customizer di OpenSCAD.
 
@@ -73,6 +73,48 @@ GLI ALTRI 2 FILE
     usare con qualunque scatola.
 10) sds011_sezione.scad          libreria del vano dell'SDS011. Non si apre da
     sola: serve alla lunga.
+11) nodo_lorawan_piastra_palo.scad   PIASTRA DA PALO per le scatole da esterno.
+    Fa da muro tra il palo e la scatola, che si avvita con le sue due alette.
+    Non serve sapere il diametro del palo: dietro ha due aste che danno due
+    linee di appoggio, cosi' il palo si centra da solo e la scatola non gira. Va bene da 18 mm in su, e anche su un palo quadro.
+    La fascetta fa l'anello attorno al palo E alla piastra, ma passa TUTTA
+    DIETRO, dentro una cava scavata nel retro. Le due aste su cui appoggia il
+    palo scavalcano la cava e fanno da fermo: la fascetta ci passa sotto e non
+    puo' uscire. Niente sporge dal retro oltre alle due aste.
+    Il tondo sta tutto DENTRO la cava, dove la fascetta scorre davvero: verso
+    le due uscite il fondo risale con un raccordo di raggio 10, cosi' la
+    fascetta esce a 45 gradi, gia' puntata verso il palo, senza scavalcare
+    nessuno spigolo. Cava larga 14 e profonda 3 mm (nylon da 9 spesso 2,4 ok),
+    con 3 mm di piastra sotto. Anche le due aste, DENTRO la cava, sono
+    arrotondate di sotto con raggio 1,5: la fascetta che ci passa sotto trova
+    un tondo e non uno spigolo.
+    Fra la scatola e la piastra non passa niente: la faccia davanti e' liscia
+    e una fascetta si cambia senza smontare la scatola.
+    Opzione: scatola = corta / corta RS485 / lunga / lunga RS485 (sceglie
+    l'interasse dei fori). palo_d serve solo all'anteprima.
+    Serve: 2 viti M4 x 16 con i dadi, e DUE fascette, a scelta:
+      - 2 stringitubo in acciaio (nastro largo al massimo 13 mm), oppure
+      - 2 fascette di nylon da 9 mm, NERE e stabilizzate ai raggi UV
+        (le bianche al sole diventano fragili in pochi mesi; sulla busta
+        deve esserci scritto che sono stabilizzate).
+    SEMPRE DUE, mai una sola: una sola lascia scivolare la scatola verso il
+    basso e girare attorno al palo, e se si rompe la scatola cade.
+    Nella cava ci passano tutte e due le cose, quindi puoi partire col nylon
+    e passare all'acciaio quando vuoi.
+    Le fascette di nylon vanno tirate a mano o con la pinza, non con la
+    pistola a strappo, e guardate una volta l'anno.
+    Si stampa con la faccia liscia sul piatto, cava e aste in alto,
+    senza supporti; meglio PETG o ASA.
+    Forma: rombo allungato, non una lastra piena. Due creste basse, alte
+    quanto le aste, vanno dalle aste fino alle viti: aste, creste e piazzole
+    fanno un telaio unico, e niente supera i 9,5 mm. Spessore totale 9,5 mm: 6 di piastra piu' 3,5
+    di asta, e non sporge nient'altro: piatta, si impila e si stampa in fretta.
+    Misure: corta 120,8 x 66 · lunga 221,2 x 66 · lunga RS485 243,2 x 66
+    (le lunghe, sul piatto da 220, vanno messe in diagonale).
+    Il corpo e' alto 66 e non 83 come la scatola: la parte che lavora e'
+    quella fra le due fascette.
+    Si stampa con la faccia liscia sul piatto, cava e aste in alto.
+    Vedi disegni/piastra_palo.png.
 
 
 COME SI CAMBIA UN'OPZIONE
