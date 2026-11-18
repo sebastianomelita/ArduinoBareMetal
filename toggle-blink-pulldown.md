@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsantememorylesspy.md)
+
 # Pulsante toggle e blink: due task concorrenti (pull-down)
 
 Ogni sketch gestisce due task insieme:
