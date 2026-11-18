@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-rilascio-corte-mpy.md)
-
 # Pulsanti: versioni corte, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
@@ -60,6 +58,7 @@ void loop() {
   if (digitalRead(P1) == HIGH) {
     waitUntilInputLow(P1, 50);
     doOnFall();
+    delay(50);  // fine rimbalzi
   }
 }
 ```
@@ -98,6 +97,7 @@ void loop() {
   if (digitalRead(P1) == LOW) {
     waitUntilInputHigh(P1, 50);
     doOnRise();
+    delay(50);  // fine rimbalzi
   }
 }
 ```

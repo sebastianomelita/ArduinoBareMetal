@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-rilascio-mpy.md)
->
 # Pulsanti: attivazione sul rilascio (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
@@ -21,6 +19,8 @@ al rilascio (qui, come esempio, un toggle del LED).
 
 Le funzioni di attesa sono definite nello sketch, uguali a quelle di `urutils.h`:
 se includete la libreria, toglietele per non definirle due volte.
+Il `delay(50)` dopo la callback del rilascio lascia finire i rimbalzi: senza, il `loop()`
+potrebbe rileggere il pin mentre rimbalza e prendere un rimbalzo per una nuova pressione.
 Finché il pulsante resta premuto, `loop()` è fermo.
 
 <table>
@@ -70,6 +70,7 @@ void loop() {
     doOnRise();
     waitUntilInputLow(P1, 50);
     doOnFall();
+    delay(50);  // fine rimbalzi
   }
 }
 ```
@@ -116,6 +117,7 @@ void loop() {
     doOnFall();
     waitUntilInputHigh(P1, 50);
     doOnRise();
+    delay(50);  // fine rimbalzi
   }
 }
 ```
