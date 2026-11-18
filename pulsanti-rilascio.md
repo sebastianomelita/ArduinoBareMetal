@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsantememorylesspy.md)
->
 # Pulsanti: attivazione sul rilascio (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
@@ -339,8 +337,11 @@ void loop() {
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premuto`. Il conteggio
-parte dalla prima pressione: un rimbalzo lungo al rilascio può far scattare l'azione due volte.
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premuto`.
+Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
+senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
+a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
+"premuto", come nella versione con DiffTimer.
 `waitUntilNB()` segnala solo il rilascio: la callback della pressione si chiama controllando
 `debt.timerState` prima della chiamata. Il timer è disarmato solo al primo giro di pressione,
 perché subito dopo lo arma `waitUntilNB()`.
@@ -394,6 +395,9 @@ void loop() {
         !premuto, 50)) {
     doOnFall();
   }
+  if (premuto) {
+    debt.reset();
+  }
 }
 ```
 
@@ -440,6 +444,9 @@ void loop() {
   if (waitUntilNB(debt,
         !premuto, 50)) {
     doOnRise();
+  }
+  if (premuto) {
+    debt.reset();
   }
 }
 ```

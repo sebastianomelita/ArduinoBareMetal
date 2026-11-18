@@ -1,5 +1,3 @@
->[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsantememorylesspy.md)
-
 # Pulsanti: versioni corte, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
@@ -16,7 +14,7 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 | Bloccante | nel punto del programma: si è dentro l'`if` | no |
 | millis() | variabile `armato` | sì |
 | DiffTimer | `timerState`, dentro la libreria | no |
-| waitUntilNB() | `timerState`, dentro la libreria | no |
+| waitUntilNB() | `timerState`, dentro la libreria (serve `premuto` per il reset) | no |
 | Schedulatore | `precval`, il campione precedente | no |
 
 ## 1. Versione bloccante
@@ -282,8 +280,10 @@ void loop() {
 
 ## 4. Versione non bloccante con waitUntilNB()
 
-Il conteggio parte dalla prima pressione: un rimbalzo lungo al rilascio può far scattare
-l'azione due volte. La versione con DiffTimer non ha questo limite.
+Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
+senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
+a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
+"premuto", come nella versione con DiffTimer.
 
 <table>
 <tr>
@@ -316,11 +316,12 @@ void setup() {
 }
 
 void loop() {
-  // c = "rilasciato" = LOW
+  bool premuto = digitalRead(P1);
   if (waitUntilNB(debt,
-        !digitalRead(P1), 50)) {
+        !premuto, 50)) {
     doOnFall();
   }
+  if (premuto) debt.reset();
 }
 ```
 
@@ -350,11 +351,12 @@ void setup() {
 }
 
 void loop() {
-  // c = "rilasciato" = HIGH
+  bool premuto = !digitalRead(P1);
   if (waitUntilNB(debt,
-        digitalRead(P1), 50)) {
+        !premuto, 50)) {
     doOnRise();
   }
+  if (premuto) debt.reset();
 }
 ```
 
