@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-rilascio.md)
+>
 # Pulsanti in MicroPython: attivazione sul rilascio (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
