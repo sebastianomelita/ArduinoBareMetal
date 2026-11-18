@@ -17,7 +17,8 @@ al rilascio (qui, come esempio, un toggle del LED).
 
 ## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
 
-Le funzioni di attesa sono in `urutils.h`: non ridefinitele se includete la libreria.
+Le funzioni di attesa sono definite nello sketch, uguali a quelle di `urutils.h`:
+se includete la libreria, toglietele per non definirle due volte.
 Finché il pulsante resta premuto, `loop()` è fermo.
 
 <table>
@@ -29,11 +30,17 @@ Finché il pulsante resta premuto, `loop()` è fermo.
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
+
+void waitUntilInputLow(int btn, unsigned t) {
+  // come in urutils.h: attende t ms,
+  // poi ripete finché il pin non è LOW
+  do {
+    delay(t);
+  } while (digitalRead(btn) != LOW);
+}
 
 void doOnRise() {
   // PRESSIONE (fronte di salita):
@@ -69,11 +76,17 @@ void loop() {
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
+
+void waitUntilInputHigh(int btn, unsigned t) {
+  // come in urutils.h: attende t ms,
+  // poi ripete finché il pin non è HIGH
+  do {
+    delay(t);
+  } while (digitalRead(btn) != HIGH);
+}
 
 void doOnFall() {
   // PRESSIONE (fronte di discesa):

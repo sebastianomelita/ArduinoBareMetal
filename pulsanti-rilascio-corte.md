@@ -28,11 +28,17 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
+
+void waitUntilInputLow(int btn, unsigned t) {
+  // come in urutils.h: attende t ms,
+  // poi ripete finché il pin non è LOW
+  do {
+    delay(t);
+  } while (digitalRead(btn) != LOW);
+}
 
 void doOnFall() {
   // RILASCIO (fronte di discesa):
@@ -60,11 +66,17 @@ void loop() {
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
+
+void waitUntilInputHigh(int btn, unsigned t) {
+  // come in urutils.h: attende t ms,
+  // poi ripete finché il pin non è HIGH
+  do {
+    delay(t);
+  } while (digitalRead(btn) != HIGH);
+}
 
 void doOnRise() {
   // RILASCIO (fronte di salita):

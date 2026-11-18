@@ -89,13 +89,19 @@ Mentre il pulsante è premuto `loop()` resta dentro `waitUntilInputLow()`, quind
 si ferma. Questo esempio mostra il limite del codice bloccante con più task.
 
 ```cpp
-#include "urutils.h"
-
 const byte P1       = 2;    // pulsante (pull-down esterno)
 const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
 const byte LEDBLINK = 12;   // task 2: LED lampeggiante
 bool stato = LOW;
 unsigned long precBlink = 0;
+
+void waitUntilInputLow(int btn, unsigned t) {
+  // come in urutils.h: attende t ms,
+  // poi ripete finché il pin non è LOW
+  do {
+    delay(t);
+  } while (digitalRead(btn) != LOW);
+}
 
 void doOnRise() {
   // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
