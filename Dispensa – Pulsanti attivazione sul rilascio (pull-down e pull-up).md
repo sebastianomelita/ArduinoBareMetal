@@ -186,3 +186,138 @@ void loop() {
 ```
 
 `t0` si aggiorna a ogni lettura "premuto", quindi conta il tempo dall'ultimo istante in cui il pulsante era premuto. Un rimbalzo durante il rilascio azzera il conteggio e non produce un falso fronte. Scrivete sempre `millis() - t0 > 50` con variabili `unsigned long`: così il calcolo resta corretto anche quando `millis()` riparte da zero, dopo circa 49 giorni.
+
+## Versione con urutils.h (DiffTimer)
+
+`DiffTimer` di `urutils.h` incapsula il calcolo con `millis()` visto sopra. La logica non cambia: il timer si arma alla pressione e l'azione parte dopo 50 ms di pulsante rilasciato. Gli esempi seguono lo stile di [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md) e usano solo i membri che compaiono lì.
+
+| Membro | Effetto |
+| --- | --- |
+| `start()` | arma il timer e inizia a contare |
+| `get()` | millisecondi contati dall'ultimo `start()` o `reset()` |
+| `reset()` | azzera il conteggio; se il timer è armato continua a contare |
+| `stop()` | disarma il timer |
+| `timerState` | `true` se il timer è armato |
+
+**Pull-down: azione sul fronte di discesa**
+
+```cpp
+#include "urutils.h"
+
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+DiffTimer debt;          // timer di debounce
+
+void doOnRise() {
+  // pressione: eventuali azioni immediate
+}
+
+void doOnFall() {
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);    // resistenza di pull-down esterna
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(P1) == HIGH) {          // premuto
+    if (!debt.timerState) {               // primo fronte: armo il timer
+      debt.start();
+      doOnRise();
+    }
+    debt.reset();                         // finché è premuto il conteggio riparte
+  } else if (debt.timerState && debt.get() > 50) {
+    debt.stop();                          // disarmo del timer al timeout
+    debt.reset();
+    doOnFall();                           // azione sul rilascio
+  }
+  // qui altri compiti, mai bloccati
+}
+```
+
+**Pull-up: azione sul fronte di salita**
+
+```cpp
+#include "urutils.h"
+
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+DiffTimer debt;
+
+void doOnFall() {
+  // pressione: eventuali azioni immediate
+}
+
+void doOnRise() {
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);  // pull-up interno
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(P1) == LOW) {           // premuto
+    if (!debt.timerState) {
+      debt.start();
+      doOnFall();
+    }
+    debt.reset();
+  } else if (debt.timerState && debt.get() > 50) {
+    debt.stop();
+    debt.reset();
+    doOnRise();
+  }
+}
+```
+
+**Toggle con LED lampeggiante in parallelo (pull-down)**
+
+Sullo schema della sezione “Toggle con polling del rilascio temporizzato con get()” di toggle.md: un secondo `DiffTimer` fa lampeggiare un LED mentre il pulsante viene gestito, a dimostrazione che il codice non è bloccante.
+
+```cpp
+#include "urutils.h"
+
+const byte led      = 13;   // lampeggia ogni secondo
+const byte led2     = 27;   // comandato dal pulsante
+const byte pulsante = 12;
+bool stato = LOW;
+DiffTimer t1, debt;
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));
+}
+
+void setup() {
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  t1.start();                  // timer del lampeggio
+}
+
+void loop() {
+  if (digitalRead(pulsante) == HIGH) {
+    if (!debt.timerState) debt.start();
+    debt.reset();
+  } else if (debt.timerState && debt.get() > 50) {
+    debt.stop();
+    debt.reset();
+    stato = !stato;            // azione sul rilascio
+    digitalWrite(led2, stato);
+  }
+
+  if (t1.get() > 1000) {       // compito parallelo
+    t1.reset();
+    blink(led);
+  }
+}
+```
+
+I pin 27 e 12 sono quelli di toggle.md, pensati per ESP32; su Arduino Uno usate pin che esistono sulla scheda. Il file `urutils.h` non è pubblicato in quella pagina: la tabella dei membri descrive come vengono usati negli esempi, non la loro implementazione.
