@@ -546,8 +546,10 @@ void loop() {
 </tr>
 </table>
 
-Il ritardo massimo nel riconoscere un fronte è `TBASE`. Una pressione più breve di
-`TBASE` può cadere tra due campioni e non essere vista.
+In tutte le altre versioni la callback della pressione scatta subito, al primo giro di
+`loop()` in cui il pin risulta premuto. Con lo schedulatore invece il pin viene letto solo
+ogni `TBASE` ms: la pressione viene riconosciuta con un ritardo fino a `TBASE`, e una
+pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 
 ## Riferimenti
 
