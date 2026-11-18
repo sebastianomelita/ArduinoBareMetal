@@ -1,3 +1,5 @@
+>[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-rilascio-corte.md)
+>
 # Pulsanti in MicroPython: versioni corte, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
