@@ -19,8 +19,9 @@ al rilascio (qui, come esempio, un toggle del LED).
 
 Le funzioni di attesa sono definite nello sketch, uguali a quelle di `urutils.h`:
 se includete la libreria, toglietele per non definirle due volte.
-Il `delay(50)` dopo la callback del rilascio lascia finire i rimbalzi: senza, il `loop()`
-potrebbe rileggere il pin mentre rimbalza e prendere un rimbalzo per una nuova pressione.
+Sono le versioni aggiornate di `urutils.h`: dopo il primo LOW attendono altri `t` ms e ricontrollano
+il pin, quindi escono solo con un rilascio confermato. Così né un rimbalzo del rilascio né un'interruzione
+breve del contatto a pulsante premuto vengono presi per un rilascio.
 Finché il pulsante resta premuto, `loop()` è fermo.
 
 <table>
@@ -37,10 +38,14 @@ const byte LED = 13;
 bool stato = LOW;
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende t ms,
-  // poi ripete finché il pin non è LOW
+  // come in urutils.h: attende il LOW,
+  // poi altri t ms, e ricontrolla:
+  // esce solo con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != LOW);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != LOW);
 }
 
@@ -70,7 +75,6 @@ void loop() {
     doOnRise();
     waitUntilInputLow(P1, 50);
     doOnFall();
-    delay(50);  // fine rimbalzi
   }
 }
 ```
@@ -84,10 +88,14 @@ const byte LED = 13;
 bool stato = LOW;
 
 void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h: attende t ms,
-  // poi ripete finché il pin non è HIGH
+  // come in urutils.h: attende l'HIGH,
+  // poi altri t ms, e ricontrolla:
+  // esce solo con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != HIGH);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != HIGH);
 }
 
@@ -117,7 +125,6 @@ void loop() {
     doOnFall();
     waitUntilInputHigh(P1, 50);
     doOnRise();
-    delay(50);  // fine rimbalzi
   }
 }
 ```

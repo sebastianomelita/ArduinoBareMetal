@@ -33,10 +33,14 @@ const byte LED = 13;
 bool stato = LOW;
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende t ms,
-  // poi ripete finché il pin non è LOW
+  // come in urutils.h: attende il LOW,
+  // poi altri t ms, e ricontrolla:
+  // esce solo con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != LOW);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != LOW);
 }
 
@@ -58,7 +62,6 @@ void loop() {
   if (digitalRead(P1) == HIGH) {
     waitUntilInputLow(P1, 50);
     doOnFall();
-    delay(50);  // fine rimbalzi
   }
 }
 ```
@@ -72,10 +75,14 @@ const byte LED = 13;
 bool stato = LOW;
 
 void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h: attende t ms,
-  // poi ripete finché il pin non è HIGH
+  // come in urutils.h: attende l'HIGH,
+  // poi altri t ms, e ricontrolla:
+  // esce solo con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != HIGH);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != HIGH);
 }
 
@@ -97,7 +104,6 @@ void loop() {
   if (digitalRead(P1) == LOW) {
     waitUntilInputHigh(P1, 50);
     doOnRise();
-    delay(50);  // fine rimbalzi
   }
 }
 ```

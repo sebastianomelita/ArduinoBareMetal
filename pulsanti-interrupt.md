@@ -29,17 +29,16 @@ flowchart TD
     D --> G1["Debounce dentro la ISR"]
     D --> L["ISR sulla pressione,<br/>rilascio controllato fuori dalla ISR"]
     G1 --> T1["1. Fronti alternati<br/>+ DiffTimer"]
-    L --> T2["2. ISR si disarma<br/>rilascio con millis() nel loop()"]
-    L --> T3["3. ISR sempre armata, flag<br/>rilascio con DiffTimer nel loop()"]
-    L --> T4["4. ISR si disarma<br/>attesa bloccante nel loop()"]
-    L --> T5["5. Timer HW (Ticker, ESP32)<br/>controlla il rilascio ogni 50 ms"]
+    L --> T2["2. ISR su CHANGE registra i fronti<br/>rilascio controllato nel loop()"]
+    L --> T3["3. ISR si disarma<br/>attesa bloccante nel loop()"]
+    L --> T4["4. ISR su CHANGE + Ticker (ESP32)<br/>rilascio controllato ogni 50 ms"]
     R --> R1["brevi: niente delay() e Serial"]
     R --> R2["variabili condivise volatile"]
     R --> R3["millis() si legge ma non avanza"]
     R --> R4["riarmo: cancellare i fronti<br/>in sospeso (EIFR su AVR)"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4,T5 tecnica
+    class T1,T2,T3,T4 tecnica
     class R,R1,R2,R3,R4 regola
 ```
 
@@ -48,10 +47,13 @@ flowchart TD
 | Tecnica | Dove si fa il debounce | Callback pressione | Callback rilascio | Il loop() è libero? |
 | --- | --- | --- | --- | --- |
 | 1. Debounce nella ISR | nella ISR, con DiffTimer | nella ISR | nella ISR | sì, del tutto |
-| 2. ISR che si disarma + millis() | nel `loop()` | nella ISR | nel `loop()` | sì, ma deve girare spesso |
-| 3. ISR sempre armata + DiffTimer | nel `loop()` | nella ISR | nel `loop()` | sì, ma deve girare spesso |
-| 4. ISR che si disarma + attesa bloccante | nel `loop()` | nella ISR | nel `loop()` | no, fermo finché il pulsante è premuto |
-| 5. Timer HW (Ticker, ESP32) | nel Ticker | nella ISR | nel Ticker | sì, del tutto |
+| 2. ISR su CHANGE + rilascio nel loop() | ISR (tempi) e `loop()` (decisione) | nella ISR | nel `loop()` | sì, anche lento |
+| 3. ISR che si disarma + attesa bloccante | nel `loop()` | nella ISR | nel `loop()` | no, fermo finché il pulsante è premuto |
+| 4. ISR su CHANGE + Ticker (ESP32) | ISR (tempi) e Ticker (decisione) | nella ISR | nel Ticker | sì, del tutto |
+
+Nelle tecniche 1, 2 e 4 l'interrupt non viene mai disarmato: i rimbalzi fanno scattare la ISR
+più volte, ma ogni volta essa esegue solo poche istruzioni. Su ESP32 sono pochi microsecondi
+a chiamata: anche un centinaio di fronti per clic occupano meno di un millisecondo di CPU.
 
 ## 1. Debounce nella ISR con fronti alternati
 
@@ -201,11 +203,17 @@ void loop() {
 </tr>
 </table>
 
-## 2. ISR che si disarma, rilascio con millis() nel loop()
+## 2. ISR su CHANGE, rilascio controllato nel loop()
 
-La ISR riconosce la pressione, chiama la callback e si disarma, così i rimbalzi non generano
-altre ISR. Il `loop()` controlla il pin: quando è rilasciato da più di 50 ms chiama la callback
-del rilascio e riarma l'interrupt, cancellando prima i fronti rimasti in sospeso.
+La ISR è armata su entrambi i fronti e non viene mai disarmata. A ogni fronte, rimbalzi
+compresi, salva l'istante in `tFronte`; se il pulsante risulta premuto e la pressione non è
+ancora stata segnalata, chiama la callback della pressione. Il `loop()` chiama la callback del
+rilascio solo quando il pin è rilasciato e da più di 50 ms non c'è stato nessun fronte.
+
+Siccome i tempi li registra la ISR, la tecnica funziona anche se il `loop()` è lento: un
+`loop()` lento ritarda solo la callback del rilascio. `tFronte` è una variabile da 32 bit
+scritta dalla ISR: su AVR la sua lettura non è atomica, quindi il `loop()` ne fa una copia fra
+`noInterrupts()` e `interrupts()`.
 
 <table>
 <tr>
@@ -220,7 +228,9 @@ const byte P1  = 2;  // pin con interrupt
 const byte LED = 13;
 bool stato = LOW;
 volatile bool premuto = false;
-volatile unsigned long t0;
+volatile unsigned long tFronte;
+// istante dell'ultimo fronte,
+// rimbalzi compresi
 
 
 void doOnRise() {
@@ -239,164 +249,12 @@ void doOnFall() {
   digitalWrite(LED, stato);
 }
 
-void isrPress() {
-  // disarmo: i rimbalzi
-  // non generano altre ISR
-  detachInterrupt(
-    digitalPinToInterrupt(P1));
-  premuto = true;
-  t0 = millis();
-  doOnRise();
-}
-
-void riarma() {
-#ifdef EIFR
-  // AVR: cancella i fronti
-  // rimasti in sospeso
-  EIFR = bit(digitalPinToInterrupt(P1));
-#endif
-  attachInterrupt(
-    digitalPinToInterrupt(P1),
-    isrPress, RISING);
-}
-
-void setup() {
-  pinMode(P1, INPUT);
-  pinMode(LED, OUTPUT);
-  riarma();
-}
-
-void loop() {
-  if (premuto) {
-    if (digitalRead(P1) == HIGH) {
-      t0 = millis();  // ancora premuto
-    } else if (millis() - t0 > 50) {
-      premuto = false;
-      doOnFall();
-      riarma();
-    }
-  }
-  // qui altri compiti
-}
-```
-
-</td>
-<td>
-
-```cpp
-const byte P1  = 2;  // pin con interrupt
-const byte LED = 13;
-bool stato = LOW;
-volatile bool premuto = false;
-volatile unsigned long t0;
-
-
-void doOnFall() {
-  // PRESSIONE (fronte di discesa):
-  // qui vanno le azioni immediate
-  // alla pressione.
-  // Eseguita nella ISR: breve!
-}
-
-void doOnRise() {
-  // RILASCIO (fronte di salita):
-  // qui vanno le azioni al rilascio.
-  // Eseguita nel loop().
-  // Esempio: toggle del LED.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void isrPress() {
-  // disarmo: i rimbalzi
-  // non generano altre ISR
-  detachInterrupt(
-    digitalPinToInterrupt(P1));
-  premuto = true;
-  t0 = millis();
-  doOnFall();
-}
-
-void riarma() {
-#ifdef EIFR
-  // AVR: cancella i fronti
-  // rimasti in sospeso
-  EIFR = bit(digitalPinToInterrupt(P1));
-#endif
-  attachInterrupt(
-    digitalPinToInterrupt(P1),
-    isrPress, FALLING);
-}
-
-void setup() {
-  pinMode(P1, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
-  riarma();
-}
-
-void loop() {
-  if (premuto) {
-    if (digitalRead(P1) == LOW) {
-      t0 = millis();  // ancora premuto
-    } else if (millis() - t0 > 50) {
-      premuto = false;
-      doOnRise();
-      riarma();
-    }
-  }
-  // qui altri compiti
-}
-```
-
-</td>
-</tr>
-</table>
-
-## 3. ISR sempre armata, rilascio con DiffTimer nel loop()
-
-La ISR resta sempre armata: i rimbalzi la fanno scattare di nuovo, ma il flag `premuto` la
-fa uscire subito. Il `loop()` gestisce il rilascio come nella versione con DiffTimer di
-[pulsanti-rilascio.md](pulsanti-rilascio.md). Non serve riarmare l'interrupt, quindi non c'è
-il problema dei fronti in sospeso.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```cpp
-#include "urutils.h"
-
-const byte P1  = 2;  // pin con interrupt
-const byte LED = 13;
-bool stato = LOW;
-volatile bool premuto = false;
-DiffTimer debt;
-
-
-void doOnRise() {
-  // PRESSIONE (fronte di salita):
-  // qui vanno le azioni immediate
-  // alla pressione.
-  // Eseguita nella ISR: breve!
-}
-
-void doOnFall() {
-  // RILASCIO (fronte di discesa):
-  // qui vanno le azioni al rilascio.
-  // Eseguita nel loop().
-  // Esempio: toggle del LED.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void isrPress() {
-  // resta armata: i rimbalzi
-  // vengono filtrati dal flag
-  if (!premuto) {
+void isrChange() {
+  // resta sempre armata:
+  // registra ogni fronte
+  tFronte = millis();
+  if (!premuto &&
+      digitalRead(P1) == HIGH) {
     premuto = true;
     doOnRise();
   }
@@ -407,22 +265,22 @@ void setup() {
   pinMode(LED, OUTPUT);
   attachInterrupt(
     digitalPinToInterrupt(P1),
-    isrPress, RISING);
+    isrChange, CHANGE);
 }
 
 void loop() {
   if (premuto) {
-    debt.start();  // niente se armato
-    if (digitalRead(P1) == HIGH) {
-      debt.reset();  // ancora premuto
-    } else if (debt.get() > 50) {
-      debt.stop();
-      debt.reset();
+    noInterrupts();   // copia
+    unsigned long t = tFronte;
+    interrupts();     // protetta
+    if (digitalRead(P1) == LOW &&
+        millis() - t > 50) {
       premuto = false;
       doOnFall();
     }
   }
-  // qui altri compiti
+  // qui altri compiti,
+  // anche lenti
 }
 ```
 
@@ -430,13 +288,13 @@ void loop() {
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;  // pin con interrupt
 const byte LED = 13;
 bool stato = LOW;
 volatile bool premuto = false;
-DiffTimer debt;
+volatile unsigned long tFronte;
+// istante dell'ultimo fronte,
+// rimbalzi compresi
 
 
 void doOnFall() {
@@ -455,10 +313,12 @@ void doOnRise() {
   digitalWrite(LED, stato);
 }
 
-void isrPress() {
-  // resta armata: i rimbalzi
-  // vengono filtrati dal flag
-  if (!premuto) {
+void isrChange() {
+  // resta sempre armata:
+  // registra ogni fronte
+  tFronte = millis();
+  if (!premuto &&
+      digitalRead(P1) == LOW) {
     premuto = true;
     doOnFall();
   }
@@ -469,22 +329,22 @@ void setup() {
   pinMode(LED, OUTPUT);
   attachInterrupt(
     digitalPinToInterrupt(P1),
-    isrPress, FALLING);
+    isrChange, CHANGE);
 }
 
 void loop() {
   if (premuto) {
-    debt.start();  // niente se armato
-    if (digitalRead(P1) == LOW) {
-      debt.reset();  // ancora premuto
-    } else if (debt.get() > 50) {
-      debt.stop();
-      debt.reset();
+    noInterrupts();   // copia
+    unsigned long t = tFronte;
+    interrupts();     // protetta
+    if (digitalRead(P1) == HIGH &&
+        millis() - t > 50) {
       premuto = false;
       doOnRise();
     }
   }
-  // qui altri compiti
+  // qui altri compiti,
+  // anche lenti
 }
 ```
 
@@ -492,12 +352,14 @@ void loop() {
 </tr>
 </table>
 
-## 4. ISR che si disarma, attesa bloccante nel loop()
+## 3. ISR che si disarma, attesa bloccante nel loop()
 
-Come la tecnica 2, ma il rilascio si aspetta con `waitUntilInputLow()` (pull-down) o
-`waitUntilInputHigh()` (pull-up), che bloccano il `loop()` finché il pulsante resta premuto.
-Dopo il rilascio un `delay(50)` lascia finire i rimbalzi prima di riarmare l'interrupt: senza,
-un rimbalzo del rilascio verrebbe preso per una nuova pressione.
+La ISR riconosce la pressione, chiama la callback e si disarma. Il `loop()` aspetta il rilascio
+con `waitUntilInputLow()` (pull-down) o `waitUntilInputHigh()` (pull-up), che lo bloccano
+finché il pulsante resta premuto. Le due funzioni, come in `urutils.h`, escono solo con un
+rilascio confermato: dopo il primo LOW attendono altri 50 ms e ricontrollano il pin; poi `riarma()` cancella i fronti rimasti in sospeso e riarma
+l'interrupt. Senza queste due precauzioni un rimbalzo del rilascio verrebbe preso per una nuova
+pressione.
 
 <table>
 <tr>
@@ -531,9 +393,13 @@ void doOnFall() {
 }
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h
+  // come in urutils.h: esce solo
+  // con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != LOW);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != LOW);
 }
 
@@ -565,7 +431,6 @@ void loop() {
   if (premuto) {
     waitUntilInputLow(P1, 50);
     doOnFall();
-    delay(50);  // fine rimbalzi
     premuto = false;
     riarma();
   }
@@ -599,9 +464,13 @@ void doOnRise() {
 }
 
 void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h
+  // come in urutils.h: esce solo
+  // con un rilascio confermato
   do {
-    delay(t);
+    do {
+      delay(t);
+    } while (digitalRead(btn) != HIGH);
+    delay(t);  // fine rimbalzi
   } while (digitalRead(btn) != HIGH);
 }
 
@@ -633,7 +502,6 @@ void loop() {
   if (premuto) {
     waitUntilInputHigh(P1, 50);
     doOnRise();
-    delay(50);  // fine rimbalzi
     premuto = false;
     riarma();
   }
@@ -644,12 +512,12 @@ void loop() {
 </tr>
 </table>
 
-## 5. Timer hardware con Ticker (solo ESP32)
+## 4. ISR su CHANGE e Ticker (solo ESP32)
 
-La ISR riconosce la pressione e programma un timer hardware, il `Ticker` di ESP32, che dopo
-50 ms controlla il pin. Finché il pulsante è premuto il controllo si ripete ogni 50 ms; al
-rilascio chiama la callback e, dopo altri 50 ms, riarma il riconoscimento della pressione,
-così i rimbalzi del rilascio vengono ignorati. Il `loop()` è del tutto libero.
+Come la tecnica 2, ma il controllo del rilascio non lo fa il `loop()`: lo fa un timer
+hardware, il `Ticker` di ESP32, ogni 50 ms. Quando trova il pin rilasciato e nessun fronte
+negli ultimi 50 ms chiama la callback del rilascio; altrimenti si riprogramma. Il `loop()` è
+del tutto libero. La callback del rilascio arriva fra 50 e 100 ms dopo l'ultimo rimbalzo.
 
 <table>
 <tr>
@@ -666,6 +534,7 @@ const byte P1  = 12;  // pin con interrupt
 const byte LED = 13;
 volatile bool stato = LOW;
 volatile bool premuto = false;
+volatile unsigned long tFronte;
 Ticker debTicker;
 
 
@@ -685,24 +554,23 @@ void doOnFall() {
   digitalWrite(LED, stato);
 }
 
-void riarma() {
-  premuto = false;
-}
-
 void controllaRilascio() {
-  if (digitalRead(P1) == HIGH) {
-    // ancora premuto: ricontrollo
+  if (digitalRead(P1) == HIGH ||
+      millis() - tFronte <= 50) {
+    // premuto o fronte recente:
+    // ricontrollo fra 50 ms
     debTicker.once_ms(50,
       controllaRilascio);
   } else {
+    premuto = false;  // stabile
     doOnFall();
-    // riarmo dopo i rimbalzi
-    debTicker.once_ms(50, riarma);
   }
 }
 
-void IRAM_ATTR isrPress() {
-  if (!premuto) {
+void IRAM_ATTR isrChange() {
+  tFronte = millis();
+  if (!premuto &&
+      digitalRead(P1) == HIGH) {
     premuto = true;
     doOnRise();
     debTicker.once_ms(50,
@@ -715,7 +583,7 @@ void setup() {
   pinMode(LED, OUTPUT);
   attachInterrupt(
     digitalPinToInterrupt(P1),
-    isrPress, RISING);
+    isrChange, CHANGE);
 }
 
 void loop() {
@@ -733,6 +601,7 @@ const byte P1  = 12;  // pin con interrupt
 const byte LED = 13;
 volatile bool stato = LOW;
 volatile bool premuto = false;
+volatile unsigned long tFronte;
 Ticker debTicker;
 
 
@@ -752,24 +621,23 @@ void doOnRise() {
   digitalWrite(LED, stato);
 }
 
-void riarma() {
-  premuto = false;
-}
-
 void controllaRilascio() {
-  if (digitalRead(P1) == LOW) {
-    // ancora premuto: ricontrollo
+  if (digitalRead(P1) == LOW ||
+      millis() - tFronte <= 50) {
+    // premuto o fronte recente:
+    // ricontrollo fra 50 ms
     debTicker.once_ms(50,
       controllaRilascio);
   } else {
+    premuto = false;  // stabile
     doOnRise();
-    // riarmo dopo i rimbalzi
-    debTicker.once_ms(50, riarma);
   }
 }
 
-void IRAM_ATTR isrPress() {
-  if (!premuto) {
+void IRAM_ATTR isrChange() {
+  tFronte = millis();
+  if (!premuto &&
+      digitalRead(P1) == LOW) {
     premuto = true;
     doOnFall();
     debTicker.once_ms(50,
@@ -782,7 +650,7 @@ void setup() {
   pinMode(LED, OUTPUT);
   attachInterrupt(
     digitalPinToInterrupt(P1),
-    isrPress, FALLING);
+    isrChange, CHANGE);
 }
 
 void loop() {
@@ -807,13 +675,14 @@ Valgono per tutte le tecniche:
   disabilitati. Confrontare due tempi letti in momenti diversi va bene; aspettare che il
   tempo passi dentro la ISR no.
 - **Variabili da 2 o 4 byte** lette nel `loop()` mentre la ISR può scriverle rischiano di
-  essere lette a metà. Nelle tecniche 2 e 4 il problema non c'è, perché la ISR scrive `t0` e
-  poi si disarma; altrimenti la lettura va fatta fra `noInterrupts()` e `interrupts()`.
+  essere lette a metà. Per questo nella tecnica 2 la lettura di `tFronte` è fatta fra `noInterrupts()` e
+  `interrupts()`; su ESP32 le variabili da 32 bit si leggono in un'operazione sola.
 - **Quando si riarma un interrupt disarmato** il microcontrollore può avere già memorizzato
   un fronte avvenuto nel frattempo, e la ISR scatterebbe subito. Su AVR (Arduino Uno) si
   cancella il flag in sospeso con `EIFR = bit(digitalPinToInterrupt(P1));` prima di
-  `attachInterrupt()`: è quello che fa la funzione `riarma()` delle tecniche 2 e 4.
-- **Su ESP32** la ISR va dichiarata `IRAM_ATTR`, come nella tecnica 5, così resta in RAM e
+  `attachInterrupt()`: è quello che fa la funzione `riarma()` della tecnica 3, l'unica che
+  disarma l'interrupt.
+- **Su ESP32** la ISR va dichiarata `IRAM_ATTR`, come nella tecnica 4, così resta in RAM e
   viene eseguita anche quando la memoria flash è occupata.
 
 ## Riferimenti
