@@ -155,6 +155,26 @@ La **FSM** che modella il comportamento del pulsante è del tutto **indipendente
 
 Il codice di ```changed()``` ricalca il diagramma degli stati: un ```if``` sulla variabile di stato ```debState``` seleziona lo **stato corrente** e, dentro ciascun ramo, si esaminano gli **ingressi** che provocano le transizioni uscenti da quello stato. Con più di due stati lo stesso schema si scrive con uno ```switch``` su una variabile di tipo ```enum```.
 
+**Perché nel codice non compare mai il confronto con ```val00```.** Il confronto c'è, ma è **implicito nello stato** in cui ci si trova:
+- in **STABILE** vale ```val0 == val00```, quindi ```val != val0``` equivale a ```val != val00```: chiedersi se il valore è cambiato rispetto all'ultima lettura è lo stesso che chiedersi se è diverso dal livello accettato;
+- in **ATTESA DI CONFERMA** vale ```val0 != val00```; poiché il segnale è **binario**, ```val00``` è l'altro valore e una nuova variazione (```val != val0```) riporta per forza il valore letto uguale a ```val00```: per questo si torna in STABILE senza controllarlo;
+- all'**uscita per tempo scaduto** vale ```val == val0 != val00```: il livello è sicuramente nuovo e si può assegnare ```val00 = val``` senza verificarlo.
+
+È lo scambio tra le due codifiche: nel DEBOUNCER, in logica "prima gli ingressi", manca la variabile di stato e serve scrivere ```val != val00``` per sapere se si è in attesa; qui ```debState``` contiene già quell'informazione e il confronto non va ripetuto.
+
+Volendo rendere visibile il confronto, si può scrivere in forma esplicita, con lo stesso comportamento:
+
+```cpp
+    if (!debState) {                  // STABILE: val0 == val00
+      if (val != val00) { ... }       // uguale a val != val0 in questo stato
+    } else {                          // ATTESA: val0 != val00
+      if (val == val00) { ... }       // rimbalzo o disturbo: tornato al livello accettato
+      else if (millis() - last > debtime) { ... }   // qui val != val00: cambio vero
+    }
+```
+
+La forma esplicita si legge più vicino al diagramma ("tornato al livello accettato", "stabile su un livello nuovo"); quella usata nell'esempio mostra che basta confrontare ogni lettura con la precedente. La semplificazione vale perché un pin digitale ha solo due valori: con un ingresso a più valori servirebbe il confronto esplicito con ```val00```.
+
 L'inizializzazione degli **oggetti statici** è effettuata al momento della dichiarazione tramite il **costruttore**: ```Button buttonMomentary(BUTTON1_PIN)``` usa il tempo di stabilità predefinito ```DEBOUNCETIME```, ```Button buttonMomentary(BUTTON1_PIN, 80)``` ne imposta uno diverso. Il costruttore configura il pin come ingresso e ne **legge il livello iniziale**, che diventa il livello accettato: non serve indicarlo a mano e non c'è il rischio di un evento falso all'accensione, sia con il pull-down sia con il pull-up.
 
 L'ultimo **valore valido** è quello che permane **immutato** per tutto l'**intervallo di debounce**, misurato a partire dall'**ultima variazione**.
