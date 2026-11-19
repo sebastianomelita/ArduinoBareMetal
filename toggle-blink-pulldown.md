@@ -485,11 +485,15 @@ viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le cal
 nella ISR e devono restare brevi; il `loop()` contiene solo il blink, e il toggle funziona anche
 se il `loop()` è bloccato.
 
-**Limite.** Un'interruzione breve del contatto mentre il pulsante è tenuto premuto (contatto usurato,
-filo che si muove, disturbo) viene accettata come rilascio: la callback del rilascio scatta durante
-la pressione e, da lì in poi, le due callback restano scambiate (quella del rilascio scatta alle
-pressioni e viceversa). Con un pulsante in buone condizioni non succede; se serve robustezza anche
-a questo, conviene la versione della sezione 6, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
+**Riarmo a ogni fronte.** Il fronte opposto viene armato a **ogni** fronte, anche a quelli scartati come rimbalzi: così l'interrupt resta sempre armato sul fronte che il livello attuale del pin può produrre. Se si riarmasse solo sui fronti accettati, un fronte scartato (una pressione più breve di 50 ms, un disturbo) lascerebbe l'interrupt armato sul verso sbagliato e da lì in poi le due callback resterebbero scambiate per sempre. Sugli AVR (Arduino Uno, Nano), dopo il cambio di fronte si cancella anche il flag in sospeso (`EIFR`): un fronte del verso vecchio arrivato mentre la ISR girava la farebbe scattare di nuovo subito.
+
+**Limiti.** Gli errori restano **locali**: la sequenza si rimette in passo da sola al fronte successivo.
+- Una pressione più breve di 50 ms esegue la callback della pressione ma non quella del rilascio (con il toggle al rilascio: nessun toggle).
+- Un rilascio più breve di 50 ms (si ripreme subito) perde la callback della pressione successiva.
+- Un'interruzione breve del contatto a pulsante premuto (contatto usurato, filo che si muove, disturbo) fa scattare una callback del rilascio in più (con il toggle: un toggle in più).
+- Un fronte perso dall'hardware (rimbalzi più vicini di pochi microsecondi, arrivati mentre la ISR girava) può far sbagliare un evento.
+
+Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la versione della sezione 6, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
 
 ```cpp
 const byte P1       = 2;    // pulsante (pull-down), pin con interrupt
@@ -523,16 +527,28 @@ void isrPress() {                 // armata sulla pressione
   if (millis() - tUltimo > 50) {
     tUltimo = millis();
     doOnRise();
-    attachInterrupt(digitalPinToInterrupt(P1), isrRel, FALLING);
   }
+  // sempre, anche per un fronte scartato:
+  // si arma il fronte opposto
+  attachInterrupt(digitalPinToInterrupt(P1), isrRel, FALLING);
+#ifdef EIFR
+  // AVR: cancella il fronte in sospeso
+  EIFR = bit(digitalPinToInterrupt(P1));
+#endif
 }
 
 void isrRel() {                   // armata sul rilascio
   if (millis() - tUltimo > 50) {
     tUltimo = millis();
     doOnFall();
-    attachInterrupt(digitalPinToInterrupt(P1), isrPress, RISING);
   }
+  // sempre, anche per un fronte scartato:
+  // si arma il fronte opposto
+  attachInterrupt(digitalPinToInterrupt(P1), isrPress, RISING);
+#ifdef EIFR
+  // AVR: cancella il fronte in sospeso
+  EIFR = bit(digitalPinToInterrupt(P1));
+#endif
 }
 
 void setup() {

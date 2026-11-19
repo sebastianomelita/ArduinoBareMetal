@@ -60,11 +60,15 @@ fronte accettato sono passati più di 50 ms. Tutto avviene nel gestore, quindi i
 principale è libero. Una pressione più breve di 50 ms fa saltare un giro alla sequenza, che poi
 si rimette in passo da sola.
 
-**Limite.** Un'interruzione breve del contatto mentre il pulsante è tenuto premuto (contatto usurato,
-filo che si muove, disturbo) viene accettata come rilascio: la callback del rilascio scatta durante
-la pressione e, da lì in poi, le due callback restano scambiate (quella del rilascio scatta alle
-pressioni e viceversa). Con un pulsante in buone condizioni non succede; se serve robustezza anche
-a questo, conviene la tecnica 2, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
+**Riarmo a ogni fronte.** Il fronte opposto viene armato a **ogni** fronte, anche a quelli scartati come rimbalzi: così il gestore resta sempre armato sul fronte che il livello attuale del pin può produrre. Se si riarmasse solo sui fronti accettati, un fronte scartato (una pressione più breve di 50 ms, un disturbo) lascerebbe il gestore armato sul verso sbagliato e da lì in poi le due callback resterebbero scambiate per sempre.
+
+**Limiti.** Gli errori restano **locali**: la sequenza si rimette in passo da sola al fronte successivo.
+- Una pressione più breve di 50 ms esegue la callback della pressione ma non quella del rilascio (con il toggle al rilascio: nessun toggle).
+- Un rilascio più breve di 50 ms (si ripreme subito) perde la callback della pressione successiva.
+- Un'interruzione breve del contatto a pulsante premuto (contatto usurato, filo che si muove, disturbo) fa scattare una callback del rilascio in più (con il toggle: un toggle in più).
+- Un fronte perso dall'hardware (rimbalzi più vicini di pochi microsecondi, arrivati mentre il gestore girava) può far sbagliare un evento.
+
+Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la tecnica 2, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
 
 <table>
 <tr>
@@ -105,15 +109,19 @@ def isrPress(pin):  # armata sulla pressione
     if debt.get() > 50:
         debt.reset()
         doOnRise()
-        P1.irq(trigger=Pin.IRQ_FALLING,
-               handler=isrRel)
+    # sempre, anche per un fronte scartato:
+    # si arma il fronte opposto
+    P1.irq(trigger=Pin.IRQ_FALLING,
+           handler=isrRel)
 
 def isrRel(pin):    # armata sul rilascio
     if debt.get() > 50:
         debt.reset()
         doOnFall()
-        P1.irq(trigger=Pin.IRQ_RISING,
-               handler=isrPress)
+    # sempre, anche per un fronte scartato:
+    # si arma il fronte opposto
+    P1.irq(trigger=Pin.IRQ_RISING,
+           handler=isrPress)
 
 P1.irq(trigger=Pin.IRQ_RISING,
        handler=isrPress)
@@ -156,15 +164,19 @@ def isrPress(pin):  # armata sulla pressione
     if debt.get() > 50:
         debt.reset()
         doOnFall()
-        P1.irq(trigger=Pin.IRQ_RISING,
-               handler=isrRel)
+    # sempre, anche per un fronte scartato:
+    # si arma il fronte opposto
+    P1.irq(trigger=Pin.IRQ_RISING,
+           handler=isrRel)
 
 def isrRel(pin):    # armata sul rilascio
     if debt.get() > 50:
         debt.reset()
         doOnRise()
-        P1.irq(trigger=Pin.IRQ_FALLING,
-               handler=isrPress)
+    # sempre, anche per un fronte scartato:
+    # si arma il fronte opposto
+    P1.irq(trigger=Pin.IRQ_FALLING,
+           handler=isrPress)
 
 P1.irq(trigger=Pin.IRQ_FALLING,
        handler=isrPress)
