@@ -116,6 +116,12 @@ void loop() {
 
 ## 2. Versione non bloccante con millis()
 
+<p align="center">
+  <img src="debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
 Qui la variabile `armato` serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
 vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
 
