@@ -122,6 +122,10 @@ Gli **ingressi** della macchina sono due, entrambi **eventi**: la **variazione**
 
 Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riporta necessariamente il valore letto uguale a ```val00```: la macchina torna in STABILE senza segnalare nulla. In STABILE il timer non serve e non va inizializzato: viene avviato nella transizione verso ATTESA DI CONFERMA, l'unico stato che lo usa. Così, a ogni rimbalzo, la macchina esce e rientra in ATTESA DI CONFERMA e il conteggio riparte da capo.
 
+**Uscite: macchina di Mealy.** In STABILE si entra con due transizioni che hanno uscite diverse: ```changed() = false``` dopo un rimbalzo, ```changed() = true``` dopo il timeout. È lecito perché la macchina è di **Mealy**: l'uscita dipende dalla coppia (stato, ingresso), cioè dalla **transizione**, e non solo dallo stato. In una macchina di **Moore**, dove l'uscita dipende solo dallo stato, servirebbe uno stato in più (ad esempio CONFERMATO, con uscita ```true```, che dura un solo passo e torna subito in STABILE): la macchina sarebbe equivalente ma più grande. Per un'uscita di tipo evento come ```changed()```, un impulso che dura una sola chiamata, Mealy è la scelta naturale.
+
+**Il livello accettato è una proprietà dello stato.** In STABILE ```val00``` può valere 0 o 1, ma la macchina reagisce agli ingressi nello stesso modo in entrambi i casi: il livello è una **proprietà** dello stato, come il colore di un LED acceso, non uno stato diverso. Separarlo darebbe una macchina equivalente con quattro stati (STABILE_BASSO, STABILE_ALTO, ATTESA_SALITA, ATTESA_DISCESA) e il livello come uscita di Moore, ma con il doppio degli stati e nessun comportamento in più.
+
 ## Caratteristiche della Macchina a Stati
 1. **Conferma per stabilità**: un cambio viene segnalato (```changed()``` restituisce ```true```) solo dopo ```debtime``` ms senza variazioni
 2. **Riavvio del timer**: ogni variazione letta, rimbalzo o disturbo, fa ripartire il conteggio, perché il timer viene avviato a ogni ingresso in ATTESA DI CONFERMA
