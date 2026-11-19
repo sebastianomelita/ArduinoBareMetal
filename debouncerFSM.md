@@ -1,6 +1,6 @@
 
 
->[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
+>[Torna all'indice](indexstatifiniti.md) >[versione in Python](debouncerFSM_py.md)
 
 #  **DEBOUNCER**
 
