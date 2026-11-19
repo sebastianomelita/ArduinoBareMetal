@@ -11,10 +11,12 @@ Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando
 
 ```C++
 byte in;
+byte led = 13;
 byte pulsante =2;
 boolean closed=false; // stato pulsante
 void setup()
 {
+	pinMode(led, OUTPUT);
 	pinMode(pulsante, INPUT);
 }
 
@@ -41,7 +43,7 @@ La **soluzione** è **modificare il tipo di selezione** **dell’evento** in ing
 
 ![fronti](fronti.gif)
 
-Una **evento di fronte** si può rilevare in due modi:
+Un **evento di fronte** si può rilevare in due modi:
 
 - **Polling degli ingressi.** Lo scopo è rilevare una **transizione di livello**. Si tratta di campionare periodicamente il livello di un ingresso con l’obiettivo di rilevare un fronte. Un fronte può essere **rilevato** sostanzialmente in **due maniere**:
 
@@ -65,7 +67,7 @@ Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabil
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
-Gli esempi successivi sono stati esposti relativamente al problema del **pulsante toggle** premendo il quale, ad ogni lettura di un fornte, si genera la modifica di una opportuna **variabile di stato** (```stato``` negli esempi).
+Gli esempi successivi sono stati esposti relativamente al problema del **pulsante toggle** premendo il quale, ad ogni lettura di un fronte, si genera la modifica di una opportuna **variabile di stato** (```stato``` negli esempi).
 
 A ben vedere, le soluzioni proposte di seguito possono essere tutte facilmente adattate alla realizzazione di un **sensore di transito** sostituendo la pressione del pulsante con la lettura del sensore e interpretando la variabile ```stato``` con la **variabile di stato** che deve tenere traccia del passaggio rilevato.
 
@@ -158,6 +160,10 @@ int val, precval = LOW;                                    | int val, precval = 
 int stato, nuovoStato;                                     | int stato, nuovoStato;
 int P1 = 2;                                         	   | int P1 = 2;
 DiffTimer deb;                                             | DiffTimer deb;
+                                                           |
+void setup() {                                             | void setup() {
+  deb.start(); // il timer va avviato                      |   deb.start(); // il timer va avviato
+}                                                          | }
                                                            | 
 void loop() {                                              | void loop() {
   if(deb.get() >= tbase) {                                 |   if(deb.get() >= tbase) {
@@ -183,57 +189,58 @@ void loop() {                                              | void loop() {
 - **```deb.get() >= tbase```**: è la condizione di rilevazione del **nuovo timeout**
 - **```tbase```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+- **```deb.start()```** nel ```setup()``` è necessario: un ```DiffTimer``` non avviato restituisce sempre 0 e il campionamento non partirebbe mai.
 
 ## **Attivazione immediata di una logica qualsiasi su un fronte**
 
 ```C++
 // APPROCCIO CON TIMER - FRONTE SALITA                     | // APPROCCIO CON TIMER - FRONTE DISCESA
                                                            |
-                                                           | 
+                                                           |
 int stato, nuovoStato;                                     | int stato, nuovoStato;
-int P1 = 2;                                         	   | int P1 = 2;
-DiffTimer deb;                                             | DiffTimer deb;
-                                                           | 
+int P1 = 2;                                                | int P1 = 2;
+DiffTimer debt;                                            | DiffTimer debt;
+                                                           |
 void loop() {                                              | void loop() {
   if (digitalRead(P1)) {                                   |   if (!digitalRead(P1)) {
     if(!debt.timerState){                                  |     if(!debt.timerState){
-      debt.start();                                        |        debt.start();
-      doOnRise();                                          |        doOnFall();
-    }                                                      |      }
+      debt.start();                                        |       debt.start();
+      doOnRise();                                          |       doOnFall();
+    }                                                      |     }
+    debt.reset(); // ancora premuto: riparte               |     debt.reset(); // ancora premuto: riparte
   } else if(debt.get() > 50) {                             |   } else if(debt.get() > 50) { // disarmo del timer al timeout
-    debt.stop(); // disarmo del timer                      | 	 debt.stop(); // disarmo del timer
+    debt.stop(); // disarmo del timer                      |     debt.stop(); // disarmo del timer
     debt.reset();                                          |     debt.reset();
-    doOnFall();                                            |     doOnRise();                                
+    doOnFall();                                            |     doOnRise();
     // Altre operazioni possibili                          |     // Altre operazioni possibili
- }                                                         |   }    
-}                                                          | }    
+  }                                                        |   }
+}                                                          | }
 ```
-- a differenza della soluzione precedente, la rilevazione del **primo fronte** è immediata, dato che non deve attendere mai il periodo stabilito da un timer.
-- la rilevazione del **secondo fronte** (opposto al precedente) è invece possibile che venga **differita** se questo accade prima dello scadere del tempo minimo di garanzia necessario per mettere la rilevazione al riparo dal fenomeno dei rimbalzi.
-- **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
-- **```50 msec```**: è il tempo tra un timeout e l'altro
-- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+- la rilevazione del **primo fronte** è immediata, dato che non deve attendere mai il periodo stabilito da un timer.
+- la rilevazione del **secondo fronte** (opposto al precedente) avviene dopo **50 msec di livello stabile**: il timer riparte a ogni lettura del primo livello, quindi anche a ogni rimbalzo, e scade solo quando i rimbalzi del rilascio sono finiti.
+- **```debt.reset()```** nel primo ramo fa ripartire il conteggio a ogni lettura del primo livello. Senza, il timer misurerebbe il tempo dalla pressione e al rilascio sarebbe già scaduto: la prima lettura in mezzo ai rimbalzi farebbe scattare il secondo fronte, e il rimbalzo successivo verrebbe preso per un nuovo primo fronte.
+- **```debt.get()```**: rappresenta il tempo trascorso dall'ultima lettura del primo livello.
 
 ## Debounce con millis()
 
 | Fronte di SALITA | Fronte di DISCESA |
 |---|---|
-| Esegue `doOnRise()` subito sul fronte, `doOnFall()` dopo 50 ms di stato basso | Esegue `doOnFall()` subito sul fronte, `doOnRise()` dopo 50 ms di stato alto |
+| Esegue `doOnRise()` subito sul fronte, `doOnFall()` dopo 50 ms di stato basso stabile | Esegue `doOnFall()` subito sul fronte, `doOnRise()` dopo 50 ms di stato alto stabile |
 
 ### Approccio con millis() – fronte di salita
 
 ```cpp
 int P1 = 2;
-unsigned long t0 = 0;   // istante di armo del timer
+unsigned long t0 = 0;   // ultima lettura "premuto"
 bool armato = false;    // equivalente di deb.timerState
 
 void loop() {
   if (digitalRead(P1)) {
     if (!armato) {             // timer non armato
       armato = true;           // deb.start()
-      t0 = millis();
       doOnRise();
     }
+    t0 = millis();             // ancora premuto: il conteggio riparte
   } else if (armato && millis() - t0 > 50) { // deb.get() > 50
     armato = false;            // deb.stop() + deb.reset()
     doOnFall();
@@ -246,17 +253,17 @@ void loop() {
 
 ```cpp
 int P1 = 2;
-unsigned long t0 = 0;   // istante di armo del timer
+unsigned long t0 = 0;   // ultima lettura "premuto"
 bool armato = false;    // equivalente di deb.timerState
 
 void loop() {
   if (!digitalRead(P1)) {
     if (!armato) {             // timer non armato
       armato = true;           // deb.start()
-      t0 = millis();
       doOnFall();
     }
-  } else if (armato && millis() - t0 > 50) { // disarmo del timer al timeout
+    t0 = millis();             // ancora premuto: il conteggio riparte
+  } else if (armato && millis() - t0 > 50) { // deb.get() > 50
     armato = false;            // deb.stop() + deb.reset()
     doOnRise();
     // Altre operazioni possibili
@@ -268,7 +275,8 @@ void loop() {
 
 | DiffTimer | millis() |
 |---|---|
-| `deb.start()` | `armato = true; t0 = millis();` |
+| `deb.start()` | `armato = true;` |
+| `deb.reset()` a ogni lettura "premuto" | `t0 = millis();` a ogni lettura "premuto" |
 | `deb.timerState` | `armato` |
 | `deb.get()` | `millis() - t0` |
 | `deb.stop(); deb.reset();` | `armato = false;` |
@@ -299,9 +307,7 @@ void loop() {                                              | void loop() {
 }                                                          | }    
 ```
 - sia la rilevazione del **primo fronte** che quella del **secondo fronte** sono immediate, dato che non si deve attendere mai il periodo stabilito da un timer.
-- **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
-- **```50 msec```**: è il tempo tra un timeout e l'altro
-- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+- **non c'è antirimbalzo**: va usato solo con segnali puliti (uscite logiche, sensori elettronici) oppure leggendo l'ingresso con un periodo maggiore della durata dei rimbalzi, come negli esempi schedulati.
   
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
@@ -312,22 +318,24 @@ E' un approccio bloccante che però è molto pratico per la realizzazione di pul
 -------------------------------------------------------|------------------------------------------------------
 int stato, nuovoStato;                                 | int stato, nuovoStato;
 int P1 = 2;                                            | int P1 = 2;
-doOnFall(){                                            | doOnRise(){
+void doOnFall(){                                       | void doOnRise(){
    stato = nuovoStato;                                 |     stato = nuovoStato;
-   updateOutputsInP1(stato);                                 updateOutputsInP1(stato);   
+   updateOutputsInP1(stato);                           |     updateOutputsInP1(stato);
 }                                                      | }
 // loop principale                                     | // loop principale
 void loop() {                                          | void loop() {
-  if(digitalRead(P1) == HIGH){                         |   if(digitalRead(P1) == LOW){    
-    doOnRise();                                        |     doOnFall();                        
-    waitUntilInputLow(P1, 50);                         |     waitUntilInputHigh(P1, 50);   
-    doOnFall();                                        |     doOnRise();  
-  }                                                    |   }                                               
+  if(digitalRead(P1) == HIGH){                         |   if(digitalRead(P1) == LOW){
+    doOnRise();                                        |     doOnFall();
+    waitUntilInputLow(P1, 50);                         |     waitUntilInputHigh(P1, 50);
+    doOnFall();                                        |     doOnRise();
+  }                                                    |   }
 }                                                      | }
                                                        |
 // Attivazione quando il pulsante                      | // Attivazione quando il pulsante
 // viene RILASCIATO (fronte di discesa)                | // viene RILASCIATO (fronte di salita)
 ```
+
+> ```waitUntilInputLow()``` e ```waitUntilInputHigh()``` sono quelle di ```urutils.h``` aggiornato: dopo il primo livello atteso aspettano altri ```t``` msec e ricontrollano il pin, quindi escono solo con un **rilascio confermato**. Così né un rimbalzo del rilascio né un'interruzione breve del contatto a pulsante premuto vengono presi per un rilascio.
 
 Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
 
@@ -342,14 +350,14 @@ Nella **colonna sinistra**:
 
 Nella **colonna destra**:
 
-- Codice che attiva la **logica** sul fronte di **SALITA**
-- Rileva prima quando il pulsante è rilasciato (LOW)
-- Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
-- Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
-- **Cambia lo stato** quando il pulsante viene PREMUTO
+- Codice per un pulsante in **PULL UP**, che attiva la **logica** sul fronte di **SALITA**
+- Rileva prima quando il pulsante è premuto (LOW)
+- Esegue ```doOnFall()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
+- Attende con anti-rimbalzo che il pulsante venga **rilasciato** (HIGH)
+- **Cambia lo stato** quando il pulsante viene RILASCIATO
 - ```updateOutputsInP1(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
-La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
+In entrambe le colonne lo stato cambia quando il pulsante viene **rilasciato**: la differenza è solo nel collegamento del pulsante. Nel pull-down il rilascio è il fronte di discesa, nel pull-up è il fronte di salita.
 
 ### **Toggle con antirimbalzo esterno con get()**
 
@@ -437,8 +445,9 @@ void setup() {
 
 // loop principale
 void loop() {
-  if (digitalRead(pulsante)) {// polling pulsante non premuto
+  if (digitalRead(pulsante)) {// polling pulsante premuto
     debt.start();
+    debt.reset();// ancora premuto: il conteggio riparte
   }else if (debt.get() > 50) { // disarmo del timer al timeout
     debt.stop(); // disarmo del timer
     debt.reset();
@@ -469,7 +478,6 @@ DiffTimer t1;
 // oggetto pulsante con debouncing
 typedef struct
 {
-  #include "urutils.h"
   unsigned long debtime = 50;
   byte state = LOW;
   byte val0 = LOW;
@@ -535,9 +543,12 @@ int count; // indica quale led si spegne e poi il successivo che si accende quan
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
+    do{
+        while(digitalRead(btn) == HIGH){
+            delay(t);
+        }
+        delay(t); // attesa fine rimbalzi del rilascio
+    }while(digitalRead(btn) == HIGH); // rilascio confermato
 }
 
 void setup() 
@@ -690,9 +701,12 @@ byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
+    do{
+        while(digitalRead(btn) == HIGH){
+            delay(t);
+        }
+        delay(t); // attesa fine rimbalzi del rilascio
+    }while(digitalRead(btn) == HIGH); // rilascio confermato
 }
   
 void setup() {
@@ -760,7 +774,7 @@ void loop()
 	
 	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
 	val = digitalRead(pulsante);		//pulsante collegato in pulldown
-	//val = digitalRead(!pulsante);		//pulsante collegato in pullup
+	//val = !digitalRead(pulsante);		//pulsante collegato in pullup
 	if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
 		stato = !stato; 		//impostazione dello stato del toggle	
 	}
@@ -817,7 +831,10 @@ void loop() {
   if (tmrblink.get() > 500) {
     digitalWrite(led, !digitalRead(led));
     tmrblink.reset();
-  } 
+  }
+  if (!tmrblink.timerState) {
+    digitalWrite(led, LOW);  // blink disattivato: led spento
+  }
   delay(10);
 }
 
@@ -871,7 +888,10 @@ int btnThread(struct pt* pt) {
 	if(digitalRead(pulsante)==HIGH){		// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
 		PT_SLEEP(pt, 50);		// antirimbalzo
-		PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
+		do{
+			PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
+			PT_SLEEP(pt, 50);		// antirimbalzo del rilascio
+		}while(digitalRead(pulsante)==HIGH);	// rilascio confermato
 	}
 	PT_YIELD(pt);
   }
@@ -927,9 +947,12 @@ La funzione
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
+    do{
+        while(digitalRead(btn) == HIGH){
+            delay(t);
+        }
+        delay(t); // attesa fine rimbalzi del rilascio
+    }while(digitalRead(btn) == HIGH); // rilascio confermato
 }
 ```
 realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
@@ -954,9 +977,12 @@ byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
+    do{
+        while(digitalRead(btn) == HIGH){
+            delay(t);
+        }
+        delay(t); // attesa fine rimbalzi del rilascio
+    }while(digitalRead(btn) == HIGH); // rilascio confermato
 }
 
 void * btnThread(void * d)
@@ -1025,9 +1051,12 @@ byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
+    do{
+        while(digitalRead(btn) == HIGH){
+            delay(t);
+        }
+        delay(t); // attesa fine rimbalzi del rilascio
+    }while(digitalRead(btn) == HIGH); // rilascio confermato
 }
  
 void btnThread(void * d){
@@ -1182,6 +1211,10 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 
 Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```count1``` che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
 
+Le chiamate a ```Serial.println()``` dentro le ISR servono solo per il debug: in un programma vero vanno tolte, perché una ISR deve essere breve.
+
+**Limite.** Un'interruzione breve del contatto mentre il pulsante è tenuto premuto (contatto usurato, filo che si muove, disturbo) viene accettata come fronte di discesa. A quel punto l'interrupt è armato sul fronte di salita, e i rimbalzi del rilascio vero vengono presi per una nuova pressione. Con un pulsante in buone condizioni non succede; altrimenti conviene un interrupt su entrambi i fronti (```CHANGE```) che registri l'istante di ogni fronte e consideri il pulsante rilasciato solo dopo 50 msec senza fronti.
+
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
@@ -1193,7 +1226,7 @@ All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
-Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputChange()```. La funzione, di fatto esegue il **filtraggio** delle segnalazioni di un flag (```numberOfButtonInterrupts```) impostato dalla ISR chiamata dagli interrupt sulla porta digitale. Le segnalazioni vengono filtrate se troppo in anticipo (funzione di debouncing) e se si riferiscono a letture dello stesso livello (non transizioni). La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello letto periodicamente nel ```loop()``` dalla funzione ```waitUntilInputChange()```. La ISR, al primo fronte di salita, esegue il toggle e si disarma; la funzione riarma l'interrupt solo quando il pulsante è rilasciato da più di ```DEBOUNCETIME``` msec **senza interruzioni**: ogni lettura del livello alto, compresi i rimbalzi, fa ripartire il conteggio. Il ```loop()``` deve quindi girare più spesso di ```DEBOUNCETIME``` msec.
 
 Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
 
@@ -1203,19 +1236,28 @@ Una realizzazione di interrupt con debouncing SW che garantisce un intervento im
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
 byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile unsigned long previousMillis = 0;
-volatile unsigned long lastintTime = 0;
+volatile byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+unsigned long lastintTime = 0; // ultima lettura "premuto" (usata solo nel loop)
 bool started = false;
 volatile bool pressed;
 #define DEBOUNCETIME 50
+
+void switchPressed ();
+
+void riarma()
+{
+#ifdef EIFR
+    EIFR = bit(digitalPinToInterrupt(pulsante)); // solo AVR: cancella i fronti rimasti in sospeso
+#endif
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+}
  
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
   pressed = false;
+  riarma();
 }
 
 // Interrupt Service Routine (ISR)
@@ -1224,20 +1266,21 @@ void switchPressed ()
     pressed = true; // disarmo del pulsante e riarmo del timer
     detachInterrupt(digitalPinToInterrupt(pulsante));
     stato = !stato; // logica da attivare sul fronte (toggle)
-    Serial.println("disarmo interrupts timer");
 }  // end of switchPressed
 
 void waitUntilInputChange()
 {
     if(pressed){ 
       if(!started){
-        started = true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
+        started = true;// avvia il timer alla prima di molte chiamate consecutive
         lastintTime = millis();
       }
-      if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+      if(digitalRead(pulsante) == HIGH){
+        lastintTime = millis();// ancora premuto (o rimbalzo): il conteggio riparte
+      }else if(millis() - lastintTime > DEBOUNCETIME){
         pressed = false; // riarmo del pulsante
         started = false; // disarmo del timer
+        riarma();
         Serial.println("riarmo interrupts timer");
       }
     }
@@ -1258,9 +1301,11 @@ Nei microcontrollori attuali, in genere **nessuna istruzione** gode della propri
 
 Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
 
-Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```pressed``` e ```stato```, che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di esse.
 
-L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+La variabile a **32 bit** ```lastintTime``` non è condivisa: è scritta e letta solo nel ```loop()```, quindi non le servono né ```volatile``` né una sezione critica.
+
+Su Arduino Uno il pulsante deve stare su un pin con interrupt (2 o 3). Prima di riarmare, ```riarma()``` cancella i fronti memorizzati mentre l'interrupt era disarmato: senza, un rimbalzo del rilascio farebbe scattare subito la ISR.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388450490165203969
 
@@ -1273,7 +1318,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 #include "urutils.h"
 int led = 13;
 byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
 DiffTimer debounce;
@@ -1298,15 +1343,16 @@ void switchPressed ()// si attiva sul fronte di salita
 void waitUntilInputChange()
 {
     if (pressed){ 
-      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+      debounce.start();// avvia il timer alla prima di molte chiamate consecutive
+      if(digitalRead(pulsante) == HIGH){
+        debounce.reset();// ancora premuto (o rimbalzo): il conteggio riparte
+      }else if(debounce.get() > DEBOUNCETIME){
         pressed = false; // riarmo del pulsante e disarmo del timer di debouncing
         debounce.stop();
-	      debounce.reset();
+        debounce.reset();
       }
     }
 }
-// loop principale
 // loop principale
 void loop() {
 	waitUntilInputChange();
@@ -1327,16 +1373,25 @@ int pulsante =12;
 volatile bool stato = false;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
-DiffTimer debounce;
+
+void switchPressed ();
+
+void riarma()
+{
+#ifdef EIFR
+  EIFR = bit(digitalPinToInterrupt(pulsante)); // solo AVR: cancella i fronti rimasti in sospeso
+#endif
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+}
  
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  // arma l'interrupt
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
   // disarma il timer 
   pressed = false;
+  // arma l'interrupt
+  riarma();
 }
 
 // Interrupt Service Routine (ISR)
@@ -1348,18 +1403,17 @@ void switchPressed ()
     // arma il timer
     pressed = true; 
   }
-    
 }  // end of switchPressed
 
 // loop principale
 void loop() {
   if(pressed){// fronte di salita
-    waitUntilInputLow(pulsante, 100); 
+    waitUntilInputLow(pulsante, 100); // esce solo con un rilascio confermato
     // fronte di discesa
     stato = !stato; // logica da attivare sul fronte (toggle)
-    // riarma l'interrupt
-    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
     pressed = false; // disarma il timer
+    // riarma l'interrupt
+    riarma();
   }
   digitalWrite(led, stato);   	// inverti lo stato precedente del led
   delay(10);
@@ -1376,7 +1430,7 @@ All'**ingresso** di una **porta digitale** viene associata una callback che vien
 
 Allo scadere del timeout viene eseguita la callback ```waitUntilInputLow()``` all'interno della ISR del timer. La funzione esegue una nuova lettura del valore della porta:
 - se è **HIGH** allora deduce che il pulsante è **ancora premuto** e decide di aspettare ancora altri 50 msec riavviando il timer di rilevazione del fronte di discesa
-- se è **LOW** allore deduce che il pulsante è **stato rilasciato** e decide di riabilitarlo ad una nuova pressione (riarmo) disasserendo il fag di disabilitazione ```pressed```.
+- se è **LOW** allora deduce che il pulsante è **stato rilasciato** e programma, dopo altri 50 msec, il riarmo del pulsante (disasserendo il flag di disabilitazione ```pressed```): così i rimbalzi del rilascio, che arrivano subito dopo, non vengono presi per una nuova pressione.
 
 La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
 
@@ -1394,6 +1448,9 @@ volatile bool pressed;
 volatile bool stato;
 #define DEBOUNCETIME 50
 Ticker debounceTicker;
+
+void waitUntilInputLow();
+void riarma();
  
 void setup() {
   Serial.begin(115200);
@@ -1410,8 +1467,7 @@ void switchPressed ()// si attiva sul fronte di salita
   numberOfButtonInterrupts++; // contatore rimbalzi
   if(!pressed){ // legge immediatamente il primo fronte ma poi si disarma il pulsante
     pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
-    debounceTicker.once_ms(50, waitUntilInputLow);  
-    Serial.println("SALITA disarmo pulsante");
+    debounceTicker.once_ms(DEBOUNCETIME, waitUntilInputLow);  
     stato = !stato; 	  // logica da attivare sul fronte (toggle) 
   }
 }  // end of switchPressed
@@ -1422,13 +1478,18 @@ void waitUntilInputLow()
     { 
         Serial.print("Aspetto");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
-        debounceTicker.once_ms(50, waitUntilInputLow);  
+        debounceTicker.once_ms(DEBOUNCETIME, waitUntilInputLow);  
     }else{
-        Serial.print("DISCESA riarmo pulsante\n");
-        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
-        numberOfButtonInterrupts = 0; // reset del flag
-        pressed = false; // riarmo il pulsante e disarmo automatico del timer di debouncing (nessun nuovo once)
+        Serial.print("DISCESA: riarmo fra 50 ms\n");
+        debounceTicker.once_ms(DEBOUNCETIME, riarma); // riarmo dopo la fine dei rimbalzi del rilascio
     }
+}
+
+void riarma()
+{
+    Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+    numberOfButtonInterrupts = 0; // reset del contatore
+    pressed = false; // riarmo il pulsante
 }
 
 // loop principale
@@ -1452,6 +1513,8 @@ Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio 
 L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
 In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
 
+**Limite.** Il controllo ogni 50 msec legge il pin in un solo istante: se cade in un'interruzione breve del contatto a pulsante premuto, il pulsante viene considerato rilasciato e il rilascio vero diventa una pressione in più. Per evitarlo si può usare un interrupt su entrambi i fronti (```CHANGE```) che registri l'istante di ogni fronte, e considerare il pulsante rilasciato solo quando è basso e da più di 50 msec non ci sono fronti.
+
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
 
 Variante semplificata e ottimizzata per eliminare gli interrupt spuri senza contarli:
@@ -1464,6 +1527,10 @@ byte pulsante =12;
 volatile bool stato;
 #define DEBOUNCETIME 50
 Ticker debounceTicker;
+
+void switchPressed ();
+void waitUntilInputLow();
+void riarma();
  
 void setup() {
   Serial.begin(115200);
@@ -1476,10 +1543,8 @@ void setup() {
 void switchPressed ()
 {
   detachInterrupt(digitalPinToInterrupt(pulsante));
-  debounceTicker.once_ms(50, waitUntilInputLow);  
-  Serial.println("SALITA disarmo pulsante");
+  debounceTicker.once_ms(DEBOUNCETIME, waitUntilInputLow);  
   stato = !stato; 	 // logica da attivare sul fronte (toggle)
-
 }  // end of switchPressed
 
 void waitUntilInputLow()
@@ -1487,11 +1552,16 @@ void waitUntilInputLow()
     if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
     { 
         Serial.print("Aspetto");
-        debounceTicker.once_ms(50, waitUntilInputLow);  
+        debounceTicker.once_ms(DEBOUNCETIME, waitUntilInputLow);  
     }else{
-        Serial.print("DISCESA riarmo pulsante\n");
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+        Serial.print("DISCESA: riarmo fra 50 ms\n");
+        debounceTicker.once_ms(DEBOUNCETIME, riarma); // riarmo dopo la fine dei rimbalzi del rilascio
     }
+}
+
+void riarma()
+{
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
 }
 
 // loop principale
@@ -1506,6 +1576,21 @@ void loop() {
 }
 ```
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390289622147259393
+
+## Considerazioni finali: quale tecnica scegliere
+
+**Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+
+**Il polling veloce con il timer che riparte è la tecnica più robusta e più pronta.** È la versione in cui il ```loop()``` legge il pulsante a ogni giro e il timer riparte a ogni lettura "premuto" (```t0 = millis()``` fuori dall'```if```):
+- guarda il pulsante in continuazione: un disturbo breve a pulsante premuto viene visto di sicuro, ma fa solo ripartire il conteggio;
+- il rilascio è accettato solo se il pin è rimasto basso per **tutto** il tempo di antirimbalzo: la decisione non dipende da dove cade il disturbo;
+- la pressione è riconosciuta alla prima lettura alta, il rilascio dopo il tempo di antirimbalzo.
+
+La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni lente le letture si diradano e il polling si comporta come uno schedulatore.
+
+**Lo schedulatore (time tick)** legge il pulsante solo ogni ```TBASE```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```TBASE```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```TBASE```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
+
+**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 

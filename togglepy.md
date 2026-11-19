@@ -18,9 +18,9 @@ led1 = Pin(13,Pin.OUT)
 closed = False
 
 while True:
-    if btn1.value(): # selezione del livello alto (logica di comando)			
-	stato = not closed			
-	led1.value(closed) # scrittura uscita
+    if btn1.value(): # selezione del livello alto (logica di comando)
+        closed = not closed
+        led1.value(closed) # scrittura uscita
 ```
 
 Purtroppo questa soluzione ha un paio di **problemi** che ne pregiudicano il **funzionamento corretto**.
@@ -29,7 +29,7 @@ Purtroppo questa soluzione ha un paio di **problemi** che ne pregiudicano il **f
 
 ###  **RILEVATORE DI TRANSITO**
 
-Si vuole realizzare un rilevatore del transito di un oggetto su una fotocellula. Poichè la fotocellula legge l'assenza del fascio luminoso di ritorno, la sua uscita è ripetutamernte vera fino a che l'oggetto non ha completato il suo passaggio. Un passaggio temporalmente lungo genera letture ripetute del transito segnalando più oggetti in corrispondenza di uno solo.
+Si vuole realizzare un rilevatore del transito di un oggetto su una fotocellula. Poichè la fotocellula legge l'assenza del fascio luminoso di ritorno, la sua uscita è ripetutamente vera fino a che l'oggetto non ha completato il suo passaggio. Un passaggio temporalmente lungo genera letture ripetute del transito segnalando più oggetti in corrispondenza di uno solo.
 
 ## **SOLUZIONE**
 
@@ -39,7 +39,7 @@ La **soluzione** è **modificare il tipo di selezione** **dell’evento** in ing
 
 In **entrambi i casi**, un evento di fronte si ha quando si è in presenza di una **transizione di livello** di un ingresso, quindi per **rilevare un fronte** è sufficiente **rilevare una transizione**.
 
-Una **evento di interrupt** si può rilevare in due modi:
+Un **evento di fronte** si può rilevare in due modi:
 
 - **Polling degli ingressi.** Lo scopo è rilevare una **transizione di livello**. Si tratta di campionare periodicamente il livello di un ingresso avendo cura di memorizzare sempre l’ultimo campione misurato su una variabile globale. Al loop successivo questo valore verrà confrontato col nuovo alla ricerca di eventuali variazioni. Il polling, cioè il campionamento, può essere effettuato ad ogni loop, o può essere **decimato**, cioè eseguito periodicamente **ogni tot loop scartati** (decimati).
 
@@ -59,39 +59,31 @@ Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabil
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
-Gli esempi successivi sono stati esposti relativamente al problema del **pulsante toggle** premendo il quale, ad ogni lettura di un fornte, si genera la modifica di una opportuna **variabile di stato** (```stato``` negli esempi).
+Gli esempi successivi sono stati esposti relativamente al problema del **pulsante toggle** premendo il quale, ad ogni lettura di un fronte, si genera la modifica di una opportuna **variabile di stato** (```stato``` negli esempi).
 
 A ben vedere, le soluzioni proposte di seguito possono essere tutte facilmente adattate alla realizzazione di un **sensore di transito** sostituendo la pressione del pulsante con la lettura del sensore e interpretando la variabile ```stato``` con la **variabile di stato** che deve tenere traccia del passaggio rilevato.
 
 Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione ad eventi (time tick)**  (per una spiegazione dettagliata dei time tick si rimanda a [schedulatore di compiti basato sui time tick](tasksched.md)):
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo:
 ```Python
-from gpio import *
-from time import *
+import time
+from machine import Pin
 
-def main():
-	pulsante = 0
-	led = 1
-	pinMode(led, OUT)
-	pinMode(pulsante, IN)
-	precm = 0
-	precval = 0
-	stato = 0
-	tbase = 0.1
+pulsante = Pin(12, Pin.IN)
+led = Pin(13, Pin.OUT)
+precm = 0
+precval = 0
+stato = 0
+tbase = 100                       # periodo base in millisecondi
 
-	while True:
-		if (uptime() - precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
-			precm = uptime()  			   # preparo il tic successivo	
-			val = digitalRead(pulsante)    # lettura ingressi
-			if precval == LOW and val == HIGH:      # rivelatore di fronte di salita
-				stato = (stato + 1)%2        # impostazione dello stato del toggle
-				digitalWrite(led,stato*1023)   # scrittura uscite
-				print(stato)
-			precval = val                   # memorizzazione livello loop precedente
-			
-
-if __name__ == "__main__":
-	main()
+while True:
+    if time.ticks_diff(time.ticks_ms(), precm) >= tbase:  # schedulatore (e anche antirimbalzo)
+        precm = time.ticks_ms()             # preparo il tic successivo
+        val = pulsante.value()              # lettura ingressi
+        if precval == 0 and val == 1:       # rivelatore di fronte di salita
+            stato = (stato + 1) % 2         # impostazione dello stato del toggle
+            led.value(stato)                # scrittura uscite
+            print(stato)
+        precval = val                       # memorizzazione livello loop precedente
 ```
 
 ### **Pulsante toggle + blink basato sui delay**
@@ -105,10 +97,14 @@ Questa tecnica ha lo svantaggio presentare un certa dose di **interferenza tempo
 import time
 from machine import Pin
 
-#attesa evento con tempo minimo di attesa
+#attesa del rilascio con antirimbalzo: esce solo con un rilascio confermato
 def waitUntilInLow(btn,t):
-    while btn.value():
-	    time.sleep_ms(t)
+    while True:
+        while btn.value():
+            time.sleep_ms(t)
+        time.sleep_ms(t)            # attesa fine rimbalzi del rilascio
+        if not btn.value():         # rilascio confermato
+            return
 
 def blink(led,t):
     led.value(not led.value())
@@ -119,9 +115,9 @@ led1 = Pin(13,Pin.OUT)
 stato = False
 
 while True:
-    if btn1.value():			 # se è alto c'è stato un fronte di salita
-	stato = not stato			 # impostazione dello stato del toggle
-	waitUntilInLow(btn1,50)		 # attendi finchè non c'è fronte di discesa
+    if btn1.value():                 # se è alto c'è stato un fronte di salita
+        stato = not stato            # impostazione dello stato del toggle
+        waitUntilInLow(btn1,50)      # attendi il rilascio confermato
     if stato:
         blink(led1,500)
     else:
@@ -171,7 +167,7 @@ nstep = 100
 while True:
     # il codice eseguito al tempo massimo della CPU va qui	
     # .........
-    if (time.ticks_ms() - precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
+    if time.ticks_diff(time.ticks_ms(), precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
         precm = time.ticks_ms()  			   # preparo il tic successivo	
         step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
         # il codice eseguito al tempo base va quì	
@@ -206,12 +202,16 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 La funzione 
 ```python
-// attesa evento con tempo minimo di attesa
+#attesa del rilascio con antirimbalzo: esce solo con un rilascio confermato
 def waitUntilInLow(btn,t):
-    while btn.value()):
-	 time.sleep(t)
+    while True:
+        while btn.value():
+            time.sleep_ms(t)
+        time.sleep_ms(t)            # attesa fine rimbalzi del rilascio
+        if not btn.value():         # rilascio confermato
+            return
 ```
-realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
+realizza una funzione di **wait su condizione** che ritarda il thread corrente di un ritardo prefissato al termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita; quando il pin diventa basso la funzione attende altri ```t``` msec e lo ricontrolla, quindi esce solo con un **rilascio confermato** (un rimbalzo del rilascio o un'interruzione breve del contatto non vengono presi per un rilascio). Si tratta di una funzione utile per due **scopi**:
 - **debouncing** software dell'ingresso digitale
 - determinazione del **fronte di discesa** di un ingresso digitale
 
@@ -223,14 +223,18 @@ import time
 import _thread as th
 from machine import Pin
 
-#attesa evento con tempo minimo di attesa
+#attesa del rilascio con antirimbalzo: esce solo con un rilascio confermato
 def waitUntilInLow(btn,t):
-    while btn.value():
-	    time.sleep_ms(t)
+    while True:
+        while btn.value():
+            time.sleep_ms(t)
+        time.sleep_ms(t)            # attesa fine rimbalzi del rilascio
+        if not btn.value():         # rilascio confermato
+            return
 
 def toggle(index, btn, states):
     while True:
-    	if btn.value():
+        if btn.value():
             states[index] = not states[index]
             print(states[index])
             waitUntilInLow(btn,50)
@@ -267,11 +271,14 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 La funzione 
 ```python
-// attesa evento con tempo minimo di attesa
+#attesa del rilascio con antirimbalzo: esce solo con un rilascio confermato
 async def waitUntilInLow(btn,t):
-    while btn.value()):
-	 await asyncio.sleep(t)
- 
+    while True:
+        while btn.value():
+            await uasyncio.sleep_ms(t)
+        await uasyncio.sleep_ms(t)  # attesa fine rimbalzi del rilascio
+        if not btn.value():         # rilascio confermato
+            return
 ```
 realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
 - **debouncing** software dell'ingresso digitale
@@ -284,14 +291,18 @@ Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedula
 import uasyncio
 from machine import Pin
 
-#attesa evento con tempo minimo di attesa
+#attesa del rilascio con antirimbalzo: esce solo con un rilascio confermato
 async def waitUntilInLow(btn,t):
-    while btn.value():
-	    await uasyncio.sleep_ms(t)
+    while True:
+        while btn.value():
+            await uasyncio.sleep_ms(t)
+        await uasyncio.sleep_ms(t)  # attesa fine rimbalzi del rilascio
+        if not btn.value():         # rilascio confermato
+            return
 
 async def toggle(index, btn, states):
     while True:
-    	if btn.value():
+        if btn.value():
             states[index] = not states[index]
             print(states[index])
             await waitUntilInLow(btn,50)
@@ -334,7 +345,7 @@ All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
-Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputChange()```. La funzione, di fatto esegue il **filtraggio** delle segnalazioni di un flag (```numberOfButtonInterrupts```) impostato dalla ISR chiamata dagli interrupt sulla porta digitale. Le segnalazioni vengono filtrate se troppo in anticipo (funzione di debouncing) e se si riferiscono a letture dello stesso livello (non transizioni). La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello letto periodicamente nel ciclo principale dalla funzione ```waitUntilInputChange()```. La ISR, attiva su entrambi i fronti, esegue il toggle al primo fronte di salita e registra in ```previousMillis``` l'istante di **ogni** fronte, rimbalzi compresi; la funzione riarma il pulsante solo quando è basso e da più di ```debtime``` msec non ci sono fronti. La funzione di **debouncing** è garantita da questo **tempo minimo** senza fronti.
 
 Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
 
@@ -356,24 +367,22 @@ def btn1_pressed(pin):
     global numberOfButtonInterrupts
     global interrupt_pin
     global stato
-    if numberOfButtonInterrupts == 0:
+    if numberOfButtonInterrupts == 0 and pin.value() == 1:
          stato = not stato             # intervento immediato sul fronte di salita
     interrupt_pin = pin 
     numberOfButtonInterrupts += 1      # contatore rimbalzi
-    previousMillis = time.ticks_ms()   # tempo evento
+    previousMillis = time.ticks_ms()   # tempo dell'ultimo fronte (anche rimbalzi)
 
 def waitUntilInputChange():
     global previousMillis
     global numberOfButtonInterrupts
     # sezione critica
-    # protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-    # numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
+    # protegge la lettura di previousMillis da una modifica della ISR a metà lettura
     irq_state = machine.disable_irq() # Start of critical section
-    # il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
     lastintTime = previousMillis
     machine.enable_irq(irq_state) # End of critical section
 
-    c = (numberOfButtonInterrupts != 0 and time.ticks_ms() - lastintTime > debtime and btn1.value() == 0)
+    c = (numberOfButtonInterrupts != 0 and time.ticks_diff(time.ticks_ms(), lastintTime) > debtime and btn1.value() == 0)
     if c:
         print("HIT: ")
         print(numberOfButtonInterrupts)
@@ -387,7 +396,7 @@ previousMillis = 0
 numberOfButtonInterrupts = 0
 debtime = 50 
 interrupt_pin = 0
-btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
+btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING)
 
 while True:
     waitUntilInputChange()
@@ -406,9 +415,9 @@ Nei microcontrollori attuali, in genere **nessuna istruzione** gode della propri
 
 Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
 
-Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+In MicroPython non esiste il qualificatore ```volatile```: le variabili condivise sono **globali** e vanno dichiarate ```global``` nella ISR che le modifica. Le variabili condivise tra ISR e ciclo principale sono ```stato```, ```numberOfButtonInterrupts``` e ```previousMillis```; la lettura di ```previousMillis``` nel ciclo è fatta con gli interrupt disabilitati (```machine.disable_irq()```), così la ISR non può modificarla nel mezzo della lettura.
 
-L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+L'interrupt è attivo su **entrambi i fronti**: ogni fronte, compresi i rimbalzi e un'eventuale interruzione breve del contatto a pulsante premuto, aggiorna ```previousMillis```. Il pulsante viene riarmato solo quando è basso e da più di ```debtime``` msec non ci sono fronti.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/370450749905971201
 
@@ -421,7 +430,7 @@ All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona** (una callback), gestita dal sistema tramite un **timer HW**, per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
-Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue una **disabilitazione** della rilevazione dei fronti (per evitare letture duplicate dello stesso) in **"attesa"** che si verifichi una certa **condizione**, L'**attesa** è spesa campionando continuamente l'**ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, all'arrivo di un **nuovo interrupt**, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un nuovo **fronte di salita**. Alla rilevazione del fronte **di discesa** il pulsante viene **riabilitato** per permettere la rilevazione del prossimo fronte di salita. La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti successivi, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata la funzione ```waitUntilInputChange()```. L'interrupt è attivo su entrambi i fronti e **ogni fronte**, rimbalzi compresi, fa ripartire il timer: la funzione viene quindi chiamata 50 msec dopo l'**ultimo** fronte. Se il pulsante è ancora premuto il timer viene riprogrammato; se è rilasciato, il pulsante viene **riabilitato** per la rilevazione del prossimo fronte di salita. Il toggle avviene solo al primo fronte di salita dopo il riarmo.
 
 Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout**. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in **tutte le situazioni**, eventualmente anche interrompendo l'esecuzione di eventuale codice che impegnasse intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
 
@@ -435,27 +444,29 @@ def blink(led,t):
     led.value(not led.value())
     time.sleep_ms(t)
    
-# Interrupt Service Routine (ISR)
+# Interrupt Service Routine (ISR): chiamata su entrambi i fronti
 def btn1_pressed(pin):
     global numberOfButtonInterrupts
     global interrupt_pin
     global stato
-    if numberOfButtonInterrupts == 0:
+    if numberOfButtonInterrupts == 0 and pin.value() == 1:
          stato = not stato             # intervento immediato sul fronte di salita
     interrupt_pin = pin 
     numberOfButtonInterrupts += 1      # contatore rimbalzi
-    tim.init(mode=Timer.ONE_SHOT, period=50, callback=waitUntilInputChange)   # one shot firing after 50ms
+    # ogni fronte (rimbalzi compresi) fa ripartire il timer:
+    # la callback scatta 50 ms dopo l'ultimo fronte
+    tim.init(mode=Timer.ONE_SHOT, period=debtime, callback=waitUntilInputChange)
 
 def waitUntilInputChange(t):
-    global previousMillis
     global numberOfButtonInterrupts
 
     if btn1.value() == 1:
         print("Salita aspetto. ")
         print("HIT: ")
         print(numberOfButtonInterrupts)
-        tim.init(mode=Timer.ONE_SHOT, period=50, callback=waitUntilInputChange)   # one shot firing after 50ms
+        tim.init(mode=Timer.ONE_SHOT, period=debtime, callback=waitUntilInputChange)   # one shot firing after 50ms
     else:
+        # basso e nessun fronte negli ultimi 50 ms: rilascio stabile
         print("DISCESA riarmo pulsante\n")
         print("HIT: ")
         print(numberOfButtonInterrupts)
@@ -467,8 +478,8 @@ stato = False
 numberOfButtonInterrupts = 0
 debtime = 50 
 interrupt_pin = 0
-btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
-tim = Timer(1)
+tim = Timer(1)                         # creato prima di attivare l'interrupt che lo usa
+btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING)
 
 while True:
     if stato:
@@ -484,10 +495,26 @@ Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **a
 
 Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
 
-L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
-In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
+In MicroPython non esiste il qualificatore ```volatile```: le variabili condivise sono **globali** e vanno dichiarate ```global``` nelle funzioni che le modificano. Qui ```stato``` e ```numberOfButtonInterrupts``` sono scritte solo dalla ISR e dalla callback del timer, che non si interrompono a vicenda, e lette nel ciclo principale.
+
+L'interrupt è attivo su **entrambi i fronti** (```Pin.IRQ_RISING | Pin.IRQ_FALLING```): ogni fronte, compresi i rimbalzi e un'eventuale interruzione breve del contatto a pulsante premuto, fa ripartire il timer. La callback considera il pulsante rilasciato solo quando lo trova basso e sono passati 50 msec dall'ultimo fronte; il toggle avviene solo sui fronti di salita (```pin.value() == 1```).
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/370458164426802177
+
+## Considerazioni finali: quale tecnica scegliere
+
+**Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+
+**Il polling veloce con il timer che riparte è la tecnica più robusta e più pronta.** È la versione in cui il ciclo principale legge il pulsante a ogni giro e il timer riparte a ogni lettura "premuto" (l'istante di riferimento aggiornato con ```time.ticks_ms()``` fuori dall'```if```):
+- guarda il pulsante in continuazione: un disturbo breve a pulsante premuto viene visto di sicuro, ma fa solo ripartire il conteggio;
+- il rilascio è accettato solo se il pin è rimasto basso per **tutto** il tempo di antirimbalzo: la decisione non dipende da dove cade il disturbo;
+- la pressione è riconosciuta alla prima lettura alta, il rilascio dopo il tempo di antirimbalzo.
+
+La condizione è che il ciclo principale resti veloce: con ```time.sleep_ms()``` lunghi o funzioni lente le letture si diradano e il polling si comporta come uno schedulatore.
+
+**Lo schedulatore (time tick)** legge il pulsante solo ogni ```tbase```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```tbase```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```tbase```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
+
+**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ciclo principale è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
