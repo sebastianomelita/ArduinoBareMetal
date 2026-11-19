@@ -307,10 +307,7 @@ void loop() {
   if (waitUntilNB(debt, !premuto, 50)) {
     doOnFall();                         // azione al rilascio
   }
-  if (premuto) {
-    debt.reset();                       // conta dall'ultima lettura "premuto"
-  }
-
+  
   // task 2: blink ogni 1000 ms
   if (t1.get() > 1000) {
     t1.reset();
