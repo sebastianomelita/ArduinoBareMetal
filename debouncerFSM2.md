@@ -4,148 +4,135 @@
 
 #  **DEBOUNCER 2**
 
-# Consegna Progetto: Rilevazione di Stabilità per Ingressi Digitali
+Questa dispensa realizza **la stessa consegna** e **la stessa macchina a stati** del [DEBOUNCER](debouncer.md), con lo stesso comportamento. Cambia solo l'organizzazione del codice:
+- nel DEBOUNCER il codice è scritto in logica **"prima gli ingressi"** e lo stato è implicito nel confronto tra ```val0``` e ```val00```;
+- qui il codice è scritto in logica **"prima gli stati"**: lo stato è una variabile esplicita (```debState```) e ```changed()``` esamina prima lo stato e poi, dentro ogni stato, gli ingressi.
 
-## Obiettivo
-Implementare una struttura `Button` che rilevi quando un segnale digitale (es. pulsante) ha raggiunto una condizione di stabilità per un periodo minimo di tempo. Il sistema deve aggiornare un'uscita (es. LED) solo quando il segnale è rimasto stabile, filtrando eventi brevi o instabili.
+##  **Gestione di pulsanti con debouncer**
 
-## Descrizione Funzionale
-Il sistema deve:
-1. Rilevare variazioni del segnale di ingresso
-2. Attendere che il segnale rimanga stabile (senza variazioni) per un periodo minimo configurabile
-3. Segnalare la condizione di stabilità solo dopo che tale periodo è trascorso
-4. Resettare il timer di stabilità ogni volta che il segnale varia durante il periodo di attesa
+Questo esempio include due modalità di funzionamento:
 
-## Requisiti Tecnici
+### 1. Pulsante senza memoria (momentaneo)
+- Il LED1 si accende solo quando il pulsante è premuto
+- Quando il pulsante viene rilasciato, il LED si spegne
+- Simile a un campanello o un pulsante di un citofono
 
-### Struttura `Button`
-Implementare una struttura `Button` con i seguenti campi:
-- `pin`: numero del pin di Arduino collegato al pulsante (uint8_t)
-- `val0`: ultimo valore letto dal pulsante (uint8_t)
-- `debtime`: tempo minimo di stabilità richiesto in millisecondi (unsigned long)
-- `val`: valore attuale letto dal pin (uint8_t)
-- `last`: timestamp dell'ultima variazione rilevata (unsigned long)
-- `debState`: flag per indicare lo stato di monitoraggio (bool)
+### 2. Pulsante con memoria (toggle)
+- Il LED2 cambia stato ad ogni pressione del pulsante
+- Se il LED è spento, premendo si accende
+- Se il LED è acceso, premendo si spegne
+- Simile a un interruttore della luce in casa
 
-### Funzione `changed()`
-Implementare una funzione `changed()` che:
-1. Legga il valore attuale del pin
-2. Gestisca la macchina a stati per il monitoraggio della stabilità
-3. Ritorni `true` SOLO quando:
-   - Il segnale è rimasto stabile (senza variazioni) per l'intero periodo `debtime`
-   - Il periodo di stabilità è appena terminato
-4. Ritorni `false` in tutti gli altri casi
-5. Aggiorni `val0` con l'ultimo valore letto in ogni chiamata
-6. Resetti il timer (`last`) ogni volta che il segnale varia durante il monitoraggio
+Entrambe le modalità utilizzano lo stesso meccanismo di debounce **a livello stabile**, che:
+1. Accetta un cambio di stato solo quando il nuovo livello è rimasto costante per il tempo di debounce
+2. Fa ripartire il conteggio a ogni variazione letta, quindi filtra sia i rimbalzi sia i disturbi brevi a pulsante premuto
+3. Gestisce correttamente l'overflow di `millis()`, perché misura il tempo con la differenza tra due ```unsigned long```
 
-### Macchina a Stati
-La struttura deve implementare una macchina a stati con due stati:
-- **IDLE** (debState = false): sistema in attesa di variazioni
-- **DEBOUNCING** (debState = true): sistema in monitoraggio della stabilità
 
-### Comportamento del Sistema
-- Quando rileva una variazione, il sistema deve entrare in stato DEBOUNCING e avviare il timer
-- Ogni ulteriore variazione durante lo stato DEBOUNCING deve resettare il timer
-- Solo quando il segnale rimane invariato per l'intero periodo `debtime`, il sistema deve segnalare la stabilità e tornare allo stato IDLE
-- L'uscita (LED) deve essere aggiornata solo quando viene rilevata una condizione di stabilità
+# Esercitazione di controllo con Debouncing per l'accensione di un LED
 
-## Specifiche di Implementazione
+## Obiettivo del progetto
+Realizzare un sistema dimostrativo di controllo LED che implementi diverse tecniche di gestione dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
 
-### Costruttore
-Implementare un costruttore che:
-1. Accetti il numero del pin e un tempo di stabilità opzionale (default = TXTIME)
-2. Inizializzi tutte le variabili interne
-3. Configuri il pin come INPUT
-4. Legga il valore iniziale del pin e lo imposti come valore di riferimento
+## Requisiti funzionali
 
-### Esempio di Utilizzo
-Includere un esempio completo che mostri:
-- Come istanziare un oggetto `Button` collegato a un pin
-- Come utilizzare la funzione `changed()` nel loop principale
-- Come aggiornare un LED quando viene rilevata una condizione di stabilità
+1. **Sistema di controllo LED**:
+   - Implementazione di due modalità di controllo tramite pulsanti:
+     - Modalità momentanea: LED acceso solo quando il pulsante è premuto
+     - Modalità toggle (con memoria): LED cambia stato ad ogni pressione
 
-## Considerazioni Aggiuntive
-- Questo approccio è particolarmente utile quando un'uscita deve **copiare il livello stabile** di un ingresso (un LED, un relè, un comando a livello)
-- Il sistema filtra efficacemente sia i rimbalzi meccanici sia i disturbi e le pressioni più brevi di `debtime`: l'uscita non cambia
-- L'uscita verrà aggiornata solo quando l'ingresso è rimasto in uno stato costante per il periodo di tempo specificato
-- `changed()` segnala la **stabilità raggiunta**, non un cambio di livello: restituisce `true` anche quando, dopo un disturbo o una pressione breve, il segnale torna stabile **sullo stesso valore** di prima. Per questo va usata per copiare `val0` su un'uscita, non per contare pressioni o fare un toggle (per quello serve il debouncer che confronta con l'ultimo livello accettato, vedi [DEBOUNCER](debouncer.md))
+2. **Interfaccia utente**:
+   - Due pulsanti di controllo:
+     - Pulsante 1: Controllo momentaneo del LED1 (senza memoria)
+     - Pulsante 2: Controllo toggle del LED2 (con memoria)
 
-## Requisiti di Consegna
-1. Codice completo e ben commentato della struttura `Button`
-2. Diagramma degli stati che illustri il comportamento della macchina a stati
-3. Esempio funzionante che dimostri il comportamento con un pulsante e un LED
-4. Breve relazione che spieghi la logica di funzionamento e i casi d'uso appropriati
+3. **Implementazione di gestione del debounce**:
+   - Sviluppo di un debounce che accetti un cambio solo dopo un tempo minimo di livello stabile
+   - Implementazione di una macchina a stati a due stati (STABILE e ATTESA DI CONFERMA), codificata in logica "prima gli stati" con una variabile di stato esplicita
+   - Gestione corretta dell'overflow di millis() per garantire stabilità a lungo termine
 
-# Tabella delle Transizioni - Button (Rilevazione di stabilità)
+## Aspetti didattici
+Il progetto dimostra:
+- Differenza tra controlli momentanei e controlli con memoria (toggle)
+- Implementazione di una macchina a stati per il debouncing
+- Conferma di un cambio di livello tramite un tempo minimo di stabilità
+- Programmazione non bloccante
+- Gestione dell'overflow nei timer software
+- Tecniche per migliorare l'esperienza utente riducendo falsi trigger
 
-## Stati
-- **IDLE** (debState = false): Sistema in attesa di variazioni del segnale
-- **DEBOUNCING** (debState = true): Sistema in fase di monitoraggio della stabilità
+## Materiale necessario
+- ESP32, Arduino Nano o compatibile
+- Due LED con relativi resistori limitatori di corrente
+- Due pulsanti
+- Resistori di pull-down per i pulsanti (oppure i pull-up interni, invertendo i livelli nel codice)
+- Breadboard e cavi di collegamento
 
-## Variabili di Stato
-- **val**: Valore attuale letto dal pin
-- **val0**: Ultimo valore letto (aggiornato continuamente)
-- **last**: Timestamp dell'ultimo cambiamento rilevato
-- **debState**: Flag che indica lo stato corrente (false = IDLE, true = DEBOUNCING)
-- **debtime**: Tempo di stabilità richiesto (tipicamente TXTIME = 100ms)
-- **chg**: Flag temporaneo per segnalare la rilevazione di stabilità
+## Considerazioni finali
+Questo progetto è utile come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni, ad esempio ai segnali di comando provenienti da un altro dispositivo (un PLC o un robot).
+
+## Approcci al debouncing
+
+Dal punto di vista concettuale, ci sono due approcci al debouncing di un ingresso letto in polling:
+
+1. **Primo fronte + inibizione**:
+   - Segnala subito il primo cambiamento, poi ignora le variazioni successive finché il livello non resta stabile per il tempo di debounce
+   - Vantaggio: risposta immediata
+   - Limite: non distingue un **disturbo** da un rilascio vero. Un'apertura breve del contatto a pulsante premuto viene segnalata come rilascio e, al termine dell'inibizione, il ritorno del livello alto viene segnalato come una nuova pressione: un toggle in più, un conteggio in più
+
+2. **Livello stabile (approccio adottato)**:
+   - Segnala il cambiamento solo quando il nuovo livello è rimasto costante per il tempo di debounce; ogni variazione fa ripartire il conteggio
+   - Vantaggio: filtra sia i rimbalzi sia i disturbi più brevi del tempo di debounce
+   - Limite: il cambio viene segnalato con un ritardo pari al tempo di debounce (50 ms, impercettibile per un pulsante azionato a mano)
+
+Il **limite di fondo** è comune a entrambi: un'apertura del contatto più lunga del tempo di debounce non si distingue da un rilascio vero. Il tempo di debounce va quindi scelto in base alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+
+Il cronogramma seguente mette a confronto i due approcci sullo stesso segnale (simulato): rimbalzi alla pressione e al rilascio, e un disturbo di 3 ms a pulsante premuto.
+
+![Cronogramma dei due approcci al debouncing](debouncer-cronogramma.png)
+
+Con il primo approccio il disturbo produce quattro eventi e un toggle in più; con il livello stabile gli eventi sono due, pressione e rilascio, ciascuno 50 ms dopo l'ultima variazione.
+
+
+# Tabella delle Transizioni - Debounce a livello stabile
+
+## Definizione delle Variabili
+- **pin**: Pin di Arduino collegato al pulsante
+- **val**: Valore letto dal pin nella chiamata corrente
+- **val0**: Ultimo valore letto (anche se instabile), serve a rilevare le variazioni
+- **val00**: Ultimo livello stabile accettato
+- **last**: Istante dell'ultima variazione letta
+- **debtime**: Tempo di debounce in millisecondi
+- **debState**: Variabile di stato (false = STABILE, true = ATTESA DI CONFERMA)
+
+Lo stato della macchina è memorizzato in modo esplicito nella variabile **debState**:
+- **STABILE** (```debState = false```): l'ultimo valore letto coincide con il livello accettato (```val0 == val00```)
+- **ATTESA DI CONFERMA** (```debState = true```): è stato letto un livello diverso da quello accettato (```val0 != val00```) e se ne sta misurando la durata
+
+```debState``` vale sempre quanto ```val0 != val00```: è la stessa informazione che nel DEBOUNCER resta implicita.
 
 ## Tabella delle Transizioni
 
-| Stato Attuale | Condizione                               | Azioni                                         | Stato Successivo | Valore Ritornato |
-|---------------|------------------------------------------|------------------------------------------------|------------------|------------------|
-| IDLE          | val = val0                               | val0 = val                                      | IDLE             | false            |
-| IDLE          | val ≠ val0                               | val0 = val<br>last = millis()<br>debState = true | DEBOUNCING       | false            |
-| DEBOUNCING    | val ≠ val0                               | val0 = val<br>last = millis()                   | DEBOUNCING       | false            |
-| DEBOUNCING    | val = val0<br>millis() - last < debtime  | Nessuna                                         | DEBOUNCING       | false            |
-| DEBOUNCING    | val = val0<br>millis() - last ≥ debtime  | debState = false                                | IDLE             | true             |
+| Stato Attuale | Condizione | Azione | Prossimo Stato | changed() |
+|---------------|------------|--------|---------------|--------------|
+| STABILE | val == val0 | nessuna | STABILE | false |
+| STABILE | val != val0 | val0 = val<br>last = millis()<br>debState = true | ATTESA DI CONFERMA | false |
+| ATTESA DI CONFERMA | val != val0<br>(rimbalzo o disturbo: val torna uguale a val00) | val0 = val<br>last = millis()<br>debState = false | STABILE | false |
+| ATTESA DI CONFERMA | val == val0 e<br>(millis() - last) <= debtime | nessuna | ATTESA DI CONFERMA | false |
+| ATTESA DI CONFERMA | val == val0 e<br>(millis() - last) > debtime | val00 = val<br>debState = false | STABILE | **true** |
 
-## Logica del Sistema
+Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riporta necessariamente il valore letto uguale a ```val00```: la macchina torna in STABILE senza segnalare nulla. Il valore di ```last``` è comunque aggiornato, quindi a ogni rimbalzo successivo il conteggio riparte da capo.
 
-1. **In stato IDLE**:
-   - `val0` viene sempre aggiornato con il valore attuale `val`
-   - Se viene rilevata una transizione (val ≠ val0), il sistema:
-     - Registra il timestamp (last = millis())
-     - Passa allo stato DEBOUNCING (debState = true)
-     - Non segnala alcun cambiamento (chg = false)
+## Caratteristiche della Macchina a Stati
+1. **Conferma per stabilità**: un cambio viene segnalato (```changed()``` restituisce ```true```) solo dopo ```debtime``` ms senza variazioni
+2. **Reset del timer**: ogni variazione letta, rimbalzo o disturbo, fa ripartire il conteggio
+3. **Un solo evento per cambio**: pressione e rilascio generano ciascuno un solo evento, con il nuovo livello in ```val```
+4. **Chiamata continua**: ```changed()``` va chiamata a ogni giro di ```loop()```, perché è la sequenza delle chiamate a misurare la stabilità
 
-2. **In stato DEBOUNCING**:
-   - Se il valore continua a cambiare (val ≠ val0):
-     - Il timestamp viene aggiornato (last = millis())
-     - `val0` viene aggiornato con il nuovo valore
-     - Non segnala alcun cambiamento (chg = false)
-   - Se il valore rimane stabile (val = val0) per il periodo di debounce:
-     - Torna allo stato IDLE (debState = false)
-     - Segnala la stabilità raggiunta (chg = true)
-
-3. **Comportamento complessivo**:
-   - Il sistema monitora la stabilità del segnale, non il suo valore specifico
-   - Ogni variazione del segnale durante il periodo di debounce resetta il timer
-   - La funzione `changed()` ritorna `true` solo quando il segnale è rimasto stabile per l'intero periodo di debounce
-   - `val0` viene continuamente aggiornato con l'ultimo valore letto
-
-## Caratteristiche dell'Implementazione
-
-1. **Rilevazione di stabilità**:
-   - A differenza di un normale debounce che rileva cambiamenti di stato, questo sistema rileva periodi di stabilità
-   - La funzione `changed()` non indica un "cambiamento" ma piuttosto "stabilità raggiunta"
-
-2. **Reset continuo del timer**:
-   - Ogni variazione del segnale durante lo stato DEBOUNCING resetta il timer
-   - Questo garantisce che il segnale deve rimanere stabile per l'intero `debtime` prima di essere confermato
-
-3. **Aggiornamento continuo di val0**:
-   - `val0` non rappresenta un "valore stabile" ma semplicemente l'ultimo valore letto
-   - Viene aggiornato continuamente sia in stato IDLE che in stato DEBOUNCING
-
-4. **Comportamento con pulsanti reali**:
-   - Solo quando il pulsante rimane in uno stato costante per almeno `debtime` millisecondi la funzione ritorna `true`
-   - Una pressione o un rilascio brevi (< debtime), o un disturbo, generano comunque un `true`, ma `debtime` ms dopo la fine della variazione e con `val0` uguale al valore di prima: l'uscita viene riscritta con lo stesso valore e non cambia
-   - L'uscita (LED) cambia quindi solo quando il segnale di ingresso è rimasto stabile su un valore nuovo per il periodo richiesto
-
-5. **Differenza con il [DEBOUNCER](debouncer.md)**:
-   - Il DEBOUNCER memorizza anche l'ultimo livello accettato (`val00`) e restituisce `true` solo quando il livello stabile è **diverso** da quello: segnala i **cambi** veri, adatto a toggle, contatori ed eventi
-   - Il rilevatore di stabilità non ha memoria del livello accettato e restituisce `true` a ogni fine di instabilità: adatto a **copiare** un livello su un'uscita
+## Comportamento agli eventi
+- **Pulsante premuto/rilasciato**: viene segnalato dopo ```debtime``` ms di livello stabile
+- **Rimbalzi del contatto**: fanno ripartire il conteggio e vengono filtrati
+- **Disturbo breve a pulsante premuto**: fa ripartire il conteggio ma non genera eventi, perché il livello torna a quello accettato
+- **Nuova pressione**: viene segnalata come nuovo evento dopo il suo tempo di stabilità
 
 
 ##  **Diagramma degli stati**
@@ -153,93 +140,154 @@ Includere un esempio completo che mostri:
 ```mermaid
 flowchart LR
     I(( )) --> S
-    S["<b>IDLE</b><br>debState = false<br><i>val0 = val a ogni lettura</i>"]
-    D["<b>DEBOUNCING</b><br>debState = true"]
-    S -- "val ≠ val0<br>last = millis(), val0 = val" --> D
-    D -- "val ≠ val0: last = millis(), val0 = val (il timer riparte)<br>oppure val = val0 e millis() - last < debtime" --> D
-    D == "val = val0 e millis() - last ≥ debtime<br>debState = false, <b>return true</b>" ==> S
+    S["<b>STABILE</b><br>debState = false<br><i>resta qui finché non ci sono variazioni</i>"]
+    A["<b>ATTESA DI CONFERMA</b><br>debState = true"]
+    S -- "variazione<br>val0 = val, last = millis()" --> A
+    A -- "variazione: rimbalzo o disturbo<br>val0 = val, last = millis()" --> S
+    A -- "stabile da meno di debtime" --> A
+    A == "stabile da più di debtime<br>val00 = val, <b>changed() = true</b>" ==> S
     style I fill:#000,stroke:#000
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
 
-La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del rilevatore di stabilità, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default).
+La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del debouncer, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default). Il rilevamento del fronte (pressione o rilascio) è lasciato al programma principale, che legge il nuovo livello in ```val``` quando ```changed()``` restituisce ```true```.
 
-L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione tramite il **costruttore**: ```Button button(3)``` usa il tempo di stabilità predefinito ```TXTIME```, ```Button button(3, 50)``` ne imposta uno diverso. Il costruttore configura il pin come ingresso e ne legge il valore iniziale, che diventa il valore di riferimento.
+Il codice di ```changed()``` ricalca il diagramma degli stati: un ```if``` sulla variabile di stato ```debState``` seleziona lo **stato corrente** e, dentro ciascun ramo, si esaminano gli **ingressi** che provocano le transizioni uscenti da quello stato. Con più di due stati lo stesso schema si scrive con uno ```switch``` su una variabile di tipo ```enum```.
 
-Esempio in cui il LED copia il livello stabile del pulsante:
+L'inizializzazione degli **oggetti statici** è effettuata al momento della dichiarazione tramite il **costruttore**: ```Button buttonMomentary(BUTTON1_PIN)``` usa il tempo di stabilità predefinito ```DEBOUNCETIME```, ```Button buttonMomentary(BUTTON1_PIN, 80)``` ne imposta uno diverso. Il costruttore configura il pin come ingresso e ne **legge il livello iniziale**, che diventa il livello accettato: non serve indicarlo a mano e non c'è il rischio di un evento falso all'accensione, sia con il pull-down sia con il pull-up.
+
+L'ultimo **valore valido** è quello che permane **immutato** per tutto l'**intervallo di debounce**, misurato a partire dall'**ultima variazione**.
+
+Esempio che utilizza la struttura di debounce per controllare LED con e senza memoria (stesso circuito del DEBOUNCER):
 
 ```cpp
-#define TXTIME 100  // Tempo di debounce in millisecondi
+/*
+ * Due pulsanti gestiti con la struttura Button
+ *
+ *  - pulsante 1, rosso (GPIO 14), SENZA MEMORIA (momentaneo): il LED 1 rosso
+ *    (GPIO 13) resta acceso finché il pulsante è premuto;
+ *  - pulsante 2, verde (GPIO 23), CON MEMORIA (toggle): il LED 2 verde
+ *    (GPIO 12) cambia stato a ogni pressione.
+ *
+ * Collegamento: pulsanti tra il pin e 3V3, resistenza di pull-down esterna
+ * verso GND (pinMode INPUT). Il pin legge LOW a riposo e HIGH quando il
+ * pulsante è premuto.
+ */
 
+#define BUTTON1_PIN 14    // pulsante momentaneo
+#define BUTTON2_PIN 23    // pulsante toggle
+#define LED1_PIN 13       // LED del pulsante momentaneo
+#define LED2_PIN 12       // LED del pulsante toggle
+#define DEBOUNCETIME 50   // ms: tempo di stabilità richiesto prima di accettare un cambio
+                          // (va scelto in base alla qualità del pulsante: deve superare
+                          //  la durata dei suoi rimbalzi e dei suoi disturbi)
+
+/**
+ * Struttura Button: debounce a LIVELLO STABILE, codifica "prima gli stati"
+ *
+ * Stessa macchina a stati del DEBOUNCER, ma lo stato è una variabile esplicita
+ * (debState) e il codice esamina PRIMA lo stato e POI, dentro ogni stato,
+ * gli ingressi:
+ *  - STABILE (debState = false): il valore letto coincide con il livello accettato;
+ *  - ATTESA DI CONFERMA (debState = true): è stato letto un livello diverso e
+ *    se ne misura la durata.
+ *
+ * Un cambio viene segnalato solo quando il nuovo livello è rimasto costante per
+ * debtime ms; ogni variazione letta (rimbalzo o disturbo) fa ripartire il
+ * conteggio. Il prezzo è un ritardo di debtime ms, impercettibile per un
+ * pulsante azionato a mano.
+ *
+ * Uso: chiamare changed() a ogni giro di loop(); dopo un true, val contiene
+ * il nuovo livello stabile.
+ */
 struct Button {
-  uint8_t pin;           // Pin di Arduino collegato al pulsante
-  uint8_t val0;          // Ultimo valore letto
-  unsigned long debtime; // Tempo di debounce in millisecondi
-  uint8_t val;           // Valore attuale letto
-  unsigned long last;    // Timestamp ultimo cambiamento
-  bool debState;         // Flag per stato debounce (true = in debounce)
-  
-  /**
-   * Verifica se lo stato del pulsante è rimasto stabile per il periodo di debounce.
-   * Rileva la stabilità solo DOPO che il periodo di debounce è completato.
-   * Resetta il timer ogni volta che il valore cambia durante il debounce.
-   * @return true solo quando il segnale è rimasto stabile per il periodo di debounce
-   */
+  uint8_t pin;           // pin di Arduino collegato al pulsante
+  uint8_t val0;          // ultimo valore letto (anche se instabile)
+  unsigned long debtime; // tempo di stabilità richiesto, in millisecondi
+  uint8_t val;           // valore letto nell'ultima chiamata
+  uint8_t val00;         // ultimo livello stabile accettato
+  unsigned long last;    // istante dell'ultima variazione letta
+  bool debState;         // stato: false = STABILE, true = ATTESA DI CONFERMA
+
   bool changed() {
-    bool chg = false;    // Default: nessun cambiamento rilevato
-    
-    val = digitalRead(pin);  // Legge il valore attuale del pin
-    
-    // Gestione della macchina a stati per il debounce
-    if (!debState) {  // Equivalente a stato IDLE
-      if (val != val0) {  // Transizione rilevata
-        last = millis();  // Registra il timestamp dell'evento
-        debState = true;  // Entra in stato debouncing
-        chg = false;     // Non segnala ancora il cambiamento
+    bool chg = false;
+    val = digitalRead(pin);
+
+    if (!debState) {                  // STATO STABILE (val0 == val00)
+      if (val != val0) {              // variazione: si attende la conferma
+        val0 = val;
+        last = millis();              // il conteggio della stabilità parte da qui
+        debState = true;
       }
-      val0 = val;      // Aggiorna il valore letto
-    } else {  // In stato DEBOUNCING
-      if(val != val0) {   // Se lo stato continua a cambiare
-        last = millis();  // Reset del timer di debounce
-        val0 = val;       // Aggiorna ultimo valore letto
-      } else if (millis() - last >= debtime) {  // Periodo di debounce completato (val0 == val)
-        debState = false; // Torna in stato IDLE
-        chg = true;       // Segnala la stabilità (alla fine del debounce)
+    } else {                          // STATO ATTESA DI CONFERMA (val0 != val00)
+      if (val != val0) {              // rimbalzo o disturbo: il valore è tornato
+        val0 = val;                   // uguale al livello accettato
+        last = millis();              // il conteggio riparte
+        debState = false;             // si torna in STABILE senza segnalare nulla
+      } else if ((unsigned long)(millis() - last) > debtime) {
+        val00 = val;                  // stabile da debtime ms: cambio vero
+        debState = false;
+        chg = true;
       }
     }
-    
-    return chg;  
+    return chg;
   }
 
-  // Costruttore
-  Button(uint8_t _pin, unsigned long _debtime = TXTIME) {
+  // Costruttore. Scelta: il livello iniziale si legge dal pin, così non va
+  // indicato a mano e non si rischia un evento falso all'accensione
+  // (vale sia con pull-down sia con pull-up).
+  Button(uint8_t _pin, unsigned long _debtime = DEBOUNCETIME) {
     pin = _pin;
     debtime = _debtime;
-    pinMode(pin, INPUT);      // prima si configura il pin come ingresso...
-    val = digitalRead(pin);   // ...poi si legge il valore iniziale
-    val0 = val;               // il valore iniziale diventa il riferimento
+    pinMode(pin, INPUT);              // prima si configura il pin come ingresso...
+    val = digitalRead(pin);           // ...poi si legge il livello iniziale
+    val0 = val;
+    val00 = val;                      // il livello iniziale è quello accettato
     last = 0;
-    debState = false;
+    debState = false;                 // si parte in STABILE
   }
 };
 
-// Esempio di utilizzo
-byte led = 10;
-Button button(3);  // Pulsante collegato al pin 3 con tempo di debounce predefinito
+Button buttonMomentary(BUTTON1_PIN);  // tempo di stabilità predefinito DEBOUNCETIME
+Button buttonToggle(BUTTON2_PIN);
+
+bool toggleState = false;   // stato memorizzato del pulsante con memoria
 
 void setup() {
-  pinMode(led, OUTPUT);
   Serial.begin(115200);
+  // i pin dei pulsanti sono configurati dal costruttore (INPUT, pull-down esterno)
+  pinMode(LED1_PIN, OUTPUT);
+  pinMode(LED2_PIN, OUTPUT);
 }
 
 void loop() {
-  if (button.changed()) {
-    Serial.println("Stato stabile rilevato!");
-    digitalWrite(led, button.val0);  // Copia sul LED il valore stabile (può essere uguale al precedente)
+  // 1. PULSANTE SENZA MEMORIA (momentaneo)
+  // Scelta: si reagisce a entrambi i cambi; il LED copia il livello stabile.
+  if (buttonMomentary.changed()) {
+    if (buttonMomentary.val == HIGH) {        // con pull-down, HIGH = premuto
+      digitalWrite(LED1_PIN, HIGH);
+      Serial.println("Pulsante 1 premuto - LED 1 acceso");
+    } else {
+      digitalWrite(LED1_PIN, LOW);
+      Serial.println("Pulsante 1 rilasciato - LED 1 spento");
+    }
   }
+
+  // 2. PULSANTE CON MEMORIA (toggle)
+  // Scelta: changed() sta prima dell'&& e viene chiamata a ogni giro, così il
+  // debounce continua a lavorare anche sui rilasci; si agisce solo sulla pressione.
+  if (buttonToggle.changed() && buttonToggle.val == HIGH) {
+    toggleState = !toggleState;               // inverte lo stato memorizzato
+    digitalWrite(LED2_PIN, toggleState);
+    Serial.print("Pulsante 2 premuto - LED 2 ");
+    Serial.println(toggleState ? "acceso" : "spento");
+  }
+
+  delay(1);  // solo per non bloccare il simulatore; il loop() deve restare veloce
 }
 ```
-Simulazione con Wokwi su ESP32: https://wokwi.com/projects/426258191241018369
+
+- Simulazione con Wokwi su ESP32: https://wokwi.com/projects/426258191241018369
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
