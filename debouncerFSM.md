@@ -57,10 +57,10 @@ Il progetto dimostra:
 - Tecniche per migliorare l'esperienza utente riducendo falsi trigger
 
 ## Materiale necessario
-- Arduino Nano o compatibile
+- ESP32, Arduino Nano o compatibile
 - Due LED con relativi resistori limitatori di corrente
 - Due pulsanti
-- Resistori di pull-up per i pulsanti (se non si utilizzano i pull-up interni)
+- Resistori di pull-down per i pulsanti (oppure i pull-up interni, invertendo i livelli nel codice)
 - Breadboard e cavi di collegamento
 
 ## Considerazioni finali
@@ -146,7 +146,7 @@ flowchart LR
 
 La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del debouncer, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default). Il rilevamento del fronte (pressione o rilascio) è lasciato al programma principale, che legge il nuovo livello in ```val``` quando ```changed()``` restituisce ```true```.
 
-L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {3, HIGH, DEBOUNCETIME, HIGH, HIGH, 0}``` utilizzando la notazione ```{}``` che racchiude la **lista** dei **membri contigui** da inizializzare dentro le **parentesi graffe**, nell'ordine in cui sono dichiarati. Con il pull-up interno il pulsante a riposo legge HIGH, quindi ```val0``` e ```val00``` partono da HIGH: se partissero da LOW, all'accensione verrebbe segnalato un cambio che non c'è.
+L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, DEBOUNCETIME, LOW, LOW, 0}``` utilizzando la notazione ```{}``` che racchiude la **lista** dei **membri contigui** da inizializzare dentro le **parentesi graffe**, nell'ordine in cui sono dichiarati. Con la resistenza di pull-down il pulsante a riposo legge LOW, quindi ```val0``` e ```val00``` partono da LOW: se partissero dal livello opposto, all'accensione verrebbe segnalato un cambio che non c'è. Con il pull-up interno (```INPUT_PULLUP```) partirebbero da HIGH.
 
 L'ultimo **valore valido** è quello che permane **immutato** per tutto l'**intervallo di debounce**, misurato a partire dall'**ultima variazione**.
 
@@ -156,17 +156,20 @@ Esempio che utilizza la struttura di debounce per controllare LED con e senza me
 /*
  * Due pulsanti gestiti con la struttura Button
  *
- *  - pulsante 1 (pin 3), SENZA MEMORIA (momentaneo): il LED 1 resta acceso
- *    finché il pulsante è premuto;
- *  - pulsante 2 (pin 2), CON MEMORIA (toggle): il LED 2 cambia stato
- *    a ogni pressione.
+ *  - pulsante 1, rosso (GPIO 14), SENZA MEMORIA (momentaneo): il LED 1 rosso
+ *    (GPIO 13) resta acceso finché il pulsante è premuto;
+ *  - pulsante 2, verde (GPIO 23), CON MEMORIA (toggle): il LED 2 verde
+ *    (GPIO 12) cambia stato a ogni pressione.
  *
- * Collegamento: pulsanti tra il pin e GND, resistenza di pull-up interna
- * (INPUT_PULLUP). Il pin legge HIGH a riposo e LOW quando il pulsante è premuto.
+ * Collegamento: pulsanti tra il pin e 3V3, resistenza di pull-down esterna
+ * verso GND (pinMode INPUT). Il pin legge LOW a riposo e HIGH quando il
+ * pulsante è premuto.
  */
 
-#define LED1_PIN 12
-#define LED2_PIN 13
+#define BUTTON1_PIN 14    // pulsante momentaneo
+#define BUTTON2_PIN 23    // pulsante toggle
+#define LED1_PIN 13       // LED del pulsante momentaneo
+#define LED2_PIN 12       // LED del pulsante toggle
 #define DEBOUNCETIME 50   // ms: tempo di stabilità richiesto prima di accettare un cambio
                           // (va scelto in base alla qualità del pulsante: deve superare
                           //  la durata dei suoi rimbalzi e dei suoi disturbi)
@@ -214,19 +217,19 @@ struct Button {
 };
 
 // Inizializzazione: {pin, val0, debtime, val, val00, last}
-// Scelta: con INPUT_PULLUP il pulsante a riposo legge HIGH, quindi val0 e val00
-// partono da HIGH. Se partissero da LOW, al primo giro changed() vedrebbe un
-// cambio che non c'è (un evento falso all'accensione).
-// Con pull-down esterno (pinMode INPUT) si userebbe LOW.
-Button buttonToggle    = {2, HIGH, DEBOUNCETIME, HIGH, HIGH, 0};
-Button buttonMomentary = {3, HIGH, DEBOUNCETIME, HIGH, HIGH, 0};
+// Scelta: con il pull-down il pulsante a riposo legge LOW, quindi val0 e val00
+// partono da LOW. Se partissero dal livello opposto, al primo giro changed()
+// vedrebbe un cambio che non c'è (un evento falso all'accensione).
+// Con il pull-up interno (INPUT_PULLUP) si userebbe HIGH.
+Button buttonMomentary = {BUTTON1_PIN, LOW, DEBOUNCETIME, LOW, LOW, 0};
+Button buttonToggle    = {BUTTON2_PIN, LOW, DEBOUNCETIME, LOW, LOW, 0};
 
 bool toggleState = false;   // stato memorizzato del pulsante con memoria
 
 void setup() {
   Serial.begin(115200);
-  pinMode(buttonToggle.pin, INPUT_PULLUP);
-  pinMode(buttonMomentary.pin, INPUT_PULLUP);
+  pinMode(buttonMomentary.pin, INPUT);   // pull-down esterno
+  pinMode(buttonToggle.pin, INPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
 }
@@ -235,7 +238,7 @@ void loop() {
   // 1. PULSANTE SENZA MEMORIA (momentaneo)
   // Scelta: si reagisce a entrambi i cambi; il LED copia il livello stabile.
   if (buttonMomentary.changed()) {
-    if (buttonMomentary.val == LOW) {         // con pull-up, LOW = premuto
+    if (buttonMomentary.val == HIGH) {        // con pull-down, HIGH = premuto
       digitalWrite(LED1_PIN, HIGH);
       Serial.println("Pulsante 1 premuto - LED 1 acceso");
     } else {
@@ -247,7 +250,7 @@ void loop() {
   // 2. PULSANTE CON MEMORIA (toggle)
   // Scelta: changed() sta prima dell'&& e viene chiamata a ogni giro, così il
   // debounce continua a lavorare anche sui rilasci; si agisce solo sulla pressione.
-  if (buttonToggle.changed() && buttonToggle.val == LOW) {
+  if (buttonToggle.changed() && buttonToggle.val == HIGH) {
     toggleState = !toggleState;               // inverte lo stato memorizzato
     digitalWrite(LED2_PIN, toggleState);
     Serial.print("Pulsante 2 premuto - LED 2 ");
