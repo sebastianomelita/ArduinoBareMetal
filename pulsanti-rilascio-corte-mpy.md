@@ -96,7 +96,7 @@ Qui la variabile `attivo` serve: senza, a pulsante rilasciato la differenza di t
 resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
 <p align="center">
-  <img src="debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -184,7 +184,7 @@ Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
 [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
 
 <p align="center">
-  <img src="debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -340,7 +340,7 @@ while True:
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.
 
 <p align="center">
-  <img src="debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.

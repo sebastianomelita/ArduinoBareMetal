@@ -120,7 +120,7 @@ Qui la variabile `attivo` serve: senza, a pulsante rilasciato `millis() - t0 > 5
 vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
 
 <p align="center">
-  <img src="debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
+  <img src="img/debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -214,7 +214,7 @@ void loop() {
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
 
 <p align="center">
-  <img src="debounce-difftimer-pulldown.gif" alt="Animazione del debounce con DiffTimer (pull-down)" width="900">
+  <img src="img/debounce-difftimer-pulldown.gif" alt="Animazione del debounce con DiffTimer (pull-down)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -395,7 +395,7 @@ void loop() {
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.
 
 <p align="center">
-  <img src="debounce-schedulatore-pulldown.gif" alt="Animazione del debounce con schedulatore (pull-down)" width="900">
+  <img src="img/debounce-schedulatore-pulldown.gif" alt="Animazione del debounce con schedulatore (pull-down)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.

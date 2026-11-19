@@ -111,7 +111,7 @@ while True:
 ## 2. Versione non bloccante con ticks_ms()
 
 <p align="center">
-  <img src="debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -217,7 +217,7 @@ e non produce un falso fronte.
 > `waitUntilInputLow()` / `waitUntilInputHigh()` e il timer che riparte in `waitUntilNB()`.
 
 <p align="center">
-  <img src="debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
@@ -415,7 +415,7 @@ letture il segnale si è stabilizzato. I fronti si riconoscono confrontando la l
 attuale `val` con quella precedente `precval`.
 
 <p align="center">
-  <img src="debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
+  <img src="img/debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
 </p>
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
