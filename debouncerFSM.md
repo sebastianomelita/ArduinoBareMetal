@@ -105,19 +105,23 @@ Lo stato della macchina non richiede una variabile apposita: è codificato dal c
 
 ## Tabella delle Transizioni
 
-| Stato Attuale | Condizione | Azione | Prossimo Stato | changed() |
-|---------------|------------|--------|---------------|--------------|
-| STABILE | val == val0 | nessuna | STABILE | false |
-| STABILE | val != val0 | val0 = val<br>last = millis() | ATTESA DI CONFERMA | false |
-| ATTESA DI CONFERMA | val != val0<br>(rimbalzo o disturbo: val torna uguale a val00) | val0 = val<br>last = millis() | STABILE | false |
-| ATTESA DI CONFERMA | val == val0 e<br>(millis() - last) <= debtime | nessuna | ATTESA DI CONFERMA | false |
-| ATTESA DI CONFERMA | val == val0 e<br>(millis() - last) > debtime | val00 = val | STABILE | **true** |
+| Stato Attuale | Ingresso | Azione | Prossimo Stato | changed() |
+|---------------|----------|--------|---------------|--------------|
+| STABILE | **variazione**<br>(val != val0) | val0 = val<br>avvio timer: last = millis() | ATTESA DI CONFERMA | false |
+| ATTESA DI CONFERMA | **variazione**<br>(val != val0: rimbalzo o disturbo, val torna uguale a val00) | val0 = val | STABILE | false |
+| ATTESA DI CONFERMA | **timeout**<br>(millis() - last > debtime, cioè debtime senza variazioni) | val00 = val | STABILE | **true** |
 
-Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riporta necessariamente il valore letto uguale a ```val00```: la macchina torna in STABILE senza segnalare nulla. Il valore di ```last``` è comunque aggiornato, quindi a ogni rimbalzo successivo il conteggio riparte da capo.
+Gli **ingressi** della macchina sono due, entrambi **eventi**: la **variazione** del valore letto (```val != val0```) e il **timeout** (```debtime``` ms senza variazioni). Come di consueto, lo scadere del timer è trattato come un ingresso. Le righe in cui non accade nulla (nessuna variazione, timer non ancora scaduto) non sono transizioni e non compaiono né nella tabella né nel diagramma. Il timeout è definito solo in ATTESA DI CONFERMA, l'unico stato in cui il timer è attivo.
+
+Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riporta necessariamente il valore letto uguale a ```val00```: la macchina torna in STABILE senza segnalare nulla. In STABILE il timer non serve e non va inizializzato: viene avviato nella transizione verso ATTESA DI CONFERMA, l'unico stato che lo usa. Così, a ogni rimbalzo, la macchina esce e rientra in ATTESA DI CONFERMA e il conteggio riparte da capo. Nel codice, scritto in logica "prima gli ingressi", l'ingresso **variazione** è gestito da un unico ramo comune ai due stati, quindi ```last = millis()``` viene eseguito anche nella transizione verso STABILE: lì è un'assegnazione innocua, che non cambia il comportamento.
+
+**Uscite: macchina di Mealy.** In STABILE si entra con due transizioni che hanno uscite diverse: ```changed() = false``` dopo un rimbalzo, ```changed() = true``` dopo il timeout. È lecito perché la macchina è di **Mealy**: l'uscita dipende dalla coppia (stato, ingresso), cioè dalla **transizione**, e non solo dallo stato. In una macchina di **Moore**, dove l'uscita dipende solo dallo stato, servirebbe uno stato in più (ad esempio CONFERMATO, con uscita ```true```, che dura un solo passo e torna subito in STABILE): la macchina sarebbe equivalente ma più grande. Per un'uscita di tipo evento come ```changed()```, un impulso che dura una sola chiamata, Mealy è la scelta naturale.
+
+**Il livello accettato è una proprietà dello stato.** In STABILE ```val00``` può valere 0 o 1, ma la macchina reagisce agli ingressi nello stesso modo in entrambi i casi: il livello è una **proprietà** dello stato, come il colore di un LED acceso, non uno stato diverso. Separarlo darebbe una macchina equivalente con quattro stati (STABILE_BASSO, STABILE_ALTO, ATTESA_SALITA, ATTESA_DISCESA) e il livello come uscita di Moore, ma con il doppio degli stati e nessun comportamento in più.
 
 ## Caratteristiche della Macchina a Stati
 1. **Conferma per stabilità**: un cambio viene segnalato (```changed()``` restituisce ```true```) solo dopo ```debtime``` ms senza variazioni
-2. **Reset del timer**: ogni variazione letta, rimbalzo o disturbo, fa ripartire il conteggio
+2. **Riavvio del timer**: ogni variazione letta, rimbalzo o disturbo, fa ripartire il conteggio, perché il timer viene avviato a ogni ingresso in ATTESA DI CONFERMA
 3. **Un solo evento per cambio**: pressione e rilascio generano ciascuno un solo evento, con il nuovo livello in ```val```
 4. **Chiamata continua**: ```changed()``` va chiamata a ogni giro di ```loop()```, perché è la sequenza delle chiamate a misurare la stabilità
 
@@ -133,18 +137,19 @@ Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riport
 ```mermaid
 flowchart LR
     I(( )) --> S
-    S["<b>STABILE</b><br>val0 == val00<br><i>resta qui finché non ci sono variazioni</i>"]
+    S["<b>STABILE</b><br>val0 == val00"]
     A["<b>ATTESA DI CONFERMA</b><br>val0 != val00"]
-    S -- "variazione<br>val0 = val, last = millis()" --> A
-    A -- "variazione: rimbalzo o disturbo<br>val0 = val, last = millis()" --> S
-    A -- "stabile da meno di debtime" --> A
-    A == "stabile da più di debtime<br>val00 = val, <b>changed() = true</b>" ==> S
+    S -- "<b>variazione</b><br>val0 = val<br>avvio timer: last = millis()" --> A
+    A -- "<b>variazione</b> (rimbalzo o disturbo)<br>val0 = val" --> S
+    A == "<b>timeout</b>: debtime senza variazioni<br>val00 = val<br><b>changed() = true</b>" ==> S
     style I fill:#000,stroke:#000
 ```
 
-##  **Soluzione in logica "prima gli stati"**
+##  **Soluzione in logica "prima gli ingressi"**
 
 La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del debouncer, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default). Il rilevamento del fronte (pressione o rilascio) è lasciato al programma principale, che legge il nuovo livello in ```val``` quando ```changed()``` restituisce ```true```.
+
+Il codice è scritto in logica **"prima gli ingressi"**: ```changed()``` esamina prima la lettura (```val != val0```) e lo **stato** non ha una variabile propria, ma è **implicito** nel confronto tra ```val0``` e ```val00```. La stessa macchina a stati, scritta in logica **"prima gli stati"** con una variabile di stato esplicita, è in [DEBOUNCER 2](debouncer2.md).
 
 L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, DEBOUNCETIME, LOW, LOW, 0}``` utilizzando la notazione ```{}``` che racchiude la **lista** dei **membri contigui** da inizializzare dentro le **parentesi graffe**, nell'ordine in cui sono dichiarati. Con la resistenza di pull-down il pulsante a riposo legge LOW, quindi ```val0``` e ```val00``` partono da LOW: se partissero dal livello opposto, all'accensione verrebbe segnalato un cambio che non c'è. Con il pull-up interno (```INPUT_PULLUP```) partirebbero da HIGH.
 

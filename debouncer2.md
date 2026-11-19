@@ -4,7 +4,7 @@
 
 #  **DEBOUNCER 2**
 
-Questa dispensa realizza **la stessa consegna** e **la stessa macchina a stati** del [DEBOUNCER](debouncer.md), con lo stesso comportamento. Cambia solo l'organizzazione del codice:
+Questa dispensa realizza **la stessa consegna** e **la stessa macchina a stati** del [DEBOUNCER](debouncerFSM.md), con lo stesso comportamento. Cambia solo l'organizzazione del codice:
 - nel DEBOUNCER il codice è scritto in logica **"prima gli ingressi"** e lo stato è implicito nel confronto tra ```val0``` e ```val00```;
 - qui il codice è scritto in logica **"prima gli stati"**: lo stato è una variabile esplicita (```debState```) e ```changed()``` esamina prima lo stato e poi, dentro ogni stato, gli ingressi.
 
