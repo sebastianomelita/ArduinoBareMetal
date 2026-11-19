@@ -408,9 +408,6 @@ void loop() {
         !premuto, 50)) {
     doOnFall();
   }
-  if (premuto) {
-    debt.reset();
-  }
 }
 ```
 
@@ -457,9 +454,6 @@ void loop() {
   if (waitUntilNB(debt,
         !premuto, 50)) {
     doOnRise();
-  }
-  if (premuto) {
-    debt.reset();
   }
 }
 ```
