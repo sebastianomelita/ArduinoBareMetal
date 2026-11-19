@@ -65,9 +65,10 @@ Includere un esempio completo che mostri:
 - Come aggiornare un LED quando viene rilevata una condizione di stabilità
 
 ## Considerazioni Aggiuntive
-- Questo approccio è particolarmente utile per interfacce utente che devono ignorare pressioni accidentali o brevi
-- Il sistema filtra efficacemente sia i rimbalzi meccanici che le interazioni non intenzionali
+- Questo approccio è particolarmente utile quando un'uscita deve **copiare il livello stabile** di un ingresso (un LED, un relè, un comando a livello)
+- Il sistema filtra efficacemente sia i rimbalzi meccanici sia i disturbi e le pressioni più brevi di `debtime`: l'uscita non cambia
 - L'uscita verrà aggiornata solo quando l'ingresso è rimasto in uno stato costante per il periodo di tempo specificato
+- `changed()` segnala la **stabilità raggiunta**, non un cambio di livello: restituisce `true` anche quando, dopo un disturbo o una pressione breve, il segnale torna stabile **sullo stesso valore** di prima. Per questo va usata per copiare `val0` su un'uscita, non per contare pressioni o fare un toggle (per quello serve il debouncer che confronta con l'ultimo livello accettato, vedi [DEBOUNCER](debouncer.md))
 
 ## Requisiti di Consegna
 1. Codice completo e ben commentato della struttura `Button`
@@ -138,35 +139,35 @@ Includere un esempio completo che mostri:
    - Viene aggiornato continuamente sia in stato IDLE che in stato DEBOUNCING
 
 4. **Comportamento con pulsanti reali**:
-   - Pressioni o rilasci brevi (< debtime) non genereranno mai un segnale `true`
    - Solo quando il pulsante rimane in uno stato costante per almeno `debtime` millisecondi la funzione ritorna `true`
-   - L'uscita (LED) viene aggiornata solo quando il segnale di ingresso è rimasto stabile per il periodo richiesto
+   - Una pressione o un rilascio brevi (< debtime), o un disturbo, generano comunque un `true`, ma `debtime` ms dopo la fine della variazione e con `val0` uguale al valore di prima: l'uscita viene riscritta con lo stesso valore e non cambia
+   - L'uscita (LED) cambia quindi solo quando il segnale di ingresso è rimasto stabile su un valore nuovo per il periodo richiesto
+
+5. **Differenza con il [DEBOUNCER](debouncer.md)**:
+   - Il DEBOUNCER memorizza anche l'ultimo livello accettato (`val00`) e restituisce `true` solo quando il livello stabile è **diverso** da quello: segnala i **cambi** veri, adatto a toggle, contatori ed eventi
+   - Il rilevatore di stabilità non ha memoria del livello accettato e restituisce `true` a ogni fine di instabilità: adatto a **copiare** un livello su un'uscita
 
 
 ##  **Diagramma degli stati**
 
 ```mermaid
-%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
-stateDiagram-v2
-    direction LR
-    
-    IDLE --> DEBOUNCING: val ≠ val0 \ last = millis() \ val0 = val \ return false
-    IDLE --> IDLE: val = val0 \ val0 = val \ return false
-    
-    DEBOUNCING --> DEBOUNCING: val ≠ val0\nlast = millis()\nval0 = val\nreturn false
-    DEBOUNCING --> IDLE: val = val0 && millis() - last ≥ debtime\ndebState = false \ return true
-    
-    note right of IDLE: Stato stabile o iniziale \ val0 sempre aggiornato
-    note right of DEBOUNCING: Filtraggio variazioni \ Reset timer se val cambia
+flowchart LR
+    I(( )) --> S
+    S["<b>IDLE</b><br>debState = false<br><i>val0 = val a ogni lettura</i>"]
+    D["<b>DEBOUNCING</b><br>debState = true"]
+    S -- "val ≠ val0<br>last = millis(), val0 = val" --> D
+    D -- "val ≠ val0: last = millis(), val0 = val (il timer riparte)<br>oppure val = val0 e millis() - last < debtime" --> D
+    D == "val = val0 e millis() - last ≥ debtime<br>debState = false, <b>return true</b>" ==> S
+    style I fill:#000,stroke:#000
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
 
-La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti sia del debouncer che del rilevamento dei fronti, è tutta **incapsulata** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default).
+La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del rilevatore di stabilità, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default).
 
-L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, 50}``` utilizzando la notazione ```{}``` che racchiude la **lista** completa dei **membri contigui** da inizializzare dentro le **parentesi graffe**.
+L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione tramite il **costruttore**: ```Button button(3)``` usa il tempo di stabilità predefinito ```TXTIME```, ```Button button(3, 50)``` ne imposta uno diverso. Il costruttore configura il pin come ingresso e ne legge il valore iniziale, che diventa il valore di riferimento.
 
-Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
+Esempio in cui il LED copia il livello stabile del pulsante:
 
 ```cpp
 #define TXTIME 100  // Tempo di debounce in millisecondi
@@ -215,11 +216,11 @@ struct Button {
   Button(uint8_t _pin, unsigned long _debtime = TXTIME) {
     pin = _pin;
     debtime = _debtime;
-    val = digitalRead(_pin);  // Legge il valore iniziale
-    val0 = val;              // Imposta il valore iniziale
+    pinMode(pin, INPUT);      // prima si configura il pin come ingresso...
+    val = digitalRead(pin);   // ...poi si legge il valore iniziale
+    val0 = val;               // il valore iniziale diventa il riferimento
     last = 0;
     debState = false;
-    pinMode(pin, INPUT);
   }
 };
 
@@ -235,10 +236,10 @@ void setup() {
 void loop() {
   if (button.changed()) {
     Serial.println("Stato stabile rilevato!");
-    digitalWrite(led, button.val0);  // Aggiorna il LED con il valore stabile
+    digitalWrite(led, button.val0);  // Copia sul LED il valore stabile (può essere uguale al precedente)
   }
 }
 ```
-Simulazione con Wokwi su ESP32: https://wokwi.com/projects/426258191241018369_
+Simulazione con Wokwi su ESP32: https://wokwi.com/projects/426258191241018369
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
