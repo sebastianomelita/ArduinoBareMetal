@@ -60,6 +60,12 @@ Siccome i tempi li registra la ISR, la tecnica resta corretta anche con un `loop
 ritarda solo le callback. `tFronte` è da 32 bit: su AVR la sua lettura non è atomica, quindi il
 `loop()` ne fa una copia fra `noInterrupts()` e `interrupts()`.
 
+<p align="center">
+  <img src="img/debounce-interrupt-pulldown.gif" alt="Animazione: la ISR registra i fronti, il loop() decide (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>

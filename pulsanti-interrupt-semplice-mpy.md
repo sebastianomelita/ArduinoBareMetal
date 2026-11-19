@@ -54,6 +54,12 @@ flag e chiama la callback della pressione; poi chiama quella del rilascio solo q
 rilasciato e da più di 50 ms non c'è stato nessun fronte. Entrambe le callback vengono eseguite
 nel ciclo, quindi possono contenere qualunque codice; un ciclo lento le ritarda soltanto.
 
+<p align="center">
+  <img src="img/debounce-interrupt-pulldown-mpy.gif" alt="Animazione: il gestore registra i fronti, il ciclo decide (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
