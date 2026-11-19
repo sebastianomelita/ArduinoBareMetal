@@ -68,6 +68,12 @@ Limite: una pressione più breve di 50 ms viene presa per un rimbalzo. Il rilasc
 accettato e la ISR resta in attesa del rilascio: la pressione successiva fa scattare solo la
 callback del rilascio. Dopo di che la sequenza si rimette in passo da sola.
 
+**Limite.** Un'interruzione breve del contatto mentre il pulsante è tenuto premuto (contatto usurato,
+filo che si muove, disturbo) viene accettata come rilascio: la callback del rilascio scatta durante
+la pressione e, da lì in poi, le due callback restano scambiate (quella del rilascio scatta alle
+pressioni e viceversa). Con un pulsante in buone condizioni non succede; se serve robustezza anche
+a questo, conviene la tecnica 2, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
@@ -686,6 +692,21 @@ Valgono per tutte le tecniche:
   disarma l'interrupt.
 - **Su ESP32** la ISR va dichiarata `IRAM_ATTR`, come nella tecnica 4, così resta in RAM e
   viene eseguita anche quando la memoria flash è occupata.
+
+## Considerazioni finali: quale tecnica scegliere
+
+**Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+
+**Il polling veloce con il timer che riparte è la tecnica più robusta e più pronta.** È la versione in cui il ```loop()``` legge il pulsante a ogni giro e il timer riparte a ogni lettura "premuto" (```t0 = millis()``` fuori dall'```if```):
+- guarda il pulsante in continuazione: un disturbo breve a pulsante premuto viene visto di sicuro, ma fa solo ripartire il conteggio;
+- il rilascio è accettato solo se il pin è rimasto basso per **tutto** il tempo di antirimbalzo: la decisione non dipende da dove cade il disturbo;
+- la pressione è riconosciuta alla prima lettura alta, il rilascio dopo il tempo di antirimbalzo.
+
+La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni lente le letture si diradano e il polling si comporta come uno schedulatore.
+
+**Lo schedulatore (time tick)** legge il pulsante solo ogni ```TBASE```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```TBASE```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```TBASE```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
+
+**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 ## Riferimenti
 
