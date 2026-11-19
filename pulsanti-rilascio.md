@@ -137,6 +137,12 @@ void loop() {
 
 ## 2. Versione non bloccante con millis()
 
+<p align="center">
+  <img src="debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
@@ -242,6 +248,12 @@ void loop() {
 e non produce un falso fronte.
 
 ## 3. Versione non bloccante con DiffTimer
+
+<p align="center">
+  <img src="debounce-difftimer-pulldown.gif" alt="Animazione del debounce con DiffTimer (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
 <tr>
@@ -474,6 +486,12 @@ Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pi
 intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
 letture il segnale si è stabilizzato. I fronti si riconoscono confrontando la lettura
 attuale `val` con quella precedente `precval`.
+
+<p align="center">
+  <img src="debounce-schedulatore-pulldown.gif" alt="Animazione del debounce con schedulatore (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
 <tr>

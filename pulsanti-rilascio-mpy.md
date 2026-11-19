@@ -110,6 +110,12 @@ while True:
 
 ## 2. Versione non bloccante con ticks_ms()
 
+<p align="center">
+  <img src="debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
@@ -209,6 +215,12 @@ e non produce un falso fronte.
 > Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
 > `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, l'attesa di fine rimbalzi in
 > `waitUntilInputLow()` / `waitUntilInputHigh()` e il timer che riparte in `waitUntilNB()`.
+
+<p align="center">
+  <img src="debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
 <tr>
@@ -401,6 +413,12 @@ Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pi
 intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
 letture il segnale si è stabilizzato. I fronti si riconoscono confrontando la lettura
 attuale `val` con quella precedente `precval`.
+
+<p align="center">
+  <img src="debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
 <tr>

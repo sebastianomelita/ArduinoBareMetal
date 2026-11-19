@@ -95,6 +95,14 @@ while True:
 Qui la variabile `attivo` serve: senza, a pulsante rilasciato la differenza di tempo
 resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
+<p align="center">
+  <img src="debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
+L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `attivo` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
@@ -174,6 +182,14 @@ while True:
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
 Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
 [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
+
+<p align="center">
+  <img src="debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
+L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `timerState` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
 
 <table>
 <tr>
@@ -322,6 +338,14 @@ while True:
 ## 5. Versione con schedulatore non bloccante
 
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.
+
+<p align="center">
+  <img src="debounce-schedulatore-pulldown-mpy.gif" alt="Animazione del debounce con schedulatore (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
+L'animazione mostra la versione completa della dispensa principale, che riconosce anche il fronte di salita con `doOnRise()`; qui si controlla solo quello di discesa, il campionamento è lo stesso.
 
 <table>
 <tr>
