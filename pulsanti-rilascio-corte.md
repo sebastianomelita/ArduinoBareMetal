@@ -14,7 +14,7 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 | Tecnica | Dove sta la memoria "era premuto" | Bool in più |
 | --- | --- | --- |
 | Bloccante | nel punto del programma: si è dentro l'`if` | no |
-| millis() | variabile `armato` | sì |
+| millis() | variabile `attivo` | sì |
 | DiffTimer | `timerState`, dentro la libreria | no |
 | waitUntilNB() | `timerState`, dentro la libreria (serve `premuto` per il reset) | no |
 | Schedulatore | `precval`, il campione precedente | no |
@@ -116,13 +116,7 @@ void loop() {
 
 ## 2. Versione non bloccante con millis()
 
-<p align="center">
-  <img src="img/debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
-</p>
-
-Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
-
-Qui la variabile `armato` serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
+Qui la variabile `attivo` serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
 vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
 
 <table>
@@ -138,7 +132,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool armato = false;
+bool attivo = false;
 
 void doOnFall() {
   // RILASCIO (fronte di discesa):
@@ -156,11 +150,11 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    armato = true;
+    attivo = true;
     t0 = millis();
-  } else if (armato &&
+  } else if (attivo &&
              millis() - t0 > 50) {
-    armato = false;
+    attivo = false;
     doOnFall();
   }
 }
@@ -174,7 +168,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool armato = false;
+bool attivo = false;
 
 void doOnRise() {
   // RILASCIO (fronte di salita):
@@ -192,11 +186,11 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == LOW) {
-    armato = true;
+    attivo = true;
     t0 = millis();
-  } else if (armato &&
+  } else if (attivo &&
              millis() - t0 > 50) {
-    armato = false;
+    attivo = false;
     doOnRise();
   }
 }
@@ -208,7 +202,7 @@ void loop() {
 
 ## 3. Versione non bloccante con DiffTimer
 
-`start()` non fa nulla se il timer è già armato, quindi si può chiamare a ogni giro. A timer
+`start()` non fa nulla se il timer è già attivo, quindi si può chiamare a ogni giro. A timer
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
 
 <table>
@@ -243,7 +237,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    debt.start();  // no-op se armato
+    debt.start();  // no-op se attivo
     debt.reset();
   } else if (debt.get() > 50) {
     debt.stop();
@@ -280,7 +274,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == LOW) {
-    debt.start();  // no-op se armato
+    debt.start();  // no-op se attivo
     debt.reset();
   } else if (debt.get() > 50) {
     debt.stop();

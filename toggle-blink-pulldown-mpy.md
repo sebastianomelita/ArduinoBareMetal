@@ -136,7 +136,7 @@ LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
 LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
 stato = False
 t0 = 0                        # ultima lettura "premuto"
-armato = False
+attivo = False
 precBlink = 0
 
 def doOnRise():
@@ -157,12 +157,12 @@ def blink(pin):
 while True:
     # task 1: pulsante
     if P1.value():
-        if not armato:
-            armato = True
+        if not attivo:
+            attivo = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif armato and time.ticks_diff(time.ticks_ms(), t0) > 50:
-        armato = False
+    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > 50:
+        attivo = False
         doOnFall()
 
     # task 2: blink ogni 1000 ms
@@ -452,7 +452,7 @@ def doOnFall():
 def blink(pin):
     pin.value(not pin.value())   # inverte il LED lampeggiante
 
-def isrPress(pin):                # armato sulla pressione
+def isrPress(pin):                # attivo sulla pressione
     global tUltimo
     if time.ticks_diff(time.ticks_ms(), tUltimo) > 50:
         tUltimo = time.ticks_ms()
@@ -461,7 +461,7 @@ def isrPress(pin):                # armato sulla pressione
     # si arma il fronte opposto
     P1.irq(trigger=Pin.IRQ_FALLING, handler=isrRel)
 
-def isrRel(pin):                  # armato sul rilascio
+def isrRel(pin):                  # attivo sul rilascio
     global tUltimo
     if time.ticks_diff(time.ticks_ms(), tUltimo) > 50:
         tUltimo = time.ticks_ms()

@@ -155,7 +155,7 @@ const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
 const byte LEDBLINK = 12;   // task 2: LED lampeggiante
 bool stato = LOW;
 unsigned long t0 = 0;          // ultima lettura "premuto"
-bool armato = false;
+bool attivo = false;
 unsigned long precBlink = 0;
 
 void doOnRise() {
@@ -183,13 +183,13 @@ void setup() {
 void loop() {
   // task 1: pulsante
   if (digitalRead(P1) == HIGH) {
-    if (!armato) {
-      armato = true;
+    if (!attivo) {
+      attivo = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (armato && millis() - t0 > 50) {
-    armato = false;
+  } else if (attivo && millis() - t0 > 50) {
+    attivo = false;
     doOnFall();
   }
 

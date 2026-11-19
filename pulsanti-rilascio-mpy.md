@@ -126,7 +126,7 @@ P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-armato = False
+attivo = False
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -146,13 +146,13 @@ def doOnFall():
 
 while True:
     if P1.value():              # premuto
-        if not armato:
-            armato = True
+        if not attivo:
+            attivo = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif armato and time.ticks_diff(
+    elif attivo and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        armato = False
+        attivo = False
         doOnFall()
 ```
 
@@ -167,7 +167,7 @@ P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-armato = False
+attivo = False
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):
@@ -187,13 +187,13 @@ def doOnRise():
 
 while True:
     if not P1.value():          # premuto
-        if not armato:
-            armato = True
+        if not attivo:
+            attivo = True
             doOnFall()
         t0 = time.ticks_ms()
-    elif armato and time.ticks_diff(
+    elif attivo and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        armato = False
+        attivo = False
         doOnRise()
 ```
 
@@ -308,7 +308,7 @@ Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`
 con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
 rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
 La callback della pressione si chiama controllando
-`debt.timerState` prima della chiamata: il timer è disarmato solo al primo giro di pressione.
+`debt.timerState` prima della chiamata: il timer non è attivo solo al primo giro di pressione.
 
 <table>
 <tr>

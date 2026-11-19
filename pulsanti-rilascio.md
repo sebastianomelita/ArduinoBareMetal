@@ -150,7 +150,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool armato = false;
+bool attivo = false;
 
 void doOnRise() {
   // PRESSIONE (fronte di salita):
@@ -175,14 +175,14 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    if (!armato) {
-      armato = true;
+    if (!attivo) {
+      attivo = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (armato &&
+  } else if (attivo &&
              millis() - t0 > 50) {
-    armato = false;
+    attivo = false;
     doOnFall();
   }
 }
@@ -196,7 +196,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool armato = false;
+bool attivo = false;
 
 void doOnFall() {
   // PRESSIONE (fronte di discesa):
@@ -221,14 +221,14 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == LOW) {
-    if (!armato) {
-      armato = true;
+    if (!attivo) {
+      attivo = true;
       doOnFall();
     }
     t0 = millis();
-  } else if (armato &&
+  } else if (attivo &&
              millis() - t0 > 50) {
-    armato = false;
+    attivo = false;
     doOnRise();
   }
 }
@@ -356,8 +356,8 @@ senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta
 a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
 "premuto", come nella versione con DiffTimer.
 `waitUntilNB()` segnala solo il rilascio: la callback della pressione si chiama controllando
-`debt.timerState` prima della chiamata. Il timer è disarmato solo al primo giro di pressione,
-perché subito dopo lo arma `waitUntilNB()`.
+`debt.timerState` prima della chiamata. Il timer non è attivo solo al primo giro di pressione,
+perché subito dopo lo attiva `waitUntilNB()`.
 
 <table>
 <tr>

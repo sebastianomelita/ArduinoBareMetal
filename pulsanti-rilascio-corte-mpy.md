@@ -15,7 +15,7 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 | Tecnica | Dove sta la memoria "era premuto" | Bool in più |
 | --- | --- | --- |
 | Bloccante | nel punto del programma: si è dentro l'`if` | no |
-| ticks_ms() | variabile `armato` | sì |
+| ticks_ms() | variabile `attivo` | sì |
 | DiffTimer | `timerState`, dentro la classe | no |
 | waitUntilNB() | `timerState`, dentro la classe (serve `premuto` per il reset) | no |
 | Schedulatore | `precval`, il campione precedente | no |
@@ -92,7 +92,7 @@ while True:
 
 ## 2. Versione non bloccante con ticks_ms()
 
-Qui la variabile `armato` serve: senza, a pulsante rilasciato la differenza di tempo
+Qui la variabile `attivo` serve: senza, a pulsante rilasciato la differenza di tempo
 resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
 <table>
@@ -111,7 +111,7 @@ P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-armato = False
+attivo = False
 
 def doOnFall():
     # RILASCIO (fronte di discesa):
@@ -124,11 +124,11 @@ def doOnFall():
 
 while True:
     if P1.value():              # premuto
-        armato = True
+        attivo = True
         t0 = time.ticks_ms()
-    elif armato and time.ticks_diff(
+    elif attivo and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        armato = False
+        attivo = False
         doOnFall()
 ```
 
@@ -143,7 +143,7 @@ P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-armato = False
+attivo = False
 
 def doOnRise():
     # RILASCIO (fronte di salita):
@@ -156,11 +156,11 @@ def doOnRise():
 
 while True:
     if not P1.value():          # premuto
-        armato = True
+        attivo = True
         t0 = time.ticks_ms()
-    elif armato and time.ticks_diff(
+    elif attivo and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        armato = False
+        attivo = False
         doOnRise()
 ```
 
@@ -170,7 +170,7 @@ while True:
 
 ## 3. Versione non bloccante con DiffTimer
 
-`start()` non fa nulla se il timer è già armato, quindi si può chiamare a ogni giro. A timer
+`start()` non fa nulla se il timer è già attivo, quindi si può chiamare a ogni giro. A timer
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
 Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
 [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
@@ -204,7 +204,7 @@ def doOnFall():
 
 while True:
     if P1.value():              # premuto
-        debt.start()            # niente se armato
+        debt.start()            # niente se attivo
         debt.reset()
     elif debt.get() > 50:
         debt.stop()
@@ -236,7 +236,7 @@ def doOnRise():
 
 while True:
     if not P1.value():          # premuto
-        debt.start()            # niente se armato
+        debt.start()            # niente se attivo
         debt.reset()
     elif debt.get() > 50:
         debt.stop()
