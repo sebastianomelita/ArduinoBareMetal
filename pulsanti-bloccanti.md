@@ -1090,6 +1090,41 @@ bassa o un filtro RC, oppure una tecnica che chieda il livello fermo per 50 ms a
 la versione 6, se il programma può restare fermo ad aspettare il pulsante, o `changed()` di
 [pulsanti-rilascio.md](pulsanti-rilascio.md) se deve fare altro.
 
+**Sono sicure in tutte le situazioni? No.** Le versioni 4, 5 e 6, e le funzioni della libreria,
+sono **certe** contro i disturbi per cui sono state pensate, purché durino meno di `t − p` (49 ms con
+le letture ogni millisecondo):
+
+| Disturbo | `waitUntilInputLow` / `High` (versione 5) | `waitUntilInputChange` (versione 6) |
+| --- | --- | --- |
+| Rimbalzi alla pressione e al rilascio | ✔ | ✔ |
+| Buchi brevi a pulsante premuto | ✔ | ✔ |
+| Spike a pulsante rilasciato | ✘ | ✔ |
+
+Fuori da queste condizioni possono sbagliare o bloccarsi:
+
+1. **Disturbi lunghi.** Se un contatto consumato resta aperto 60 ms, per qualsiasi tecnica è un
+   rilascio vero: è il limite di fondo, che si supera solo scegliendo `t` adatto al pulsante.
+2. **Disturbi che si ripetono.** Se un disturbo arriva più spesso di `t` (ad esempio ogni 20 ms, da un
+   motore o da un PWM vicino ai cavi), il conteggio riparte sempre e l'attesa **non finisce mai**: il
+   programma resta bloccato. Qui serve l'hardware: pull-down più basso, filtro RC, cavi separati,
+   optoisolatore (vedi [interfacce-digitali.md](interfacce-digitali.md)).
+3. **Impulsi veri più brevi di `t`.** `waitUntilInputChange` li scarta come disturbi. Con un pulsante va
+   bene; con un sensore può essere un problema: se su un nastro un pezzo passa davanti a una
+   fotocellula in meno di 50 ms, non viene contato. In quel caso `t` va scelto più corto del passaggio
+   più rapido.
+4. **Programma bloccato.** Mentre aspetta, il programma non fa altro. Su Arduino UNO non legge gli altri ingressi: se un nastro aspetta che
+   un pezzo lasci il sensore di partenza, non vede il sensore di arrivo. Sul robot, una Wait nel
+   programma principale ferma anche i movimenti. Le attese bloccanti sono sicure per il pulsante, non
+   per il resto del sistema.
+5. **ESP32 molto carico.** Un task a priorità più alta può distanziare le letture più di 1 ms: il tempo resta misurato correttamente, ma il margine `t − p` si riduce.
+6. **Problemi elettrici.** Nessun software corregge un pin flottante (senza resistenza di pull), una
+   tensione nella zona incerta fra le soglie, o 5 V su un ingresso a 3,3 V.
+
+In sintesi: contro rimbalzi e disturbi brevi la protezione è una **certezza**, non una probabilità.
+In un sistema reale servono però anche un tempo `t` adatto al pulsante o al sensore, un collegamento
+elettrico corretto, disturbi non continui e un programma che possa permettersi di aspettare;
+altrimenti servono le versioni non bloccanti, come `Debouncer`.
+
 **Quando usarle.** Le tecniche bloccanti fermano `loop()` per tutta la durata della pressione: vanno
 bene in un programma che deve solo reagire al pulsante, o su ESP32 dove gli altri compiti girano in
 altri task. Se `loop()` deve fare altro mentre il pulsante è premuto (un lampeggio, un motore), servono
