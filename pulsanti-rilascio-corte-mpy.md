@@ -315,6 +315,20 @@ while True:
 </tr>
 </table>
 
+**La stessa logica è nella libreria.** In `urutils.py` c'è la classe `Debouncer`, con gli stessi
+attributi `val0`, `val00` e `last` e lo stesso metodo `changed()`: un oggetto per pulsante, creato con
+il livello di riposo.
+
+```python
+from urutils import Debouncer
+deb = Debouncer(0)               # pull-down: riposo 0 (con il pull-up: Debouncer(1))
+
+while True:
+    if deb.changed(P1, 50):      # nuovo livello fermo da più di 50 ms
+        if deb.val00 == 0:
+            doOnFall()           # rilascio confermato
+```
+
 ## 4. Versione con schedulatore non bloccante
 
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.

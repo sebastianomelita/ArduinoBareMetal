@@ -577,6 +577,22 @@ while True:
 </tr>
 </table>
 
+**La stessa logica è nella libreria.** In `urutils.py` c'è la classe `Debouncer`, con gli stessi
+attributi `val0`, `val00` e `last` e lo stesso metodo `changed()`: un oggetto per pulsante, creato con
+il livello di riposo.
+
+```python
+from urutils import Debouncer
+deb = Debouncer(0)               # pull-down: riposo 0 (con il pull-up: Debouncer(1))
+
+while True:
+    if deb.changed(P1, 50):      # nuovo livello fermo da più di 50 ms
+        if deb.val00 == 1:
+            doOnRise()           # pressione confermata
+        else:
+            doOnFall()           # rilascio confermato
+```
+
 ## Considerazioni finali: quale tecnica scegliere
 
 **Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
