@@ -134,6 +134,43 @@ pezzo veloce davanti a una fotocellula, e allora `T` deve essere più corto di q
 
 ## 3. Quale tecnica copre quale situazione
 
+### Due criteri per classificare le tecniche
+
+**Letture discontinue.** Il debouncer decide guardando il pin **in pochi istanti isolati**, separati da
+intervalli lunghi (dell'ordine di `T`) in cui il pin non viene letto: ad esempio una lettura, poi
+`delay(50)`, poi un'altra lettura. Quello che succede fra due letture non viene visto. La decisione
+dipende quindi da **dove cadono** le letture rispetto ai disturbi: la protezione è **probabilistica**.
+
+**Letture continue.** Il pin è letto **spesso**, a intervalli `p` molto più brevi di `T` (ogni
+millisecondo, o a ogni giro di `loop()`), e **ogni lettura conta**: una sola lettura contraria fa
+ripartire il conteggio. Nessun disturbo più lungo di `p` può passare inosservato, e la protezione è
+**certa** finché i disturbi durano meno di `T − p`.
+
+**Livello stabile.** Un livello è stabile quando **tutte** le letture lo hanno confermato, senza
+interruzioni, per più di `T`. È la condizione con cui le tecniche a letture continue accettano un
+cambiamento.
+
+**Livello stabile in una direzione (tecniche asimmetriche).** La stabilità è richiesta per **una sola**
+delle due transizioni, di solito il **rilascio**. L'altra, la pressione, è accettata alla **prima**
+lettura. Vantaggio: la pressione è riconosciuta subito. Limite: uno spike a riposo sembra una
+pressione (situazione 4).
+
+**Livello stabile in due direzioni (tecniche simmetriche).** La stabilità è richiesta per **ogni**
+cambio di livello: sia la pressione sia il rilascio sono accettati solo dopo `T` di livello fermo.
+Vantaggio: filtra tutte e quattro le situazioni. Limiti: anche la pressione arriva `T` dopo, e un
+evento più breve di `T` viene scartato.
+
+I due criteri si combinano:
+
+| | Livello stabile in **una** direzione (solo rilascio) | Livello stabile in **due** direzioni |
+| --- | --- | --- |
+| **Letture discontinue** | bloccanti 1, 2, 3 | schedulatore con N letture uguali |
+| **Letture continue** | polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5, script e programma PolyScope sul rilascio | `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()`, programma PolyScope che conferma anche la pressione |
+
+La casella in basso a destra è l'unica che dà una protezione **certa** contro **tutte** le quattro
+situazioni; quella in basso a sinistra è la più usata, perché è certa contro le prime tre e risponde
+subito alla pressione.
+
 | Tecnica | 1. Rimbalzi alla pressione | 2. Rimbalzi al rilascio | 3. Buco a pulsante premuto | 4. Spike a riposo |
 | --- | --- | --- | --- | --- |
 | Bloccante 1: una lettura ogni `T` | ✔ | ~ | ~ | ✘ |
