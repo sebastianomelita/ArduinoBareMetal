@@ -1,36 +1,60 @@
 >[Torna all'indice](indexpulsanti.md)
 
-# Che cosa deve filtrare un debouncer: tre fenomeni e le ipotesi di progetto
+# Che cosa deve filtrare un debouncer: quattro situazioni critiche e le ipotesi di progetto
 
-Un debouncer non "pulisce" il segnale in generale: è progettato contro **fenomeni precisi**, sotto
+Un debouncer non "pulisce" il segnale in generale: è progettato contro **situazioni precise**, sotto
 **ipotesi precise** sulla loro durata. Se le ipotesi valgono, la protezione è certa; se cadono, nessuna
-tecnica può distinguere un disturbo da un evento vero. Questa dispensa raccoglie i tre fenomeni, le
-ipotesi con cui si sceglie il tempo di antirimbalzo `T`, e quale tecnica copre che cosa.
+tecnica può distinguere un disturbo da un evento vero. Questa dispensa raccoglie le quattro situazioni
+critiche, le ipotesi con cui si sceglie il tempo di antirimbalzo `T`, e quale tecnica copre che cosa.
 
 > Tecniche: [pulsanti-bloccanti.md](pulsanti-bloccanti.md) (attese bloccanti), [pulsanti-rilascio.md](pulsanti-rilascio.md) (non bloccanti), [debouncerFSM.md](debouncerFSM.md) (livello stabile come macchina a stati). Parte elettrica: [interfacce-digitali.md](interfacce-digitali.md).
 
 <p align="center">
-  <img src="img/debounce-tre-fenomeni.png" alt="I tre fenomeni su un pulsante in pull-down: spike a pulsante rilasciato, rimbalzi alla pressione e al rilascio, buco a pulsante premuto" width="900">
+  <img src="img/debounce-quattro-situazioni.png" alt="Le quattro situazioni critiche su un pulsante in pull-down: rimbalzi alla pressione, rimbalzi al rilascio, buco a pulsante premuto, spike a pulsante rilasciato" width="900">
 </p>
 
-## 1. I tre fenomeni
+## 1. Le quattro situazioni critiche
 
-### 1.1 I rimbalzi
+Le situazioni sono quattro, le cause fisiche tre: i **rimbalzi** del contatto si presentano due volte,
+alla pressione e al rilascio. Si contano separatamente perché hanno effetti diversi e, nelle tecniche
+più comuni, sono gestiti da parti diverse del codice (vedi la sezione 3).
 
-**Che cosa sono.** Quando i contatti di un interruttore meccanico si chiudono o si aprono, rimbalzano
-per un po' prima di fermarsi: per qualche millisecondo il pin passa più volte fra 0 e 1. Avviene
-**a ogni pressione e a ogni rilascio**, su pulsanti, finecorsa, microswitch e contatti di relè.
+| | Situazione | Quando | Causa |
+| --- | --- | --- | --- |
+| 1 | Rimbalzi alla pressione | il contatto si chiude | meccanica: il contatto rimbalza |
+| 2 | Rimbalzi al rilascio | il contatto si apre | meccanica: il contatto rimbalza |
+| 3 | Buco a pulsante premuto | durante la pressione | meccanica: contatto sporco o consumato, vibrazioni |
+| 4 | Spike a pulsante rilasciato | a riposo | elettrica: disturbo indotto sui cavi |
 
-**Quanto durano.** Jack Ganssle ha misurato una ventina di interruttori diversi: il rimbalzo medio è
-stato di circa 1,6 ms e il massimo di 6,2 ms, con pochi casi anomali più lunghi. La durata cambia anche
-con il modo in cui si preme: su uno degli interruttori ha trovato una differenza di tre volte a seconda
-della velocità del colpo sulla leva.
+### I rimbalzi: cosa sono e quanto durano
 
-**Che danno fanno.** Ogni rimbalzo sembra un fronte: un toggle scatta più volte, un contatore conta
-due pezzi. Con la logica a livello ("finché è premuto, il motore gira") producono solo un glitch di
-pochi millisecondi.
+Quando i contatti di un interruttore meccanico si chiudono o si aprono, rimbalzano per un po' prima di
+fermarsi: per qualche millisecondo il pin passa più volte fra 0 e 1. Avviene **a ogni pressione e a
+ogni rilascio**, su pulsanti, finecorsa, microswitch e contatti di relè.
 
-### 1.2 Il buco a pulsante premuto
+Jack Ganssle ha misurato una ventina di interruttori diversi: il rimbalzo medio è stato di circa 1,6 ms
+e il massimo di 6,2 ms, con pochi casi anomali più lunghi. La durata cambia anche con il modo in cui si
+preme: su uno degli interruttori ha trovato una differenza di tre volte a seconda della velocità del
+colpo sulla leva.
+
+Ogni rimbalzo sembra un fronte: un toggle scatta più volte, un contatore conta due pezzi. Con la logica
+a livello ("finché è premuto, il motore gira") producono solo un glitch di pochi millisecondi.
+
+### 1.1 Rimbalzi alla pressione
+
+Arrivano subito dopo il primo fronte, quando il debouncer **ha già capito** che il pulsante è stato
+premuto: basta che li ignori per qualche millisecondo. Sono la situazione più facile: quasi tutte le
+tecniche li gestiscono, spesso con una semplice variabile di stato ("pulsante già premuto") o perché il
+programma, dopo il primo fronte, sta già facendo altro.
+
+### 1.2 Rimbalzi al rilascio
+
+Sono più insidiosi, perché arrivano mentre il debouncer **sta decidendo** se il pulsante è stato
+rilasciato. Se decide troppo presto, al primo livello basso, il rimbalzo successivo sembra una nuova
+pressione: è la *pressione fantasma*. Per questo molte tecniche, e molti errori, riguardano soprattutto
+il rilascio.
+
+### 1.3 Buco a pulsante premuto
 
 **Che cos'è.** Mentre il pulsante è tenuto premuto, il contatto si apre per un attimo: il pin scende a 0
 per qualche millisecondo e poi torna a 1. È un fenomeno **isolato**, in mezzo a una pressione.
@@ -41,7 +65,7 @@ pressione. È raro con un pulsante buono, più frequente con uno scadente o vecc
 **Che danno fa.** Se il debouncer lo prende per un rilascio, fa scattare l'azione del rilascio a
 pulsante premuto, e subito dopo vede una nuova pressione: un toggle o un conteggio in più.
 
-### 1.3 Lo spike a pulsante rilasciato
+### 1.4 Spike a pulsante rilasciato
 
 **Che cos'è.** A pulsante rilasciato, un disturbo porta il pin a 1 per un attimo.
 
@@ -53,8 +77,12 @@ ingressi industriali a 24 V, come quelli di un robot UR, che assorbono milliampe
 **Che danno fa.** Se il debouncer lo prende per una pressione, esegue l'azione della pressione e, poco
 dopo, quella del rilascio: un toggle o un conteggio fantasma, senza che nessuno abbia toccato niente.
 
-Lo **sfarfallio** dei sensori elettronici (una fotocellula sul bordo di un oggetto lucido) è una
-variante dei rimbalzi: più impulsi brevi all'inizio o alla fine di un evento vero.
+### E lo sfarfallio dei sensori?
+
+Lo **sfarfallio** dei sensori elettronici (una fotocellula sul bordo di un oggetto lucido) non è una
+quinta situazione: ha la stessa forma dei rimbalzi, una raffica di impulsi brevi all'inizio o alla fine
+di un evento vero, e si gestisce come le situazioni 1 e 2. Cambia solo la causa: il sensore che "esita"
+sul bordo invece del contatto che rimbalza.
 
 ## 2. Le ipotesi su cui si dimensiona un debouncer
 
@@ -89,14 +117,16 @@ abbassa sotto i 50 ms: si perde un po' di prontezza, che a mano non si nota, e s
 Per i **sensori** la finestra va ricalcolata: l'evento vero più breve può essere il passaggio di un
 pezzo veloce davanti a una fotocellula, e allora `T` deve essere più corto di quel passaggio.
 
-## 3. Quale tecnica copre quale fenomeno
+## 3. Quale tecnica copre quale situazione
 
-| Tecnica | Rimbalzi | Buco a pulsante premuto | Spike a pulsante rilasciato |
-| --- | --- | --- | --- |
-| Una o due letture ogni `T` (bloccanti 1, 2, 3) | ~ dipende da dove cadono le letture | ~ dipende da dove cadono le letture | ✘ |
-| Letture continue, solo sul rilascio: polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5 | ✔ | ✔ | ✘ |
-| Schedulatore con N letture uguali | ✔ | ~ se nessuna lettura cade nel buco | ~ se nessuna lettura cade nello spike |
-| Livello stabile in tutte e due le direzioni: `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()` | ✔ | ✔ | ✔ |
+| Tecnica | 1. Rimbalzi alla pressione | 2. Rimbalzi al rilascio | 3. Buco a pulsante premuto | 4. Spike a riposo |
+| --- | --- | --- | --- | --- |
+| Bloccante 1: una lettura ogni `T` | ✔ | ~ | ~ | ✘ |
+| Bloccante 2: una lettura e un'attesa fissa dopo | ✔ | ✔ | ~ | ✘ |
+| Bloccante 3: due letture | ✔ | ✔ | ~ | ✘ |
+| Letture continue, solo sul rilascio: polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5 | ✔ | ✔ | ✔ | ✘ |
+| Schedulatore con N letture uguali | ✔ | ✔ | ~ | ~ |
+| Livello stabile in tutte e due le direzioni: `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()` | ✔ | ✔ | ✔ | ✔ |
 
 ✔ certa, se valgono le ipotesi · ~ probabile · ✘ non filtrato
 
@@ -104,9 +134,28 @@ Le tecniche che filtrano **solo il rilascio** accettano la pressione alla prima 
 risposta è immediata, ma lo spike a riposo passa. Le tecniche **a livello stabile** filtrano anche lo
 spike, ma anche la pressione arriva `T` dopo, e una pressione più breve di `T` viene ignorata.
 
+### Chi se ne occupa nel codice
+
+Nelle tecniche che filtrano solo il rilascio, le quattro situazioni sono gestite da **meccanismi
+diversi** del programma. Nelle tecniche a livello stabile, invece, una sola regola le tratta tutte
+allo stesso modo.
+
+| Situazione | Polling con `millis()` (`attivo` + `t0`) | Bloccante 5 (`waitUntilInputLow`) | Livello stabile (`changed()`) |
+| --- | --- | --- | --- |
+| 1. Rimbalzi alla pressione | la **variabile `attivo`**: `doOnRise()` parte solo al primo HIGH, i successivi trovano `attivo` già vero; i LOW fra un rimbalzo e l'altro non durano 50 ms | il **punto del programma**: dopo il primo HIGH il `loop()` è dentro l'attesa e non rilegge più l'`if`; l'attesa li assorbe perché nessun LOW dura 50 ms | la **regola unica**: ogni variazione fa ripartire il conteggio |
+| 2. Rimbalzi al rilascio | il **timer che riparte**: `t0 = millis()` a ogni HIGH | il **timer che riparte**: `tl = millis()` a ogni HIGH dentro l'attesa | la stessa regola |
+| 3. Buco a pulsante premuto | il **timer che riparte**, come i rimbalzi del rilascio | il **timer che riparte**, come i rimbalzi del rilascio | la stessa regola |
+| 4. Spike a pulsante rilasciato | nessuno: diventa una pressione | nessuno: diventa una pressione | la stessa regola: lo spike non dura 50 ms e viene scartato |
+
+Nelle tecniche asimmetriche il buco è gestito dallo **stesso codice** dei rimbalzi del rilascio: per il
+programma sono la stessa cosa, un LOW che non dura abbastanza. I rimbalzi della pressione, invece, sono
+gestiti da un **meccanismo diverso** (una variabile di stato o il punto in cui si trova il programma),
+che però non sa riconoscere uno spike: per questo lo spike passa. La tecnica a livello stabile tratta
+pressione e rilascio con lo stesso codice, e proprio per questo filtra anche lo spike.
+
 ## 4. Come scegliere
 
-1. **Quali fenomeni sono possibili?** I rimbalzi dipendono dalla **sorgente**: ci sono solo con i
+1. **Quali situazioni sono possibili?** I rimbalzi dipendono dalla **sorgente**: ci sono solo con i
    contatti meccanici. Gli spike dipendono dall'**ingresso** e dal **cablaggio**: sono probabili sui pin
    ad alta impedenza con cavi lunghi, rari sugli ingressi a 24 V. I buchi dipendono dalla **qualità** e
    dallo stato del contatto.
