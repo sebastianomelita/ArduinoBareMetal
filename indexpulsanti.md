@@ -7,9 +7,12 @@
 <ol>
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
+<li><a href="interfacce-digitali.md">Interfacce digitali di Arduino, ESP32 e robot UR a confronto: sensori a 24 V e a 5 V e scelta dell'antirimbalzo</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
-<li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling su due fronti</a></li>  
-<li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling su un solo fronte</a></li>  
+<li><a href="pulsanti-bloccanti.md">Gestione pulsanti con attese bloccanti</a></li>
+<li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling non bloccante su due fronti</a></li>  
+<li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling non bloccante su un solo fronte</a></li>  
+<li><a href="debouncerFSM.md">Debouncer a livello stabile come macchina a stati</a></li>
 <li><a href="pulsanti-interrupt-semplice.md">Gestione pulsanti con interrupt base</a></li>  
 <li><a href="pulsanti-interrupt.md">Gestione pulsanti con interrupt avanzati</a></li>  
 <li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
