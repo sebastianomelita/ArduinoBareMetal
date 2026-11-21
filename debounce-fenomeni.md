@@ -167,6 +167,24 @@ I due criteri si combinano:
 | **Letture discontinue** | bloccanti 1, 2, 3 | schedulatore con N letture uguali |
 | **Letture continue** | polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5, script e programma PolyScope sul rilascio | `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()`, programma PolyScope che conferma anche la pressione |
 
+**Livelli ed eventi.** Conviene distinguere due cose che spesso si confondono:
+
+- il **livello accettato** è uno **stato**: quello che il debouncer crede *in questo momento*, cioè
+  "premuto" oppure "a riposo". Dura nel tempo;
+- la **pressione** e il **rilascio** sono **eventi**: avvengono in un istante, quando il livello
+  accettato **cambia**.
+
+| | Livello accettato (stato) | Evento quando il livello accettato diventa questo |
+| --- | --- | --- |
+| Pulsante | premuto | **pressione** |
+| Pulsante | a riposo | **rilascio** |
+| Sensore di transito (fotocellula) | oggetto presente | **inizio del transito** (l'oggetto arriva) |
+| Sensore di transito (fotocellula) | oggetto assente | **fine del transito** (l'oggetto è passato) |
+
+Il debouncer quindi non "accetta la pressione": accetta un **nuovo livello**, e il cambio di livello
+**è** l'evento. "Premuto" è lo stato, la pressione è il passaggio da "a riposo" a "premuto"; allo
+stesso modo, con un sensore, "oggetto presente" è lo stato e l'inizio del transito è il passaggio.
+
 Come leggere la tabella, con il **principio** di ciascuna famiglia descritto a parole, prima di
 qualsiasi codice:
 
@@ -174,12 +192,13 @@ qualsiasi codice:
   `waitUntilInputChange()`): sono le **sole** che proteggono con certezza da **tutte e quattro** le
   situazioni, spike a riposo compreso.
 
-  *Come fanno.* Il debouncer ricorda un **livello accettato** (all'inizio, quello di riposo) e legge il
-  pin di continuo. Finché la lettura coincide con il livello accettato non succede niente. Quando la
+  *Come fanno.* Il debouncer ricorda un **livello accettato** (all'inizio, quello di riposo: pulsante
+  rilasciato, nessun oggetto davanti al sensore) e legge il pin di continuo. Finché la lettura coincide con il livello accettato non succede niente. Quando la
   lettura è **diversa**, comincia a misurare da quanto tempo lo è; ogni volta che la lettura **cambia**,
   la misura riparte da zero. Solo quando la lettura è rimasta diversa dal livello accettato, **senza
   interruzioni**, per più di `T`, il nuovo livello diventa quello accettato e si segnala l'evento:
-  pressione se il nuovo livello è "premuto", rilascio se è "riposo". La regola è **la stessa** per le
+  pressione (o inizio del transito) se il nuovo livello è "premuto", rilascio (o fine del
+  transito) se è "a riposo". La regola è **la stessa** per le
   due transizioni: nessun cambiamento viene creduto finché non è durato `T`.
 
 - **Letture continue, livello stabile in una direzione** (polling con `millis()`, DiffTimer,
