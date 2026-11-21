@@ -70,14 +70,9 @@ il transistor d'uscita lavora alla tensione del microcontrollore. I due circuiti
 un guasto o un picco sul lato a 24 V non arriva al microcontrollore. Molti moduli per Arduino con
 un PC817 fanno esattamente questo.
 
-```
- sensore PNP / DO del robot                      Arduino o ESP32
- uscita (24 V) ──[ R 2,2 kΩ ]──►|── LED          ┌── 5 V o 3,3 V
-                                   opto           │
- 0 V ─────────────────────────────┘   ┌──────────┴──[ R 4,7 kΩ ]── pin (pull-up)
-                                       │ transistor
-                                      GND del micro
-```
+<p align="center">
+  <img src="img/interfaccia-pnp-opto.png" alt="Sensore PNP a 24 V collegato ad Arduino o ESP32 tramite optoisolatore" width="900">
+</p>
 
 Con il pull-up il pin è **alto a riposo** e **basso** quando il sensore è attivo: si ragiona come con un
 pulsante in pull-up.
@@ -85,6 +80,10 @@ pulsante in pull-up.
 **Partitore di tensione (solo con massa comune).** Due resistenze riducono i 24 V. La resistenza verso
 massa fa anche da pull-down quando il sensore è inattivo, ed è più bassa di quelle interne: l'ingresso
 diventa meno sensibile ai disturbi.
+
+<p align="center">
+  <img src="img/interfaccia-partitore.png" alt="Partitore di tensione fra un'uscita a 24 V e il pin di Arduino o ESP32" width="900">
+</p>
 
 | Microcontrollore | R1 (verso il sensore) | R2 (verso massa) | Con 24 V | Con 26,4 V (+10 %) | Alto garantito da |
 | --- | --- | --- | --- | --- | --- |
@@ -100,11 +99,9 @@ Il sensore NPN porta l'uscita a 0 V quando è attivo e la lascia scollegata quan
 un pull-up verso la tensione **del microcontrollore** (5 V o 3,3 V), non verso i 24 V. Il sensore resta
 alimentato a 24 V, con la massa in comune.
 
-```
- +24 V ── marrone   sensore NPN    nero ──┬──[ R 4,7 kΩ ]── 5 V o 3,3 V del micro
- 0 V   ── blu ───────────────────────────│──────────────── GND del micro
-                                          └──────────────── pin
-```
+<p align="center">
+  <img src="img/interfaccia-npn.png" alt="Sensore NPN a 24 V collegato ad Arduino o ESP32 con pull-up verso la tensione del microcontrollore" width="900">
+</p>
 
 Attenzione: alcuni sensori NPN hanno un **pull-up interno verso l'alimentazione**. In quel caso a
 sensore inattivo l'uscita sale a 24 V e il pin si rompe. Usate solo sensori con uscita **open collector**
@@ -116,12 +113,9 @@ Un'uscita a 5 V o a 3,3 V è nella zona "basso" del robot (fino a 5 V): il robot
 Bisogna **commutare i 24 V** del robot. L'ingresso UR è di tipo PNP: aspetta che qualcuno gli porti i
 24 V, il carico verso 0 V è già dentro.
 
-```
- Arduino o ESP32                                  robot UR
- pin uscita ──[ R 330 Ω ]──►|── LED              24V (morsetto PWR) ──┐
-                              opto                                      │ transistor
- GND ─────────────────────────┘                   DIx ──────────────────┘
-```
+<p align="center">
+  <img src="img/interfaccia-micro-ur.png" alt="Uscita di Arduino o ESP32 verso un ingresso del robot UR tramite optoisolatore" width="900">
+</p>
 
 La resistenza da 330 Ω fa passare nel LED circa 10 mA a 5 V e 6 mA a 3,3 V: il transistor
 dell'optoisolatore deve poter fornire all'ingresso del robot qualche milliampere (l'ingresso ne
