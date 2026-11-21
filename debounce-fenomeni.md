@@ -192,22 +192,35 @@ qualsiasi codice:
   `waitUntilInputChange()`): sono le **sole** che proteggono con certezza da **tutte e quattro** le
   situazioni, spike a riposo compreso.
 
-  *Come fanno.* Il debouncer ricorda un **livello accettato** (all'inizio, quello di riposo: pulsante
-  rilasciato, nessun oggetto davanti al sensore) e legge il pin di continuo. Finché la lettura coincide con il livello accettato non succede niente. Quando la
-  lettura è **diversa**, comincia a misurare da quanto tempo lo è; ogni volta che la lettura **cambia**,
-  la misura riparte da zero. Solo quando la lettura è rimasta diversa dal livello accettato, **senza
-  interruzioni**, per più di `T`, il nuovo livello diventa quello accettato e si segnala l'evento:
-  pressione (o inizio del transito) se il nuovo livello è "premuto", rilascio (o fine del
-  transito) se è "a riposo". La regola è **la stessa** per le
-  due transizioni: nessun cambiamento viene creduto finché non è durato `T`.
+  *Come fanno.* Il debouncer ricorda un **livello accettato**, cioè lo stato in cui crede che sia il
+  pulsante, e legge il pin di continuo. Il livello accettato **non è fisso**: cambia a ogni evento
+  confermato, e ogni volta il debouncer si mette a sorvegliare il cambiamento **opposto**. Il ciclo
+  completo ha due fasi, governate dalla **stessa regola**:
+
+  1. **A riposo.** Il livello accettato è "a riposo" (pulsante rilasciato, nessun oggetto davanti al
+     sensore). Il debouncer aspetta una lettura "premuto". Quando arriva, comincia a misurare da quanto
+     tempo dura; se nel frattempo torna una lettura "a riposo" (un rimbalzo o uno spike), la misura
+     riparte da zero. Solo quando le letture sono state "premuto" senza interruzioni per più di `T`, il
+     livello accettato diventa "premuto" e si segnala la **pressione** (o l'inizio del transito).
+  2. **Premuto.** Ora il livello accettato è "premuto", e il debouncer sorveglia il cambiamento
+     opposto: aspetta una lettura "a riposo". Quando arriva, comincia a misurare; se torna una lettura
+     "premuto" (un rimbalzo del rilascio, la fine di un buco), la misura riparte da zero. Solo quando
+     le letture sono state "a riposo" senza interruzioni per più di `T`, il livello accettato torna "a
+     riposo" e si segnala il **rilascio** (o la fine del transito). Si è di nuovo nella fase 1.
+
+  In ogni fase c'è un solo livello di cui il debouncer è sicuro, quello accettato, e un solo
+  cambiamento possibile, verso il livello opposto, che deve durare `T` per essere creduto. Pressione e
+  rilascio sono trattati **allo stesso modo**: nessun cambiamento viene creduto finché non è durato
+  `T`.
 
 - **Letture continue, livello stabile in una direzione** (polling con `millis()`, DiffTimer,
   bloccante 5): sono le **più usate**. Proteggono con certezza dalle situazioni 1, 2 e 3 e riconoscono
   la pressione **subito**, alla prima lettura; lasciano passare solo lo spike a riposo.
 
-  *Come fanno.* La **pressione** è creduta subito: alla prima lettura "premuto" il debouncer segnala la
-  pressione e da quel momento considera il pulsante premuto, ignorando i rimbalzi che seguono. Il
-  **rilascio** invece va confermato: il debouncer legge il pin di continuo, e ogni lettura "premuto"
+  *Come fanno.* Il ciclo ha le stesse due fasi, ma solo la seconda usa la regola dei `T` ms.
+  Nella fase **a riposo** la pressione è creduta subito: alla prima lettura "premuto" il debouncer
+  segnala la pressione e passa alla fase "premuto", ignorando i rimbalzi che seguono. Nella fase
+  **premuto** il rilascio invece va confermato: il debouncer legge il pin di continuo, e ogni lettura "premuto"
   (pulsante ancora tenuto, rimbalzo, fine di un buco) fa ripartire da zero la misura del tempo. Il
   rilascio è creduto solo quando le letture sono state "rilasciato" **senza interruzioni** per più di
   `T`. Una sola transizione è confermata; l'altra no.
