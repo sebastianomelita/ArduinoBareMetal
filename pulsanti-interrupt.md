@@ -388,8 +388,8 @@ void loop() {
 
 La ISR riconosce la pressione, chiama la callback e si disarma. Il `loop()` aspetta il rilascio
 con `waitUntilInputLow()` (pull-down) o `waitUntilInputHigh()` (pull-up), che lo bloccano
-finché il pulsante resta premuto. Le due funzioni, come in `urutils.h`, escono solo con un
-rilascio confermato: dopo il primo LOW attendono altri 50 ms e ricontrollano il pin; poi `riarma()` cancella i fronti rimasti in sospeso e riarma
+finché il pulsante resta premuto. Le due funzioni, definite nello sketch come nella versione 5 di
+[pulsanti-bloccanti.md](pulsanti-bloccanti.md), escono solo dopo 50 ms di livello di riposo continuo: ogni lettura del livello di pressione fa ripartire il conteggio; poi `riarma()` cancella i fronti rimasti in sospeso e riarma
 l'interrupt. Senza queste due precauzioni un rimbalzo del rilascio verrebbe preso per una nuova
 pressione.
 
@@ -425,14 +425,17 @@ void doOnFall() {
 }
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: esce solo
-  // con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != LOW);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != LOW);
+  // attende t ms di LOW continuo: ogni
+  // lettura HIGH (rimbalzo, disturbo o
+  // pulsante ancora premuto) fa
+  // ripartire il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == HIGH) {
+      tl = millis();
+    }
+    delay(1);
+  }
 }
 
 void isrPress() {
@@ -496,14 +499,17 @@ void doOnRise() {
 }
 
 void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h: esce solo
-  // con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != HIGH);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != HIGH);
+  // attende t ms di HIGH continuo: ogni
+  // lettura LOW (rimbalzo, disturbo o
+  // pulsante ancora premuto) fa
+  // ripartire il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == LOW) {
+      tl = millis();
+    }
+    delay(1);
+  }
 }
 
 void isrPress() {

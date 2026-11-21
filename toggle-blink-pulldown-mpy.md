@@ -89,13 +89,25 @@ si ferma. Questo esempio mostra il limite del codice bloccante con più task.
 ```python
 from machine import Pin
 import time
-from urutils import waitUntilInputLow
 
 P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
 LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
 LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
 stato = False
 precBlink = 0
+
+def waitUntilInputLow(btn, t):
+    # attende t ms di livello basso
+    # continuo: ogni lettura alta
+    # (rimbalzo, disturbo o pulsante
+    # ancora premuto) fa ripartire
+    # il conteggio
+    tl = time.ticks_ms()
+    while time.ticks_diff(
+            time.ticks_ms(), tl) <= t:
+        if btn.value():
+            tl = time.ticks_ms()
+        time.sleep_ms(1)  # cede la CPU
 
 def doOnRise():
     # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
@@ -173,7 +185,7 @@ while True:
 
 ## 3. Versione non bloccante con DiffTimer
 
-Serve la versione corretta di `urutils.py` (vedi la sezione 3 di
+Serve la versione corretta di `urutils.py` (vedi la sezione 2 di
 [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
 
 ```python

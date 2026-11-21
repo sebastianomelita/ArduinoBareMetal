@@ -98,15 +98,18 @@ bool stato = LOW;
 unsigned long precBlink = 0;
 
 void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende il LOW,
-  // poi altri t ms, e ricontrolla:
-  // esce solo con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != LOW);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != LOW);
+  // attende t ms di LOW continuo: ogni
+  // lettura HIGH (rimbalzo, disturbo o
+  // pulsante ancora premuto) fa
+  // ripartire il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == HIGH) {
+      tl = millis();
+    }
+    delay(1);  // cede la CPU agli altri
+               // task (ESP32, FreeRTOS)
+  }
 }
 
 void doOnRise() {

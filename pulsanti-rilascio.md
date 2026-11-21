@@ -1,6 +1,6 @@
 >[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-rilascio-mpy.md)
 
-# Pulsanti: attivazione sul rilascio (pull-down e pull-up)
+# Pulsanti: attivazione sul rilascio, tecniche non bloccanti (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
 Cambia solo il livello letto dal pin, che dipende dal collegamento della resistenza.
@@ -16,126 +16,9 @@ al rilascio (qui, come esempio, un toggle del LED).
 
 > Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown.md](toggle-blink-pulldown.md)
+> Tecniche bloccanti (waitUntilInputLow / waitUntilInputHigh), dalla più semplice alla più robusta: [pulsanti-bloccanti.md](pulsanti-bloccanti.md)
 
-## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
-
-Le funzioni di attesa sono definite nello sketch, uguali a quelle di `urutils.h`:
-se includete la libreria, toglietele per non definirle due volte.
-Sono le versioni aggiornate di `urutils.h`: dopo il primo LOW attendono altri `t` ms e ricontrollano
-il pin, quindi escono solo con un rilascio confermato. Così né un rimbalzo del rilascio né un'interruzione
-breve del contatto a pulsante premuto vengono presi per un rilascio.
-Finché il pulsante resta premuto, `loop()` è fermo.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```cpp
-const byte P1  = 2;
-const byte LED = 13;
-bool stato = LOW;
-
-void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende il LOW,
-  // poi altri t ms, e ricontrolla:
-  // esce solo con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != LOW);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != LOW);
-}
-
-void doOnRise() {
-  // PRESSIONE (fronte di salita):
-  // qui vanno le azioni immediate
-  // alla pressione.
-  // Lasciatela vuota se non serve.
-}
-
-void doOnFall() {
-  // RILASCIO (fronte di discesa):
-  // qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo
-  // stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void setup() {
-  pinMode(P1, INPUT);
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  if (digitalRead(P1) == HIGH) {
-    doOnRise();
-    waitUntilInputLow(P1, 50);
-    doOnFall();
-  }
-}
-```
-
-</td>
-<td>
-
-```cpp
-const byte P1  = 2;
-const byte LED = 13;
-bool stato = LOW;
-
-void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h: attende l'HIGH,
-  // poi altri t ms, e ricontrolla:
-  // esce solo con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != HIGH);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != HIGH);
-}
-
-void doOnFall() {
-  // PRESSIONE (fronte di discesa):
-  // qui vanno le azioni immediate
-  // alla pressione.
-  // Lasciatela vuota se non serve.
-}
-
-void doOnRise() {
-  // RILASCIO (fronte di salita):
-  // qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo
-  // stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void setup() {
-  pinMode(P1, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  if (digitalRead(P1) == LOW) {
-    doOnFall();
-    waitUntilInputHigh(P1, 50);
-    doOnRise();
-  }
-}
-```
-
-</td>
-</tr>
-</table>
-
-## 2. Versione non bloccante con millis()
+## 1. Versione non bloccante con millis()
 
 <p align="center">
   <img src="img/debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
@@ -247,7 +130,7 @@ void loop() {
 `t0` si aggiorna a ogni lettura "premuto": un rimbalzo al rilascio azzera il conteggio
 e non produce un falso fronte.
 
-## 3. Versione non bloccante con DiffTimer
+## 2. Versione non bloccante con DiffTimer
 
 <p align="center">
   <img src="img/debounce-difftimer-pulldown.gif" alt="Animazione del debounce con DiffTimer (pull-down)" width="900">
@@ -360,7 +243,7 @@ void loop() {
 </tr>
 </table>
 
-## 4. Versione non bloccante con waitUntilNB()
+## 3. Versione non bloccante con waitUntilNB()
 
 Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premuto`.
 Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
@@ -480,7 +363,7 @@ void loop() {
 </tr>
 </table>
 
-## 5. Versione con schedulatore non bloccante
+## 4. Versione con schedulatore non bloccante
 
 Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pin a
 intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
@@ -602,10 +485,162 @@ void loop() {
 </tr>
 </table>
 
-In tutte le altre versioni la callback della pressione scatta subito, al primo giro di
+Nelle versioni da 1 a 3 la callback della pressione scatta subito, al primo giro di
 `loop()` in cui il pin risulta premuto. Con lo schedulatore invece il pin viene letto solo
 ogni `TBASE` ms: la pressione viene riconosciuta con un ritardo fino a `TBASE`, e una
 pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
+
+## 5. Versione non bloccante a livello stabile con changed()
+
+Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
+**rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+rimasto fermo per più di 50 ms. È la macchina a stati di [debouncerFSM.md](debouncerFSM.md) (forma
+"prima gli ingressi"):
+- `val0` è l'ultima lettura: ogni variazione (rimbalzo, disturbo o fronte vero) la aggiorna e fa
+  ripartire il conteggio da `last`;
+- `val00` è il livello accettato: cambia solo se la lettura è diversa da lui e ferma da più di 50 ms;
+- `changed()` restituisce `true` una sola volta, nel giro in cui il nuovo livello viene accettato:
+  guardando `val00` si sa se è una pressione o un rilascio.
+
+Così viene filtrato anche uno **spike alto a pulsante rilasciato**, ad esempio un disturbo sui cavi
+con il pull-down, che le versioni precedenti prenderebbero per una pressione seguita da un rilascio.
+Il prezzo è che anche la pressione viene riconosciuta con 50 ms di ritardo, e una pressione più
+breve di 50 ms viene scartata come se fosse un disturbo.
+
+<p align="center">
+  <img src="img/debounce-changed-pulldown.gif" alt="Animazione del debounce a livello stabile con changed() (pull-down)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: riposo HIGH, premuto LOW.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte val0  = LOW;  // ultima lettura
+byte val00 = LOW;  // livello accettato
+unsigned long last = 0; // ultima variazione
+
+bool changed() {
+  // vero solo quando il pin ha un
+  // nuovo livello fermo da più di 50 ms
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo
+    // o fronte vero, si riparte
+    val0 = val;
+    last = millis();
+  } else if (val != val00 &&
+             millis() - last > 50) {
+    val00 = val;  // livello stabile
+    return true;
+  }
+  return false;
+}
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (changed()) {
+    if (val00 == HIGH) {
+      doOnRise();  // pressione confermata
+    } else {
+      doOnFall();  // rilascio confermato
+    }
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte val0  = HIGH;  // ultima lettura
+byte val00 = HIGH;  // livello accettato
+unsigned long last = 0; // ultima variazione
+
+bool changed() {
+  // vero solo quando il pin ha un
+  // nuovo livello fermo da più di 50 ms
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo
+    // o fronte vero, si riparte
+    val0 = val;
+    last = millis();
+  } else if (val != val00 &&
+             millis() - last > 50) {
+    val00 = val;  // livello stabile
+    return true;
+  }
+  return false;
+}
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni immediate
+  // alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (changed()) {
+    if (val00 == LOW) {
+      doOnFall();  // pressione confermata
+    } else {
+      doOnRise();  // rilascio confermato
+    }
+  }
+}
+```
+
+</td>
+</tr>
+</table>
 
 ## Considerazioni finali: quale tecnica scegliere
 
@@ -620,6 +655,14 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 
 **Lo schedulatore (time tick)** legge il pulsante solo ogni ```TBASE```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```TBASE```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```TBASE```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
 
+**Il livello stabile (`changed()`)** fa la stessa cosa del polling veloce, ma in **tutte e due** le direzioni: anche la pressione viene accettata solo dopo il tempo di antirimbalzo di livello fermo. Il polling veloce, gli interrupt e le tecniche bloccanti accettano la pressione alla prima lettura alta, quindi uno spike alto a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto basso solo dalla resistenza) diventa una pressione e un rilascio falsi; il livello stabile lo scarta. Il prezzo è un ritardo pari al tempo di antirimbalzo anche sulla pressione, e la perdita delle pressioni più brevi di quel tempo. È la scelta giusta quando l'ingresso arriva da lontano o in un ambiente disturbato, ad esempio i sensori di un nastro trasportatore.
+
+| Tecnica | Rimbalzi | Disturbo breve a pulsante premuto | Spike alto a pulsante rilasciato |
+| --- | --- | --- | --- |
+| millis(), DiffTimer, waitUntilNB(), interrupt, tecniche bloccanti | filtrati | filtrato | **non filtrato** |
+| Schedulatore | filtrati | filtrato solo se nessuna lettura ci cade dentro | filtrato solo se nessuna lettura ci cade dentro |
+| Livello stabile (`changed()`) | filtrati | filtrato | filtrato |
+
 **Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 ## Riferimenti
@@ -627,4 +670,5 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria
 - [toggle.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/toggle.md): esempi di pulsante toggle
 - [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md): versioni corte, solo azione al rilascio
+- [pulsanti-bloccanti.md](pulsanti-bloccanti.md): tecniche bloccanti
 - [toggle-blink-pulldown.md](toggle-blink-pulldown.md): toggle e blink come due task concorrenti

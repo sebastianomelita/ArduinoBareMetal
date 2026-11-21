@@ -15,9 +15,9 @@ due fronti.
 | Pull-down | 1 | `Pin.IRQ_RISING` | `doOnRise()` | `doOnFall()` |
 | Pull-up (`Pin.PULL_UP`) | 0 | `Pin.IRQ_FALLING` | `doOnFall()` | `doOnRise()` |
 
-Pin di esempio per ESP32: pulsante su GPIO 12, LED su GPIO 13. Le tecniche 1 e 3 usano
-`urutils.py` (versione corretta, con `DiffTimer` e `waitUntilInputLow()` con conferma del
-rilascio).
+Pin di esempio per ESP32: pulsante su GPIO 12, LED su GPIO 13. La tecnica 1 usa
+`urutils.py` (versione corretta, con `DiffTimer`); la tecnica 3 definisce nel programma
+l'attesa bloccante `waitUntilInputLow()`, con conferma del rilascio.
 
 ## Mappa concettuale
 
@@ -312,7 +312,7 @@ while True:
 
 Il gestore riconosce la pressione, chiama la callback e alza il flag `premuto`, che fa scartare
 i rimbalzi successivi. Il ciclo principale aspetta il rilascio con `waitUntilInputLow()`
-(pull-down) o `waitUntilInputHigh()` (pull-up) di `urutils.py`, che escono solo con un rilascio
+(pull-down) o `waitUntilInputHigh()` (pull-up), definite nel programma, che escono solo con un rilascio
 confermato, poi chiama la callback e abbassa il flag.
 
 <table>
@@ -326,12 +326,24 @@ confermato, poi chiama la callback e abbassa il flag.
 ```python
 from machine import Pin
 import time
-from urutils import waitUntilInputLow
 
 P1  = Pin(12, Pin.IN)  # pull-down
 LED = Pin(13, Pin.OUT)
 stato = False
 premuto = False
+
+def waitUntilInputLow(btn, t):
+    # attende t ms di livello basso
+    # continuo: ogni lettura alta
+    # (rimbalzo, disturbo o pulsante
+    # ancora premuto) fa ripartire
+    # il conteggio
+    tl = time.ticks_ms()
+    while time.ticks_diff(
+            time.ticks_ms(), tl) <= t:
+        if btn.value():
+            tl = time.ticks_ms()
+        time.sleep_ms(1)  # cede la CPU
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -374,12 +386,24 @@ while True:
 ```python
 from machine import Pin
 import time
-from urutils import waitUntilInputHigh
 
 P1  = Pin(12, Pin.IN, Pin.PULL_UP)
 LED = Pin(13, Pin.OUT)
 stato = False
 premuto = False
+
+def waitUntilInputHigh(btn, t):
+    # attende t ms di livello alto
+    # continuo: ogni lettura bassa
+    # (rimbalzo, disturbo o pulsante
+    # ancora premuto) fa ripartire
+    # il conteggio
+    tl = time.ticks_ms()
+    while time.ticks_diff(
+            time.ticks_ms(), tl) <= t:
+        if not btn.value():
+            tl = time.ticks_ms()
+        time.sleep_ms(1)  # cede la CPU
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):

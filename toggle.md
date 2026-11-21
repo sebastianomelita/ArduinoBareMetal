@@ -335,7 +335,7 @@ void loop() {                                          | void loop() {
 // viene RILASCIATO (fronte di discesa)                | // viene RILASCIATO (fronte di salita)
 ```
 
-> ```waitUntilInputLow()``` e ```waitUntilInputHigh()``` sono quelle di ```urutils.h``` aggiornato: dopo il primo livello atteso aspettano altri ```t``` msec e ricontrollano il pin, quindi escono solo con un **rilascio confermato**. Così né un rimbalzo del rilascio né un'interruzione breve del contatto a pulsante premuto vengono presi per un rilascio.
+> ```waitUntilInputLow()``` e ```waitUntilInputHigh()``` vanno definite nello sketch, come nella versione 5 di [pulsanti-bloccanti.md](pulsanti-bloccanti.md) (letture continue con ```millis()```): escono solo dopo ```t``` msec di livello di riposo **continuo**, perché ogni lettura del livello di pressione fa ripartire il conteggio. Così né un rimbalzo del rilascio né un'interruzione breve del contatto a pulsante premuto vengono presi per un rilascio. La libreria ```urutils.h``` contiene solo le versioni non bloccanti, ```waitUntilInputLowNB()``` e ```waitUntilInputHighNB()```.
 
 Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
 
@@ -1373,6 +1373,7 @@ int pulsante =12;
 volatile bool stato = false;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
+DiffTimer debounce;  // timer di conferma del rilascio
 
 void switchPressed ();
 
@@ -1408,12 +1409,15 @@ void switchPressed ()
 // loop principale
 void loop() {
   if(pressed){// fronte di salita
-    waitUntilInputLow(pulsante, 100); // esce solo con un rilascio confermato
-    // fronte di discesa
-    stato = !stato; // logica da attivare sul fronte (toggle)
-    pressed = false; // disarma il timer
-    // riarma l'interrupt
-    riarma();
+    debounce.start(); // attiva il timer al primo giro dopo l'interrupt (no-op se già attivo)
+    // non bloccante: vero una sola volta, dopo 100 ms di LOW continuo
+    if(waitUntilInputLowNB(debounce, pulsante, 100)){
+      // fronte di discesa: rilascio confermato
+      stato = !stato; // logica da attivare sul fronte (toggle)
+      pressed = false; // disarma il timer
+      // riarma l'interrupt
+      riarma();
+    }
   }
   digitalWrite(led, stato);   	// inverti lo stato precedente del led
   delay(10);

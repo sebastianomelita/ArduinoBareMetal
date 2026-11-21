@@ -1,120 +1,25 @@
 >[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsanti-rilascio-corte-mpy.md)
 
-# Pulsanti: versioni corte, solo azione al rilascio
+# Pulsanti: versioni corte non bloccanti, solo azione al rilascio
 
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
 `doOnRise()` nel pull-up. Senza azione alla pressione il codice si accorcia.
 
 > Versioni complete, con azione alla pressione e al rilascio: [pulsanti-rilascio.md](pulsanti-rilascio.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown.md](toggle-blink-pulldown.md)
+> Tecniche bloccanti (waitUntilInputLow / waitUntilInputHigh), dalla più semplice alla più robusta: [pulsanti-bloccanti.md](pulsanti-bloccanti.md)
 
 Per riconoscere il rilascio bisogna comunque ricordare che prima il pulsante era premuto.
 Nella maggior parte delle tecniche questa memoria c'è già, senza variabili booleane in più:
 
 | Tecnica | Dove sta la memoria "era premuto" | Bool in più |
 | --- | --- | --- |
-| Bloccante | nel punto del programma: si è dentro l'`if` | no |
 | millis() | variabile `attivo` | sì |
 | DiffTimer | `timerState`, dentro la libreria | no |
-| waitUntilNB() | `timerState`, dentro la libreria (serve `premuto` per il reset) | no |
+| changed() | `val00`, il livello accettato | no |
 | Schedulatore | `precval`, il campione precedente | no |
 
-## 1. Versione bloccante
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```cpp
-const byte P1  = 2;
-const byte LED = 13;
-bool stato = LOW;
-
-void waitUntilInputLow(int btn, unsigned t) {
-  // come in urutils.h: attende il LOW,
-  // poi altri t ms, e ricontrolla:
-  // esce solo con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != LOW);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != LOW);
-}
-
-void doOnFall() {
-  // RILASCIO (fronte di discesa):
-  // qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo
-  // stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void setup() {
-  pinMode(P1, INPUT);
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  if (digitalRead(P1) == HIGH) {
-    waitUntilInputLow(P1, 50);
-    doOnFall();
-  }
-}
-```
-
-</td>
-<td>
-
-```cpp
-const byte P1  = 2;
-const byte LED = 13;
-bool stato = LOW;
-
-void waitUntilInputHigh(int btn, unsigned t) {
-  // come in urutils.h: attende l'HIGH,
-  // poi altri t ms, e ricontrolla:
-  // esce solo con un rilascio confermato
-  do {
-    do {
-      delay(t);
-    } while (digitalRead(btn) != HIGH);
-    delay(t);  // fine rimbalzi
-  } while (digitalRead(btn) != HIGH);
-}
-
-void doOnRise() {
-  // RILASCIO (fronte di salita):
-  // qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo
-  // stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void setup() {
-  pinMode(P1, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  if (digitalRead(P1) == LOW) {
-    waitUntilInputHigh(P1, 50);
-    doOnRise();
-  }
-}
-```
-
-</td>
-</tr>
-</table>
-
-## 2. Versione non bloccante con millis()
+## 1. Versione non bloccante con millis()
 
 Qui la variabile `attivo` serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
 vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
@@ -208,7 +113,7 @@ void loop() {
 </tr>
 </table>
 
-## 3. Versione non bloccante con DiffTimer
+## 2. Versione non bloccante con DiffTimer
 
 `start()` non fa nulla se il timer è già attivo, quindi si può chiamare a ogni giro. A timer
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
@@ -304,12 +209,24 @@ void loop() {
 </tr>
 </table>
 
-## 4. Versione non bloccante con waitUntilNB()
+## 3. Versione non bloccante a livello stabile con changed()
 
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
+**rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+rimasto fermo per più di 50 ms (la macchina a stati di [debouncerFSM.md](debouncerFSM.md)): `val0` è
+l'ultima lettura e ogni sua variazione fa ripartire il conteggio, `val00` è il livello accettato.
+Il rilascio è il giro in cui `changed()` è vera e `val00` è tornato al livello di riposo.
+
+Così viene filtrato anche uno **spike alto a pulsante rilasciato** (disturbo sui cavi), che le altre
+versioni prenderebbero per una pressione. Il prezzo: una pressione più breve di 50 ms viene scartata.
+
+<p align="center">
+  <img src="img/debounce-changed-pulldown.gif" alt="Animazione del debounce a livello stabile con changed() (pull-down)" width="900">
+</p>
+
+L'animazione mostra la versione completa della dispensa principale, che chiama anche `doOnRise()` quando la pressione viene accettata; qui si usa solo il rilascio, il filtro è lo stesso.
+
+Con il pull-up il comportamento è identico con i livelli invertiti: riposo HIGH, premuto LOW.
 
 <table>
 <tr>
@@ -320,12 +237,29 @@ a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ulti
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
-DiffTimer debt;
+byte val0  = LOW;  // ultima lettura
+byte val00 = LOW;  // livello accettato
+unsigned long last = 0; // ultima variazione
+
+bool changed() {
+  // vero solo quando il pin ha un
+  // nuovo livello fermo da più di 50 ms
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo
+    // o fronte vero, si riparte
+    val0 = val;
+    last = millis();
+  } else if (val != val00 &&
+             millis() - last > 50) {
+    val00 = val;  // livello stabile
+    return true;
+  }
+  return false;
+}
 
 void doOnFall() {
   // RILASCIO (fronte di discesa):
@@ -342,12 +276,9 @@ void setup() {
 }
 
 void loop() {
-  bool premuto = digitalRead(P1);
-  if (waitUntilNB(debt,
-        !premuto, 50)) {
-    doOnFall();
+  if (changed() && val00 == LOW) {
+    doOnFall();   // rilascio confermato
   }
-  if (premuto) debt.reset();
 }
 ```
 
@@ -355,12 +286,29 @@ void loop() {
 <td>
 
 ```cpp
-#include "urutils.h"
-
 const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
-DiffTimer debt;
+byte val0  = HIGH;  // ultima lettura
+byte val00 = HIGH;  // livello accettato
+unsigned long last = 0; // ultima variazione
+
+bool changed() {
+  // vero solo quando il pin ha un
+  // nuovo livello fermo da più di 50 ms
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo
+    // o fronte vero, si riparte
+    val0 = val;
+    last = millis();
+  } else if (val != val00 &&
+             millis() - last > 50) {
+    val00 = val;  // livello stabile
+    return true;
+  }
+  return false;
+}
 
 void doOnRise() {
   // RILASCIO (fronte di salita):
@@ -377,12 +325,9 @@ void setup() {
 }
 
 void loop() {
-  bool premuto = !digitalRead(P1);
-  if (waitUntilNB(debt,
-        !premuto, 50)) {
-    doOnRise();
+  if (changed() && val00 == HIGH) {
+    doOnRise();   // rilascio confermato
   }
-  if (premuto) debt.reset();
 }
 ```
 
@@ -390,7 +335,7 @@ void loop() {
 </tr>
 </table>
 
-## 5. Versione con schedulatore non bloccante
+## 4. Versione con schedulatore non bloccante
 
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.
 
@@ -500,6 +445,14 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 
 **Lo schedulatore (time tick)** legge il pulsante solo ogni ```TBASE```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```TBASE```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```TBASE```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
 
+**Il livello stabile (`changed()`)** fa la stessa cosa del polling veloce, ma in **tutte e due** le direzioni: anche la pressione viene accettata solo dopo il tempo di antirimbalzo di livello fermo. Il polling veloce, gli interrupt e le tecniche bloccanti accettano la pressione alla prima lettura alta, quindi uno spike alto a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto basso solo dalla resistenza) diventa una pressione e un rilascio falsi; il livello stabile lo scarta. Il prezzo è un ritardo pari al tempo di antirimbalzo anche sulla pressione, e la perdita delle pressioni più brevi di quel tempo. È la scelta giusta quando l'ingresso arriva da lontano o in un ambiente disturbato, ad esempio i sensori di un nastro trasportatore.
+
+| Tecnica | Rimbalzi | Disturbo breve a pulsante premuto | Spike alto a pulsante rilasciato |
+| --- | --- | --- | --- |
+| millis(), DiffTimer, interrupt, tecniche bloccanti | filtrati | filtrato | **non filtrato** |
+| Schedulatore | filtrati | filtrato solo se nessuna lettura ci cade dentro | filtrato solo se nessuna lettura ci cade dentro |
+| Livello stabile (`changed()`) | filtrati | filtrato | filtrato |
+
 **Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 ## Riferimenti
@@ -507,3 +460,4 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): sorgente della libreria
 - [pulsanti-rilascio.md](pulsanti-rilascio.md): versioni complete, con azione alla pressione e al rilascio
 - [toggle-blink-pulldown.md](toggle-blink-pulldown.md): toggle e blink come due task concorrenti
+- [pulsanti-bloccanti.md](pulsanti-bloccanti.md): tecniche bloccanti

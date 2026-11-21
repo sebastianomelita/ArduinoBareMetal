@@ -1,6 +1,6 @@
 >[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsanti-rilascio.md)
 
-# Pulsanti in MicroPython: attivazione sul rilascio (pull-down e pull-up)
+# Pulsanti in MicroPython: attivazione sul rilascio, tecniche non bloccanti (pull-down e pull-up)
 
 In entrambe le versioni l'azione principale parte quando il pulsante viene **rilasciato**.
 Cambia solo il livello letto dal pin, che dipende dal collegamento della resistenza.
@@ -22,93 +22,10 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 
 > Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte-mpy.md](pulsanti-rilascio-corte-mpy.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown-mpy.md](toggle-blink-pulldown-mpy.md)
+> Tecniche bloccanti (waitUntilInputLow / waitUntilInputHigh), dalla più semplice alla più robusta: [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md)
 > Versione Arduino: [pulsanti-rilascio.md](pulsanti-rilascio.md)
 
-## 1. Versione bloccante con waitUntilInputLow / waitUntilInputHigh
-
-Le funzioni di attesa vengono da `urutils.py`: dopo il rilascio attendono altri `t` ms perché
-finiscano i rimbalzi. Finché il pulsante resta premuto il ciclo principale è fermo.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import waitUntilInputLow
-
-P1  = Pin(12, Pin.IN)   # pull-down esterno
-LED = Pin(13, Pin.OUT)
-stato = False
-
-def doOnRise():
-    # PRESSIONE (fronte di salita):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    if P1.value():              # premuto
-        doOnRise()
-        waitUntilInputLow(P1, 50)
-        doOnFall()
-```
-
-</td>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import waitUntilInputHigh
-
-P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
-LED = Pin(13, Pin.OUT)
-stato = False
-
-def doOnFall():
-    # PRESSIONE (fronte di discesa):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnRise():
-    # RILASCIO (fronte di salita):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    if not P1.value():          # premuto
-        doOnFall()
-        waitUntilInputHigh(P1, 50)
-        doOnRise()
-```
-
-</td>
-</tr>
-</table>
-
-## 2. Versione non bloccante con ticks_ms()
+## 1. Versione non bloccante con ticks_ms()
 
 <p align="center">
   <img src="img/debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
@@ -210,11 +127,11 @@ while True:
 `t0` si aggiorna a ogni lettura "premuto": un rimbalzo al rilascio azzera il conteggio
 e non produce un falso fronte.
 
-## 3. Versione non bloccante con DiffTimer
+## 2. Versione non bloccante con DiffTimer
 
 > Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
-> `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, l'attesa di fine rimbalzi in
-> `waitUntilInputLow()` / `waitUntilInputHigh()` e il timer che riparte in `waitUntilNB()`.
+> `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, il timer che riparte in
+> `waitUntilNB()` e le attese non bloccanti `waitUntilInputLowNB()` / `waitUntilInputHighNB()`.
 
 <p align="center">
   <img src="img/debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
@@ -313,7 +230,7 @@ while True:
 </tr>
 </table>
 
-## 4. Versione non bloccante con waitUntilNB()
+## 3. Versione non bloccante con waitUntilNB()
 
 Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
 `waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
@@ -407,7 +324,7 @@ while True:
 </tr>
 </table>
 
-## 5. Versione con schedulatore non bloccante
+## 4. Versione con schedulatore non bloccante
 
 Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pin a
 intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
@@ -513,10 +430,152 @@ while True:
 </tr>
 </table>
 
-In tutte le altre versioni la callback della pressione scatta subito, al primo giro del
+Nelle versioni da 1 a 3 la callback della pressione scatta subito, al primo giro del
 ciclo in cui il pin risulta premuto. Con lo schedulatore invece il pin viene letto solo
 ogni `TBASE` ms: la pressione viene riconosciuta con un ritardo fino a `TBASE`, e una
 pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
+
+## 5. Versione non bloccante a livello stabile con changed()
+
+Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
+**rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+rimasto fermo per più di 50 ms. È la macchina a stati di [debouncerFSM_py.md](debouncerFSM_py.md)
+(forma "prima gli ingressi"):
+- `val0` è l'ultima lettura: ogni variazione (rimbalzo, disturbo o fronte vero) la aggiorna e fa
+  ripartire il conteggio da `last`;
+- `val00` è il livello accettato: cambia solo se la lettura è diversa da lui e ferma da più di 50 ms;
+- `changed()` restituisce `True` una sola volta, nel giro in cui il nuovo livello viene accettato:
+  guardando `val00` si sa se è una pressione o un rilascio.
+
+Le tre variabili sono globali e `changed()` le modifica, quindi le dichiara `global`.
+
+Così viene filtrato anche uno **spike alto a pulsante rilasciato**, ad esempio un disturbo sui cavi
+con il pull-down, che le versioni precedenti prenderebbero per una pressione seguita da un rilascio.
+Il prezzo è che anche la pressione viene riconosciuta con 50 ms di ritardo, e una pressione più
+breve di 50 ms viene scartata come se fosse un disturbo.
+
+<p align="center">
+  <img src="img/debounce-changed-pulldown-mpy.gif" alt="Animazione del debounce a livello stabile con changed() (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: riposo 1, premuto 0.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN)   # pull-down esterno
+LED = Pin(13, Pin.OUT)
+stato = False
+val0  = 0   # ultima lettura
+val00 = 0   # livello accettato
+last  = 0   # ultima variazione
+
+def changed():
+    # vero solo quando il pin ha un
+    # nuovo livello fermo da più di 50 ms
+    global val0, val00, last
+    val = P1.value()
+    if val != val0:
+        # variazione: rimbalzo, disturbo
+        # o fronte vero, si riparte
+        val0 = val
+        last = time.ticks_ms()
+    elif val != val00 and time.ticks_diff(
+            time.ticks_ms(), last) > 50:
+        val00 = val   # livello stabile
+        return True
+    return False
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    if changed():
+        if val00 == 1:
+            doOnRise()   # pressione confermata
+        else:
+            doOnFall()   # rilascio confermato
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
+LED = Pin(13, Pin.OUT)
+stato = False
+val0  = 1   # ultima lettura
+val00 = 1   # livello accettato
+last  = 0   # ultima variazione
+
+def changed():
+    # vero solo quando il pin ha un
+    # nuovo livello fermo da più di 50 ms
+    global val0, val00, last
+    val = P1.value()
+    if val != val0:
+        # variazione: rimbalzo, disturbo
+        # o fronte vero, si riparte
+        val0 = val
+        last = time.ticks_ms()
+    elif val != val00 and time.ticks_diff(
+            time.ticks_ms(), last) > 50:
+        val00 = val   # livello stabile
+        return True
+    return False
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    if changed():
+        if val00 == 0:
+            doOnFall()   # pressione confermata
+        else:
+            doOnRise()   # rilascio confermato
+```
+
+</td>
+</tr>
+</table>
 
 ## Considerazioni finali: quale tecnica scegliere
 
@@ -531,10 +590,19 @@ La condizione è che il ciclo principale resti veloce: con ```time.sleep_ms()```
 
 **Lo schedulatore (time tick)** legge il pulsante solo ogni ```tbase```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```tbase```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```tbase```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
 
+**Il livello stabile (`changed()`)** fa la stessa cosa del polling veloce, ma in **tutte e due** le direzioni: anche la pressione viene accettata solo dopo il tempo di antirimbalzo di livello fermo. Il polling veloce, gli interrupt e le tecniche bloccanti accettano la pressione alla prima lettura alta, quindi uno spike alto a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto basso solo dalla resistenza) diventa una pressione e un rilascio falsi; il livello stabile lo scarta. Il prezzo è un ritardo pari al tempo di antirimbalzo anche sulla pressione, e la perdita delle pressioni più brevi di quel tempo. È la scelta giusta quando l'ingresso arriva da lontano o in un ambiente disturbato, ad esempio i sensori di un nastro trasportatore.
+
+| Tecnica | Rimbalzi | Disturbo breve a pulsante premuto | Spike alto a pulsante rilasciato |
+| --- | --- | --- | --- |
+| ticks_ms(), DiffTimer, waitUntilNB(), interrupt, tecniche bloccanti | filtrati | filtrato | **non filtrato** |
+| Schedulatore | filtrati | filtrato solo se nessuna lettura ci cade dentro | filtrato solo se nessuna lettura ci cade dentro |
+| Livello stabile (`changed()`) | filtrati | filtrato | filtrato |
+
 **Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ciclo principale è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
 ## Riferimenti
 
 - [urutils.h](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h): versione Arduino della libreria
 - [pulsanti-rilascio-corte-mpy.md](pulsanti-rilascio-corte-mpy.md): versioni corte, solo azione al rilascio
+- [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md): tecniche bloccanti
 - [toggle-blink-pulldown-mpy.md](toggle-blink-pulldown-mpy.md): toggle e blink come due task concorrenti
