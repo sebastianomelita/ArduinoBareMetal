@@ -20,24 +20,49 @@ nello sketch: la libreria `urutils.h` contiene solo le versioni **non bloccanti*
 
 ## La struttura comune e il punto debole
 
-Il `loop()` è lo stesso in tutte le versioni (pull-down):
+Il `loop()` è lo stesso nelle versioni da 1 a 5 (pull-down):
 
 ```cpp
 void loop() {
-  if (digitalRead(P1) == HIGH) {   // (1) letto all'inizio di OGNI giro
-    doOnRise();                    // pressione
-    waitUntilInputLow(P1, 50);     // (2) bloccato qui fino al rilascio
-    doOnFall();                    // (3) rilascio
+  if (digitalRead(P1) == HIGH) {   // (1) primo HIGH: il primo rimbalzo della pressione
+    doOnRise();                    // (2) azione alla pressione, subito
+    waitUntilInputLow(P1, 50);     // (3) esce quando il pin è LOW, ma non prima di 50 ms
+    doOnFall();                    // (4) azione al rilascio
   }
-}                                 // (4) fine del giro: si torna subito a (1)
+}                                  // (5) fine del giro: si torna subito a (1)
 ```
 
-Cambia solo **come** la funzione di attesa decide che il pulsante è stato rilasciato. Per giudicarle
-bisogna ricordare che `loop()` viene richiamato all'infinito: appena l'attesa finisce e `doOnFall()` è
-eseguita, pochi microsecondi dopo il giro successivo rilegge il pin in (1). Se in quel momento il
-contatto sta ancora rimbalzando, il pin può risultare HIGH e il rimbalzo viene preso per una **nuova
-pressione**: il toggle scatta due volte (*pressione fantasma*). Un'attesa è corretta solo se esce
-quando i rimbalzi del rilascio sono **finiti**.
+Seguiamo una pressione dall'inizio.
+
+1. **Il primo HIGH è il primo rimbalzo della pressione.** Il contatto si chiude per la prima volta e il
+   `loop()`, che rilegge il pin di continuo, se ne accorge subito. Non può essere altro: un pulsante non
+   premuto non dà livelli alti (salvo uno spike, vedi le considerazioni finali). Il primo rimbalzo
+   basta per sapere che la pressione è cominciata.
+2. **`doOnRise()` parte subito**, al primo rimbalzo: la risposta alla pressione è immediata.
+3. **Gli altri rimbalzi non li legge più il `loop()`**: il programma è già dentro l'attesa. Il compito
+   dell'attesa è lasciarli passare. Deve uscire quando trova il pin basso, ma **non prima di 50 ms**:
+   così non scambia per un rilascio i buchi fra i rimbalzi della pressione.
+4. **`doOnFall()` parte quando l'attesa esce**, cioè quando il pulsante risulta rilasciato.
+
+Le versioni differiscono solo nel modo in cui l'attesa decide, al punto 3, che il pulsante è stato
+rilasciato, e qui sta il punto debole. "Non prima di 50 ms" può voler dire due cose diverse:
+
+- **50 ms di livello LOW continuo** (versioni 4 e 5): ogni lettura HIGH fa ripartire il conteggio.
+  Se i 50 ms sono scelti in base alla qualità del pulsante, cioè più lunghi dei suoi rimbalzi,
+  l'attesa **non può** uscire mentre il rilascio rimbalza: finché rimbalza, qualche lettura è HIGH.
+- **50 ms fra una lettura e l'altra** (versioni 1, 2 e 3): il tempo è misurato dalla lettura
+  precedente, non dall'inizio del rilascio. I rimbalzi della pressione sono finiti prima della
+  prima lettura, quindi il problema riguarda solo quelli del **rilascio**: il rilascio arriva in un
+  istante qualsiasi, e una lettura può capitare proprio mentre il contatto rimbalza, in un istante
+  in cui è aperto. Se i rimbalzi durano meno di 50 ms ci cade al massimo **una** lettura, ma una
+  basta: l'attesa esce subito, **qualunque sia** il tempo scelto. Allungarlo sposta le letture, non
+  le tiene lontane dai rimbalzi.
+
+Che cosa succede se l'attesa esce durante i rimbalzi del rilascio? Al punto 5 il `loop()` ricomincia
+subito e rilegge il pin in (1). Se trova un rimbalzo HIGH, per il punto 1 quello sembra il primo
+rimbalzo di una **nuova pressione**: il toggle scatta due volte (*pressione fantasma*). Un'attesa è
+corretta solo se esce quando i rimbalzi del rilascio sono **finiti**, ed è quello che garantiscono
+le versioni 4 e 5.
 
 I due disturbi da considerare sono:
 - i **rimbalzi** del contatto, alla pressione e al rilascio (qualche ms);
@@ -55,6 +80,8 @@ nuovo. Esce alla **prima lettura** che trova il pulsante rilasciato.
 <p align="center">
   <img src="img/debounce-bloccante1-pulldown.gif" alt="Animazione della tecnica bloccante 1: una lettura ogni t ms (pull-down)" width="900">
 </p>
+
+L'animazione mostra l'errore più subdolo: i rimbalzi del rilascio durano meno di 50 ms, ma una lettura ci cade dentro in un istante basso, l'attesa finisce e il giro successivo prende un rimbalzo per una nuova pressione.
 
 <table>
 <tr>
@@ -570,6 +597,8 @@ quanto dura un giro del ciclo.
   <img src="img/debounce-bloccante-pulldown.gif" alt="Animazione della versione bloccante con waitUntilInputLow() (pull-down)" width="900">
 </p>
 
+L'ultima scena mostra il limite che resta: uno spike a pulsante rilasciato viene preso per una pressione (lo risolve la versione 6).
+
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW e si attende con `waitUntilInputHigh()`.
 
 <table>
@@ -693,15 +722,179 @@ possono farla uscire, e quando `loop()` rilegge il pin il livello è stabile da 
 fissa il passo di lettura e cede la CPU: su ESP32 gli altri task continuano a girare. In
 simulazione: 0 errori, rilascio 49–50 ms dopo la fine dei rimbalzi.
 
+## 6. Letture continue anche alla pressione
+
+Le versioni da 1 a 5 accettano la pressione alla **prima** lettura "premuto". Questa usa la stessa
+attesa a letture continue della 5 anche per la pressione: prima aspetta 50 ms di livello HIGH
+senza interruzioni, poi chiama `doOnRise()`, poi aspetta 50 ms di livello LOW senza interruzioni
+e chiama `doOnFall()`. Le due attese sono le stesse funzioni della versione 5,
+`waitUntilInputHigh()` e `waitUntilInputLow()`: nel pull-down la prima conferma la pressione e la
+seconda il rilascio, nel pull-up il contrario. È la stessa idea del programma PolyScope che
+conferma anche la pressione (vedi la sezione sul robot UR) e di `changed()` nelle versioni non
+bloccanti.
+
+<p align="center">
+  <img src="img/debounce-bloccante6-pulldown.gif" alt="Animazione della tecnica bloccante 6: letture continue anche alla pressione (pull-down)" width="900">
+</p>
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+
+void waitUntilInputLow(int btn, unsigned t) {
+  // attende t ms di LOW continuo: ogni
+  // lettura HIGH (rimbalzo, disturbo o
+  // cambio di livello) fa ripartire
+  // il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == HIGH) {
+      tl = millis();
+    }
+    delay(1);
+  }
+}
+
+void waitUntilInputHigh(int btn, unsigned t) {
+  // attende t ms di HIGH continuo: ogni
+  // lettura LOW (rimbalzo, disturbo o
+  // cambio di livello) fa ripartire
+  // il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == LOW) {
+      tl = millis();
+    }
+    delay(1);
+  }
+}
+
+void doOnRise() {
+  // PRESSIONE CONFERMATA (fronte di salita):
+  // il pulsante è premuto da 50 ms.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  waitUntilInputHigh(P1, 50);  // pressione: 50 ms di HIGH fermo
+  doOnRise();
+  waitUntilInputLow(P1, 50);  // rilascio: 50 ms di LOW fermo
+  doOnFall();
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+
+void waitUntilInputLow(int btn, unsigned t) {
+  // attende t ms di LOW continuo: ogni
+  // lettura HIGH (rimbalzo, disturbo o
+  // cambio di livello) fa ripartire
+  // il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == HIGH) {
+      tl = millis();
+    }
+    delay(1);
+  }
+}
+
+void waitUntilInputHigh(int btn, unsigned t) {
+  // attende t ms di HIGH continuo: ogni
+  // lettura LOW (rimbalzo, disturbo o
+  // cambio di livello) fa ripartire
+  // il conteggio
+  unsigned long tl = millis();
+  while (millis() - tl <= t) {
+    if (digitalRead(btn) == LOW) {
+      tl = millis();
+    }
+    delay(1);
+  }
+}
+
+void doOnFall() {
+  // PRESSIONE CONFERMATA (fronte di discesa):
+  // il pulsante è premuto da 50 ms.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  waitUntilInputLow(P1, 50);  // pressione: 50 ms di LOW fermo
+  doOnFall();
+  waitUntilInputHigh(P1, 50);  // rilascio: 50 ms di HIGH fermo
+  doOnRise();
+}
+```
+
+</td>
+</tr>
+</table>
+
+**Cosa garantisce.** Filtra in tutte e due le direzioni: rimbalzi, buchi a pulsante premuto e anche
+lo **spike a pulsante rilasciato**, che le versioni da 1 a 5 prendono per una pressione. Uno spike
+di pochi millisecondi fa partire l'attesa della pressione, ma la prima lettura bassa la fa
+ripartire da capo, e non succede niente. In simulazione: 0 errori su 5000 in tutti e tre i casi.
+
+**Cosa costa.** `doOnRise()` arriva 50 ms dopo l'inizio della pressione, e una pressione più breve di
+50 ms viene ignorata, come se fosse un disturbo. In più `loop()` resta fermo **anche a pulsante
+rilasciato**, dentro l'attesa della pressione: il programma non fa altro che aspettare il pulsante.
+Va bene solo se il pulsante è l'unico compito, oppure su ESP32 con gli altri compiti in altri
+task.
+
 ## Confronto
 
-| Versione | Rimbalzi al rilascio (pressione fantasma) | Buco sul livello alto | Ritardo del rilascio dopo i rimbalzi |
-| --- | --- | --- | --- |
-| 1. Una lettura ogni t ms | ✘ 171 / 5000 | ✘ 388 / 5000 | medio 22 ms, max 49 ms |
-| 2. Una lettura + attesa dopo | ✔ 0 | ✘ 190 / 5000 | medio 71 ms, max 99 ms |
-| 3. Due letture | ✔ 0 | ~ probabilistica (0 / 5000) | medio 71 ms, max 99 ms |
-| 4. Letture continue, contatore | ✔ 0 | ✔ 0 | 49–50 ms |
-| 5. Letture continue, millis() | ✔ 0 | ✔ 0 | 49–50 ms |
+| Versione | Rimbalzi al rilascio (pressione fantasma) | Buco sul livello alto | Spike a pulsante rilasciato | Ritardo del rilascio dopo i rimbalzi |
+| --- | --- | --- | --- | --- |
+| 1. Una lettura ogni t ms | ✘ 171 / 5000 | ✘ 388 / 5000 | ✘ | medio 22 ms, max 49 ms |
+| 2. Una lettura + attesa dopo | ✔ 0 | ✘ 190 / 5000 | ✘ | medio 71 ms, max 99 ms |
+| 3. Due letture | ✔ 0 | ~ probabilistica (0 / 5000) | ✘ | medio 71 ms, max 99 ms |
+| 4. Letture continue, contatore | ✔ 0 | ✔ 0 | ✘ | 49–50 ms |
+| 5. Letture continue, millis() | ✔ 0 | ✔ 0 | ✘ | 49–50 ms |
+| 6. Letture continue anche alla pressione | ✔ 0 | ✔ 0 | ✔ 0 | 49–50 ms (pressione ritardata di 50 ms) |
 
 ✔ protegge sempre (se il disturbo dura meno di `t`) · ~ protegge quasi sempre · ✘ non protegge
 
@@ -717,6 +910,7 @@ diverso a seconda della piattaforma, e questo cambia quale versione conviene.
 | 3. Due letture | ~ quasi sempre | ~ quasi sempre | ~ quasi sempre |
 | 4. Letture continue, contatore | ✔ sicura | ✔ sicura, tempo di conferma approssimato | ✔ **sicura e consigliata**: si contano i cicli di controllo con `sync()` |
 | 5. Letture continue, millis() | ✔ **sicura e consigliata** | ✔ **sicura e consigliata** | non serve: sul robot il ciclo di controllo fa già da orologio |
+| 6. Letture continue anche alla pressione | ✔ sicura, anche contro gli spike | ✔ sicura, anche contro gli spike | ✔ programma PolyScope che conferma anche la pressione |
 
 **Arduino UNO.** C'è un solo flusso di esecuzione e `delay(1)` è un'attesa attiva di circa 1 ms: il
 contatore misura bene il tempo, quindi la 4 e la 5 sono entrambe sicure. La 5 resta preferibile perché
@@ -741,20 +935,120 @@ Script node: siccome il frame dura sempre lo stesso tempo, contare i frame equiv
 tempo.
 
 ```python
-def waitUntilLow(n, t):        # t in secondi, es. 0.05
+def waitUntilLow(n, t):        # t in secondi: 0.05 = 50 ms, uguale per e-Series e CB3
+  dt = get_steptime()          # durata di un frame: 0.002 s (e-Series), 0.008 s (CB3)
   tl = 0
   while tl < t:
     if get_standard_digital_in(n):
       tl = 0                   # lettura alta: il conteggio riparte
     else:
-      tl = tl + 0.002          # un frame (e-Series) di LOW in più; 0.008 sui CB3
+      tl = tl + dt             # un frame di LOW in più
     end
     sync()                     # aspetta il frame successivo
   end
 end
 ```
 
-Lo script segue la documentazione di URScript ma non è stato provato su un robot. Per verificarlo:
+Si chiama con lo stesso valore su tutti i robot, ad esempio `waitUntilLow(0, 0.05)` per 50 ms
+sull'ingresso DI0: `t` è un **tempo**, non un numero di frame. La durata del frame la legge
+`get_steptime()`, quindi lo script funziona senza modifiche sia sugli e-Series sia sui CB3.
+Cambia solo la risoluzione: sugli e-Series si legge l'ingresso ogni 2 ms e l'attesa finisce dopo
+25 frame di LOW (50 ms); sui CB3 si legge ogni 8 ms e servono 7 frame (56 ms), perché 50 non è un
+multiplo di 8. Con letture ogni 8 ms la conferma è certa se rimbalzi e buchi durano meno di
+`t` − 8 ms, cioè 42 ms: per un pulsante va benissimo.
+
+**La stessa attesa con i nodi di PolyScope, senza script.** Se si preferisce costruire il programma
+dall'interfaccia grafica, bastano un Loop, un If e un Wait a tempo:
+
+```
+Program
+  BeforeStart
+    contatore≔0
+  Robot Program
+    'Pressione: il primo livello alto basta'
+    Wait digital_in[0]=HI
+    'qui le azioni alla pressione (opzionale)'
+    'Rilascio: almeno 50 ms di livello basso senza interruzioni'
+    t_basso≔0
+    Loop t_basso<0.05
+      Wait: 0.01
+      If digital_in[0]≟True
+        t_basso≔0
+      Else
+        t_basso≔t_basso+0.01
+    'Rilascio confermato: azione al rilascio'
+    contatore≔contatore+1
+```
+
+<p align="center">
+  <img src="img/debounce-polyscope.png" alt="Andamento di t_basso nel programma PolyScope: si azzera a ogni lettura alta e raggiunge 0.05 solo dopo la fine dei rimbalzi" width="900">
+</p>
+
+Nella figura il programma legge l'ingresso ogni 10 ms (puntini verdi). Una lettura cade nel buco a pulsante premuto e porta `t_basso` a 0,01, ma la lettura alta successiva lo riporta a 0. Al rilascio `t_basso` sale di 0,01 a ogni lettura bassa e il Loop finisce solo a 0,05, quando i rimbalzi sono finiti da un pezzo. Una semplice `Wait digital_in[0]=LO` sarebbe uscita già nel buco.
+
+Come si costruisce:
+1. in *BeforeStart*, un nodo **Assignment** `contatore = 0`;
+2. un nodo **Wait** → "Wait for Digital Input" → `digital_in[0]` = HI;
+3. un **Assignment** `t_basso = 0`;
+4. un nodo **Loop** → "Loop as long as expression is true" → `t_basso < 0.05`, **senza** l'opzione
+   "Check expression continuously";
+5. dentro il Loop: un **Wait** di 0,01 s e un **If** `digital_in[0] == True`, con un Assignment
+   `t_basso = 0` nel ramo If e, nel ramo **Else**, un Assignment `t_basso = t_basso + 0.01`;
+6. dopo il Loop, l'azione al rilascio (qui il contatore, oppure un Set su un'uscita, un movimento...).
+
+Nell'albero PolyScope mostra il confronto come `≟` e l'assegnazione come `≔`; nell'editor di
+espressioni si scrivono `==` e `=`. Ogni lettura alta riporta `t_basso` a 0, quindi si esce solo
+dopo 5 letture basse di fila, cioè 50 ms. Il Wait da 0,01 s fissa una lettura ogni 10 ms e fa
+consumare tempo al Loop: la conferma è certa se rimbalzi e buchi durano meno di 50 − 10 = 40 ms, e
+il programma è uguale su e-Series e CB3. Come tutte le attese, ferma il programma durante la
+pressione: se il robot deve fare altro, questa parte va in un **Thread** di PolyScope, che passa il
+risultato al programma principale con una variabile.
+
+Per provarlo: un pulsante su DI0 e la variabile `contatore` nella scheda Variables, che deve salire
+di 1 a ogni pressione. Con un programma che ha solo `Wait digital_in[0]=HI`, `Wait digital_in[0]=LO`
+e `contatore≔contatore+1` il contatore invece salta.
+
+**Variante che conferma anche la pressione.** Come suggerito sul forum di Universal Robots (un
+timer che riparte a ogni lettura contraria, sul modello del temporizzatore T_on dei PLC), si può
+confermare anche la pressione: prima di proseguire si chiedono 50 ms di livello alto senza
+interruzioni. Così il programma filtra in tutte e due le direzioni, come `changed()`, e scarta
+anche uno spike a pulsante rilasciato:
+
+```
+Program
+  BeforeStart
+    contatore≔0
+  Robot Program
+    'Pressione: almeno 50 ms di livello alto senza interruzioni'
+    t_alto≔0
+    Loop t_alto<0.05
+      Wait: 0.01
+      If digital_in[0]≟True
+        t_alto≔t_alto+0.01
+      Else
+        t_alto≔0
+    'Pressione confermata: azioni alla pressione (opzionale)'
+    'Rilascio: almeno 50 ms di livello basso senza interruzioni'
+    t_basso≔0
+    Loop t_basso<0.05
+      Wait: 0.01
+      If digital_in[0]≟True
+        t_basso≔0
+      Else
+        t_basso≔t_basso+0.01
+    'Rilascio confermato: azione al rilascio'
+    contatore≔contatore+1
+```
+
+Il primo Loop è lo specchio del secondo: una lettura alta fa crescere `t_alto`, una lettura bassa lo
+azzera. In una simulazione della stessa logica (5000 pressioni per caso, rimbalzi fino a 10 ms,
+buchi e spike di 2 ms) non ci sono stati errori né con i rimbalzi, né con un buco a pulsante
+premuto, né con uno spike a riposo. Il prezzo è lo stesso di `changed()`: l'azione alla pressione
+arriva 50 ms dopo, e una pressione più breve di 50 ms viene ignorata. Su un ingresso a 24 V gli
+spike sono rari, quindi la prima versione di solito basta; questa serve quando il pulsante è lontano
+dal robot o vicino a sorgenti di disturbo.
+
+Lo script e i programmi PolyScope seguono la documentazione di Universal Robots ma non sono stati provati su un robot. Per verificarlo:
 un pulsante su DI0 e un contatore che aumenta a ogni rilascio; con due Wait in fila (HI e poi LO)
 il contatore sale di più di 1 a ogni pressione, con lo script deve salire di 1. Gli ingressi del
 robot sono a 24 V e in genere li comandano sensori elettronici, che non rimbalzano: il problema
@@ -768,13 +1062,14 @@ più lungo non si distingue da un rilascio breve. Si supera scegliendo un tempo 
 del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non
 perdere le pressioni rapide.
 
-**Lo spike alto a pulsante rilasciato non è filtrato da nessuna tecnica bloccante.** Tutte accettano la
-pressione alla **prima** lettura "premuto": un disturbo che porta il pin alto per un attimo a pulsante
-rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto basso solo dalla
-resistenza) diventa una pressione, e dopo 50 ms un rilascio: il toggle scatta (5000 errori su 5000 in
-simulazione). Se l'ingresso è disturbato servono una resistenza di pull-down più bassa o un filtro RC,
-oppure la versione a **livello stabile** con `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md),
-che chiede il livello fermo per 50 ms anche alla pressione.
+**Lo spike alto a pulsante rilasciato è filtrato solo dalla versione 6.** Le versioni da 1 a 5
+accettano la pressione alla **prima** lettura "premuto": un disturbo che porta il pin alto per un
+attimo a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto
+basso solo dalla resistenza) diventa una pressione, e dopo 50 ms un rilascio: il toggle scatta (5000
+errori su 5000 in simulazione). Se l'ingresso è disturbato servono una resistenza di pull-down più
+bassa o un filtro RC, oppure una tecnica che chieda il livello fermo per 50 ms anche alla pressione:
+la versione 6, se il programma può restare fermo ad aspettare il pulsante, o `changed()` di
+[pulsanti-rilascio.md](pulsanti-rilascio.md) se deve fare altro.
 
 **Quando usarle.** Le tecniche bloccanti fermano `loop()` per tutta la durata della pressione: vanno
 bene in un programma che deve solo reagire al pulsante, o su ESP32 dove gli altri compiti girano in

@@ -188,9 +188,9 @@ flowchart TD
 | Sensore PNP 24 V → Arduino / ESP32 | sfarfallio ai bordi, qualche spike | optoisolatore (o partitore) | `changed()`; se la logica è a livello, anche `millis()` |
 | Uscita del robot UR → Arduino / ESP32 (es. il nastro) | niente rimbalzi, disturbi sui cavi | optoisolatore (o partitore) | `changed()`, con comandi a livello |
 | Arduino / ESP32 → ingresso del robot | nessuno con opto o transistor | optoisolatore o transistor che commuta i 24 V | Wait sull'ingresso va bene |
-| Relè → ingresso del robot | rimbalzi del contatto | meglio un relè statico o un opto | script con `sync()` (tecnica 4 di [pulsanti-bloccanti.md](pulsanti-bloccanti.md)) |
-| Pulsante → ingresso del robot | rimbalzi | collegamento fra 24 V e DIx | script con `sync()`; la Wait da sola sbaglia |
-| Sensore PNP 24 V → ingresso del robot | sfarfallio ai bordi | collegamento diretto | Wait va bene con logica a livello; script con `sync()` se conta i pezzi |
+| Relè → ingresso del robot | rimbalzi del contatto | meglio un relè statico o un opto | attesa con livello basso continuo: script con `sync()` o programma PolyScope (sezione sul robot UR di [pulsanti-bloccanti.md](pulsanti-bloccanti.md)) |
+| Pulsante → ingresso del robot | rimbalzi | collegamento fra 24 V e DIx | attesa con livello basso continuo (script o programma PolyScope in [pulsanti-bloccanti.md](pulsanti-bloccanti.md)); la Wait da sola sbaglia |
+| Sensore PNP 24 V → ingresso del robot | sfarfallio ai bordi | collegamento diretto | Wait va bene con logica a livello; attesa con livello basso continuo se conta i pezzi |
 
 **In sintesi.**
 - I **rimbalzi** dipendono dalla sorgente: ci sono solo con i contatti meccanici, su qualsiasi
