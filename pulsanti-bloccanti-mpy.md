@@ -10,8 +10,10 @@ Attenzione con `asyncio`: `time.sleep_ms()` ferma anche gli altri task asincroni
 attesi con `await asyncio.sleep_ms()`.
 
 Le tecniche sono presentate dalla più semplice alla più robusta. Le funzioni di attesa sono definite
-nel programma: la libreria `urutils.py` contiene solo le versioni **non bloccanti**
-(`waitUntilInputLowNB()` / `waitUntilInputHighNB()`).
+nel programma, così si vede come sono fatte. Le versioni migliori sono anche nella libreria
+`urutils.py`: `waitUntilInputLow()` e `waitUntilInputHigh()` della tecnica 5, e
+`waitUntilInputChange()`, che conferma il cambio di livello in tutte e due le direzioni come la
+tecnica 6. Se le importate, non serve definirle nel programma.
 
 Pin di esempio per ESP32: pulsante su GPIO 12, LED su GPIO 13. Al posto di `millis()` si usa
 `time.ticks_ms()`, e le differenze di tempo si calcolano con `time.ticks_diff()`, che resta corretta
@@ -808,6 +810,21 @@ while True:
 </td>
 </tr>
 </table>
+
+Con la libreria lo stesso ciclo si può scrivere con `waitUntilInputChange()`, che riceve il
+livello attuale e restituisce quello nuovo, confermato da 50 ms di livello fermo:
+
+```python
+from urutils import waitUntilInputChange
+liv = 0                                      # pull-down: riposo 0 (pull-up: 1)
+
+while True:
+    liv = waitUntilInputChange(P1, liv, 50)  # attende il prossimo cambio confermato
+    if liv == 1:
+        doOnRise()                           # pressione confermata
+    else:
+        doOnFall()                           # rilascio confermato
+```
 
 **Cosa garantisce.** Filtra in tutte e due le direzioni: rimbalzi, buchi a pulsante premuto e anche
 lo **spike a pulsante rilasciato**, che le versioni da 1 a 5 prendono per una pressione. Uno spike

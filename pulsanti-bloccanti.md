@@ -8,8 +8,10 @@ capire, ma per tutto il tempo della pressione `loop()` non fa altro: va bene qua
 altri compiti, oppure su ESP32, dove gli altri task (FreeRTOS) continuano a girare.
 
 Le tecniche sono presentate dalla più semplice alla più robusta. Le funzioni di attesa sono definite
-nello sketch: la libreria `urutils.h` contiene solo le versioni **non bloccanti**
-(`waitUntilInputLowNB()` / `waitUntilInputHighNB()`).
+nello sketch, così si vede come sono fatte. Le versioni migliori sono anche nella libreria
+`urutils.h`: `waitUntilInputLow()` e `waitUntilInputHigh()` della tecnica 5, e
+`waitUntilInputChange()`, che conferma il cambio di livello in tutte e due le direzioni come la
+tecnica 6. Se includete la libreria, togliete dallo sketch le definizioni con lo stesso nome.
 
 > Tecniche non bloccanti: [pulsanti-rilascio.md](pulsanti-rilascio.md) (complete) e [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md) (solo azione al rilascio)
 
@@ -873,6 +875,23 @@ void loop() {
 </td>
 </tr>
 </table>
+
+Con la libreria lo stesso `loop()` si può scrivere con `waitUntilInputChange()`, che riceve il
+livello attuale e restituisce quello nuovo, confermato da 50 ms di livello fermo:
+
+```cpp
+#include "urutils.h"
+byte liv = LOW;                              // pull-down: riposo LOW (pull-up: HIGH)
+
+void loop() {
+  liv = waitUntilInputChange(P1, liv, 50);   // attende il prossimo cambio confermato
+  if (liv == HIGH) {
+    doOnRise();                              // pressione confermata
+  } else {
+    doOnFall();                              // rilascio confermato
+  }
+}
+```
 
 **Cosa garantisce.** Filtra in tutte e due le direzioni: rimbalzi, buchi a pulsante premuto e anche
 lo **spike a pulsante rilasciato**, che le versioni da 1 a 5 prendono per una pressione. Uno spike

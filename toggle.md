@@ -335,7 +335,7 @@ void loop() {                                          | void loop() {
 // viene RILASCIATO (fronte di discesa)                | // viene RILASCIATO (fronte di salita)
 ```
 
-> ```waitUntilInputLow()``` e ```waitUntilInputHigh()``` vanno definite nello sketch, come nella versione 5 di [pulsanti-bloccanti.md](pulsanti-bloccanti.md) (letture continue con ```millis()```): escono solo dopo ```t``` msec di livello di riposo **continuo**, perché ogni lettura del livello di pressione fa ripartire il conteggio. Così né un rimbalzo del rilascio né un'interruzione breve del contatto a pulsante premuto vengono presi per un rilascio. La libreria ```urutils.h``` contiene solo le versioni non bloccanti, ```waitUntilInputLowNB()``` e ```waitUntilInputHighNB()```.
+> ```waitUntilInputLow()``` e ```waitUntilInputHigh()``` vanno definite nello sketch, come nella versione 5 di [pulsanti-bloccanti.md](pulsanti-bloccanti.md) (letture continue con ```millis()```): escono solo dopo ```t``` msec di livello di riposo **continuo**, perché ogni lettura del livello di pressione fa ripartire il conteggio. Così né un rimbalzo del rilascio né un'interruzione breve del contatto a pulsante premuto vengono presi per un rilascio. Le stesse funzioni sono anche nella libreria ```urutils.h```: se la includete, togliete le definizioni dallo sketch.
 
 Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
 
@@ -1585,7 +1585,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 
 **Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
 
-**Il polling veloce con il timer che riparte è la tecnica più robusta e più pronta.** È la versione in cui il ```loop()``` legge il pulsante a ogni giro e il timer riparte a ogni lettura "premuto" (```t0 = millis()``` fuori dall'```if```):
+**Il polling veloce con il timer che riparte è la tecnica più pronta fra quelle robuste ai rimbalzi.** (Contro uno spike a pulsante rilasciato serve invece il livello stabile, `changed()` o `Debouncer` di `urutils`.) È la versione in cui il ```loop()``` legge il pulsante a ogni giro e il timer riparte a ogni lettura "premuto" (```t0 = millis()``` fuori dall'```if```):
 - guarda il pulsante in continuazione: un disturbo breve a pulsante premuto viene visto di sicuro, ma fa solo ripartire il conteggio;
 - il rilascio è accettato solo se il pin è rimasto basso per **tutto** il tempo di antirimbalzo: la decisione non dipende da dove cade il disturbo;
 - la pressione è riconosciuta alla prima lettura alta, il rilascio dopo il tempo di antirimbalzo.

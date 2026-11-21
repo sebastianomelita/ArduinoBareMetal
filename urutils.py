@@ -9,6 +9,43 @@ def waitUntil(cond, t):
         time.sleep_ms(t)
 
 
+# ---------------------------------------------------------------------------
+# Attese BLOCCANTI a letture continue (tecnica 5 di pulsanti-bloccanti-mpy.md).
+# Escono solo dopo t ms in cui TUTTE le letture, una ogni ms, hanno dato il
+# livello atteso: ogni lettura diversa fa ripartire il conteggio. Certe se
+# rimbalzi e disturbi durano meno di t - 1 ms. sleep_ms(1) cede la CPU agli
+# altri thread (non ai task di asyncio).
+# ---------------------------------------------------------------------------
+
+def waitUntilInputLow(btn, t):
+    # attende t ms di livello basso continuo (rilascio in pull-down)
+    tl = time.ticks_ms()
+    while time.ticks_diff(time.ticks_ms(), tl) <= t:
+        if btn.value():
+            tl = time.ticks_ms()
+        time.sleep_ms(1)
+
+
+def waitUntilInputHigh(btn, t):
+    # attende t ms di livello alto continuo (pressione in pull-down)
+    tl = time.ticks_ms()
+    while time.ticks_diff(time.ticks_ms(), tl) <= t:
+        if not btn.value():
+            tl = time.ticks_ms()
+        time.sleep_ms(1)
+
+
+def waitUntilInputChange(btn, livello, t):
+    # attende un cambio di livello confermato: livello è il livello attuale
+    # (quello accettato l'ultima volta); esce quando il pin è rimasto al livello
+    # opposto per t ms di fila e restituisce il nuovo livello (0 o 1).
+    if livello == 0:
+        waitUntilInputHigh(btn, t)
+        return 1
+    waitUntilInputLow(btn, t)
+    return 0
+
+
 def waitUntilNB(d, c, t):
     # attesa non bloccante: restituisce True una sola volta, quando la
     # condizione c è rimasta vera per più di t ms di fila.
