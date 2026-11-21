@@ -263,12 +263,46 @@ Nelle tecniche che filtrano solo il rilascio, le quattro situazioni sono gestite
 diversi** del programma. Nelle tecniche a livello stabile, invece, una sola regola le tratta tutte
 allo stesso modo.
 
-| Situazione | Polling con `millis()` (`attivo` + `t0`) | Bloccante 5 (`waitUntilInputLow`) | Livello stabile (`changed()`) |
-| --- | --- | --- | --- |
-| 1. Rimbalzi alla pressione | la **variabile `attivo`**: `doOnRise()` parte solo al primo HIGH, i successivi trovano `attivo` già vero; i LOW fra un rimbalzo e l'altro non durano 50 ms | il **punto del programma**: dopo il primo HIGH il `loop()` è dentro l'attesa e non rilegge più l'`if`; l'attesa li assorbe perché nessun LOW dura 50 ms | la **regola unica**: ogni variazione fa ripartire il conteggio |
-| 2. Rimbalzi al rilascio | il **timer che riparte**: `t0 = millis()` a ogni HIGH | il **timer che riparte**: `tl = millis()` a ogni HIGH dentro l'attesa | la stessa regola |
-| 3. Buco a pulsante premuto | il **timer che riparte**, come i rimbalzi del rilascio | il **timer che riparte**, come i rimbalzi del rilascio | la stessa regola |
-| 4. Spike a pulsante rilasciato | nessuno: diventa una pressione | nessuno: diventa una pressione | la stessa regola: lo spike non dura 50 ms e viene scartato |
+**Polling con `millis()`** (una direzione). Il codice usa due variabili: `attivo`, che ricorda se la
+pressione è già stata segnalata, e `t0`, l'istante dell'ultima lettura HIGH.
+
+1. *Rimbalzi alla pressione.* Al primo HIGH `attivo` è falso: parte `doOnRise()` e `attivo` diventa
+   vero. I rimbalzi successivi trovano `attivo` già vero, quindi `doOnRise()` non viene richiamata.
+   Il rilascio non può scattare, perché richiede più di 50 ms dall'ultimo HIGH e fra un rimbalzo e
+   l'altro passano pochi millisecondi.
+2. *Rimbalzi al rilascio.* A ogni lettura HIGH si esegue `t0 = millis()`: ogni rimbalzo alto sposta in
+   avanti l'istante di riferimento, e i 50 ms ricominciano a contare dall'ultimo rimbalzo.
+3. *Buco a pulsante premuto.* È un LOW breve, seguito di nuovo da letture HIGH: la prima di queste
+   esegue `t0 = millis()` e il conteggio riparte, come per i rimbalzi del rilascio.
+4. *Spike a riposo.* Nessuna istruzione lo ferma: la prima lettura HIGH vale come pressione (`attivo`
+   diventa vero, parte `doOnRise()`), e 50 ms dopo la fine dello spike arriva `doOnFall()`.
+
+**Bloccante 5** (una direzione). Qui il ruolo di `attivo` lo svolge il **punto in cui si trova il
+programma**: finché è dentro `waitUntilInputLow()`, il pulsante è considerato premuto.
+
+1. *Rimbalzi alla pressione.* Al primo HIGH il programma entra nell'`if`, esegue `doOnRise()` e si
+   ferma dentro `waitUntilInputLow()`. Da lì non torna all'`if` finché l'attesa non finisce, quindi
+   `doOnRise()` non può ripartire. L'attesa non finisce durante i rimbalzi, perché ogni lettura HIGH
+   esegue `tl = millis()` e azzera il conteggio.
+2. *Rimbalzi al rilascio.* Stesso meccanismo: ogni rimbalzo alto esegue `tl = millis()`, e l'attesa
+   finisce solo 50 ms dopo l'ultimo.
+3. *Buco a pulsante premuto.* La lettura HIGH che segue il buco esegue `tl = millis()`: il conteggio
+   riparte e l'attesa continua.
+4. *Spike a riposo.* Nessuna istruzione lo ferma: il primo HIGH fa entrare nell'`if`, parte
+   `doOnRise()`, e l'attesa finisce 50 ms dopo con `doOnFall()`.
+
+**Livello stabile con `changed()`** (due direzioni). Il codice usa `val0`, l'ultima lettura, `val00`,
+il livello accettato, e `last`, l'istante dell'ultima variazione. Una **sola regola** vale per tutte le
+situazioni: *ogni variazione della lettura esegue `last = millis()`, e un nuovo livello è accettato
+solo se è diverso da `val00` ed è rimasto fermo per più di 50 ms.*
+
+1. *Rimbalzi alla pressione.* Ogni rimbalzo è una variazione e riporta `last` all'istante attuale: la
+   pressione è accettata 50 ms dopo l'ultimo rimbalzo.
+2. *Rimbalzi al rilascio.* Esattamente lo stesso: il rilascio è accettato 50 ms dopo l'ultimo rimbalzo.
+3. *Buco a pulsante premuto.* Il buco produce due variazioni (verso LOW e di nuovo verso HIGH) a pochi
+   millisecondi di distanza: il LOW non resta fermo 50 ms e non viene accettato.
+4. *Spike a riposo.* Stessa cosa al contrario: lo spike produce due variazioni ravvicinate, l'HIGH non
+   resta fermo 50 ms e non viene accettato. Nessun evento.
 
 Nelle tecniche asimmetriche il buco è gestito dallo **stesso codice** dei rimbalzi del rilascio: per il
 programma sono la stessa cosa, un LOW che non dura abbastanza. I rimbalzi della pressione, invece, sono
