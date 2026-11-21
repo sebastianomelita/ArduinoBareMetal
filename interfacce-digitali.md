@@ -132,6 +132,8 @@ ESP32 fra il pin e 5 V / 3,3 V, con un pull-down, oppure fra il pin e GND con il
 
 ## 4. Da dove vengono i disturbi
 
+Le quattro situazioni critiche, e le ipotesi con cui si sceglie il tempo di antirimbalzo, sono discusse in [debounce-fenomeni.md](debounce-fenomeni.md).
+
 | Disturbo | Da dove nasce | Dove è più probabile |
 | --- | --- | --- |
 | **Rimbalzi** | contatti meccanici: pulsanti, finecorsa, relè | qualsiasi ingresso collegato a un contatto |

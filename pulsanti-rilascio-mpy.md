@@ -20,6 +20,7 @@ il pull-down interno, `Pin(12, Pin.IN, Pin.PULL_DOWN)`, al posto della resistenz
 Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si calcolano con
 `time.ticks_diff()`, che resta corretta anche quando il contatore ricomincia da capo.
 
+> Le quattro situazioni critiche di un debouncer (rimbalzi alla pressione e al rilascio, buchi, spike) e come si sceglie il tempo di antirimbalzo: [debounce-fenomeni.md](debounce-fenomeni.md)
 > Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte-mpy.md](pulsanti-rilascio-corte-mpy.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown-mpy.md](toggle-blink-pulldown-mpy.md)
 > Tecniche bloccanti (waitUntilInputLow / waitUntilInputHigh), dalla più semplice alla più robusta: [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md)

@@ -7,7 +7,7 @@
 <ol>
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
-<li><a href="debounce-fenomeni.md">Che cosa deve filtrare un debouncer: tre fenomeni e ipotesi di progetto</a></li>
+<li><a href="debounce-fenomeni.md">Che cosa deve filtrare un debouncer: quattro situazioni critiche e ipotesi di progetto</a></li>
 <li><a href="interfacce-digitali.md">Interfacce digitali di Arduino, ESP32 e robot UR a confronto: sensori a 24 V e a 5 V e scelta dell'antirimbalzo</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
 <li><a href="pulsanti-bloccanti.md">Gestione pulsanti con attese bloccanti</a></li>

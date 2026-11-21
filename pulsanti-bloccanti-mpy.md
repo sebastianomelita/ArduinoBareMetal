@@ -19,6 +19,7 @@ Pin di esempio per ESP32: pulsante su GPIO 12, LED su GPIO 13. Al posto di `mill
 `time.ticks_ms()`, e le differenze di tempo si calcolano con `time.ticks_diff()`, che resta corretta
 anche quando il contatore ricomincia da capo; al posto di `delay()` si usa `time.sleep_ms()`.
 
+> Le quattro situazioni critiche di un debouncer (rimbalzi alla pressione e al rilascio, buchi, spike) e come si sceglie il tempo di antirimbalzo: [debounce-fenomeni.md](debounce-fenomeni.md)
 > Tecniche non bloccanti: [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (complete) e [pulsanti-rilascio-corte-mpy.md](pulsanti-rilascio-corte-mpy.md) (solo azione al rilascio)
 > Versione Arduino: [pulsanti-bloccanti.md](pulsanti-bloccanti.md)
 

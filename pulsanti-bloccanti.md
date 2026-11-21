@@ -13,6 +13,7 @@ nello sketch, così si vede come sono fatte. Le versioni migliori sono anche nel
 `waitUntilInputChange()`, che conferma il cambio di livello in tutte e due le direzioni come la
 tecnica 6. Se includete la libreria, togliete dallo sketch le definizioni con lo stesso nome.
 
+> Le quattro situazioni critiche di un debouncer (rimbalzi alla pressione e al rilascio, buchi, spike) e come si sceglie il tempo di antirimbalzo: [debounce-fenomeni.md](debounce-fenomeni.md)
 > Tecniche non bloccanti: [pulsanti-rilascio.md](pulsanti-rilascio.md) (complete) e [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md) (solo azione al rilascio)
 
 | Collegamento | Riposo | Premuto | Pressione | Rilascio | Funzione di attesa |

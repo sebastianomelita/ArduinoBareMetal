@@ -97,11 +97,26 @@ valgono queste ipotesi:
 | **I4** | Gli eventi veri (pressione e rilascio voluti) durano più di `T` | un dito non preme e rilascia in meno di ~100 ms | un evento più breve di `T` viene scartato come disturbo |
 | **I5** | Il pin è letto spesso: l'intervallo `p` fra due letture è piccolo rispetto a `T` | `p` = 1 ms | con letture rade la decisione dipende da dove cadono, e la certezza diventa una probabilità |
 
-Messe insieme danno la **finestra di progetto** per `T`:
+Messe insieme, le ipotesi dicono fra quali due limiti deve stare `T`: è la **finestra di progetto**.
+
+1. **Limite inferiore: `T` deve essere più lungo di ogni disturbo.**
+   Si prende il disturbo più lungo che ci si aspetta, cioè il più grande fra:
+   - `Tr`, la durata massima dei rimbalzi (qui 10 ms);
+   - `Td`, la durata massima di un buco o di uno spike (qui 5 ms).
+
+   A questo si aggiunge `p`, l'intervallo fra due letture del pin (qui 1 ms): il debouncer si accorge
+   che un disturbo è finito solo alla lettura successiva, quindi un disturbo può "sembrare" lungo fino
+   a `p` ms in più. Limite inferiore: 10 + 1 = **11 ms**.
+2. **Limite superiore: `T` deve essere più corto di ogni evento vero.**
+   Cioè della pressione più breve, e della pausa più breve fra un rilascio e la pressione successiva,
+   che si vogliono riconoscere. Per un dito, circa **100 ms**: un evento più breve di `T` verrebbe
+   scartato come disturbo.
+
+In formula:
 
 ```
-  disturbo più lungo + p   <   T   <   evento vero più breve
-     max(Tr, Td) + p
+  il più grande fra Tr e Td  +  p   <   T   <   l'evento vero più breve
+          10 ms              + 1 ms <   T   <   circa 100 ms
 ```
 
 <p align="center">
