@@ -188,42 +188,47 @@ stesso modo, con un sensore, "oggetto presente" è lo stato e l'inizio del trans
 Come leggere la tabella, con il **principio** di ciascuna famiglia descritto a parole, prima di
 qualsiasi codice:
 
-- **Letture continue, livello stabile in due direzioni** (`changed()`, `Debouncer`, bloccante 6,
-  `waitUntilInputChange()`): sono le **sole** che proteggono con certezza da **tutte e quattro** le
-  situazioni, spike a riposo compreso.
-
-  *Come fanno.* Il debouncer ricorda un **livello accettato**, cioè lo stato in cui crede che sia il
-  pulsante, e legge il pin di continuo. Il livello accettato **non è fisso**: cambia a ogni evento
-  confermato, e ogni volta il debouncer si mette a sorvegliare il cambiamento **opposto**. Il ciclo
-  completo ha due fasi, governate dalla **stessa regola**:
-
-  1. **A riposo.** Il livello accettato è "a riposo" (pulsante rilasciato, nessun oggetto davanti al
-     sensore). Il debouncer aspetta una lettura "premuto". Quando arriva, comincia a misurare da quanto
-     tempo dura; se nel frattempo torna una lettura "a riposo" (un rimbalzo o uno spike), la misura
-     riparte da zero. Solo quando le letture sono state "premuto" senza interruzioni per più di `T`, il
-     livello accettato diventa "premuto" e si segnala la **pressione** (o l'inizio del transito).
-  2. **Premuto.** Ora il livello accettato è "premuto", e il debouncer sorveglia il cambiamento
-     opposto: aspetta una lettura "a riposo". Quando arriva, comincia a misurare; se torna una lettura
-     "premuto" (un rimbalzo del rilascio, la fine di un buco), la misura riparte da zero. Solo quando
-     le letture sono state "a riposo" senza interruzioni per più di `T`, il livello accettato torna "a
-     riposo" e si segnala il **rilascio** (o la fine del transito). Si è di nuovo nella fase 1.
-
-  In ogni fase c'è un solo livello di cui il debouncer è sicuro, quello accettato, e un solo
-  cambiamento possibile, verso il livello opposto, che deve durare `T` per essere creduto. Pressione e
-  rilascio sono trattati **allo stesso modo**: nessun cambiamento viene creduto finché non è durato
-  `T`.
-
 - **Letture continue, livello stabile in una direzione** (polling con `millis()`, DiffTimer,
   bloccante 5): sono le **più usate**. Proteggono con certezza dalle situazioni 1, 2 e 3 e riconoscono
   la pressione **subito**, alla prima lettura; lasciano passare solo lo spike a riposo.
 
-  *Come fanno.* Il ciclo ha le stesse due fasi, ma solo la seconda usa la regola dei `T` ms.
-  Nella fase **a riposo** la pressione è creduta subito: alla prima lettura "premuto" il debouncer
-  segnala la pressione e passa alla fase "premuto", ignorando i rimbalzi che seguono. Nella fase
-  **premuto** il rilascio invece va confermato: il debouncer legge il pin di continuo, e ogni lettura "premuto"
-  (pulsante ancora tenuto, rimbalzo, fine di un buco) fa ripartire da zero la misura del tempo. Il
-  rilascio è creduto solo quando le letture sono state "rilasciato" **senza interruzioni** per più di
-  `T`. Una sola transizione è confermata; l'altra no.
+  *Come fanno.* Il debouncer ricorda un **livello accettato**, cioè lo stato in cui crede che sia il
+  pulsante, e legge il pin di continuo. Il livello accettato **non è fisso**: cambia a ogni evento, e
+  ogni volta il debouncer si mette a sorvegliare il cambiamento **opposto**. Il ciclo ha due fasi:
+
+  1. **A riposo: nessuna conferma.** Il livello accettato è "a riposo" (pulsante rilasciato, nessun
+     oggetto davanti al sensore). Alla **prima** lettura "premuto" il debouncer crede subito alla
+     pressione: il livello accettato diventa "premuto", si segnala la **pressione** (o l'inizio del
+     transito) e i rimbalzi che seguono vengono ignorati.
+  2. **Premuto: conferma di `T` ms.** Ora il debouncer sorveglia il cambiamento opposto. Quando arriva
+     una lettura "a riposo", comincia a misurare da quanto tempo dura; ogni lettura "premuto" (pulsante
+     ancora tenuto, rimbalzo del rilascio, fine di un buco) fa ripartire la misura da zero. Solo quando
+     le letture sono state "a riposo" **senza interruzioni** per più di `T`, il livello accettato torna
+     "a riposo" e si segnala il **rilascio** (o la fine del transito). Si è di nuovo nella fase 1.
+
+  La direzione **non confermata** (la pressione) è la più **veloce** da valutare: basta una sola
+  lettura, quindi la risposta è **immediata**. Il prezzo è l'**incertezza**: una sola lettura non
+  distingue l'inizio di una pressione vera da uno spike, e uno spike a riposo viene creduto. La
+  direzione **confermata** (il rilascio) è più lenta, perché deve aspettare `T`, ma è **certa**.
+
+- **Letture continue, livello stabile in due direzioni** (`changed()`, `Debouncer`, bloccante 6,
+  `waitUntilInputChange()`): sono le **sole** che proteggono con certezza da **tutte e quattro** le
+  situazioni, spike a riposo compreso.
+
+  *Come fanno.* Il ciclo ha le stesse due fasi, ma **anche la prima** è confermata, con la stessa
+  regola della seconda:
+
+  1. **A riposo: conferma di `T` ms.** Quando arriva una lettura "premuto", il debouncer comincia a
+     misurare; se torna una lettura "a riposo" (un rimbalzo o uno spike), la misura riparte da zero.
+     Solo quando le letture sono state "premuto" senza interruzioni per più di `T`, il livello
+     accettato diventa "premuto" e si segnala la **pressione** (o l'inizio del transito).
+  2. **Premuto: conferma di `T` ms.** Esattamente come nella famiglia precedente: il **rilascio** (o la
+     fine del transito) è creduto solo dopo più di `T` di letture "a riposo" senza interruzioni.
+
+  Pressione e rilascio sono trattati **allo stesso modo**: nessun cambiamento viene creduto finché non
+  è durato `T`. Non c'è più una direzione veloce: si guadagna la **certezza** anche sulla pressione, e
+  quindi la protezione dallo spike, al prezzo di una pressione riconosciuta `T` ms dopo e di eventi più
+  brevi di `T` scartati.
 
 - **Letture discontinue** (bloccanti 1, 2, 3 e schedulatore): proteggono solo con una certa
   **probabilità**, perché il risultato dipende da dove cadono le letture.
