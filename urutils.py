@@ -9,29 +9,6 @@ def waitUntil(cond, t):
         time.sleep_ms(t)
 
 
-def waitUntilInputLow(btn, t):
-    # attesa bloccante del rilascio (pull-down): ricontrolla ogni t ms
-    # finché il pin è alto, poi attende altri t ms e ricontrolla.
-    # Se il pin è tornato alto (rimbalzo o contatto che si è aperto
-    # per un attimo) ricomincia: esce solo con un rilascio confermato.
-    while True:
-        while btn.value():
-            time.sleep_ms(t)
-        time.sleep_ms(t)  # attesa fine rimbalzi del rilascio
-        if not btn.value():
-            return
-
-
-def waitUntilInputHigh(btn, t):
-    # come sopra, per il rilascio in pull-up (pin che torna alto)
-    while True:
-        while not btn.value():
-            time.sleep_ms(t)
-        time.sleep_ms(t)  # attesa fine rimbalzi del rilascio
-        if btn.value():
-            return
-
-
 def waitUntilNB(d, c, t):
     # attesa non bloccante: restituisce True una sola volta, quando la
     # condizione c è rimasta vera per più di t ms di fila.
@@ -54,16 +31,16 @@ class DiffTimer(object):
         self.timerState = False
         self.last = 0
 
-    def reset(self):  # azzera il conteggio; se armato continua a contare
+    def reset(self):  # azzera il conteggio; se attivo continua a contare
         self.elapsed = 0
         self.last = time.ticks_ms()
 
-    def stop(self):  # disarma e accumula il tempo trascorso
+    def stop(self):  # disattiva e accumula il tempo trascorso
         if self.timerState:
             self.timerState = False
             self.elapsed = self.elapsed + time.ticks_diff(time.ticks_ms(), self.last)
 
-    def start(self):  # arma; non fa nulla se è già armato
+    def start(self):  # attiva; non fa nulla se è già attivo
         if not self.timerState:
             self.timerState = True
             self.last = time.ticks_ms()
@@ -85,7 +62,7 @@ class DiffTimer(object):
 
 
 class DiffTimer2(object):
-    # contatore a passi fissi: ogni get() con timer armato aggiunge tbase
+    # contatore a passi fissi: ogni get() con timer attivo aggiunge tbase
     def __init__(self, elapsed=0):
         self.elapsed = elapsed
         self.timerState = False
@@ -122,3 +99,59 @@ class DiffTimer2(object):
 
     def setBase(self, e):
         self.tbase = e
+
+
+def waitUntilInputLowNB(d, btn, t):
+    # attesa NON bloccante del rilascio in pull-down: va chiamata a ogni
+    # giro del ciclo principale. Restituisce True una sola volta, quando il
+    # pin, dopo essere stato alto, è rimasto basso per più di t ms di fila.
+    # Ogni lettura alta (pulsante premuto, rimbalzo o disturbo) fa ripartire
+    # il conteggio. Il DiffTimer d (uno per pulsante) misura il tempo e
+    # ricorda che il pulsante era premuto: d.timerState è vero dalla
+    # pressione al rilascio.
+    if btn.value():
+        d.start()  # non fa nulla se già attivo
+        d.reset()  # il conteggio riparte
+    elif d.timerState and d.get() > t:
+        d.stop()   # rilascio confermato
+        d.reset()
+        return True
+    return False
+
+
+def waitUntilInputHighNB(d, btn, t):
+    # come sopra, per il rilascio in pull-up: t ms di livello alto continuo
+    if not btn.value():
+        d.start()
+        d.reset()
+    elif d.timerState and d.get() > t:
+        d.stop()
+        d.reset()
+        return True
+    return False
+
+
+
+class Debouncer(object):
+    # debounce a livello stabile (macchina a stati "prima gli ingressi", vedi debouncerFSM_py.md):
+    # accetta un nuovo livello, in TUTTE E DUE le direzioni, solo quando è rimasto fermo per
+    # più di t ms. Filtra rimbalzi, buchi a pulsante premuto e spike a pulsante rilasciato.
+    # Un oggetto per pulsante, creato con il livello di riposo (0 in pull-down, 1 in pull-up).
+    #   val0  = ultima lettura: ogni sua variazione fa ripartire il conteggio da last
+    #   val00 = livello accettato
+    # changed() va chiamata a ogni giro del ciclo e restituisce True una sola volta, nel giro
+    # in cui il nuovo livello viene accettato: guardando val00 si sa se è pressione o rilascio.
+    def __init__(self, riposo=0):
+        self.val0 = riposo
+        self.val00 = riposo
+        self.last = 0
+
+    def changed(self, btn, t):
+        val = btn.value()
+        if val != self.val0:          # variazione: il conteggio riparte
+            self.val0 = val
+            self.last = time.ticks_ms()
+        elif val != self.val00 and time.ticks_diff(time.ticks_ms(), self.last) > t:
+            self.val00 = val          # livello fermo da più di t ms: accettato
+            return True
+        return False
