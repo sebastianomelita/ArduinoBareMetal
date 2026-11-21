@@ -167,16 +167,43 @@ I due criteri si combinano:
 | **Letture discontinue** | bloccanti 1, 2, 3 | schedulatore con N letture uguali |
 | **Letture continue** | polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5, script e programma PolyScope sul rilascio | `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()`, programma PolyScope che conferma anche la pressione |
 
-Come leggere la tabella:
+Come leggere la tabella, con il **principio** di ciascuna famiglia descritto a parole, prima di
+qualsiasi codice:
 
-- le tecniche a **letture continue e livello stabile in due direzioni** (`changed()`, `Debouncer`,
-  bloccante 6, `waitUntilInputChange()`) sono le **sole** che proteggono con certezza da **tutte e
-  quattro** le situazioni, spike a riposo compreso;
-- le tecniche a **letture continue e livello stabile in una direzione** (polling con `millis()`,
-  DiffTimer, bloccante 5) sono le **più usate**: proteggono con certezza dalle situazioni 1, 2 e 3 e
-  riconoscono la pressione **subito**, alla prima lettura; lasciano passare solo lo spike a riposo;
-- le tecniche a **letture discontinue** (bloccanti 1, 2, 3 e schedulatore) proteggono solo con una
-  certa **probabilità**, perché il risultato dipende da dove cadono le letture.
+- **Letture continue, livello stabile in due direzioni** (`changed()`, `Debouncer`, bloccante 6,
+  `waitUntilInputChange()`): sono le **sole** che proteggono con certezza da **tutte e quattro** le
+  situazioni, spike a riposo compreso.
+
+  *Come fanno.* Il debouncer ricorda un **livello accettato** (all'inizio, quello di riposo) e legge il
+  pin di continuo. Finché la lettura coincide con il livello accettato non succede niente. Quando la
+  lettura è **diversa**, comincia a misurare da quanto tempo lo è; ogni volta che la lettura **cambia**,
+  la misura riparte da zero. Solo quando la lettura è rimasta diversa dal livello accettato, **senza
+  interruzioni**, per più di `T`, il nuovo livello diventa quello accettato e si segnala l'evento:
+  pressione se il nuovo livello è "premuto", rilascio se è "riposo". La regola è **la stessa** per le
+  due transizioni: nessun cambiamento viene creduto finché non è durato `T`.
+
+- **Letture continue, livello stabile in una direzione** (polling con `millis()`, DiffTimer,
+  bloccante 5): sono le **più usate**. Proteggono con certezza dalle situazioni 1, 2 e 3 e riconoscono
+  la pressione **subito**, alla prima lettura; lasciano passare solo lo spike a riposo.
+
+  *Come fanno.* La **pressione** è creduta subito: alla prima lettura "premuto" il debouncer segnala la
+  pressione e da quel momento considera il pulsante premuto, ignorando i rimbalzi che seguono. Il
+  **rilascio** invece va confermato: il debouncer legge il pin di continuo, e ogni lettura "premuto"
+  (pulsante ancora tenuto, rimbalzo, fine di un buco) fa ripartire da zero la misura del tempo. Il
+  rilascio è creduto solo quando le letture sono state "rilasciato" **senza interruzioni** per più di
+  `T`. Una sola transizione è confermata; l'altra no.
+
+- **Letture discontinue** (bloccanti 1, 2, 3 e schedulatore): proteggono solo con una certa
+  **probabilità**, perché il risultato dipende da dove cadono le letture.
+
+  *Come fanno.* Il debouncer guarda il pin solo **di tanto in tanto**: una lettura, poi una pausa lunga
+  (dell'ordine di `T`, o di un intervallo base ripetuto N volte), poi un'altra lettura. Fra una lettura
+  e l'altra non sa che cosa succede. Decide in base a **una** lettura (bloccante 1), a una lettura
+  seguita da un'attesa fissa (bloccante 2), a **due** letture a distanza `T` (bloccante 3) o a **N
+  letture uguali** di fila (schedulatore). Un disturbo che cade **fra** due letture non viene visto, e
+  questo aiuta; ma se le letture su cui si basa la decisione cadono **proprio su** un disturbo, il
+  disturbo viene scambiato per il livello vero. Usare più letture (due, o N) rende questo caso meno
+  probabile, ma non impossibile: per questo la protezione è una probabilità e non una certezza.
 
 | Tecnica | 1. Rimbalzi alla pressione | 2. Rimbalzi al rilascio | 3. Buco a pulsante premuto | 4. Spike a riposo |
 | --- | --- | --- | --- | --- |
