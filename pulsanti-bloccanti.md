@@ -23,7 +23,7 @@ tecnica 6. Se includete la libreria, togliete dallo sketch le definizioni con lo
 
 ## La struttura comune e il punto debole
 
-Il `loop()` è lo stesso nelle versioni da 1 a 5 (pull-down):
+Il `loop()` è lo stesso nelle versioni 1, 2, 3, 4 e 5 (pull-down):
 
 ```cpp
 void loop() {
@@ -451,6 +451,126 @@ di distanza. In simulazione: 0 errori sui rimbalzi e sui buchi singoli.
 **Limiti.** La protezione è **probabilistica**: due letture sfortunate (due buchi a 50 ms l'una
 dall'altra, oppure un buco seguito da una lettura dentro i rimbalzi del rilascio) producono ancora un
 errore, raro ma possibile. Il rilascio arriva in media 71 ms dopo la fine dei rimbalzi (massimo 99).
+
+## 3 bis. Due letture in entrambe le direzioni
+
+La versione 3 conferma con due letture solo il rilascio. Questa variante applica le due letture a
+**ogni** cambio di livello, pressione compresa: a ogni giro `loop()` legge il pin, aspetta 50 ms con
+`delay(50)`, lo rilegge, e accetta un nuovo livello solo se **le due letture sono uguali** e diverse dal
+livello accettato (`stabile`). È la soluzione "a doppia lettura con delay" proposta, ad esempio, dal
+[Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html) (con 40 ms).
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = LOW;  // livello accettato
+
+void doOnRise() {
+  // PRESSIONE CONFERMATA (fronte di salita):
+  // due letture HIGH a 50 ms di distanza.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO CONFERMATO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte v1 = digitalRead(P1);  // prima lettura
+  delay(50);
+  byte v2 = digitalRead(P1);  // seconda lettura
+  // nuovo livello: due letture uguali,
+  // diverse dal livello accettato
+  if (v1 == v2 && v1 != stabile) {
+    stabile = v1;
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = HIGH;  // livello accettato
+
+void doOnFall() {
+  // PRESSIONE CONFERMATA (fronte di discesa):
+  // due letture LOW a 50 ms di distanza.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO CONFERMATO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte v1 = digitalRead(P1);  // prima lettura
+  delay(50);
+  byte v2 = digitalRead(P1);  // seconda lettura
+  // nuovo livello: due letture uguali,
+  // diverse dal livello accettato
+  if (v1 == v2 && v1 != stabile) {
+    stabile = v1;
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+**Cosa migliora.** Anche la pressione deve essere confermata: uno spike isolato a riposo cade al
+massimo su una delle due letture, che non coincidono, e viene scartato. In simulazione, con disturbi
+isolati (un buco o uno spike per pressione): 0 errori su 5000 in tutti e tre i casi.
+
+**Limiti.** Le letture restano **discontinue**: la protezione è **probabilistica**. Se due disturbi
+cadono proprio sulle due letture, a 50 ms di distanza, vengono presi per un livello vero: in una prova
+con due buchi a 50 ms l'uno dall'altro, 44 errori su 1500. Il rilascio arriva in media 72 ms dopo la
+fine dei rimbalzi (massimo 100), la pressione con un ritardo simile, e una pressione più breve di
+circa 50 ms può non essere vista affatto. Come le altre, ferma il programma: `loop()` passa quasi tutto
+il tempo dentro l'attesa di 50 ms.
 
 ## 4. Letture continue con un contatore
 
@@ -912,6 +1032,7 @@ task.
 | 1. Una lettura ogni t ms | ✘ 171 / 5000 | ✘ 388 / 5000 | ✘ | medio 22 ms, max 49 ms |
 | 2. Una lettura + attesa dopo | ✔ 0 | ✘ 190 / 5000 | ✘ | medio 71 ms, max 99 ms |
 | 3. Due letture | ✔ 0 | ~ probabilistica (0 / 5000) | ✘ | medio 71 ms, max 99 ms |
+| 3 bis. Due letture in entrambe le direzioni | ✔ 0 | ~ probabilistica (0 / 5000) | ~ probabilistica (0 / 5000) | medio 72 ms, max 100 ms (anche la pressione è ritardata) |
 | 4. Letture continue, contatore | ✔ 0 | ✔ 0 | ✘ | 49–50 ms |
 | 5. Letture continue, millis() | ✔ 0 | ✔ 0 | ✘ | 49–50 ms |
 | 6. Letture continue anche alla pressione | ✔ 0 | ✔ 0 | ✔ 0 | 49–50 ms (pressione ritardata di 50 ms) |
@@ -928,6 +1049,7 @@ diverso a seconda della piattaforma, e questo cambia quale versione conviene.
 | 1. Una lettura ogni t ms | ✘ non sicura | ✘ non sicura | ✘ non sicura: è il comando **Wait** su un ingresso digitale, con una lettura per ciclo di controllo |
 | 2. Una lettura + attesa dopo | ✘ non sicura (buchi) | ✘ non sicura (buchi) | ✘ non sicura: è una Wait seguita da un movimento o da una Wait a tempo |
 | 3. Due letture | ~ quasi sempre | ~ quasi sempre | ~ quasi sempre |
+| 3 bis. Due letture in entrambe le direzioni | ~ quasi sempre | ~ quasi sempre | ~ quasi sempre |
 | 4. Letture continue, contatore | ✔ sicura | ✔ sicura, tempo di conferma approssimato | ✔ **sicura e consigliata**: si contano i cicli di controllo con `sync()` |
 | 5. Letture continue, millis() | ✔ **sicura e consigliata** | ✔ **sicura e consigliata** | non serve: sul robot il ciclo di controllo fa già da orologio |
 | 6. Letture continue anche alla pressione | ✔ sicura, anche contro gli spike | ✔ sicura, anche contro gli spike | ✔ programma PolyScope che conferma anche la pressione |
@@ -1082,7 +1204,7 @@ più lungo non si distingue da un rilascio breve. Si supera scegliendo un tempo 
 del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non
 perdere le pressioni rapide.
 
-**Lo spike alto a pulsante rilasciato è filtrato solo dalla versione 6.** Le versioni da 1 a 5
+**Lo spike alto a pulsante rilasciato è filtrato con certezza solo dalla versione 6** (la 3 bis lo filtra quasi sempre). Le versioni 1, 2, 3, 4 e 5
 accettano la pressione alla **prima** lettura "premuto": un disturbo che porta il pin alto per un
 attimo a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto
 basso solo dalla resistenza) diventa una pressione, e dopo 50 ms un rilascio: il toggle scatta (5000

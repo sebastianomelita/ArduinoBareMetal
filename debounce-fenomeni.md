@@ -129,6 +129,10 @@ in queste dispense, **50 ms**, sta nel mezzo: copre disturbi quattro volte più 
 (un pulsante scadente o consumato) e resta a metà della pressione più rapida. Per questo `T` non si
 abbassa sotto i 50 ms: si perde un po' di prontezza, che a mano non si nota, e si guadagna margine.
 
+C'è anche un dato percettivo: nelle prove di Jack Ganssle un ritardo di 50 ms sembrava **istantaneo**,
+mentre uno di 100 ms **si notava**. Con `T` = 50 ms, quindi, anche le tecniche che confermano la
+pressione rispondono senza che l'utente percepisca il ritardo.
+
 Per i **sensori** la finestra va ricalcolata: l'evento vero più breve può essere il passaggio di un
 pezzo veloce davanti a una fotocellula, e allora `T` deve essere più corto di quel passaggio.
 
@@ -164,7 +168,7 @@ I due criteri si combinano:
 
 | | Livello stabile in **una** direzione (solo rilascio) | Livello stabile in **due** direzioni |
 | --- | --- | --- |
-| **Letture discontinue** | bloccanti 1, 2, 3 | schedulatore con N letture uguali |
+| **Letture discontinue** | bloccanti 1, 2, 3 | bloccante 3 bis (due letture in entrambe le direzioni), schedulatore con N letture uguali |
 | **Letture continue** | polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5, script e programma PolyScope sul rilascio | `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()`, programma PolyScope che conferma anche la pressione |
 
 **Livelli ed eventi.** Conviene distinguere due cose che spesso si confondono:
@@ -187,6 +191,20 @@ stesso modo, con un sensore, "oggetto presente" è lo stato e l'inizio del trans
 
 Come leggere la tabella, con il **principio** di ciascuna famiglia descritto a parole, prima di
 qualsiasi codice:
+
+- **Nessuna direzione confermata** (ad esempio la soluzione "trust the first change" del
+  [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html)): sono le più
+  **pronte** in assoluto. Filtrano i rimbalzi (situazioni 1 e 2), ma non il buco né lo spike.
+
+  *Come fanno.* Ogni cambio di livello è creduto **alla prima lettura**, sia la pressione sia il
+  rilascio, e l'evento parte subito. Subito dopo, per un tempo `T`, l'ingresso viene **ignorato**: i
+  rimbalzi che seguono cadono in questa finestra e non vengono visti. Finita la finestra, il primo
+  cambio successivo è di nuovo creduto subito. Non c'è nessuna conferma: un buco a pulsante premuto
+  sembra un rilascio, uno spike a riposo sembra una pressione.
+
+  *Dove vanno bene.* Dove conta soprattutto la **prontezza**, in entrambe le direzioni, e un errore raro
+  è accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del
+  giocatore e la risposta.
 
 - **Letture continue, livello stabile in una direzione** (polling con `millis()`, DiffTimer,
   bloccante 5): sono le **più usate**. Proteggono con certezza dalle situazioni 1, 2 e 3 e riconoscono
@@ -242,11 +260,18 @@ qualsiasi codice:
   disturbo viene scambiato per il livello vero. Usare più letture (due, o N) rende questo caso meno
   probabile, ma non impossibile: per questo la protezione è una probabilità e non una certezza.
 
+  *Dove vanno bene.* Dove un errore raro non costa quasi niente e contano la semplicità del codice o la
+  prontezza: nei **videogiochi** e in genere nei comandi dati da una persona, che se un tasto "non
+  prende" o scatta due volte se ne accorge e ripete il gesto. Non vanno bene dove ogni evento deve
+  essere contato o eseguito una volta sola: conteggio di pezzi, comandi di macchine, sicurezza.
+
 | Tecnica | 1. Rimbalzi alla pressione | 2. Rimbalzi al rilascio | 3. Buco a pulsante premuto | 4. Spike a riposo |
 | --- | --- | --- | --- | --- |
+| Nessuna conferma: il primo cambio è creduto, poi l'ingresso è ignorato per `T` | ✔ | ✔ | ✘ | ✘ |
 | Bloccante 1: una lettura ogni `T` | ✔ | ~ | ~ | ✘ |
 | Bloccante 2: una lettura e un'attesa fissa dopo | ✔ | ✔ | ~ | ✘ |
 | Bloccante 3: due letture | ✔ | ✔ | ~ | ✘ |
+| Bloccante 3 bis: due letture in entrambe le direzioni | ✔ | ✔ | ~ | ~ |
 | Letture continue, solo sul rilascio: polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5 | ✔ | ✔ | ✔ | ✘ |
 | Schedulatore con N letture uguali | ✔ | ✔ | ~ | ~ |
 | Livello stabile in tutte e due le direzioni: `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()` | ✔ | ✔ | ✔ | ✔ |
