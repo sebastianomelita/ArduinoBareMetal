@@ -167,9 +167,16 @@ I due criteri si combinano:
 | **Letture discontinue** | bloccanti 1, 2, 3 | schedulatore con N letture uguali |
 | **Letture continue** | polling con `millis()`, DiffTimer, `waitUntilInputLowNB()`, bloccante 5, script e programma PolyScope sul rilascio | `changed()`, `Debouncer`, bloccante 6, `waitUntilInputChange()`, programma PolyScope che conferma anche la pressione |
 
-La casella in basso a destra è l'unica che dà una protezione **certa** contro **tutte** le quattro
-situazioni; quella in basso a sinistra è la più usata, perché è certa contro le prime tre e risponde
-subito alla pressione.
+Come leggere la tabella:
+
+- le tecniche a **letture continue e livello stabile in due direzioni** (`changed()`, `Debouncer`,
+  bloccante 6, `waitUntilInputChange()`) sono le **sole** che proteggono con certezza da **tutte e
+  quattro** le situazioni, spike a riposo compreso;
+- le tecniche a **letture continue e livello stabile in una direzione** (polling con `millis()`,
+  DiffTimer, bloccante 5) sono le **più usate**: proteggono con certezza dalle situazioni 1, 2 e 3 e
+  riconoscono la pressione **subito**, alla prima lettura; lasciano passare solo lo spike a riposo;
+- le tecniche a **letture discontinue** (bloccanti 1, 2, 3 e schedulatore) proteggono solo con una
+  certa **probabilità**, perché il risultato dipende da dove cadono le letture.
 
 | Tecnica | 1. Rimbalzi alla pressione | 2. Rimbalzi al rilascio | 3. Buco a pulsante premuto | 4. Spike a riposo |
 | --- | --- | --- | --- | --- |
