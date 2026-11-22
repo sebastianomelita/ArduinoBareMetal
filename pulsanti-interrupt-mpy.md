@@ -881,6 +881,149 @@ while True:
 </tr>
 </table>
 
+### Variante: il gestore decide, il ciclo agisce
+
+Nella tecnica 6 le callback girano nel gestore: la risposta è immediata, ma possono fare solo
+operazioni minime (accendere un LED, alzare un flag). In un gioco vero le azioni sono più lunghe:
+conviene allora **separare la decisione dall'azione**. Il gestore decide subito, con il lockout, e
+segna soltanto l'evento in `evPress` o `evRel`; il ciclo principale copia e azzera gli eventi a
+interrupt disabilitati, poi chiama le callback, che possono contenere qualunque codice (qui `print()`,
+da evitare nel gestore).
+
+- La **decisione** resta pronta: i rimbalzi sono scartati al momento giusto anche se il ciclo
+  è occupato.
+- L'**azione** parte al giro successivo del ciclo: nei giochi il ciclo principale è il ciclo dei
+  fotogrammi, che gira ogni 10-20 ms, e il ritardo non si nota.
+- Se in un solo giro arrivano sia una pressione sia un rilascio (ciclo molto lento), il codice
+  li esegue in quest'ordine, che è quello giusto nei casi normali.
+
+<table>
+<tr>
+<th>Pull-down</th>
+<th>Pull-up</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import machine, time
+
+P1 = Pin(12, Pin.IN)  # pull-down
+stabile = 0  # livello creduto
+t0 = time.ticks_ms()  # ultimo evento
+evPress = False  # eventi per
+evRel = False    # il ciclo
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # eseguita nel ciclo principale:
+    # può contenere qualunque codice.
+    print("salto")
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # eseguita nel ciclo principale.
+    print("fine salto")
+
+def prova():
+    # decide subito, ma non agisce:
+    # segna solo l'evento
+    global stabile, t0, evPress, evRel
+    val = P1.value()
+    if val != stabile and \
+       time.ticks_diff(time.ticks_ms(),
+                       t0) > 50:
+        stabile = val
+        t0 = time.ticks_ms()
+        if stabile == 1:
+            evPress = True
+        else:
+            evRel = True
+
+def isrChange(pin):
+    prova()  # decisione al fronte
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    irq = machine.disable_irq()
+    prova()          # ricontrollo
+    p, r = evPress, evRel  # copia e
+    evPress = evRel = False  # azzera
+    machine.enable_irq(irq)
+    if p:
+        doOnRise()  # azioni, anche lunghe
+    if r:
+        doOnFall()
+    # qui altri compiti
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import machine, time
+
+P1 = Pin(12, Pin.IN, Pin.PULL_UP)
+stabile = 1  # livello creduto
+t0 = time.ticks_ms()  # ultimo evento
+evPress = False  # eventi per
+evRel = False    # il ciclo
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # eseguita nel ciclo principale:
+    # può contenere qualunque codice.
+    print("salto")
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # eseguita nel ciclo principale.
+    print("fine salto")
+
+def prova():
+    # decide subito, ma non agisce:
+    # segna solo l'evento
+    global stabile, t0, evPress, evRel
+    val = P1.value()
+    if val != stabile and \
+       time.ticks_diff(time.ticks_ms(),
+                       t0) > 50:
+        stabile = val
+        t0 = time.ticks_ms()
+        if stabile == 0:
+            evPress = True
+        else:
+            evRel = True
+
+def isrChange(pin):
+    prova()  # decisione al fronte
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    irq = machine.disable_irq()
+    prova()          # ricontrollo
+    p, r = evPress, evRel  # copia e
+    evPress = evRel = False  # azzera
+    machine.enable_irq(irq)
+    if p:
+        doOnFall()  # azioni, anche lunghe
+    if r:
+        doOnRise()
+    # qui altri compiti
+```
+
+</td>
+</tr>
+</table>
+
 **Differenza con la tecnica 1.** Anche la 1 è un lockout, ma attiva un fronte alla volta e non
 ricontrolla il livello: dopo un buco o uno spike produce eventi in più. La 6 reagisce a tutti e
 due i fronti e, grazie al ricontrollo, il livello creduto torna sempre giusto entro 50 ms.

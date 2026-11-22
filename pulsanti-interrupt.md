@@ -1044,6 +1044,171 @@ void loop() {
 Le callback vengono eseguite nella ISR o nel `loop()` a interrupt disabilitati: in entrambi i
 casi devono essere brevi. Su ESP32 vanno dichiarate `IRAM_ATTR` sia `isrChange()` sia `prova()`.
 
+### Variante: la ISR decide, il loop() agisce
+
+Nella tecnica 6 le callback girano nella ISR: la risposta è immediata, ma possono fare solo
+operazioni minime (accendere un LED, alzare un flag). In un gioco vero le azioni sono più lunghe:
+conviene allora **separare la decisione dall'azione**. La ISR decide subito, con il lockout, e
+segna soltanto l'evento in `evPress` o `evRel`; il `loop()` copia e azzera gli eventi a
+interrupt disabilitati, poi chiama le callback, che possono contenere qualunque codice (qui
+`Serial.println()`, vietato nella ISR).
+
+- La **decisione** resta pronta: i rimbalzi sono scartati al momento giusto anche se il `loop()`
+  è occupato.
+- L'**azione** parte al giro successivo del `loop()`: nei giochi il `loop()` è il ciclo dei
+  fotogrammi, che gira ogni 10-20 ms, e il ritardo non si nota.
+- Se in un solo giro arrivano sia una pressione sia un rilascio (`loop()` molto lento), il codice
+  li esegue in quest'ordine, che è quello giusto nei casi normali.
+
+<table>
+<tr>
+<th>Pull-down</th>
+<th>Pull-up</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+volatile byte stabile = LOW; // creduto
+volatile unsigned long t0 = 0;
+volatile bool evPress = false; // eventi
+volatile bool evRel = false;   // per loop()
+
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // eseguita nel loop(): può
+  // contenere qualunque codice.
+  Serial.println("salto");
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // eseguita nel loop().
+  Serial.println("fine salto");
+}
+
+void prova() {
+  // decide subito, ma non agisce:
+  // segna solo l'evento
+  byte val = digitalRead(P1);
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();
+    if (stabile == HIGH) {
+      evPress = true;
+    } else {
+      evRel = true;
+    }
+  }
+}
+
+void isrChange() {
+  prova();   // decisione al fronte
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(P1, INPUT);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  noInterrupts();
+  prova();          // ricontrollo
+  bool p = evPress; // copia e
+  bool r = evRel;   // azzera gli
+  evPress = false;  // eventi
+  evRel = false;
+  interrupts();
+  if (p) {
+    doOnRise();     // azioni, anche
+  }
+  if (r) {
+    doOnFall();     // lunghe
+  }
+  // qui altri compiti
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+volatile byte stabile = HIGH; // creduto
+volatile unsigned long t0 = 0;
+volatile bool evPress = false; // eventi
+volatile bool evRel = false;   // per loop()
+
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // eseguita nel loop(): può
+  // contenere qualunque codice.
+  Serial.println("salto");
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // eseguita nel loop().
+  Serial.println("fine salto");
+}
+
+void prova() {
+  // decide subito, ma non agisce:
+  // segna solo l'evento
+  byte val = digitalRead(P1);
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();
+    if (stabile == LOW) {
+      evPress = true;
+    } else {
+      evRel = true;
+    }
+  }
+}
+
+void isrChange() {
+  prova();   // decisione al fronte
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(P1, INPUT_PULLUP);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  noInterrupts();
+  prova();          // ricontrollo
+  bool p = evPress; // copia e
+  bool r = evRel;   // azzera gli
+  evPress = false;  // eventi
+  evRel = false;
+  interrupts();
+  if (p) {
+    doOnFall();     // azioni, anche
+  }
+  if (r) {
+    doOnRise();     // lunghe
+  }
+  // qui altri compiti
+}
+```
+
+</td>
+</tr>
+</table>
+
 **Differenza con la tecnica 1.** Anche la 1 è un lockout, ma arma un fronte alla volta e non
 ricontrolla il livello: dopo un buco o uno spike produce eventi in più. La 6 reagisce a tutti e
 due i fronti e, grazie al ricontrollo, il livello creduto torna sempre giusto entro 50 ms.
