@@ -87,6 +87,11 @@ ma ogni volta esso esegue solo poche istruzioni.
 ## 1. Debounce nel gestore con fronti alternati
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: il gestore li crede al primo fronte, senza ritardo e senza aspettare il ciclo principale. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro il gestore; per un uso reale è meglio la tecnica 6.
+
 
 L'interrupt è attivo su un solo fronte alla volta: prima quello di pressione, poi, appena la
 pressione è accettata, quello di rilascio. Ogni fronte viene accettato solo se dall'ultimo
@@ -226,6 +231,11 @@ while True:
 ## 2. Gestore su entrambi i fronti, rilascio controllato nel ciclo
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: il gestore la riconosce al primo fronte, anche se il ciclo principale è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il ciclo principale lento o con compiti pesanti, quando basta filtrare il rilascio.
+
 
 Il gestore è attivo su entrambi i fronti. A ogni fronte, rimbalzi compresi, salva l'istante in
 `tFronte`; se il pulsante risulta premuto e la pressione non è ancora stata segnalata, chiama la
@@ -347,6 +357,11 @@ while True:
 ## 3. Gestore con flag, attesa bloccante nel ciclo
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: il gestore la riconosce al primo fronte. **Sicurezza** sul rilascio, confermato da 50 ms continui di livello basso, con il programma fermo nell'attesa.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante che devono reagire subito alla pressione.
+
 
 Il gestore riconosce la pressione, chiama la callback e alza il flag `premuto`, che fa scartare
 i rimbalzi successivi. Il ciclo principale aspetta il rilascio con `waitUntilInputLow()`
@@ -485,6 +500,11 @@ while True:
 ## 4. Gestore su entrambi i fronti e machine.Timer
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: il gestore la riconosce al primo fronte, anche se il ciclo principale è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** ESP32 con il ciclo principale occupato: tutto il debounce è fuori dal ciclo principale.
+
 
 Come la tecnica 2, ma il rilascio lo controlla un `machine.Timer` in modalità `ONE_SHOT`, che
 si riprogramma ogni 50 ms finché il pin non è rilasciato e senza fronti da almeno 50 ms. Il
@@ -623,6 +643,11 @@ while True:
 ## 5. Gestore su entrambi i fronti, livello stabile nel ciclo (conferma in due direzioni)
 
 > **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms senza fronti, anche se il ciclo principale è lento. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** il ciclo principale lento con ingressi disturbati; toggle e contatori.
+
 
 È la tecnica `changed()` di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 5),
 con l'interrupt al posto delle letture continue. Il gestore fa **una cosa sola**: salva in
@@ -763,6 +788,11 @@ while True:
 ## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** su pressione e rilascio: il gestore li crede al primo fronte, senza ritardo e senza aspettare il ciclo principale. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza, anche con il ciclo principale lento.
+
 
 È il lockout di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 6) con
 l'interrupt: il primo cambio di livello è creduto **subito**, nel gestore, e per i 50 ms

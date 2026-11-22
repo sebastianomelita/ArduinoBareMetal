@@ -29,6 +29,12 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 
 ## 1. Versione non bloccante con ticks_ms()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
 Qui la variabile `attivo` serve: senza, a pulsante rilasciato la differenza di tempo
 resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
@@ -114,6 +120,12 @@ while True:
 </table>
 
 ## 2. Versione non bloccante con DiffTimer
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
 `start()` non fa nulla se il timer è già attivo, quindi si può chiamare a ogni giro. A timer
 fermo e azzerato `get()` restituisce 0: non serve controllare `timerState`.
@@ -202,6 +214,12 @@ while True:
 </table>
 
 ## 3. Versione non bloccante a livello stabile con changed()
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms di livello fermo. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** toggle e contatori, start di una macchina, pulsanti su cavi lunghi o vicino a motori, sensori a 24 V che contano pezzi (nei PLC il doppio conteggio si evita con due timer, uno all'attivazione e uno alla disattivazione: è lo stesso principio). Funzionano così anche il filtro dei moduli di ingresso dei PLC e del debounce predefinito (*defer*) delle tastiere con firmware QMK.
 
 Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
 **rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
@@ -333,6 +351,12 @@ while True:
 
 ## 4. Versione con schedulatore non bloccante
 
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Solo in parte:** buco e spike, filtrati solo se nessuna lettura ci cade dentro.
+>
+> Né prontezza né conferma: pressione e rilascio arrivano alla prima lettura che li vede, in media 25 ms dopo. **Sicurezza** statistica, che migliora chiedendo N letture uguali.
+>
+> **Applicazioni tipiche:** molti pulsanti o ingressi letti insieme a intervalli fissi, programmi già organizzati a tempo base; i videogiochi su PC e console leggono i tasti allo stesso modo, una volta per fotogramma, ma su segnali già filtrati dal firmware del controller: il confronto con il fotogramma precedente serve solo a trovare i fronti.
+
 Il rilascio viene riconosciuto con un ritardo fino a `TBASE` ms.
 
 <p align="center">
@@ -419,6 +443,12 @@ while True:
 </table>
 
 ## 5. Senza conferma: il primo cambio è creduto subito
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** su pressione e rilascio, tutti e due creduti al primo cambio, senza ritardo. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza e un errore raro è tollerato. Nelle tastiere con firmware QMK è la modalità *eager*: bassa latenza, ma nessuna resistenza ai disturbi.
 
 Tutte le versioni precedenti confermano il rilascio. Questa non conferma **nulla**: è la tecnica
 *lockout*. Il pin è letto a ogni giro di il ciclo principale; un cambio rispetto a `stabile`, il livello accettato,
@@ -524,8 +554,19 @@ while True:
 pronta possibile: il rilascio è riconosciuto al primo fronte, senza ritardo.
 
 **Cosa non garantisce.** Un **buco** a pulsante premuto è creduto come un rilascio, e uno **spike** a
-riposo, seguito 50 ms dopo dal ritorno a riposo, produce un rilascio falso: in simulazione circa 8 e
-7 errori su 10.
+riposo, seguito 50 ms dopo dal ritorno a riposo, produce un rilascio falso: in simulazione circa 8 errori
+su 10 per il buco, e sempre (5000 su 5000) per lo spike.
+
+**La stessa logica è nella libreria.** In `urutils.py` c'è la classe `Lockout`:
+
+```python
+from urutils import Lockout
+lk = Lockout(0)                  # pull-down: riposo 0 (con il pull-up: Lockout(1))
+
+while True:
+    if lk.changed(P1, 50) and lk.stato == 0:
+        doOnFall()               # rilascio
+```
 
 **Dove va bene.** Dove conta la prontezza e un errore raro è accettabile, come nei **videogiochi**. La
 spiegazione completa, con il confronto con lo schedulatore e con `changed()`, è nella sezione 6 di

@@ -263,7 +263,7 @@ qualsiasi codice:
   probabile, ma non impossibile: per questo la protezione è una probabilità e non una certezza.
 
   *Dove vanno bene.* Dove un errore raro non costa quasi niente e contano la semplicità del codice o la
-  prontezza: nei **videogiochi** e in genere nei comandi dati da una persona, che se un tasto "non
+  prontezza: nei **videogiochi** su microcontrollore e in genere nei comandi dati da una persona, che se un tasto "non
   prende" o scatta due volte se ne accorge e ripete il gesto. Non vanno bene dove ogni evento deve
   essere contato o eseguito una volta sola: conteggio di pezzi, comandi di macchine, sicurezza.
 
@@ -402,11 +402,11 @@ riassume per i casi più comuni; le tecniche sono quelle delle dispense.
 | Toggle di una luce o di un modo, contatore di pressioni | rilascio | due direzioni (`changed()` / `Debouncer`, schedulatore) | un errore è **permanente**: lo stato resta invertito o il conteggio sbagliato |
 | Pulsante con click, doppio click e pressione lunga | rilascio (o timeout) | due direzioni + timer di durata | il gesto si conosce solo alla fine |
 | Pulsante su cavo lungo, ingresso a 3,3 V/5 V vicino a motori o relè | rilascio | due direzioni; meglio ancora interfaccia a 24 V con optoisolatore | gli spike sono probabili: la tecnica a una direzione li scambia per pressioni |
-| Videogioco, strumento musicale, tastierino | pressione | lockout (cambio creduto subito, poi 50 ms di silenzio) | conta la prontezza; un errore raro è tollerato |
+| Gioco su microcontrollore | pressione | lockout (cambio creduto subito, poi 50 ms di silenzio) | conta la prontezza; un errore raro è tollerato. I giochi su PC e console leggono invece i tasti una volta per fotogramma, su segnali già filtrati dal firmware del controller: il confronto con il fotogramma precedente serve solo a trovare i fronti |
 | Marcia a impulsi, *jog*, comando ad azione mantenuta (*hold-to-run*) | a livello (finché premuto) | marcia confermata (livello stabile), arresto **immediato** al primo LOW, senza conferma | rilasciando il pulsante il movimento si deve fermare subito; ritardare l'arresto è peggio che fermarsi per un buco |
 | Start ciclo di una macchina | pressione confermata o rilascio | due direzioni (livello stabile) | la macchina non deve partire in modo inatteso, quindi uno spike non deve avviarla; la norma chiede un comando di avvio separato, ma non stabilisce su quale fronte |
 | Reset dopo un arresto (riarmo) | **rilascio** | due direzioni | EN ISO 13849-1, 5.2.2: il reset va accettato solo quando l'attuatore lascia la posizione di attivazione, così un pulsante bloccato o tenuto premuto non riarma la macchina |
-| Sensore a 24 V (induttivo, fotocellula PNP) che conta pezzi | fronte confermato | due direzioni; sul robot UR, programma PolyScope o script con conferma | niente rimbalzi, ma lo sfarfallio sul bordo del pezzo produce conteggi doppi |
+| Sensore a 24 V (induttivo, fotocellula PNP) che conta pezzi | fronte confermato | due direzioni; sul robot UR, programma PolyScope o script con conferma | niente rimbalzi, ma lo sfarfallio sul bordo del pezzo produce conteggi doppi; nei PLC la soluzione standard usa due timer, all'attivazione e alla disattivazione, cioè la conferma in due direzioni |
 | Finecorsa meccanico | fronte confermato | due direzioni | ha rimbalzi come un pulsante, e un falso finecorsa ferma o confonde la macchina |
 | Ingresso letto da un programma con altri compiti | — | **non bloccante** (`millis()`, schedulatore, `changed()`) | una tecnica bloccante ferma tutto il resto finché il pulsante non viene rilasciato |
 | Programma dedicato al solo pulsante, didattica, robot UR | — | bloccante a letture continue (tecnica 5 o 6) | semplice da leggere; la 6 conferma anche la pressione |
@@ -438,6 +438,20 @@ Tre regole riassumono la tabella:
 > aspetta la conferma; dove è pericoloso aspettare (non fermarsi) si agisce subito.
 
 ## Riferimenti
+
+Fonti sulle applicazioni tipiche (sezione 6 e riassunti in testa alle tecniche):
+
+- [QMK, Debounce algorithm](https://docs.qmk.fm/feature_debounce_type): tastiere, modalità *eager* (lockout), *defer* (livello stabile, predefinita) e asimmetrica (pressione subito, rilascio confermato)
+- [Microsoft, GameInput readings](https://learn.microsoft.com/en-gb/gaming/gdk/_content/gc/input/overviews/input-readings) e [DirectXTK, GamePad](https://github.com/Microsoft/DirectXTK/wiki/GamePad): i giochi leggono i controller una volta per fotogramma
+- [Arduboy, gestione dell'input](https://moduscreate.com/?p=11173): ritardo di debounce in un gioco su microcontrollore
+- [Rockwell, Configure Input Filter time](https://rockwellautomation.com/en-nz/docs/add-on-profiles/ra-1756-discrete/40/pv1756discrete-ditamap/1756-digital-input-device-with-filters/configure-input-filter-time.html): filtri Off→On e On→Off dei moduli di ingresso dei PLC
+- [S7-1200, tempi del filtro di ingresso](https://industrialmonitordirect.com/blogs/knowledgebase/s7-1200-digital-input-filter-time-selection-guide): valore predefinito 6,4 ms
+- [Omron CJ1M, doppio conteggio di una fotocellula](https://industrialmonitordirect.com/blogs/knowledgebase/omron-cj1m-photoelectric-sensor-double-counting-fix) e [Photoeye double count fix](https://industrialmonitordirect.com/blogs/knowledgebase/photoeye-double-count-fix-plc-debounce-timer-solution): due timer contro i conteggi doppi
+- [Fanuc, conteggio pezzi su nastro](https://industrialmonitordirect.com/blogs/knowledgebase/fanuc-debounce-timer-for-conveyor-part-counting): lo stesso problema su un robot
+- [Forum Universal Robots, Debounce digital inputs](https://forum.universal-robots.com/t/debounce-digital-inputs/18232): attesa con timer azzerato a ogni lettura contraria e `sync()`
+- [Applied EE, Menus & Navigation](https://applied-ee.github.io/embedded/docs/screens-displays/ui-layout-patterns/menus-and-navigation/): requisiti del debounce per i menu
+
+Altre fonti:
 
 - [Jack Ganssle, A Guide to Debouncing](https://www.ganssle.com/debouncing.htm): misure dei rimbalzi su interruttori reali
 - [Makeability Lab, Debouncing](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html): sintesi delle misure e soluzioni per Arduino

@@ -91,6 +91,11 @@ a chiamata: anche un centinaio di fronti per clic occupano meno di un millisecon
 ## 1. Debounce nella ISR con fronti alternati
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: la ISR li crede al primo fronte, senza ritardo e senza aspettare il `loop()`. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro la ISR; per un uso reale è meglio la tecnica 6.
+
 
 L'interrupt è armato su un solo fronte alla volta: prima quello di pressione, poi, appena la
 pressione è accettata, quello di rilascio, e così via. Ogni fronte viene accettato solo se
@@ -271,6 +276,11 @@ void loop() {
 ## 2. ISR su CHANGE, rilascio controllato nel loop()
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: la ISR la riconosce al primo fronte, anche se il `loop()` è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il `loop()` lento o con compiti pesanti, quando basta filtrare il rilascio.
+
 
 La ISR è armata su entrambi i fronti e non viene mai disarmata. A ogni fronte, rimbalzi
 compresi, salva l'istante in `tFronte`; se il pulsante risulta premuto e la pressione non è
@@ -422,6 +432,11 @@ void loop() {
 ## 3. ISR che si disarma, attesa bloccante nel loop()
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: la ISR la riconosce al primo fronte. **Sicurezza** sul rilascio, confermato da 50 ms continui di livello basso, con il programma fermo nell'attesa.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante che devono reagire subito alla pressione.
+
 
 La ISR riconosce la pressione, chiama la callback e si disarma. Il `loop()` aspetta il rilascio
 con `waitUntilInputLow()` (pull-down) o `waitUntilInputHigh()` (pull-up), che lo bloccano
@@ -590,6 +605,11 @@ void loop() {
 ## 4. ISR su CHANGE e Ticker (solo ESP32)
 
 > **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: la ISR la riconosce al primo fronte, anche se il `loop()` è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** ESP32 con il `loop()` occupato: tutto il debounce è fuori dal ciclo principale.
+
 
 Come la tecnica 2, ma il controllo del rilascio non lo fa il `loop()`: lo fa un timer
 hardware, il `Ticker` di ESP32, ogni 50 ms. Quando trova il pin rilasciato e nessun fronte
@@ -742,6 +762,11 @@ void loop() {
 ## 5. ISR su CHANGE, livello stabile nel loop() (conferma in due direzioni)
 
 > **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms senza fronti, anche se il `loop()` è lento. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** il `loop()` lento con ingressi disturbati; toggle e contatori.
+
 
 È la tecnica `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 5), con
 l'interrupt al posto delle letture continue. La ISR fa **una cosa sola**: salva in `tFronte`
@@ -903,6 +928,11 @@ Su ESP32 la ISR va dichiarata `void IRAM_ATTR isrChange()`.
 ## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** su pressione e rilascio: la ISR li crede al primo fronte, senza ritardo e senza aspettare il `loop()`. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza, anche con il `loop()` lento.
+
 
 È il lockout di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 6) con l'interrupt: il
 primo cambio di livello è creduto **subito**, nella ISR, e per i 50 ms successivi ogni altro

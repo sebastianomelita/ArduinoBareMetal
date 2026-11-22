@@ -77,6 +77,12 @@ I numeri riportati sotto vengono da una simulazione di 5000 pressioni per caso, 
 
 ## 0. Senza conferma: il primo cambio è creduto subito
 
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** su pressione e rilascio, tutti e due creduti al primo cambio, senza ritardo. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** giochi semplici su microcontrollore, in un programma dedicato al pulsante.
+
 È la tecnica più semplice e più pronta, ma anche la meno robusta (*lockout*, o "trust the first
 change" del [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html)). Ha
 un `loop()` diverso da quello delle altre versioni: legge il pin a ogni giro e reagisce a **qualsiasi**
@@ -196,6 +202,12 @@ risposta, e se un tasto scatta due volte il giocatore ripete il gesto. La versio
 la finestra misurata da `t0` invece che da `delay(50)`, è nella sezione 6 di [pulsanti-rilascio.md](pulsanti-rilascio.md).
 
 ## 1. Una lettura ogni t ms
+
+> **Rileva:** rimbalzi alla pressione. **Non rileva:** rimbalzi al rilascio (pressione fantasma, 171 su 5000), buco a pulsante premuto, spike a riposo.
+>
+> **Prontezza** sul rilascio, in media 22 ms dopo i rimbalzi. Nessuna sicurezza.
+>
+> **Applicazioni tipiche:** nessuna: serve a mostrare il problema della pressione fantasma.
 
 La versione più semplice: aspetta `t` ms, legge il pin una volta e, se è ancora premuto, aspetta di
 nuovo. Esce alla **prima lettura** che trova il pulsante rilasciato.
@@ -320,6 +332,12 @@ ingresso digitale di un robot UR si comporta come questa versione, ma con una le
 controllo (2 ms) invece che ogni 50 ms: per questo vede i rimbalzi quasi sempre.
 
 ## 2. Una lettura e un'attesa fissa dopo
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (190 su 5000), spike a riposo.
+>
+> **Prontezza** sulla pressione. **Sicurezza** solo parziale sul rilascio: l'attesa fissa copre i rimbalzi, non i buchi.
+>
+> **Applicazioni tipiche:** nessuna in pratica: mostra che un'attesa fissa non basta contro i buchi.
 
 Come la 1, ma dopo la lettura che trova il pulsante rilasciato aspetta altri `t` ms: quando `loop()`
 rilegge il pin i rimbalzi del rilascio sono finiti.
@@ -448,6 +466,12 @@ ciclo di attesa ignora già, mentre gli errori nascono alla fine.
 
 ## 3. Due letture: rilascio confermato dopo t ms
 
+> **Rileva:** rimbalzi alla pressione e al rilascio; il buco quasi sempre (dipende da dove cadono le due letture). **Non rileva:** spike a riposo.
+>
+> **Prontezza** sulla pressione. **Sicurezza** probabilistica sul rilascio: servono due letture basse a 50 ms di distanza.
+>
+> **Applicazioni tipiche:** programmi semplici dedicati al pulsante, dove un errore raro è accettabile.
+
 La prima lettura che trova il pulsante rilasciato non basta: dopo `t` ms si legge di nuovo, e solo
 se anche la seconda trova il pulsante rilasciato l'attesa finisce. Se la conferma fallisce si
 ricomincia da capo.
@@ -574,6 +598,12 @@ errore, raro ma possibile. Il rilascio arriva in media 71 ms dopo la fine dei ri
 
 ## 3 bis. Due letture in entrambe le direzioni
 
+> **Rileva:** rimbalzi alla pressione e al rilascio; buco e spike quasi sempre (dipende da dove cadono le due letture).
+>
+> **Sicurezza** probabilistica su pressione e rilascio. Nessuna prontezza: anche la pressione arriva in media 72 ms dopo.
+>
+> **Applicazioni tipiche:** programmi semplici dedicati al pulsante, quando anche uno spike non deve far partire un'azione e un errore raro è accettabile.
+
 La versione 3 conferma con due letture solo il rilascio. Questa variante applica le due letture a
 **ogni** cambio di livello, pressione compresa: a ogni giro `loop()` legge il pin, aspetta 50 ms con
 `delay(50)`, lo rilegge, e accetta un nuovo livello solo se **le due letture sono uguali** e diverse dal
@@ -693,6 +723,12 @@ circa 50 ms può non essere vista affatto. Come le altre, ferma il programma: `l
 il tempo dentro l'attesa di 50 ms.
 
 ## 4. Letture continue con un contatore
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** robot UR, dove si contano i cicli di controllo con `sync()` (è anche la soluzione proposta sul forum Universal Robots), e in generale i programmi a ciclo fisso.
 
 Invece di poche letture, si legge il pin **ogni millisecondo** e si contano le letture "rilasciato"
 consecutive: ogni lettura "premuto" (pulsante ancora premuto, rimbalzo o buco) azzera il conteggio.
@@ -832,6 +868,12 @@ di FreeRTOS), il tempo reale di conferma cambia.
 
 ## 5. Letture continue con millis() (consigliata)
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante (o task separati su ESP32); è l'attesa di `waitUntilInputLow()` di `urutils`.
+
 Stessa logica della 4, ma il tempo si misura con `millis()`: `tl` è l'istante dell'ultima lettura
 "premuto", e l'attesa finisce quando ne sono passati più di `t` ms. La durata non dipende più da
 quanto dura un giro del ciclo.
@@ -966,6 +1008,12 @@ fissa il passo di lettura e cede la CPU: su ESP32 gli altri task continuano a gi
 simulazione: 0 errori, rilascio 49–50 ms dopo la fine dei rimbalzi.
 
 ## 6. Letture continue anche alla pressione
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms continui. Nessuna prontezza: la pressione arriva 50 ms dopo, e il programma è fermo anche a pulsante rilasciato.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante con ingressi disturbati; script UR che devono confermare anche la pressione, come la soluzione con timer e `sync()` proposta sul forum Universal Robots.
 
 Le versioni da 1 a 5 accettano la pressione alla **prima** lettura "premuto". Questa usa la stessa
 attesa a letture continue della 5 anche per la pressione: prima aspetta 50 ms di livello HIGH

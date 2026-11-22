@@ -6,6 +6,7 @@ Fra le tante tecniche a interrupt, qui ci sono solo le due più affidabili, con 
 delle altre dispense: la pressione viene riconosciuta subito, l'azione principale parte al
 **rilascio**, `doOnRise()` e `doOnFall()` sono le callback dei due fronti.
 
+> Versione a interrupt che conferma anche la pressione (filtra anche gli spike): tecnica 5 di [pulsanti-interrupt.md](pulsanti-interrupt.md#5-isr-su-change-livello-stabile-nel-loop-conferma-in-due-direzioni)
 > Versione completa, con tutte le tecniche di toggle.md: [pulsanti-interrupt.md](pulsanti-interrupt.md)
 > Versioni senza interrupt (polling): [pulsanti-rilascio.md](pulsanti-rilascio.md)
 
@@ -49,6 +50,13 @@ flowchart TD
   consigliabile aggiungere un filtro hardware, per esempio un condensatore e una resistenza.
 
 ## A. La ISR registra i fronti, il loop() decide (consigliata)
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: la ISR la riconosce al primo fronte, anche se il `loop()` è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il `loop()` lento o con compiti pesanti, quando basta filtrare il rilascio.
+
 
 La ISR è armata su entrambi i fronti (`CHANGE`) e fa solo due cose: salva l'istante del fronte
 in `tFronte` e, se il pulsante risulta premuto, alza il flag `segnale`. Il `loop()` vede il flag
@@ -202,6 +210,13 @@ void loop() {
 </table>
 
 ## B. Tutto nella ISR, con fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: la ISR li crede al primo fronte, senza ritardo e senza aspettare il `loop()`. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro la ISR; per un uso reale è meglio la tecnica 6.
+
 
 L'interrupt è armato su un fronte alla volta: prima la pressione, poi il rilascio. Un fronte
 viene accettato solo se sono passati più di 50 ms dall'ultimo accettato, quindi i rimbalzi

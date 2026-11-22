@@ -6,6 +6,7 @@ Versione MicroPython di [pulsanti-interrupt-semplice.md](pulsanti-interrupt-semp
 due tecniche più affidabili. La pressione viene riconosciuta subito, l'azione principale parte
 al **rilascio**, `doOnRise()` e `doOnFall()` sono le callback dei due fronti.
 
+> Versione a interrupt che conferma anche la pressione (filtra anche gli spike): tecnica 5 di [pulsanti-interrupt-mpy.md](pulsanti-interrupt-mpy.md#5-gestore-su-entrambi-i-fronti-livello-stabile-nel-ciclo-conferma-in-due-direzioni)
 > Versione completa: [pulsanti-interrupt-mpy.md](pulsanti-interrupt-mpy.md)
 > Versioni senza interrupt (polling): [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)
 
@@ -47,6 +48,13 @@ flowchart TD
   filtro hardware, per esempio un condensatore e una resistenza.
 
 ## A. Il gestore registra i fronti, il ciclo decide (consigliata)
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: il gestore la riconosce al primo fronte, anche se il ciclo principale è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il ciclo principale lento o con compiti pesanti, quando basta filtrare il rilascio.
+
 
 Il gestore è attivo su entrambi i fronti e fa solo due cose: salva l'istante del fronte in
 `tFronte` e, se il pulsante risulta premuto, alza il flag `segnale`. Il ciclo principale vede il
@@ -176,6 +184,13 @@ while True:
 </table>
 
 ## B. Tutto nel gestore, con fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: il gestore li crede al primo fronte, senza ritardo e senza aspettare il ciclo principale. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro il gestore; per un uso reale è meglio la tecnica 6.
+
 
 L'interrupt è attivo su un fronte alla volta: prima la pressione, poi il rilascio. Un fronte
 viene accettato solo se sono passati più di 50 ms dall'ultimo accettato, quindi i rimbalzi

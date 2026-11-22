@@ -29,6 +29,12 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 
 ## 1. Versione non bloccante con ticks_ms()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
 <p align="center">
   <img src="img/debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
 </p>
@@ -130,6 +136,12 @@ while True:
 e non produce un falso fronte.
 
 ## 2. Versione non bloccante con DiffTimer
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
 > Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
 > `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, il timer che riparte in
@@ -234,6 +246,12 @@ while True:
 
 ## 3. Versione non bloccante con waitUntilNB()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
 Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
 `waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
 con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
@@ -327,6 +345,12 @@ while True:
 </table>
 
 ## 4. Versione con schedulatore non bloccante
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Solo in parte:** buco e spike, filtrati solo se nessuna lettura ci cade dentro.
+>
+> Né prontezza né conferma: pressione e rilascio arrivano alla prima lettura che li vede, in media 25 ms dopo. **Sicurezza** statistica, che migliora chiedendo N letture uguali.
+>
+> **Applicazioni tipiche:** molti pulsanti o ingressi letti insieme a intervalli fissi, programmi già organizzati a tempo base; i videogiochi su PC e console leggono i tasti allo stesso modo, una volta per fotogramma, ma su segnali già filtrati dal firmware del controller: il confronto con il fotogramma precedente serve solo a trovare i fronti.
 
 Il codice di gestione del pulsante gira una volta ogni `TBASE` ms. Leggere il pin a
 intervalli regolari fa già da debounce: se `TBASE` è più lungo dei rimbalzi, tra due
@@ -438,6 +462,12 @@ ogni `TBASE` ms: la pressione viene riconosciuta con un ritardo fino a `TBASE`, 
 pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 
 ## 5. Versione non bloccante a livello stabile con changed()
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms di livello fermo. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** toggle e contatori, start di una macchina, pulsanti su cavi lunghi o vicino a motori, sensori a 24 V che contano pezzi (nei PLC il doppio conteggio si evita con due timer, uno all'attivazione e uno alla disattivazione: è lo stesso principio). Funzionano così anche il filtro dei moduli di ingresso dei PLC e del debounce predefinito (*defer*) delle tastiere con firmware QMK.
 
 Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
 **rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
@@ -597,6 +627,12 @@ while True:
 
 ## 6. Senza conferma: il primo cambio è creduto subito
 
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** su pressione e rilascio, tutti e due creduti al primo cambio, senza ritardo. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza e un errore raro è tollerato. Nelle tastiere con firmware QMK è la modalità *eager*: bassa latenza, ma nessuna resistenza ai disturbi.
+
 Tutte le versioni precedenti confermano almeno il rilascio. Questa non conferma **nessuna** delle due
 transizioni: è la tecnica *lockout*, o "trust the first change" del
 [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html). Ogni cambio di
@@ -734,7 +770,7 @@ fronte).
 - un **buco** a pulsante premuto, se cade fuori dalla finestra di blocco, è creduto come un rilascio, e
   50 ms dopo la lettura 1 è creduta come una nuova pressione: circa 4 errori su 5 in simulazione;
 - uno **spike** a riposo è creduto come una pressione, e 50 ms dopo la lettura 0 come un rilascio:
-  circa 7 errori su 10 in simulazione.
+  in simulazione succede sempre (5000 errori su 5000).
 
 **Dove va bene.** Dove conta soprattutto la **prontezza**, in entrambe le direzioni, e un errore raro è
 accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del
