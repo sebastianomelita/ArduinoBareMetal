@@ -23,7 +23,7 @@ tecnica 6. Se includete la libreria, togliete dallo sketch le definizioni con lo
 
 ## La struttura comune e il punto debole
 
-Il `loop()` è lo stesso nelle versioni 1, 2, 3, 4 e 5 (pull-down):
+Il `loop()` è lo stesso nelle versioni 1, 2, 3, 4 e 5 (pull-down; la 0, la 3 bis e la 6 hanno un `loop()` proprio):
 
 ```cpp
 void loop() {
@@ -74,6 +74,126 @@ I due disturbi da considerare sono:
 
 I numeri riportati sotto vengono da una simulazione di 5000 pressioni per caso, con rimbalzi fino a
 10 ms e buchi di 2 ms.
+
+## 0. Senza conferma: il primo cambio è creduto subito
+
+È la tecnica più semplice e più pronta, ma anche la meno robusta (*lockout*, o "trust the first
+change" del [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html)). Ha
+un `loop()` diverso da quello delle altre versioni: legge il pin a ogni giro e reagisce a **qualsiasi**
+cambio di livello rispetto a `stabile`, il livello accettato. Il cambio è creduto **subito**, alla prima
+lettura, sia alla pressione sia al rilascio; poi il programma **si ferma** per 50 ms con `delay(50)`, e i
+rimbalzi passano mentre dorme.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = LOW;      // livello accettato
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // creduta alla prima lettura HIGH.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // creduto alla prima lettura LOW.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);
+  if (val != stabile) {  // primo cambio:
+    stabile = val;       // creduto subito
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+    delay(50);  // finestra di blocco:
+                // i rimbalzi passano
+                // mentre si dorme
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = HIGH;      // livello accettato
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // creduta alla prima lettura LOW.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // creduto alla prima lettura HIGH.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);
+  if (val != stabile) {  // primo cambio:
+    stabile = val;       // creduto subito
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+    delay(50);  // finestra di blocco:
+                // i rimbalzi passano
+                // mentre si dorme
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+**Cosa garantisce.** I rimbalzi, se durano meno di 50 ms: in simulazione 0 errori. Pressione e
+rilascio sono riconosciuti **subito**, al primo fronte, senza alcun ritardo.
+
+**Cosa non garantisce.** Non c'è nessuna conferma: un **buco** a pulsante premuto è creduto come un
+rilascio (circa 4 errori su 5 in simulazione; si salva solo se cade nei 50 ms dopo la pressione), e uno
+**spike** a riposo è creduto come una pressione (5000 errori su 5000).
+
+**Dove va bene.** Dove conta soprattutto la **prontezza** e un errore raro è accettabile: i
+**videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del giocatore e la
+risposta, e se un tasto scatta due volte il giocatore ripete il gesto. La versione non bloccante, con
+la finestra misurata da `t0` invece che da `delay(50)`, è nella sezione 6 di [pulsanti-rilascio.md](pulsanti-rilascio.md).
 
 ## 1. Una lettura ogni t ms
 
@@ -1029,6 +1149,7 @@ task.
 
 | Versione | Rimbalzi al rilascio (pressione fantasma) | Buco sul livello alto | Spike a pulsante rilasciato | Ritardo del rilascio dopo i rimbalzi |
 | --- | --- | --- | --- | --- |
+| 0. Senza conferma (lockout) | ✔ 0 | ✘ circa 4 su 5 | ✘ 5000 / 5000 | 0 ms: pressione e rilascio immediati |
 | 1. Una lettura ogni t ms | ✘ 171 / 5000 | ✘ 388 / 5000 | ✘ | medio 22 ms, max 49 ms |
 | 2. Una lettura + attesa dopo | ✔ 0 | ✘ 190 / 5000 | ✘ | medio 71 ms, max 99 ms |
 | 3. Due letture | ✔ 0 | ~ probabilistica (0 / 5000) | ✘ | medio 71 ms, max 99 ms |
@@ -1046,6 +1167,7 @@ diverso a seconda della piattaforma, e questo cambia quale versione conviene.
 
 | Tecnica | Arduino UNO | ESP32 (Arduino con FreeRTOS) | Robot UR (URScript) |
 | --- | --- | --- | --- |
+| 0. Senza conferma (lockout) | ✘ non sicura (buchi, spike) | ✘ non sicura (buchi, spike) | ✘ non sicura |
 | 1. Una lettura ogni t ms | ✘ non sicura | ✘ non sicura | ✘ non sicura: è il comando **Wait** su un ingresso digitale, con una lettura per ciclo di controllo |
 | 2. Una lettura + attesa dopo | ✘ non sicura (buchi) | ✘ non sicura (buchi) | ✘ non sicura: è una Wait seguita da un movimento o da una Wait a tempo |
 | 3. Due letture | ~ quasi sempre | ~ quasi sempre | ~ quasi sempre |
@@ -1204,7 +1326,7 @@ più lungo non si distingue da un rilascio breve. Si supera scegliendo un tempo 
 del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non
 perdere le pressioni rapide.
 
-**Lo spike alto a pulsante rilasciato è filtrato con certezza solo dalla versione 6** (la 3 bis lo filtra quasi sempre). Le versioni 1, 2, 3, 4 e 5
+**Lo spike alto a pulsante rilasciato è filtrato con certezza solo dalla versione 6** (la 3 bis lo filtra quasi sempre). Le versioni 0, 1, 2, 3, 4 e 5
 accettano la pressione alla **prima** lettura "premuto": un disturbo che porta il pin alto per un
 attimo a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto
 basso solo dalla resistenza) diventa una pressione, e dopo 50 ms un rilascio: il toggle scatta (5000

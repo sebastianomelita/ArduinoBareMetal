@@ -30,7 +30,7 @@ anche quando il contatore ricomincia da capo; al posto di `delay()` si usa `time
 
 ## La struttura comune e il punto debole
 
-Il ciclo principale è lo stesso nelle versioni 1, 2, 3, 4 e 5 (pull-down):
+Il ciclo principale è lo stesso nelle versioni 1, 2, 3, 4 e 5 (pull-down; la 0, la 3 bis e la 6 hanno un ciclo proprio):
 
 ```python
 while True:
@@ -80,6 +80,116 @@ I due disturbi da considerare sono:
 
 I numeri riportati sotto vengono da una simulazione di 5000 pressioni per caso, con rimbalzi fino a
 10 ms e buchi di 2 ms.
+
+## 0. Senza conferma: il primo cambio è creduto subito
+
+È la tecnica più semplice e più pronta, ma anche la meno robusta (*lockout*, o "trust the first
+change" del [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html)). Ha
+un il ciclo principale diverso da quello delle altre versioni: legge il pin a ogni giro e reagisce a **qualsiasi**
+cambio di livello rispetto a `stabile`, il livello accettato. Il cambio è creduto **subito**, alla prima
+lettura, sia alla pressione sia al rilascio; poi il programma **si ferma** per 50 ms con `time.sleep_ms(50)`, e i
+rimbalzi passano mentre dorme.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN)   # pull-down esterno
+LED = Pin(13, Pin.OUT)
+stato = False
+stabile = 0   # livello accettato
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # creduta alla prima lettura a 1.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # creduto alla prima lettura a 0.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    val = P1.value()
+    if val != stabile:     # primo cambio:
+        stabile = val      # creduto subito
+        if stabile == 1:
+            doOnRise()
+        else:
+            doOnFall()
+        time.sleep_ms(50)  # finestra di blocco:
+                           # i rimbalzi passano
+                           # mentre si dorme
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
+LED = Pin(13, Pin.OUT)
+stato = False
+stabile = 1   # livello accettato
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # creduta alla prima lettura a 0.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # creduto alla prima lettura a 1.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    val = P1.value()
+    if val != stabile:     # primo cambio:
+        stabile = val      # creduto subito
+        if stabile == 0:
+            doOnFall()
+        else:
+            doOnRise()
+        time.sleep_ms(50)  # finestra di blocco:
+                           # i rimbalzi passano
+                           # mentre si dorme
+```
+
+</td>
+</tr>
+</table>
+
+**Cosa garantisce.** I rimbalzi, se durano meno di 50 ms: in simulazione 0 errori. Pressione e
+rilascio sono riconosciuti **subito**, al primo fronte, senza alcun ritardo.
+
+**Cosa non garantisce.** Non c'è nessuna conferma: un **buco** a pulsante premuto è creduto come un
+rilascio (circa 4 errori su 5 in simulazione; si salva solo se cade nei 50 ms dopo la pressione), e uno
+**spike** a riposo è creduto come una pressione (5000 errori su 5000).
+
+**Dove va bene.** Dove conta soprattutto la **prontezza** e un errore raro è accettabile: i
+**videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del giocatore e la
+risposta, e se un tasto scatta due volte il giocatore ripete il gesto. La versione non bloccante, con
+la finestra misurata da `t0` invece che da `time.sleep_ms(50)`, è nella sezione 6 di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md).
 
 ## 1. Una lettura ogni t ms
 
@@ -952,6 +1062,7 @@ thread.
 
 | Versione | Rimbalzi al rilascio (pressione fantasma) | Buco sul livello alto | Spike a pulsante rilasciato | Ritardo del rilascio dopo i rimbalzi |
 | --- | --- | --- | --- | --- |
+| 0. Senza conferma (lockout) | ✔ 0 | ✘ circa 4 su 5 | ✘ 5000 / 5000 | 0 ms: pressione e rilascio immediati |
 | 1. Una lettura ogni t ms | ✘ 184 / 5000 | ✘ 368 / 5000 | ✘ | medio ~22 ms, max ~50 ms |
 | 2. Una lettura + attesa dopo | ✔ 0 | ✘ 165 / 5000 | ✘ | medio ~70 ms, max ~100 ms |
 | 3. Due letture | ✔ 0 | ~ probabilistica (0 / 5000) | ✘ | medio ~70 ms, max ~100 ms |
@@ -969,6 +1080,7 @@ diverso a seconda della piattaforma, e questo cambia quale versione conviene.
 
 | Tecnica | MicroPython (ESP32) | Robot UR (URScript) |
 | --- | --- | --- |
+| 0. Senza conferma (lockout) | ✘ non sicura (buchi, spike) | ✘ non sicura |
 | 1. Una lettura ogni t ms | ✘ non sicura | ✘ non sicura: è il comando **Wait** su un ingresso digitale, con una lettura per ciclo di controllo |
 | 2. Una lettura + attesa dopo | ✘ non sicura (buchi) | ✘ non sicura: è una Wait seguita da un movimento o da una Wait a tempo |
 | 3. Due letture | ~ quasi sempre | ~ quasi sempre |
@@ -1120,7 +1232,7 @@ più lungo non si distingue da un rilascio breve. Si supera scegliendo un tempo 
 del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non
 perdere le pressioni rapide.
 
-**Lo spike alto a pulsante rilasciato è filtrato con certezza solo dalla versione 6** (la 3 bis lo filtra quasi sempre). Le versioni 1, 2, 3, 4 e 5
+**Lo spike alto a pulsante rilasciato è filtrato con certezza solo dalla versione 6** (la 3 bis lo filtra quasi sempre). Le versioni 0, 1, 2, 3, 4 e 5
 accettano la pressione alla **prima** lettura "premuto": un disturbo che porta il pin alto per un
 attimo a pulsante rilasciato (tipico del pull-down con cavi lunghi, perché a riposo il pin è tenuto
 basso solo dalla resistenza) diventa una pressione, e dopo 50 ms un rilascio: il toggle scatta (5000
