@@ -1,10 +1,22 @@
 import time
 
+# ===========================================================================
+# LEGENDA: le quattro situazioni critiche (vedi debounce-fenomeni.md)
+#   [1] rimbalzi alla pressione   [2] rimbalzi al rilascio
+#   [3] buco a pulsante premuto   [4] spike a pulsante rilasciato
+#   OK  = filtrato (nessun evento falso), se t > rimbalzo più lungo + passo
+#         di lettura e il disturbo dura meno di t - 1 ms
+#   NO  = passa: produce un evento falso
+# Le indicazioni sono date per il pull-down; in pull-up si scambiano 0 e 1.
+# ===========================================================================
+
 
 def waitUntil(cond, t):
     # attesa bloccante finché cond() non diventa vera, ricontrollando ogni t ms.
     # In Python un bool non si passa per riferimento: si passa una funzione,
     # ad esempio waitUntil(lambda: pronto, 10)
+    # Non riguarda le quattro situazioni: il filtraggio, se serve, va fatto da
+    # chi rende vera la condizione (una lettura ogni t ms non filtra nulla).
     while not cond():
         time.sleep_ms(t)
 
@@ -19,6 +31,12 @@ def waitUntil(cond, t):
 
 def waitUntilInputLow(btn, t):
     # attende t ms di livello basso continuo (rilascio in pull-down)
+    # Usata come attesa del rilascio dopo "if P1.value():" (tecnica 5):
+    #   [1] rimbalzi alla pressione : OK (il programma resta qui dentro, non torna all'if)
+    #   [2] rimbalzi al rilascio    : OK (ogni rimbalzo alto azzera il conteggio)
+    #   [3] buco a pulsante premuto : OK (la lettura alta dopo il buco azzera il conteggio)
+    #   [4] spike a riposo          : NO (l'if crede al primo 1; per filtrarlo
+    #                                    precedetela con waitUntilInputHigh: tecnica 6)
     tl = time.ticks_ms()
     while time.ticks_diff(time.ticks_ms(), tl) <= t:
         if btn.value():
@@ -28,6 +46,11 @@ def waitUntilInputLow(btn, t):
 
 def waitUntilInputHigh(btn, t):
     # attende t ms di livello alto continuo (pressione in pull-down)
+    # Usata come attesa della pressione, seguita da waitUntilInputLow (tecnica 6):
+    #   [1] rimbalzi alla pressione : OK (la pressione vale solo dopo t ms di livello alto)
+    #   [2] rimbalzi al rilascio    : OK (ci pensa la waitUntilInputLow che segue)
+    #   [3] buco a pulsante premuto : OK (ci pensa la waitUntilInputLow che segue)
+    #   [4] spike a riposo          : OK (uno spike non resta alto per t ms)
     tl = time.ticks_ms()
     while time.ticks_diff(time.ticks_ms(), tl) <= t:
         if not btn.value():
@@ -39,6 +62,10 @@ def waitUntilInputChange(btn, livello, t):
     # attende un cambio di livello confermato: livello è il livello attuale
     # (quello accettato l'ultima volta); esce quando il pin è rimasto al livello
     # opposto per t ms di fila e restituisce il nuovo livello (0 o 1).
+    #   [1] rimbalzi alla pressione : OK
+    #   [2] rimbalzi al rilascio    : OK
+    #   [3] buco a pulsante premuto : OK
+    #   [4] spike a riposo          : OK
     if livello == 0:
         waitUntilInputHigh(btn, t)
         return 1
@@ -50,6 +77,12 @@ def waitUntilNB(d, c, t):
     # attesa non bloccante: restituisce True una sola volta, quando la
     # condizione c è rimasta vera per più di t ms di fila.
     # Finché c è falsa il timer riparte a ogni chiamata.
+    # Con c = (P1.value() == 0) in pull-down equivale a waitUntilInputLowNB:
+    #   [1] rimbalzi alla pressione : OK (dà un solo evento, al rilascio)
+    #   [2] rimbalzi al rilascio    : OK
+    #   [3] buco a pulsante premuto : OK
+    #   [4] spike a riposo          : NO (lo spike fa partire il timer: t ms dopo
+    #                                    arriva un rilascio falso)
     ok = False
     if not c:
         d.start()
@@ -61,6 +94,7 @@ def waitUntilNB(d, c, t):
     return ok
 
 
+# DiffTimer e DiffTimer2 sono cronometri: non leggono pin e non filtrano nulla da soli.
 class DiffTimer(object):
     # cronometro basato su time.ticks_ms()
     def __init__(self, elapsed=0):
@@ -146,6 +180,11 @@ def waitUntilInputLowNB(d, btn, t):
     # il conteggio. Il DiffTimer d (uno per pulsante) misura il tempo e
     # ricorda che il pulsante era premuto: d.timerState è vero dalla
     # pressione al rilascio.
+    #   [1] rimbalzi alla pressione : OK (dà un solo evento, al rilascio)
+    #   [2] rimbalzi al rilascio    : OK (ogni rimbalzo alto azzera il conteggio)
+    #   [3] buco a pulsante premuto : OK (la lettura alta dopo il buco azzera il conteggio)
+    #   [4] spike a riposo          : NO (lo spike vale come pressione: t ms dopo
+    #                                    arriva un rilascio falso)
     if btn.value():
         d.start()  # non fa nulla se già attivo
         d.reset()  # il conteggio riparte
@@ -158,6 +197,7 @@ def waitUntilInputLowNB(d, btn, t):
 
 def waitUntilInputHighNB(d, btn, t):
     # come sopra, per il rilascio in pull-up: t ms di livello alto continuo
+    # Stesse situazioni di waitUntilInputLowNB (spike in pull-up = 0 breve): [1][2][3] OK, [4] NO
     if not btn.value():
         d.start()
         d.reset()
@@ -178,6 +218,10 @@ class Debouncer(object):
     #   val00 = livello accettato
     # changed() va chiamata a ogni giro del ciclo e restituisce True una sola volta, nel giro
     # in cui il nuovo livello viene accettato: guardando val00 si sa se è pressione o rilascio.
+    #   [1] rimbalzi alla pressione : OK
+    #   [2] rimbalzi al rilascio    : OK
+    #   [3] buco a pulsante premuto : OK (il livello basso non resta fermo t ms)
+    #   [4] spike a riposo          : OK (il livello alto non resta fermo t ms)
     def __init__(self, riposo=0):
         self.val0 = riposo
         self.val00 = riposo
@@ -190,5 +234,32 @@ class Debouncer(object):
             self.last = time.ticks_ms()
         elif val != self.val00 and time.ticks_diff(time.ticks_ms(), self.last) > t:
             self.val00 = val          # livello fermo da più di t ms: accettato
+            return True
+        return False
+
+class Lockout(object):
+    # debounce senza conferma (lockout, "trust the first change"): il primo cambio di livello
+    # è creduto SUBITO, poi per t ms ogni altro cambio è ignorato (i rimbalzi cadono lì dentro).
+    # È la tecnica più pronta, ma NON filtra buchi a pulsante premuto e spike a pulsante
+    # rilasciato: un disturbo isolato viene preso per un evento vero. Va bene dove conta la
+    # prontezza e un errore raro è tollerato (videogiochi, tastierini); per toggle e contatori
+    # meglio Debouncer. Un oggetto per pulsante, creato con il livello di riposo.
+    #   stato = livello creduto
+    #   t0    = istante dell'ultimo evento: per t ms dopo t0 la lettura non conta
+    # changed() va chiamata a ogni giro del ciclo e restituisce True nel giro in cui il cambio
+    # viene creduto: guardando stato si sa se è una pressione o un rilascio.
+    #   [1] rimbalzi alla pressione : OK (cadono nella finestra di blocco)
+    #   [2] rimbalzi al rilascio    : OK (cadono nella finestra di blocco)
+    #   [3] buco a pulsante premuto : NO (creduto come rilascio, poi pressione falsa)
+    #   [4] spike a riposo          : NO (creduto come pressione, poi rilascio)
+    def __init__(self, riposo=0):
+        self.stato = riposo
+        self.t0 = time.ticks_ms()
+
+    def changed(self, btn, t):
+        val = btn.value()
+        if val != self.stato and time.ticks_diff(time.ticks_ms(), self.t0) > t:
+            self.stato = val              # creduto subito
+            self.t0 = time.ticks_ms()     # da qui, t ms di blocco
             return True
         return False
