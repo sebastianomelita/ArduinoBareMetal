@@ -9,7 +9,7 @@ se il nastro deve girare, l'altro in che verso. Un terzo pulsante, usato a mano,
 velocità. In laboratorio, e nella simulazione Wokwi, i due comandi del robot sono sostituiti da due
 pulsanti.
 
-Il programma è la versione 4.2. Il codice completo è in fondo alla dispensa.
+Il programma è la versione 4.3. Il codice completo è in fondo alla dispensa.
 
 ## 1. Lo schema
 
@@ -131,7 +131,7 @@ il livello stabile dell'ingresso.
 
 ```cpp
 if (buttonStart.changed()) {
-  stato = buttonStart.val;            // il motore gira finché il comando è alto
+  stato = (buttonStart.val == ATTIVO);  // il motore gira finché il comando è attivo
   if (stato) {
     if (!waitingForDirChange) Timer1.start();
   } else {
@@ -210,10 +210,11 @@ L'inizializzazione dice da quale livello si parte:
 
 ```cpp
 // pin, val0, debtime, val, val00, last
-Button buttonStart = {button_HaltStart, LOW, DEBOUNCETIME, LOW, LOW, 0};
+Button buttonStart = {button_HaltStart, RIPOSO, DEBOUNCETIME, RIPOSO, RIPOSO, 0};
 ```
 
-Con il pull-down il livello di riposo è LOW. Se all'accensione il robot tiene già alto un comando,
+`RIPOSO` vale LOW con i pulsanti in pull-down e con le schede d'interfaccia a uscita PNP, HIGH con
+quelle a uscita NPN (paragrafo 6.3). Se all'accensione il robot tiene già alto un comando,
 dopo 50 ms viene accettato e il nastro parte: con un comando a livello è il comportamento giusto.
 
 ## 6. Il collegamento al robot UR
@@ -268,11 +269,28 @@ Invece di montare gli optoisolatori si può usare una scheda pronta. Ce ne sono 
 | Scheda "24V to 5V PLC level converter" a 4 o 8 canali | 24 V, ingressi `+`/`−` per canale (vanno bene sia PNP sia NPN) | versione **NPN** (attiva bassa) o versione **PNP** (attiva alta) | va alimentata a 5 V dal lato Arduino; scegliere la versione PNP per non cambiare il programma |
 | Interfaccia industriale su barra DIN (per esempio Phoenix Contact PLC-OPT-24DC/TTL) | 24 V DC | TTL, 5 V | per un impianto vero: robusta, da quadro elettrico |
 
-- **Uscita attiva bassa.** Con i moduli che hanno l'uscita con pull-up o di tipo NPN il pin è
-  **basso** quando il comando del robot è attivo. In quel caso si inverte la logica nel programma:
-  livello di riposo dei `Button` a `HIGH` e comando attivo quando il livello accettato è `LOW`.
-  Le schede con uscita PNP, oppure il circuito del paragrafo 6.1, danno invece il pin **alto** e il
-  programma resta com'è.
+- **Schede con uscita PNP o NPN: la define `INGRESSI_ATTIVI_BASSI`.** Le schede con uscita PNP, e il
+  circuito del paragrafo 6.1, danno il pin **alto** quando il comando del robot è attivo: è il
+  comportamento predefinito del programma. Con i moduli che hanno l'uscita NPN o con pull-up il pin
+  è invece **basso** quando il comando è attivo. In quel caso basta togliere il commento a una riga:
+
+  ```cpp
+  // #define INGRESSI_ATTIVI_BASSI   // togliere il commento con schede a uscita NPN
+  ```
+
+  La define sceglie tre costanti: `ATTIVO` (il livello del comando attivo), `RIPOSO` (il livello a
+  riposo, da cui partono i due `Button` dei comandi) e `MODO_COMANDI` (`INPUT`, oppure
+  `INPUT_PULLUP` per le uscite a collettore aperto senza resistenza sulla scheda). Il programma
+  confronta poi il livello accettato con `ATTIVO`:
+
+  ```cpp
+  stato = (buttonStart.val == ATTIVO);       // il motore gira finché il comando è attivo
+  direction = (buttonDir.val == ATTIVO);     // comando attivo: verso HIGH
+  ```
+
+  Il pulsante grigio del microstepping è un pulsante locale e resta in pull-down in tutti e due i
+  casi. Se una scheda con uscita PNP ha l'uscita a collettore aperto, senza resistenza verso massa,
+  sul pin va aggiunto un pull-down esterno da 10 kΩ.
 - **Verificare la tensione d'ingresso del modulo.** Deve essere adatta a 24 V: i moduli pensati per
   12 V hanno una resistenza troppo piccola.
 - **Programma fermo, nastro fermo.** Nel robot si può impostare che le uscite digitali si
@@ -319,7 +337,7 @@ di collegamento fra il mondo a 24 V e quello a 5 V sono in [interfacce-digitali.
 Simulazione: https://wokwi.com/projects/426024956545802241
 
 ```cpp
-/*################### File version: 4.2 ##################*/
+/*################### File version: 4.3 ##################*/
 /*########################################################*/
 /* Controllo stepmotor per il nastro trasportatore a      */
 /* scopo didattico (il docente dovrà spiegarne il         */
@@ -337,6 +355,11 @@ Simulazione: https://wokwi.com/projects/426024956545802241
 /* a livello del robot UR: il motore gira finché P1 è     */
 /* alto, il verso segue il livello di P2. Gli step del    */
 /* motore sono generati dall'interrupt del Timer1.        */
+/*                                                        */
+/* Con il robot UR, marcia e direzione arrivano da una    */
+/* scheda d'interfaccia optoisolata 24 V -> 5 V. Se la    */
+/* scheda ha l'uscita NPN (attiva bassa), togliere il     */
+/* commento a #define INGRESSI_ATTIVI_BASSI.              */
 /*                                                        */
 /*     driver A4988 (tra parentesi i nomi sul DRV8825)    */
 /*         ,-----------,                                  */
@@ -375,10 +398,24 @@ Simulazione: https://wokwi.com/projects/426024956545802241
 #define  DEBOUNCETIME 50
 // #define DRIVER_DRV8825   // togliere il commento se si usa il DRV8825
 
+// Comandi del robot (marcia e direzione) attraverso la scheda d'interfaccia:
+// - uscita PNP, o pulsanti in pull-down: pin ALTO quando il comando è attivo (default);
+// - uscita NPN o modulo PC817 con pull-up: pin BASSO quando il comando è attivo.
+// #define INGRESSI_ATTIVI_BASSI   // togliere il commento con schede a uscita NPN
+#ifdef INGRESSI_ATTIVI_BASSI
+  #define ATTIVO LOW                  // livello del comando attivo
+  #define RIPOSO HIGH                 // livello a riposo
+  #define MODO_COMANDI INPUT_PULLUP   // pull-up interno per le uscite a collettore aperto
+#else
+  #define ATTIVO HIGH
+  #define RIPOSO LOW
+  #define MODO_COMANDI INPUT          // il pull-down è sulla scheda (o la resistenza esterna)
+#endif
+
 volatile bool directionChange = false;  // Flag per prevenire step durante cambio dir:
                                         // ridondante finché il Timer1 viene fermato
                                         // durante il cambio, ma protegge se lo si toglie
-volatile bool direction = LOW;    // segue il livello del comando di direzione
+volatile bool direction = LOW;    // HIGH quando il comando di direzione è attivo
 volatile bool stato = false;
 uint8_t stepLevel = 0;
 uint16_t stepInterval = 1200; // Microsecond (600µs HIGH + 600µs LOW)
@@ -442,11 +479,12 @@ struct Button {
 };
 
 // Inizializzazione dei pulsanti: pin, val0, debtime, val, val00, last.
-// Pull-down: il livello di riposo (val0, val, val00) è LOW. Se all'accensione
-// un comando del robot è già alto, viene accettato dopo DEBOUNCETIME ms.
-Button buttonStart = {button_HaltStart, LOW, DEBOUNCETIME, LOW, LOW, 0};    // start/stop
-Button buttonDir = {button_ForwardReverse, LOW, DEBOUNCETIME, LOW, LOW, 0};  // direzione
-Button buttonStep = {button_Microstep, LOW, DEBOUNCETIME, LOW, LOW, 0};      // microstepping
+// I comandi del robot partono dal livello di RIPOSO; il pulsante del microstepping
+// resta un pulsante locale in pull-down (riposo LOW). Se all'accensione un comando
+// del robot è già attivo, viene accettato dopo DEBOUNCETIME ms.
+Button buttonStart = {button_HaltStart, RIPOSO, DEBOUNCETIME, RIPOSO, RIPOSO, 0};    // start/stop
+Button buttonDir = {button_ForwardReverse, RIPOSO, DEBOUNCETIME, RIPOSO, RIPOSO, 0};  // direzione
+Button buttonStep = {button_Microstep, LOW, DEBOUNCETIME, LOW, LOW, 0};              // microstepping
 
 /**
  * Imposta la risoluzione del microstepping
@@ -489,13 +527,13 @@ void setup() {
   pinMode(MS[0], OUTPUT);
   pinMode(MS[1], OUTPUT);
   pinMode(MS[2], OUTPUT);
-  pinMode(button_ForwardReverse, INPUT);
-  pinMode(button_HaltStart, INPUT);
+  pinMode(button_ForwardReverse, MODO_COMANDI);
+  pinMode(button_HaltStart, MODO_COMANDI);
   pinMode(button_Microstep, INPUT);
    
   setResolution(FULL);
   stato = false;
-  direction = LOW;                    // come lo stato iniziale accettato di buttonDir
+  direction = LOW;                    // comando di direzione a riposo
   directionChange = false;
   digitalWrite(dirPin, direction);    // verso di rotazione iniziale definito
   
@@ -526,7 +564,7 @@ void loop() {
 
   // Comando di direzione (livello): cambio del verso a ogni cambio di livello stabile
   if (buttonDir.changed()) {
-    direction = buttonDir.val;         // nuovo livello stabile del comando
+    direction = (buttonDir.val == ATTIVO);  // comando attivo: verso HIGH
     directionChange = true;
     Serial.print("Direction: ");
     Serial.println(direction);
@@ -537,7 +575,7 @@ void loop() {
 
   // Comando di avvio/arresto (livello): il motore gira finché il comando è alto
   if (buttonStart.changed()) {
-    stato = buttonStart.val;
+    stato = (buttonStart.val == ATTIVO);    // il motore gira finché il comando è attivo
     if (stato) {
       if (!waitingForDirChange) Timer1.start();   // durante il cambio direzione riparte dopo
       Serial.println("Timer started");
