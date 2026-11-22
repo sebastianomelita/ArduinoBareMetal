@@ -23,6 +23,7 @@
 <li><a href="gruppipulsanti.md">Gruppi di pulsanti</a></li>
 <li><a href="esempipulsanti.md">Esempio curva pericolosa</a></li>
 <li><a href="nastro.md">Esempio nastro trasportatore</a></li>
+<li><a href="nastro-stepper.md">Controllo del motore passo-passo del nastro trasportatore</a></li>
 <li><a href="consegneEserciziPulsanti.md">Esercizi: tempo di pressione e conteggio delle pressioni</a> (<a href="soluzioniEserciziPulsanti.md">soluzioni</a>)</li>
 <li><a href="domande.md">Domande e sitografia</a></li>
 </ol>
