@@ -385,7 +385,8 @@ deve durare **quanto** la pressione:
 - i **videogiochi**, dove pochi millisecondi di ritardo si sentono;
 - i comandi a **pressione mantenuta** (marcia a impulsi, *jog*, uomo presente): agiscono **a
   livello**, finché il pulsante è premuto, e si fermano al rilascio;
-- l'**arresto**: un comando di stop che aspetta il rilascio sarebbe un errore di progetto.
+- l'**arresto** con un pulsante di stop: premere vuol già dire "fermati", e aspettare il rilascio
+  ritarderebbe l'arresto senza motivo.
 
 In sintesi: **si agisce al rilascio quando sbagliare costa più che aspettare, alla pressione quando la
 prontezza è il requisito.**
@@ -423,10 +424,18 @@ Tre regole riassumono la tabella:
    comandi ad azione mantenuta usati come protezione) si realizza con componenti di sicurezza; il
    software di un microcontrollore si limita a segnalarlo.
 
-> Le norme industriali confermano la scelta del rilascio dove conta la **sicurezza dell'avvio**: il
-> reset dopo un arresto deve agire al rilascio (EN ISO 13849-1). Dove conta la **sicurezza
-> dell'arresto**, invece, il comando agisce subito: l'arresto di emergenza alla pressione, il
-> comando ad azione mantenuta appena lo si rilascia.
+> **La regola delle norme industriali, in una riga: fermarsi subito, ripartire con calma.**
+> Non conta il fronte del pulsante, conta che cosa vuol dire quel fronte.
+>
+> - **Il gesto che ferma agisce subito.** Con il pulsante di emergenza il gesto che ferma è la
+>   *pressione*; con il comando ad azione mantenuta (jog) è il *rilascio*, perché lì il pulsante
+>   premuto significa "muoviti" e lasciarlo significa "fermati". Fronti opposti, stessa regola: lo
+>   stop non aspetta.
+> - **Il gesto che fa ripartire aspetta la conferma.** Il reset dopo un arresto è accettato solo al
+>   rilascio (EN ISO 13849-1), così un pulsante bloccato o tenuto premuto non riarma la macchina.
+>
+> È lo stesso principio di tutta la sezione: dove un errore è pericoloso (ripartire per sbaglio) si
+> aspetta la conferma; dove è pericoloso aspettare (non fermarsi) si agisce subito.
 
 ## Riferimenti
 
