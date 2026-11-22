@@ -662,6 +662,264 @@ void loop() {
 }
 ```
 
+## 6. Senza conferma: il primo cambio è creduto subito
+
+Tutte le versioni precedenti confermano almeno il rilascio. Questa non conferma **nessuna** delle due
+transizioni: è la tecnica *lockout*, o "trust the first change" del
+[Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html). Ogni cambio di
+livello è creduto **alla prima lettura**, l'evento parte subito, e per i 50 ms successivi l'ingresso
+viene **ignorato**: i rimbalzi cadono in questa finestra e non vengono visti.
+
+- `stabile` è il livello accettato, come `val00` in `changed()`;
+- `t0` è l'istante dell'ultimo cambio accettato;
+- il pin è letto **a ogni giro** di `loop()`; un cambio rispetto a `stabile` è creduto **nello stesso
+  giro in cui viene letto**, purché siano passati più di 50 ms dall'ultimo cambio accettato.
+
+**Non è uno schedulatore e non è `changed()`.** La condizione `millis() - t0 > 50` sembra quella di uno
+schedulatore, ma `t0` non viene aggiornato a ogni lettura: viene aggiornato **solo quando si accetta un
+cambio**. A riposo, o a pulsante premuto da tempo, la condizione è sempre vera e il pin è letto a ogni
+giro: il primo cambio è visto e creduto **subito**. La finestra di 50 ms si apre solo **dopo** l'evento,
+per non vedere i rimbalzi che lo seguono.
+
+| | Quando si legge il pin | Quando un cambio diventa un evento | Ruolo dei 50 ms |
+| --- | --- | --- | --- |
+| Schedulatore | una volta ogni 50 ms, sempre | alla prima lettura che lo vede (in media 25 ms dopo) | intervallo fra due letture |
+| `changed()` (livello stabile) | a ogni giro | dopo 50 ms di livello fermo, cioè 50 ms dopo l'ultimo rimbalzo | **prima** dell'evento: conferma |
+| Lockout (questa sezione) | a ogni giro, tranne nei 50 ms dopo un evento | **subito**, alla prima lettura | **dopo** l'evento: finestra in cui i cambi sono ignorati |
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = LOW;      // livello accettato
+unsigned long t0 = 0;    // ultimo cambio accettato
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // creduta alla prima lettura HIGH.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // creduto alla prima lettura LOW.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);  // letto
+                               // a ogni giro
+  // un cambio fuori dalla finestra
+  // di blocco è creduto SUBITO
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();  // per 50 ms i
+                    // cambi sono ignorati
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = HIGH;      // livello accettato
+unsigned long t0 = 0;    // ultimo cambio accettato
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // creduta alla prima lettura LOW.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // creduto alla prima lettura HIGH.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);  // letto
+                               // a ogni giro
+  // un cambio fuori dalla finestra
+  // di blocco è creduto SUBITO
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();  // per 50 ms i
+                    // cambi sono ignorati
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+**Cosa garantisce.** I rimbalzi, alla pressione e al rilascio, sono filtrati se durano meno di 50 ms:
+in simulazione 0 errori. Ed è la tecnica **più pronta**: pressione e rilascio sono riconosciuti al
+primo fronte, senza alcun ritardo (in simulazione il rilascio è arrivato in media 0 ms dopo il primo
+fronte).
+
+**Cosa non garantisce.** Non c'è nessuna conferma, quindi:
+- un **buco** a pulsante premuto, se cade fuori dalla finestra di blocco, è creduto come un rilascio, e
+  50 ms dopo la lettura HIGH è creduta come una nuova pressione: circa 4 errori su 5 in simulazione;
+- uno **spike** a riposo è creduto come una pressione, e 50 ms dopo la lettura LOW come un rilascio:
+  circa 7 errori su 10 in simulazione.
+
+**Dove va bene.** Dove conta soprattutto la **prontezza**, in entrambe le direzioni, e un errore raro è
+accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del
+giocatore e la risposta, e se un tasto scatta due volte il giocatore ripete il gesto. Non va bene per
+contare pezzi, comandare macchine o dove un pulsante è vecchio o i cavi sono disturbati.
+
+### Variante con `delay(50)`
+
+È la forma proposta dal Makeability Lab: invece di misurare la finestra di blocco con `t0`, dopo ogni
+evento il programma **si ferma** per 50 ms con `delay(50)`. Il codice è più corto e non serve la variabile
+`t0`, ma per 50 ms dopo ogni pressione e ogni rilascio `loop()` non fa nient'altro: è una tecnica
+**bloccante**.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = LOW;      // livello accettato
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // creduta alla prima lettura HIGH.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // creduto alla prima lettura LOW.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);
+  if (val != stabile) {  // primo cambio:
+    stabile = val;       // creduto subito
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+    delay(50);  // finestra di blocco:
+                // i rimbalzi passano
+                // mentre si dorme
+  }
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = HIGH;      // livello accettato
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // creduta alla prima lettura LOW.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // creduto alla prima lettura HIGH.
+  // Esempio: toggle, inverte lo
+  // stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  byte val = digitalRead(P1);
+  if (val != stabile) {  // primo cambio:
+    stabile = val;       // creduto subito
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+    delay(50);  // finestra di blocco:
+                // i rimbalzi passano
+                // mentre si dorme
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+Il comportamento è lo stesso della versione con `t0`: 0 errori sui rimbalzi, rilascio riconosciuto
+subito, ma buchi e spike creduti. In simulazione lo spike a riposo è stato creduto **ogni volta**: qui
+non c'è la finestra iniziale che, nella versione con `t0`, all'accensione ignora i primi 50 ms.
+
 ## Considerazioni finali: quale tecnica scegliere
 
 **Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
@@ -682,6 +940,7 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 | millis(), DiffTimer, waitUntilNB(), interrupt, tecniche bloccanti | filtrati | filtrato | **non filtrato** |
 | Schedulatore | filtrati | filtrato solo se nessuna lettura ci cade dentro | filtrato solo se nessuna lettura ci cade dentro |
 | Livello stabile (`changed()`) | filtrati | filtrato | filtrato |
+| Senza conferma (lockout, sezione 6) | filtrati | **non filtrato** | **non filtrato** |
 
 **Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 
