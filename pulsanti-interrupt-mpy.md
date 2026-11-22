@@ -24,23 +24,27 @@ l'attesa bloccante `waitUntilInputLow()`, con conferma del rilascio.
 ```mermaid
 flowchart TD
     C["Pulsante con interrupt<br/>Pin.irq()"] --> D["Problema: ogni rimbalzo<br/>chiama di nuovo il gestore"]
+    C --> LET["Letteratura: meglio<br/>un timer periodico;<br/>filtro RC + Schmitt"]
     C --> R["Regole per i gestori"]
-    D --> G1["Debounce dentro il gestore"]
-    D --> L["Gestore sulla pressione,<br/>rilascio controllato fuori"]
+    D --> G1["Lockout:<br/>cambio creduto subito<br/>filtra solo i rimbalzi"]
+    D --> L["Pressione subito,<br/>rilascio confermato<br/>filtra rimbalzi e buchi,<br/>non lo spike"]
+    D --> S["Livello stabile<br/>in due direzioni<br/>filtra tutte e quattro<br/>le situazioni"]
     G1 --> T1["1. Fronti alternati<br/>+ DiffTimer"]
-    L --> T2["2. Gestore su entrambi i fronti<br/>rilascio controllato nel ciclo"]
+    G1 --> T6["6. Lockout su entrambi i fronti<br/>+ ricontrollo nel ciclo<br/>(giochi)"]
+    T6 --> V["Variante: il gestore decide,<br/>il ciclo agisce"]
+    L --> T2["2. Gestore su entrambi i fronti<br/>registra i fronti<br/>rilascio nel ciclo"]
     L --> T3["3. Gestore con flag<br/>attesa bloccante nel ciclo"]
-    L --> T4["4. Gestore su entrambi i fronti<br/>+ machine.Timer"]
-    D --> S["Gestore registra solo i tempi,<br/>il ciclo conferma i livelli"]
-    S --> T5["5. Gestore su entrambi i fronti<br/>livello stabile nel ciclo"]
-    G1 --> T6["6. Lockout su entrambi i fronti (giochi)<br/>+ ricontrollo nel ciclo"]
+    L --> T4["4. Gestore su entrambi i fronti<br/>+ machine.Timer<br/>rilascio ogni 50 ms"]
+    S --> T5["5. Gestore su entrambi i fronti<br/>registra i tempi<br/>livello stabile nel ciclo"]
     R --> R1["brevi: niente sleep, print, cicli"]
     R --> R2["variabili condivise: global"]
     R --> R3["hard=True: niente allocazioni"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4,T5,T6 tecnica
+    classDef fonte fill:#e8eef8,stroke:#4a6fa5
+    class T1,T2,T3,T4,T5,T6,V tecnica
     class R,R1,R2,R3 regola
+    class LET fonte
 ```
 
 ## Confronto delle tecniche
@@ -60,24 +64,29 @@ Le stesse prove delle altre dispense (simulazione della versione Arduino in pull
 prove per caso, passo di 1 ms; la logica è la stessa), con le quattro situazioni critiche di
 [debounce-fenomeni.md](debounce-fenomeni.md):
 
-| Tecnica | A che cosa equivale | Rimbalzi (pressione e rilascio) | Buco a pulsante premuto | Spike a riposo |
-| --- | --- | --- | --- | --- |
-| 1. Fronti alternati nel gestore | lockout | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
-| 2. Gestore su entrambi i fronti + rilascio nel ciclo | tecnica 5 bloccante, una direzione | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
-| 3. Gestore con flag + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
-| 4. Gestore + Timer | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
-| 5. Gestore + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
-| 6. Lockout + ricontrollo | lockout (`Lockout` di `urutils`) | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
+| Tecnica | Rimbalzi alla pressione | Rimbalzi al rilascio | Buco a pulsante premuto | Spike a riposo | Errore prodotto |
+| --- | --- | --- | --- | --- | --- |
+| 1. Fronti alternati nel gestore | ✔ 0 | ✔ 0 | ✘ 4046 su 5000 | ✘ 5000 su 5000 | buco: due rilasci; spike: due pressioni |
+| 2. Gestore su entrambi i fronti + rilascio nel ciclo | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 3. Gestore con flag + attesa bloccante | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 4. Gestore + Timer | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 5. Gestore + livello stabile | ✔ 0 | ✔ 0 | ✔ 0 | ✔ 0 | nessuno |
+| 6. Lockout + ricontrollo | ✔ 0 | ✔ 0 | ✘ 4017 su 5000 | ✘ 5000 su 5000 | buco: rilascio e pressione falsi; spike: pressione e rilascio falsi |
 
-Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
-riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
-le situazioni, anche con un ciclo lento; il prezzo è che la pressione arriva 50 ms dopo l'ultimo
+Ogni situazione è simulata da sola, su 5000 prove. Le tecniche 1-4 e la 6 riconoscono la
+pressione **subito**, al primo fronte: per questo uno spike a riposo vale sempre come pressione.
+Le tecniche 1 e 6 sono lockout e sbagliano anche sul buco, quando cade più di 50 ms dopo la
+pressione. In testa a ogni tecnica un richiamo dice che cosa rileva e che cosa no.
+
+La tecnica 5 conferma anche la pressione e filtra tutte e quattro le situazioni, anche con un ciclo lento; il prezzo è che la pressione arriva 50 ms dopo l'ultimo
 rimbalzo.
 
 In nessuna tecnica l'interrupt viene disattivato: i rimbalzi chiamano il gestore più volte,
 ma ogni volta esso esegue solo poche istruzioni.
 
 ## 1. Debounce nel gestore con fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
 
 L'interrupt è attivo su un solo fronte alla volta: prima quello di pressione, poi, appena la
 pressione è accettata, quello di rilascio. Ogni fronte viene accettato solo se dall'ultimo
@@ -216,6 +225,8 @@ while True:
 
 ## 2. Gestore su entrambi i fronti, rilascio controllato nel ciclo
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+
 Il gestore è attivo su entrambi i fronti. A ogni fronte, rimbalzi compresi, salva l'istante in
 `tFronte`; se il pulsante risulta premuto e la pressione non è ancora stata segnalata, chiama la
 callback della pressione. Il ciclo principale chiama la callback del rilascio solo quando il
@@ -334,6 +345,8 @@ while True:
 </table>
 
 ## 3. Gestore con flag, attesa bloccante nel ciclo
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
 
 Il gestore riconosce la pressione, chiama la callback e alza il flag `premuto`, che fa scartare
 i rimbalzi successivi. Il ciclo principale aspetta il rilascio con `waitUntilInputLow()`
@@ -471,6 +484,8 @@ while True:
 
 ## 4. Gestore su entrambi i fronti e machine.Timer
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+
 Come la tecnica 2, ma il rilascio lo controlla un `machine.Timer` in modalità `ONE_SHOT`, che
 si riprogramma ogni 50 ms finché il pin non è rilasciato e senza fronti da almeno 50 ms. Il
 ciclo principale è del tutto libero. `Timer(0)` è un timer hardware di ESP32: su altre schede il
@@ -606,6 +621,8 @@ while True:
 </table>
 
 ## 5. Gestore su entrambi i fronti, livello stabile nel ciclo (conferma in due direzioni)
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
 
 È la tecnica `changed()` di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 5),
 con l'interrupt al posto delle letture continue. Il gestore fa **una cosa sola**: salva in
@@ -744,6 +761,8 @@ while True:
 </table>
 
 ## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
 
 È il lockout di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 6) con
 l'interrupt: il primo cambio di livello è creduto **subito**, nel gestore, e per i 50 ms

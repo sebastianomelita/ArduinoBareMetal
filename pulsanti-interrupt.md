@@ -27,24 +27,28 @@ quasi tutti i GPIO. Con `attachInterrupt()` si usa sempre `digitalPinToInterrupt
 ```mermaid
 flowchart TD
     C["Pulsante con interrupt<br/>attachInterrupt()"] --> D["Problema: ogni rimbalzo<br/>genera una nuova ISR"]
+    C --> LET["Letteratura: meglio<br/>un timer periodico;<br/>filtro RC + Schmitt"]
     C --> R["Regole per le ISR"]
-    D --> G1["Debounce dentro la ISR"]
-    D --> L["ISR sulla pressione,<br/>rilascio controllato fuori dalla ISR"]
+    D --> G1["Lockout:<br/>cambio creduto subito<br/>filtra solo i rimbalzi"]
+    D --> L["Pressione subito,<br/>rilascio confermato<br/>filtra rimbalzi e buchi,<br/>non lo spike"]
+    D --> S["Livello stabile<br/>in due direzioni<br/>filtra tutte e quattro<br/>le situazioni"]
     G1 --> T1["1. Fronti alternati<br/>+ DiffTimer"]
-    L --> T2["2. ISR su CHANGE registra i fronti<br/>rilascio controllato nel loop()"]
+    G1 --> T6["6. Lockout su CHANGE<br/>+ ricontrollo nel loop()<br/>(giochi)"]
+    T6 --> V["Variante: la ISR decide,<br/>il loop() agisce"]
+    L --> T2["2. ISR su CHANGE<br/>registra i fronti<br/>rilascio nel loop()"]
     L --> T3["3. ISR si disarma<br/>attesa bloccante nel loop()"]
-    L --> T4["4. ISR su CHANGE + Ticker (ESP32)<br/>rilascio controllato ogni 50 ms"]
-    D --> S["ISR registra solo i tempi,<br/>il loop() conferma i livelli"]
-    S --> T5["5. ISR su CHANGE<br/>livello stabile nel loop()"]
-    G1 --> T6["6. Lockout su CHANGE (giochi)<br/>+ ricontrollo nel loop()"]
+    L --> T4["4. ISR su CHANGE<br/>+ Ticker (ESP32)<br/>rilascio ogni 50 ms"]
+    S --> T5["5. ISR su CHANGE<br/>registra i tempi<br/>livello stabile nel loop()"]
     R --> R1["brevi: niente delay() e Serial"]
     R --> R2["variabili condivise volatile"]
-    R --> R3["millis() si legge ma non avanza"]
+    R --> R3["millis() si legge<br/>ma non avanza"]
     R --> R4["riarmo: cancellare i fronti<br/>in sospeso (EIFR su AVR)"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4,T5,T6 tecnica
+    classDef fonte fill:#e8eef8,stroke:#4a6fa5
+    class T1,T2,T3,T4,T5,T6,V tecnica
     class R,R1,R2,R3,R4 regola
+    class LET fonte
 ```
 
 ## Confronto delle tecniche
@@ -63,26 +67,30 @@ flowchart TD
 Le stesse prove delle altre dispense (simulazione in pull-down, 5000 prove per caso, passo di
 1 ms), con le quattro situazioni critiche di [debounce-fenomeni.md](debounce-fenomeni.md):
 
-| Tecnica | A che cosa equivale | Rimbalzi (pressione e rilascio) | Buco a pulsante premuto | Spike a riposo |
-| --- | --- | --- | --- | --- |
-| 1. Fronti alternati nella ISR | lockout | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
-| 2. ISR su CHANGE + rilascio nel `loop()` | tecnica 5 bloccante, una direzione | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
-| 3. ISR che si disarma + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
-| 4. ISR su CHANGE + Ticker | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
-| 5. ISR su CHANGE + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
-| 6. Lockout su CHANGE + ricontrollo | lockout (`Lockout` di `urutils`) | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
+| Tecnica | Rimbalzi alla pressione | Rimbalzi al rilascio | Buco a pulsante premuto | Spike a riposo | Errore prodotto |
+| --- | --- | --- | --- | --- | --- |
+| 1. Fronti alternati nella ISR | ✔ 0 | ✔ 0 | ✘ 4046 su 5000 | ✘ 5000 su 5000 | buco: due rilasci; spike: due pressioni |
+| 2. ISR su CHANGE + rilascio nel `loop()` | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 3. ISR che si disarma + attesa bloccante | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 4. ISR su CHANGE + Ticker | ✔ 0 | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 | spike: pressione e rilascio falsi |
+| 5. ISR su CHANGE + livello stabile | ✔ 0 | ✔ 0 | ✔ 0 | ✔ 0 | nessuno |
+| 6. Lockout su CHANGE + ricontrollo | ✔ 0 | ✔ 0 | ✘ 4017 su 5000 | ✘ 5000 su 5000 | buco: rilascio e pressione falsi; spike: pressione e rilascio falsi |
 
-Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
-riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
-le situazioni, anche con un `loop()` che gira solo ogni 30 ms; il prezzo è che la pressione
-arriva 50 ms dopo l'ultimo rimbalzo. La tecnica 4 non è stata simulata: ha la logica della 2,
-cambia solo chi fa il controllo.
+Ogni situazione è simulata da sola, su 5000 prove. Le tecniche 1-4 e la 6 riconoscono la
+pressione **subito**, al primo fronte: per questo uno spike a riposo vale sempre come pressione.
+Le tecniche 1 e 6 sono lockout e sbagliano anche sul buco, quando cade più di 50 ms dopo la
+pressione. In testa a ogni tecnica un richiamo dice che cosa rileva e che cosa no.
+
+La tecnica 5 conferma anche la pressione e filtra tutte e quattro le situazioni, anche con un `loop()` che gira solo ogni 30 ms; il prezzo è che la pressione
+arriva 50 ms dopo l'ultimo rimbalzo.
 
 Nelle tecniche 1, 2 e 4 l'interrupt non viene mai disarmato: i rimbalzi fanno scattare la ISR
 più volte, ma ogni volta essa esegue solo poche istruzioni. Su ESP32 sono pochi microsecondi
 a chiamata: anche un centinaio di fronti per clic occupano meno di un millisecondo di CPU.
 
 ## 1. Debounce nella ISR con fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
 
 L'interrupt è armato su un solo fronte alla volta: prima quello di pressione, poi, appena la
 pressione è accettata, quello di rilascio, e così via. Ogni fronte viene accettato solo se
@@ -262,6 +270,8 @@ void loop() {
 
 ## 2. ISR su CHANGE, rilascio controllato nel loop()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+
 La ISR è armata su entrambi i fronti e non viene mai disarmata. A ogni fronte, rimbalzi
 compresi, salva l'istante in `tFronte`; se il pulsante risulta premuto e la pressione non è
 ancora stata segnalata, chiama la callback della pressione. Il `loop()` chiama la callback del
@@ -410,6 +420,8 @@ void loop() {
 </table>
 
 ## 3. ISR che si disarma, attesa bloccante nel loop()
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
 
 La ISR riconosce la pressione, chiama la callback e si disarma. Il `loop()` aspetta il rilascio
 con `waitUntilInputLow()` (pull-down) o `waitUntilInputHigh()` (pull-up), che lo bloccano
@@ -577,6 +589,8 @@ void loop() {
 
 ## 4. ISR su CHANGE e Ticker (solo ESP32)
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+
 Come la tecnica 2, ma il controllo del rilascio non lo fa il `loop()`: lo fa un timer
 hardware, il `Ticker` di ESP32, ogni 50 ms. Quando trova il pin rilasciato e nessun fronte
 negli ultimi 50 ms chiama la callback del rilascio; altrimenti si riprogramma. Il `loop()` è
@@ -726,6 +740,8 @@ void loop() {
 </table>
 
 ## 5. ISR su CHANGE, livello stabile nel loop() (conferma in due direzioni)
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
 
 È la tecnica `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 5), con
 l'interrupt al posto delle letture continue. La ISR fa **una cosa sola**: salva in `tFronte`
@@ -885,6 +901,8 @@ void loop() {
 Su ESP32 la ISR va dichiarata `void IRAM_ATTR isrChange()`.
 
 ## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
 
 È il lockout di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 6) con l'interrupt: il
 primo cambio di livello è creduto **subito**, nella ISR, e per i 50 ms successivi ogni altro
