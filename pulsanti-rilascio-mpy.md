@@ -619,6 +619,16 @@ per non vedere i rimbalzi che lo seguono.
 | `changed()` (livello stabile) | a ogni giro | dopo 50 ms di livello fermo, cioè 50 ms dopo l'ultimo rimbalzo | **prima** dell'evento: conferma |
 | Lockout (questa sezione) | a ogni giro, tranne nei 50 ms dopo un evento | **subito**, alla prima lettura | **dopo** l'evento: finestra in cui i cambi sono ignorati |
 
+<p align="center">
+  <img src="img/debounce-confronto-lockout.png" alt="Confronto fra lockout, schedulatore e changed() sullo stesso segnale" width="900">
+</p>
+
+La figura mette a confronto le tre tecniche sullo stesso segnale. Il lockout crede subito a ogni cambio e poi si blocca per 50 ms (in grigio): è il più pronto, ma sbaglia sul buco e sullo spike. Lo schedulatore legge una volta ogni 50 ms: riconosce gli eventi veri con un ritardo di 25 ms, e qui evita buco e spike solo perché nessuna lettura ci cade sopra. `changed()` aspetta 50 ms di livello fermo (in azzurro) **prima** di ogni evento: è in ritardo di 50 ms sull'ultimo rimbalzo, ma scarta buco e spike.
+
+<p align="center">
+  <img src="img/debounce-lockout-pulldown-mpy.gif" alt="Animazione della tecnica lockout: il primo cambio è creduto subito, poi 50 ms di blocco (pull-down)" width="900">
+</p>
+
 <table>
 <tr>
 <th>Pull-down: azione sul fronte di discesa</th>
@@ -730,105 +740,8 @@ accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ri
 giocatore e la risposta, e se un tasto scatta due volte il giocatore ripete il gesto. Non va bene per
 contare pezzi, comandare macchine o dove un pulsante è vecchio o i cavi sono disturbati.
 
-### Variante con `time.sleep_ms(50)`
-
-È la forma proposta dal Makeability Lab: invece di misurare la finestra di blocco con `t0`, dopo ogni
-evento il programma **si ferma** per 50 ms con `time.sleep_ms(50)`. Il codice è più corto e non serve la variabile
-`t0`, ma per 50 ms dopo ogni pressione e ogni rilascio il ciclo principale non fa nient'altro: è una tecnica
-**bloccante**.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```python
-from machine import Pin
-import time
-
-P1  = Pin(12, Pin.IN)   # pull-down esterno
-LED = Pin(13, Pin.OUT)
-stato = False
-stabile = 0   # livello accettato
-
-def doOnRise():
-    # PRESSIONE (fronte di salita):
-    # creduta alla prima lettura a 1.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa):
-    # creduto alla prima lettura a 0.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    val = P1.value()
-    if val != stabile:     # primo cambio:
-        stabile = val      # creduto subito
-        if stabile == 1:
-            doOnRise()
-        else:
-            doOnFall()
-        time.sleep_ms(50)  # finestra di blocco:
-                           # i rimbalzi passano
-                           # mentre si dorme
-```
-
-</td>
-<td>
-
-```python
-from machine import Pin
-import time
-
-P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
-LED = Pin(13, Pin.OUT)
-stato = False
-stabile = 1   # livello accettato
-
-def doOnFall():
-    # PRESSIONE (fronte di discesa):
-    # creduta alla prima lettura a 0.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnRise():
-    # RILASCIO (fronte di salita):
-    # creduto alla prima lettura a 1.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    val = P1.value()
-    if val != stabile:     # primo cambio:
-        stabile = val      # creduto subito
-        if stabile == 0:
-            doOnFall()
-        else:
-            doOnRise()
-        time.sleep_ms(50)  # finestra di blocco:
-                           # i rimbalzi passano
-                           # mentre si dorme
-```
-
-</td>
-</tr>
-</table>
-
-Il comportamento è lo stesso della versione con `t0`: 0 errori sui rimbalzi, rilascio riconosciuto
-subito, ma buchi e spike creduti. In simulazione lo spike a riposo è stato creduto **ogni volta**: qui
-non c'è la finestra iniziale che, nella versione con `t0`, all'accensione ignora i primi 50 ms.
+La variante con `time.sleep_ms(50)` al posto di `t0`, proposta dal Makeability Lab, è **bloccante**: si trova
+nella sezione 0 di [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md).
 
 ## Considerazioni finali: quale tecnica scegliere
 

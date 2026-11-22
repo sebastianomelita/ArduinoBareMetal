@@ -192,7 +192,9 @@ stesso modo, con un sensore, "oggetto presente" è lo stato e l'inizio del trans
 Come leggere la tabella, con il **principio** di ciascuna famiglia descritto a parole, prima di
 qualsiasi codice:
 
-- **Nessuna direzione confermata** (ad esempio la soluzione "trust the first change" del
+- **Nessuna direzione confermata** (la tecnica *lockout*: sezione 6 di
+  [pulsanti-rilascio.md](pulsanti-rilascio.md) e, con `delay()`, sezione 0 di
+  [pulsanti-bloccanti.md](pulsanti-bloccanti.md); è anche la soluzione "trust the first change" del
   [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html)): sono le più
   **pronte** in assoluto. Filtrano i rimbalzi (situazioni 1 e 2), ma non il buco né lo spike.
 
