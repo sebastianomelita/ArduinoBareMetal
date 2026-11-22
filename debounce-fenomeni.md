@@ -351,8 +351,91 @@ pressione e rilascio con lo stesso codice, e proprio per questo filtra anche lo 
 4. **Scegliete la tecnica**: solo rilascio se gli spike sono improbabili e serve una risposta
    immediata; livello stabile se l'ingresso è disturbato o l'errore costa caro.
 
+## 5. Pressione o rilascio: quando agire
+
+Finora abbiamo parlato di **come** riconoscere pressione e rilascio. Resta da decidere **su quale
+dei due** far partire l'azione. Nelle dispense si agisce di regola al rilascio, e non è una scelta
+solo nostra: è la convenzione prevalente nelle interfacce utente, per tre motivi.
+
+**1. Poter annullare.** Un pulsante a schermo agisce quando si rilascia il tasto del mouse, non
+quando lo si preme; lo stesso vale per il tasto Windows e per il tasto Alt (Raymond Chen, Microsoft).
+Il motivo principale è che, finché il tasto è premuto, l'utente può ancora cambiare idea: sposta il
+puntatore fuori dal pulsante, rilascia, e non succede niente. Le linee guida di accessibilità WCAG
+2.5.2 (*Pointer Cancellation*) ne fanno un requisito: l'azione va attivata al rilascio, perché chi ha
+difficoltà motorie preme spesso per errore. Per lo stesso motivo i pulsanti nativi di iOS e Android e
+l'evento `click` dei browser scattano al rilascio.
+
+**2. Capire che gesto era.** Alla pressione non si sa ancora se sarà un click, un doppio click o una
+pressione lunga: lo si sa solo quando il pulsante viene rilasciato (o quando scade un timeout). Le
+librerie Arduino più diffuse (OneButton, AceButton, Button2) funzionano così: OneButton segnala il click
+dopo pressione **e** rilascio, la pressione lunga dopo 800 ms di pressione mantenuta, e se è attivo
+anche il doppio click aspetta 400 ms prima di dichiarare il click singolo. Anche il suo debounce di
+default è di 50 ms.
+
+**3. Agire sul fronte confermato.** È l'argomento sviluppato in queste dispense. Se l'azione parte
+alla pressione, i rimbalzi del rilascio arrivano **dopo** l'azione e, con un debounce debole, possono
+essere letti come una nuova pressione (la pressione fantasma). Se l'azione parte al rilascio
+confermato, il fronte su cui si agisce è proprio quello che il debounce ha appena verificato.
+
+**Le eccezioni.** Si agisce alla pressione quando la **prontezza** è il requisito, o quando l'azione
+deve durare **quanto** la pressione:
+
+- la **digitazione** e i tastierini (lo nota lo stesso Chen; le WCAG ammettono l'attivazione alla
+  pressione quando emula una tastiera);
+- i **videogiochi**, dove pochi millisecondi di ritardo si sentono;
+- i comandi a **pressione mantenuta** (marcia a impulsi, *jog*, uomo presente): agiscono **a
+  livello**, finché il pulsante è premuto, e si fermano al rilascio;
+- l'**arresto**: un comando di stop che aspetta il rilascio sarebbe un errore di progetto.
+
+In sintesi: **si agisce al rilascio quando sbagliare costa più che aspettare, alla pressione quando la
+prontezza è il requisito.**
+
+## 6. Situazioni reali: quale metodo
+
+Le due scelte (**quando** agire e **come** filtrare) dipendono dalla situazione. La tabella le
+riassume per i casi più comuni; le tecniche sono quelle delle dispense.
+
+| Situazione reale | Quando agire | Tecnica consigliata | Perché |
+| --- | --- | --- | --- |
+| Pulsante di un pannello o di un menu (conferma, avanti, OK) | rilascio | una direzione (polling con `millis()`, `waitUntilNB`) | l'utente può "pentirsi"; ingresso vicino e poco disturbato |
+| Toggle di una luce o di un modo, contatore di pressioni | rilascio | due direzioni (`changed()` / `Debouncer`, schedulatore) | un errore è **permanente**: lo stato resta invertito o il conteggio sbagliato |
+| Pulsante con click, doppio click e pressione lunga | rilascio (o timeout) | due direzioni + timer di durata | il gesto si conosce solo alla fine |
+| Pulsante su cavo lungo, ingresso a 3,3 V/5 V vicino a motori o relè | rilascio | due direzioni; meglio ancora interfaccia a 24 V con optoisolatore | gli spike sono probabili: la tecnica a una direzione li scambia per pressioni |
+| Videogioco, strumento musicale, tastierino | pressione | lockout (cambio creduto subito, poi 50 ms di silenzio) | conta la prontezza; un errore raro è tollerato |
+| Marcia a impulsi, *jog*, comando ad azione mantenuta (*hold-to-run*) | a livello (finché premuto) | marcia confermata (livello stabile), arresto **immediato** al primo LOW, senza conferma | rilasciando il pulsante il movimento si deve fermare subito; ritardare l'arresto è peggio che fermarsi per un buco |
+| Start ciclo di una macchina | pressione confermata o rilascio | due direzioni (livello stabile) | la macchina non deve partire in modo inatteso, quindi uno spike non deve avviarla; la norma chiede un comando di avvio separato, ma non stabilisce su quale fronte |
+| Reset dopo un arresto (riarmo) | **rilascio** | due direzioni | EN ISO 13849-1, 5.2.2: il reset va accettato solo quando l'attuatore lascia la posizione di attivazione, così un pulsante bloccato o tenuto premuto non riarma la macchina |
+| Sensore a 24 V (induttivo, fotocellula PNP) che conta pezzi | fronte confermato | due direzioni; sul robot UR, programma PolyScope o script con conferma | niente rimbalzi, ma lo sfarfallio sul bordo del pezzo produce conteggi doppi |
+| Finecorsa meccanico | fronte confermato | due direzioni | ha rimbalzi come un pulsante, e un falso finecorsa ferma o confonde la macchina |
+| Ingresso letto da un programma con altri compiti | — | **non bloccante** (`millis()`, schedulatore, `changed()`) | una tecnica bloccante ferma tutto il resto finché il pulsante non viene rilasciato |
+| Programma dedicato al solo pulsante, didattica, robot UR | — | bloccante a letture continue (tecnica 5 o 6) | semplice da leggere; la 6 conferma anche la pressione |
+| **Arresto di emergenza** | — | **nessun debounce software** | EN ISO 13850 ed EN 60204-1: pulsante a fungo rosso su fondo giallo, contatti ad apertura positiva (diretta), comando che resta agganciato fino al riarmo, arresto di categoria 0 o 1. Il circuito va realizzato con componenti di sicurezza (relè o PLC di sicurezza); Arduino, ESP32 o un ingresso normale del robot possono solo **leggerne** lo stato |
+
+Tre regole riassumono la tabella:
+
+1. **Il costo dell'errore decide la direzione.** Se l'errore è un glitch transitorio (logica a
+   livello), basta filtrare il rilascio; se diventa permanente (toggle, contatori, start), serve il
+   livello stabile in **due** direzioni.
+2. **La prontezza decide il momento.** Se l'utente deve poter annullare o il gesto va classificato, si
+   agisce al rilascio; se conta la reazione, alla pressione (lockout o livello stabile, secondo quanto
+   costa un errore).
+3. **La sicurezza non passa dal debounce.** Quello che protegge le persone (arresto di emergenza,
+   comandi ad azione mantenuta usati come protezione) si realizza con componenti di sicurezza; il
+   software di un microcontrollore si limita a segnalarlo.
+
+> Le norme industriali confermano la scelta del rilascio dove conta la **sicurezza dell'avvio**: il
+> reset dopo un arresto deve agire al rilascio (EN ISO 13849-1). Dove conta la **sicurezza
+> dell'arresto**, invece, il comando agisce subito: l'arresto di emergenza alla pressione, il
+> comando ad azione mantenuta appena lo si rilascia.
+
 ## Riferimenti
 
 - [Jack Ganssle, A Guide to Debouncing](https://www.ganssle.com/debouncing.htm): misure dei rimbalzi su interruttori reali
 - [Makeability Lab, Debouncing](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html): sintesi delle misure e soluzioni per Arduino
+- [W3C, Understanding SC 2.5.2 Pointer Cancellation](https://www.w3.org/WAI/WCAG21/Understanding/pointer-cancellation): attivazione al rilascio per poter annullare
+- [Raymond Chen, Why do user interface actions tend to occur on the release, not on the press?](https://devblogs.microsoft.com/oldnewthing/20061216-13/?p=28703)
+- [ABB, Using an HMI for reset and start?](https://new.abb.com/low-voltage/products/safety-products/using-an-hmi-for-reset-and-start): requisiti del reset manuale secondo EN ISO 13849-1, 5.2.2
+- [Leuze, E-Stop ed E-Off](https://www.leuze.com/en-us/index.php/navigation/d1b3383b3d694042ac8d8eb0557d7cc8): arresto di emergenza secondo EN ISO 13850 ed EN 60204-1, categorie di arresto
+- [Axelent, Safe enabling solutions](https://www.axelent.com/safety-book/machine-safety/safe-enabling-solutions/): comandi ad azione mantenuta (*hold-to-run*)
+- [OneButton](https://github.com/mathertel/OneButton), [AceButton](https://github.com/bxparks/AceButton), [Button2](https://github.com/LennartHennigs/Button2): librerie Arduino per click, doppio click e pressione lunga
 - [pulsanti-bloccanti.md](pulsanti-bloccanti.md), [pulsanti-rilascio.md](pulsanti-rilascio.md), [debouncerFSM.md](debouncerFSM.md), [interfacce-digitali.md](interfacce-digitali.md)

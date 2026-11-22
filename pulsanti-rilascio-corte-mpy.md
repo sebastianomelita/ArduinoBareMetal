@@ -5,6 +5,7 @@
 Queste versioni hanno solo la callback del **rilascio**: `doOnFall()` nel pull-down,
 `doOnRise()` nel pull-up. Senza azione alla pressione il codice si accorcia.
 
+> Perché si agisce al rilascio, le eccezioni e quale metodo usare nelle situazioni reali: [debounce-fenomeni.md, sezioni 5 e 6](debounce-fenomeni.md#5-pressione-o-rilascio-quando-agire)
 > Le quattro situazioni critiche di un debouncer (rimbalzi alla pressione e al rilascio, buchi, spike) e come si sceglie il tempo di antirimbalzo: [debounce-fenomeni.md](debounce-fenomeni.md)
 > Versioni complete, con azione alla pressione e al rilascio: [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown-mpy.md](toggle-blink-pulldown-mpy.md)

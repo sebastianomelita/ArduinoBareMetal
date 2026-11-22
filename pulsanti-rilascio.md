@@ -14,6 +14,7 @@ In ogni esempio ci sono due callback: in quella della **pressione** vanno le azi
 alla pressione (facoltative, qui lasciata vuota); in quella del **rilascio** vanno le azioni
 al rilascio (qui, come esempio, un toggle del LED).
 
+> Perché si agisce al rilascio, le eccezioni e quale metodo usare nelle situazioni reali: [debounce-fenomeni.md, sezioni 5 e 6](debounce-fenomeni.md#5-pressione-o-rilascio-quando-agire)
 > Le quattro situazioni critiche di un debouncer (rimbalzi alla pressione e al rilascio, buchi, spike) e come si sceglie il tempo di antirimbalzo: [debounce-fenomeni.md](debounce-fenomeni.md)
 > Versioni corte, con la sola azione al rilascio: [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md)
 > Esempi con due task concorrenti, toggle e blink (pull-down): [toggle-blink-pulldown.md](toggle-blink-pulldown.md)
