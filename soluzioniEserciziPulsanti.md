@@ -16,18 +16,28 @@ Serve il **livello stabile in due direzioni** (`changed()`, sezione 5 di
 
 - conferma pressione e rilascio con **lo stesso ritardo** di 50 ms, quindi nella differenza fra i due
   istanti il ritardo si annulla;
-- scarta da sola le pressioni più brevi di 50 ms, come chiede la consegna;
+- scarta da sola le pressioni più brevi di 50 ms, come chiede la consegna: un tocco non arriva
+  nemmeno a `doOnRise()`, quindi non spegne i LED delle fasce;
 - uno spike a riposo non produce una misura falsa, cioè una dose di zucchero non richiesta.
 
 ### Programma
 
 ```cpp
 const byte P1  = 2;
-const byte LED = 13;
+const byte LED = 13;         // LED di pressione
+const byte LED_VERDE  = 11;  // poco zucchero
+const byte LED_GIALLO = 10;  // medio
+const byte LED_ROSSO  = 9;   // molto zucchero
 byte val0  = LOW;        // ultima lettura
 byte val00 = LOW;        // livello accettato
 unsigned long last = 0;  // istante dell'ultima variazione
 unsigned long tPress = 0;  // istante della pressione confermata
+
+void fascia(byte verde, byte giallo, byte rosso) {
+  digitalWrite(LED_VERDE, verde);
+  digitalWrite(LED_GIALLO, giallo);
+  digitalWrite(LED_ROSSO, rosso);
+}
 
 bool changed() {
   // vero solo quando il pin ha un
@@ -47,6 +57,7 @@ void doOnRise() {
   // PRESSIONE confermata: si registra l'istante
   tPress = millis();
   digitalWrite(LED, HIGH);
+  fascia(LOW, LOW, LOW);   // nuova misura: fasce spente
 }
 
 void doOnFall() {
@@ -58,10 +69,13 @@ void doOnFall() {
   Serial.print(" ms, ");
   if (durata < 500) {
     Serial.println("poco zucchero");
+    fascia(HIGH, LOW, LOW);
   } else if (durata <= 1500) {
     Serial.println("medio");
+    fascia(LOW, HIGH, LOW);
   } else {
     Serial.println("molto zucchero");
+    fascia(LOW, LOW, HIGH);
   }
 }
 
@@ -69,6 +83,9 @@ void setup() {
   Serial.begin(115200);
   pinMode(P1, INPUT);
   pinMode(LED, OUTPUT);
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_GIALLO, OUTPUT);
+  pinMode(LED_ROSSO, OUTPUT);
 }
 
 void loop() {
@@ -105,7 +122,7 @@ durata dei rimbalzi. Con `changed()` non serve nessuna correzione.
 | Situazione | Pressione subito, rilascio confermato | `changed()` |
 | --- | --- | --- |
 | Buco di 2 ms a pulsante premuto | nessun effetto: il buco dura meno di 50 ms | nessun effetto, ma se il buco cade nei primi 50 ms la pressione è confermata più tardi e la durata risulta più corta, fino a circa 50 ms |
-| Spike di 2 ms a riposo | **una misura falsa** di circa 52 ms: "poco zucchero" senza che nessuno abbia premuto (5000 casi su 5000 in simulazione) | nessuna misura |
+| Spike di 2 ms a riposo | **una misura falsa** di circa 52 ms: "poco zucchero" e LED verde senza che nessuno abbia premuto (5000 casi su 5000 in simulazione) | nessuna misura |
 | Tocco più breve di 50 ms | **viene misurato**, perché la durata calcolata include i 50 ms della conferma | nessuna misura, come chiede la consegna |
 
 **6. Facoltativa: LED lampeggiante durante la pressione.** Il lampeggio usa un secondo tempo,

@@ -17,14 +17,15 @@ Prima di scrivere il codice, rileggere le quattro situazioni critiche in [deboun
 Un distributore di bevande dosa lo zucchero in base a **quanto a lungo** si tiene premuto un pulsante: più lunga la pressione, più zucchero. Si vuole realizzare la parte che misura la durata della pressione.
 
 Specifiche:
-- un pulsante P1 e un LED;
-- il LED resta acceso finché il pulsante è premuto;
+- un pulsante P1, un LED di pressione e tre LED di colore diverso per le fasce: verde, giallo e rosso;
+- il LED di pressione resta acceso finché il pulsante è premuto;
 - al **rilascio**, sul monitor seriale viene stampata la durata della pressione in millisecondi;
-- la durata viene classificata in tre fasce, stampate insieme al valore:
-  - meno di 500 ms: **poco zucchero**;
-  - da 500 ms a 1500 ms: **medio**;
-  - oltre 1500 ms: **molto zucchero**;
-- una pressione più breve di 50 ms non deve produrre nessuna misura.
+- la durata viene classificata in tre fasce, stampate insieme al valore e indicate da un LED:
+  - meno di 500 ms: **poco zucchero**, LED verde;
+  - da 500 ms a 1500 ms: **medio**, LED giallo;
+  - oltre 1500 ms: **molto zucchero**, LED rosso;
+- il LED della fascia resta acceso fino alla pressione successiva, che spegne tutti e tre i LED;
+- una pressione più breve di 50 ms non deve produrre nessuna misura e non deve cambiare i LED.
 
 Richieste:
 1. Disegnare il diagramma temporale di una pressione con i rimbalzi alla pressione e al rilascio. Segnare l'istante in cui il programma riconosce la pressione, quello in cui conferma il rilascio, e la durata vera.
@@ -36,7 +37,8 @@ Richieste:
 
 Prove di collaudo:
 - dieci pressioni di durata diversa, confrontate con un cronometro (o con il tempo della simulazione Wokwi);
-- una pressione brevissima (un tocco): nessuna misura stampata;
+- una pressione per ciascuna fascia: si accende il LED giusto, e solo quello;
+- una pressione brevissima (un tocco): nessuna misura stampata e LED delle fasce invariati;
 - una pressione di qualche secondo: una sola misura, al rilascio.
 
 ## 2. Conteggio delle pressioni
