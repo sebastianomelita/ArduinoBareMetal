@@ -71,16 +71,18 @@ Questo progetto è utile come introduzione alle tecniche di debouncing e alla ge
 Dal punto di vista concettuale, ci sono due approcci al debouncing di un ingresso letto in polling:
 
 1. **Primo fronte + inibizione**:
-   - Segnala subito il primo cambiamento, poi ignora le variazioni successive finché il livello non resta stabile per il tempo di debounce
+   - Segnala subito il primo cambiamento, poi ignora tutte le variazioni per un tempo fisso, pari al tempo di debounce (*lockout*)
    - Vantaggio: risposta immediata
-   - Limite: non distingue un **disturbo** da un rilascio vero. Un'apertura breve del contatto a pulsante premuto viene segnalata come rilascio e, al termine dell'inibizione, il ritorno del livello alto viene segnalato come una nuova pressione: un toggle in più, un conteggio in più
+   - Limite: non distingue un **disturbo** da un rilascio vero. Un'apertura breve del contatto a pulsante premuto viene segnalata come rilascio e, al termine dell'inibizione, il ritorno del livello alto viene segnalato come una nuova pressione: un toggle in più, un conteggio in più. Allo stesso modo uno **spike** a pulsante rilasciato (un impulso breve sul pin, per esempio indotto da un cavo vicino a un motore) viene segnalato come una pressione
 
 2. **Livello stabile (approccio adottato)**:
    - Segnala il cambiamento solo quando il nuovo livello è rimasto costante per il tempo di debounce; ogni variazione fa ripartire il conteggio
-   - Vantaggio: filtra sia i rimbalzi sia i disturbi più brevi del tempo di debounce
+   - Vantaggio: filtra sia i rimbalzi sia i disturbi più brevi del tempo di debounce, in **tutte e due le direzioni**: le aperture brevi a pulsante premuto e gli spike a pulsante rilasciato
    - Limite: il cambio viene segnalato con un ritardo pari al tempo di debounce (50 ms, impercettibile per un pulsante azionato a mano)
 
-Il **limite di fondo** è comune a entrambi: un'apertura del contatto più lunga del tempo di debounce non si distingue da un rilascio vero. Il tempo di debounce va quindi scelto in base alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+Fra i due c'è una **via di mezzo**, usata nelle tecniche con `millis()` delle dispense sui pulsanti: la pressione è segnalata subito, alla prima lettura, mentre il rilascio è confermato da 50 ms di livello basso. Filtra rimbalzi e aperture brevi a pulsante premuto, ma non gli spike a riposo. Le tre famiglie e le quattro situazioni che un debouncer deve affrontare (rimbalzi alla pressione, rimbalzi al rilascio, buchi a pulsante premuto, spike a riposo) sono confrontate in [debounce-fenomeni.md](debounce-fenomeni.md).
+
+Il **limite di fondo** è comune a tutti: un'apertura del contatto più lunga del tempo di debounce non si distingue da un rilascio vero. Il tempo di debounce va quindi scelto in base alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
 
 Il cronogramma seguente mette a confronto i due approcci sullo stesso segnale (simulato): rimbalzi alla pressione e al rilascio, e un disturbo di 3 ms a pulsante premuto.
 
@@ -95,7 +97,7 @@ Con il primo approccio il disturbo produce quattro eventi e un toggle in più; c
 - **pin**: Pin di Arduino collegato al pulsante
 - **val**: Valore letto dal pin nella chiamata corrente
 - **val0**: Ultimo valore letto (anche se instabile), serve a rilevare le variazioni
-- **val00**: Ultimo livello stabile accettato
+- **val00**: Ultimo livello stabile accettato. È il valore da usare quando serve il livello del pulsante in un momento qualsiasi: ```val``` coincide con il livello stabile solo subito dopo un ```changed()``` che ha restituito ```true```, negli altri giri contiene l'ultima lettura grezza
 - **last**: Istante dell'ultima variazione letta
 - **debtime**: Tempo di debounce in millisecondi
 
@@ -129,6 +131,7 @@ Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riport
 - **Pulsante premuto/rilasciato**: viene segnalato dopo ```debtime``` ms di livello stabile
 - **Rimbalzi del contatto**: fanno ripartire il conteggio e vengono filtrati
 - **Disturbo breve a pulsante premuto**: fa ripartire il conteggio ma non genera eventi, perché il livello torna a quello accettato
+- **Spike a pulsante rilasciato**: stessa cosa al contrario: il livello alto non resta fermo per ```debtime``` ms e non viene accettato, quindi nessuna pressione falsa
 - **Nuova pressione**: viene segnalata come nuovo evento dopo il suo tempo di stabilità
 
 
@@ -149,7 +152,7 @@ flowchart LR
 
 La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti del debouncer, è tutto **incapsulato** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default). Il rilevamento del fronte (pressione o rilascio) è lasciato al programma principale, che legge il nuovo livello in ```val``` quando ```changed()``` restituisce ```true```.
 
-Il codice è scritto in logica **"prima gli ingressi"**: ```changed()``` esamina prima la lettura (```val != val0```) e lo **stato** non ha una variabile propria, ma è **implicito** nel confronto tra ```val0``` e ```val00```. La stessa macchina a stati, scritta in logica **"prima gli stati"** con una variabile di stato esplicita, è in [DEBOUNCER 2](debouncer2.md).
+Il codice è scritto in logica **"prima gli ingressi"**: ```changed()``` esamina prima la lettura (```val != val0```) e lo **stato** non ha una variabile propria, ma è **implicito** nel confronto tra ```val0``` e ```val00```. La stessa macchina a stati, scritta in logica **"prima gli stati"** con una variabile di stato esplicita, è in [DEBOUNCER 2](debouncerFSM2.md).
 
 L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, DEBOUNCETIME, LOW, LOW, 0}``` utilizzando la notazione ```{}``` che racchiude la **lista** dei **membri contigui** da inizializzare dentro le **parentesi graffe**, nell'ordine in cui sono dichiarati. Con la resistenza di pull-down il pulsante a riposo legge LOW, quindi ```val0``` e ```val00``` partono da LOW: se partissero dal livello opposto, all'accensione verrebbe segnalato un cambio che non c'è. Con il pull-up interno (```INPUT_PULLUP```) partirebbero da HIGH.
 
@@ -266,7 +269,11 @@ void loop() {
 }
 ```
 
-- Simulazione su Esp32 con Wowki dell'esempio base esposto sopra: https://wokwi.com/projects/426050075651040257
-- Simulazione su Arduino Nano con Wowki del driver di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
+**Perché qui il toggle agisce alla pressione.** Nelle dispense sui pulsanti l'azione è di regola al rilascio, perché con le tecniche che confermano solo il rilascio è la scelta che evita la pressione fantasma. Con il livello stabile anche la pressione è confermata: agire alla pressione è sicuro, e il pulsante risponde 50 ms dopo l'ultimo rimbalzo invece di aspettare il rilascio. Per agire al rilascio basta cambiare la condizione in ```buttonToggle.val == LOW```.
 
->[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
+**Nota su ESP32.** GPIO 12 è un pin di *strapping*: il suo livello all'accensione sceglie la tensione della memoria flash. Con il LED collegato verso GND tramite la resistenza, come qui, non ci sono problemi; se il LED fosse collegato verso 3V3 (attivo basso) potrebbe impedire l'avvio della scheda.
+
+- Simulazione su Esp32 con Wokwi dell'esempio base esposto sopra: https://wokwi.com/projects/426050075651040257
+- Simulazione su Arduino Nano con Wokwi del driver di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
+
+>[Torna all'indice](indexstatifiniti.md) >[versione in Python](debouncerFSM_py.md)

@@ -1,6 +1,6 @@
 
 
->[Torna all'indice](indexstatifiniti_py.md) >[versione in C++](indexstatifiniti.md)
+>[Torna all'indice](indexstatifiniti.md) >[versione in C++](debouncerFSM2.md)
 
 #  **DEBOUNCER 2**
 
@@ -75,16 +75,18 @@ Questo progetto è utile come introduzione alle tecniche di debouncing e alla ge
 Dal punto di vista concettuale, ci sono due approcci al debouncing di un ingresso letto in polling:
 
 1. **Primo fronte + inibizione**:
-   - Segnala subito il primo cambiamento, poi ignora le variazioni successive finché il livello non resta stabile per il tempo di debounce
+   - Segnala subito il primo cambiamento, poi ignora tutte le variazioni per un tempo fisso, pari al tempo di debounce (*lockout*)
    - Vantaggio: risposta immediata
-   - Limite: non distingue un **disturbo** da un rilascio vero. Un'apertura breve del contatto a pulsante premuto viene segnalata come rilascio e, al termine dell'inibizione, il ritorno del livello alto viene segnalato come una nuova pressione: un toggle in più, un conteggio in più
+   - Limite: non distingue un **disturbo** da un rilascio vero. Un'apertura breve del contatto a pulsante premuto viene segnalata come rilascio e, al termine dell'inibizione, il ritorno del livello alto viene segnalato come una nuova pressione: un toggle in più, un conteggio in più. Allo stesso modo uno **spike** a pulsante rilasciato (un impulso breve sul pin, per esempio indotto da un cavo vicino a un motore) viene segnalato come una pressione
 
 2. **Livello stabile (approccio adottato)**:
    - Segnala il cambiamento solo quando il nuovo livello è rimasto costante per il tempo di debounce; ogni variazione fa ripartire il conteggio
-   - Vantaggio: filtra sia i rimbalzi sia i disturbi più brevi del tempo di debounce
+   - Vantaggio: filtra sia i rimbalzi sia i disturbi più brevi del tempo di debounce, in **tutte e due le direzioni**: le aperture brevi a pulsante premuto e gli spike a pulsante rilasciato
    - Limite: il cambio viene segnalato con un ritardo pari al tempo di debounce (50 ms, impercettibile per un pulsante azionato a mano)
 
-Il **limite di fondo** è comune a entrambi: un'apertura del contatto più lunga del tempo di debounce non si distingue da un rilascio vero. Il tempo di debounce va quindi scelto in base alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
+Fra i due c'è una **via di mezzo**, usata nelle tecniche con `time.ticks_ms()` delle dispense sui pulsanti: la pressione è segnalata subito, alla prima lettura, mentre il rilascio è confermato da 50 ms di livello basso. Filtra rimbalzi e aperture brevi a pulsante premuto, ma non gli spike a riposo. Le tre famiglie e le quattro situazioni che un debouncer deve affrontare (rimbalzi alla pressione, rimbalzi al rilascio, buchi a pulsante premuto, spike a riposo) sono confrontate in [debounce-fenomeni.md](debounce-fenomeni.md).
+
+Il **limite di fondo** è comune a tutti: un'apertura del contatto più lunga del tempo di debounce non si distingue da un rilascio vero. Il tempo di debounce va quindi scelto in base alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
 
 Il cronogramma seguente mette a confronto i due approcci sullo stesso segnale (simulato): rimbalzi alla pressione e al rilascio, e un disturbo di 3 ms a pulsante premuto.
 
@@ -99,7 +101,7 @@ Con il primo approccio il disturbo produce quattro eventi e un toggle in più; c
 - **pin**: oggetto ```Pin``` collegato al pulsante
 - **val**: Valore letto dal pin nella chiamata corrente
 - **val0**: Ultimo valore letto (anche se instabile), serve a rilevare le variazioni
-- **val00**: Ultimo livello stabile accettato
+- **val00**: Ultimo livello stabile accettato. È il valore da usare quando serve il livello del pulsante in un momento qualsiasi: ```val``` coincide con il livello stabile solo subito dopo un ```changed()``` che ha restituito ```True```, negli altri giri contiene l'ultima lettura grezza
 - **last**: Istante dell'ultima variazione letta
 - **debtime**: Tempo di debounce in millisecondi
 - **debState**: Variabile di stato (False = STABILE, True = ATTESA DI CONFERMA)
@@ -136,6 +138,7 @@ Poiché il segnale è binario, in ATTESA DI CONFERMA una nuova variazione riport
 - **Pulsante premuto/rilasciato**: viene segnalato dopo ```debtime``` ms di livello stabile
 - **Rimbalzi del contatto**: fanno ripartire il conteggio e vengono filtrati
 - **Disturbo breve a pulsante premuto**: fa ripartire il conteggio ma non genera eventi, perché il livello torna a quello accettato
+- **Spike a pulsante rilasciato**: stessa cosa al contrario: il livello alto non resta fermo per ```debtime``` ms e non viene accettato, quindi nessuna pressione falsa
 - **Nuova pressione**: viene segnalata come nuovo evento dopo il suo tempo di stabilità
 
 
@@ -178,7 +181,7 @@ Volendo rendere visibile il confronto, si può scrivere in forma esplicita, con 
 
 La forma esplicita si legge più vicino al diagramma ("tornato al livello accettato", "stabile su un livello nuovo"); quella usata nell'esempio mostra che basta confrontare ogni lettura con la precedente. La semplificazione vale perché un pin digitale ha solo due valori: con un ingresso a più valori servirebbe il confronto esplicito con ```val00```.
 
-L'inizializzazione degli **oggetti** è effettuata al momento della creazione tramite il **costruttore** ```__init__()```: ```buttonMomentary = Button(BUTTON1_PIN)``` usa il tempo di stabilità predefinito ```DEBOUNCETIME```, ```buttonMomentary = Button(BUTTON1_PIN, 80)``` ne imposta uno diverso. Il costruttore configura il pin come ingresso e ne **legge il livello iniziale**, che diventa il livello accettato: non serve indicarlo a mano e non c'è il rischio di un evento falso all'accensione, sia con il pull-down sia con il pull-up.
+L'inizializzazione degli **oggetti** è effettuata al momento della creazione tramite il **costruttore** ```__init__()```: ```buttonMomentary = Button(BUTTON1_PIN)``` configura il pin come ingresso senza resistenze interne (pull-down esterno) e usa il tempo di stabilità predefinito ```DEBOUNCETIME```; ```Button(BUTTON1_PIN, Pin.PULL_UP)``` attiva il pull-up interno, ```Button(BUTTON1_PIN, None, 80)``` imposta un tempo diverso. Il costruttore configura il pin e **poi** ne **legge il livello iniziale**, che diventa il livello accettato: non serve indicarlo a mano e non c'è il rischio di un evento falso all'accensione, né con il pull-down né con il pull-up. L'ordine conta: con il pull-up interno, se il pin venisse letto prima di attivare la resistenza, la lettura sarebbe casuale (pin flottante) e all'accensione potrebbe arrivare un cambio che non c'è.
 
 L'ultimo **valore valido** è quello che permane **immutato** per tutto l'**intervallo di debounce**, misurato a partire dall'**ultima variazione**.
 
@@ -219,11 +222,13 @@ class Button:
     Uso: chiamare changed() a ogni giro del ciclo principale; dopo un True,
     val contiene il nuovo livello stabile.
     """
-    def __init__(self, pin_num, debtime=DEBOUNCETIME):
+    def __init__(self, pin_num, pull=None, debtime=DEBOUNCETIME):
         # Scelta: il livello iniziale si legge dal pin, così non va indicato
-        # a mano e non si rischia un evento falso all'accensione
-        # (vale sia con pull-down sia con pull-up).
-        self.pin = Pin(pin_num, Pin.IN)   # prima si configura il pin come ingresso...
+        # a mano e non si rischia un evento falso all'accensione.
+        # pull: None con pull-down o pull-up esterni, Pin.PULL_UP con il
+        # pull-up interno. Il pin va configurato PRIMA della lettura: senza
+        # la resistenza attiva sarebbe flottante e il livello iniziale casuale.
+        self.pin = Pin(pin_num, Pin.IN, pull)  # prima si configura il pin...
         self.debtime = debtime
         self.val = self.pin.value()       # ...poi si legge il livello iniziale
         self.val0 = self.val
@@ -279,6 +284,10 @@ while True:
     time.sleep_ms(1)    # solo per non bloccare il simulatore; il ciclo deve restare veloce
 ```
 
+**Perché qui il toggle agisce alla pressione.** Nelle dispense sui pulsanti l'azione è di regola al rilascio, perché con le tecniche che confermano solo il rilascio è la scelta che evita la pressione fantasma. Con il livello stabile anche la pressione è confermata: agire alla pressione è sicuro, e il pulsante risponde 50 ms dopo l'ultimo rimbalzo invece di aspettare il rilascio. Per agire al rilascio basta cambiare la condizione in ```buttonToggle.val == 0```.
+
+**Nota su ESP32.** GPIO 12 è un pin di *strapping*: il suo livello all'accensione sceglie la tensione della memoria flash. Con il LED collegato verso GND tramite la resistenza, come qui, non ci sono problemi; se il LED fosse collegato verso 3V3 (attivo basso) potrebbe impedire l'avvio della scheda.
+
 Il circuito è lo stesso della versione C++: pulsanti su GPIO 14 e 23 con pull-down esterno, LED su GPIO 13 e 12.
 
->[Torna all'indice](indexstatifiniti_py.md) >[versione in C++](indexstatifiniti.md)
+>[Torna all'indice](indexstatifiniti.md) >[versione in C++](debouncerFSM2.md)
