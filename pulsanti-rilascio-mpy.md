@@ -741,6 +741,36 @@ accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ri
 giocatore e la risposta, e se un tasto scatta due volte il giocatore ripete il gesto. Non va bene per
 contare pezzi, comandare macchine o dove un pulsante è vecchio o i cavi sono disturbati.
 
+**La stessa logica è nella libreria.** In `urutils.py` c'è la classe `Lockout`, con gli stessi
+attributi `stato` e `t0` e il metodo `changed()`: un oggetto per pulsante, creato con il livello di
+riposo.
+
+```python
+from urutils import Lockout
+lk = Lockout(0)                  # pull-down: riposo 0 (con il pull-up: Lockout(1))
+
+while True:
+    if lk.changed(P1, 50):       # cambio creduto subito, poi 50 ms di blocco
+        if lk.stato == 1:
+            doOnRise()           # pressione
+        else:
+            doOnFall()           # rilascio
+```
+
+Un uso tipico è il **tasto di un gioco**, dove l'azione deve partire alla pressione senza ritardo:
+
+```python
+lk = Lockout(0)                  # un oggetto per pulsante; pull-up: Lockout(1)
+
+while True:
+    if lk.changed(P1, 50):       # cambio creduto subito, poi 50 ms di blocco
+        if lk.stato == 1:
+            salta()              # pressione: nessun ritardo
+```
+
+Per un toggle o un contatore, invece, conviene `Debouncer` (sezione 5): lì un buco o uno spike
+lascerebbero un errore permanente.
+
 La variante con `time.sleep_ms(50)` al posto di `t0`, proposta dal Makeability Lab, è **bloccante**: si trova
 nella sezione 0 di [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md).
 

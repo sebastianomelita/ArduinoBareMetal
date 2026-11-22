@@ -821,6 +821,42 @@ accettabile: i **videogiochi** sono l'esempio tipico, perché non c'è nessun ri
 giocatore e la risposta, e se un tasto scatta due volte il giocatore ripete il gesto. Non va bene per
 contare pezzi, comandare macchine o dove un pulsante è vecchio o i cavi sono disturbati.
 
+**La stessa logica è nella libreria.** In `urutils.h` c'è la struct `Lockout`, con le stesse
+variabili `stato` e `t0` e il metodo `changed()`: un oggetto per pulsante, creato con il livello di
+riposo.
+
+```cpp
+#include "urutils.h"
+Lockout lk(LOW);                 // pull-down: riposo LOW (con il pull-up: Lockout lk(HIGH);)
+
+void loop() {
+  if (lk.changed(P1, 50)) {      // cambio creduto subito, poi 50 ms di blocco
+    if (lk.stato == HIGH) {
+      doOnRise();                // pressione
+    } else {
+      doOnFall();                // rilascio
+    }
+  }
+}
+```
+
+Un uso tipico è il **tasto di un gioco**, dove l'azione deve partire alla pressione senza ritardo:
+
+```cpp
+Lockout lk(LOW);                 // un oggetto per pulsante; pull-up: lk(HIGH)
+
+void loop() {
+  if (lk.changed(P1, 50)) {      // cambio creduto subito, poi 50 ms di blocco
+    if (lk.stato == HIGH) {
+      salta();                   // pressione: nessun ritardo
+    }
+  }
+}
+```
+
+Per un toggle o un contatore, invece, conviene `Debouncer` (sezione 5): lì un buco o uno spike
+lascerebbero un errore permanente.
+
 La variante con `delay(50)` al posto di `t0`, proposta dal Makeability Lab, è **bloccante**: si trova
 nella sezione 0 di [pulsanti-bloccanti.md](pulsanti-bloccanti.md).
 
