@@ -36,13 +36,14 @@ flowchart TD
     L --> T4["4. ISR su CHANGE + Ticker (ESP32)<br/>rilascio controllato ogni 50 ms"]
     D --> S["ISR registra solo i tempi,<br/>il loop() conferma i livelli"]
     S --> T5["5. ISR su CHANGE<br/>livello stabile nel loop()"]
+    G1 --> T6["6. Lockout su CHANGE (giochi)<br/>+ ricontrollo nel loop()"]
     R --> R1["brevi: niente delay() e Serial"]
     R --> R2["variabili condivise volatile"]
     R --> R3["millis() si legge ma non avanza"]
     R --> R4["riarmo: cancellare i fronti<br/>in sospeso (EIFR su AVR)"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4,T5 tecnica
+    class T1,T2,T3,T4,T5,T6 tecnica
     class R,R1,R2,R3,R4 regola
 ```
 
@@ -55,6 +56,7 @@ flowchart TD
 | 3. ISR che si disarma + attesa bloccante | nel `loop()` | nella ISR | nel `loop()` | no, fermo finché il pulsante è premuto |
 | 4. ISR su CHANGE + Ticker (ESP32) | ISR (tempi) e Ticker (decisione) | nella ISR | nel Ticker | sì, del tutto |
 | 5. ISR su CHANGE + livello stabile nel loop() | ISR (tempi) e `loop()` (decisione) | nel `loop()`, 50 ms dopo | nel `loop()` | sì, anche lento |
+| 6. Lockout su CHANGE + ricontrollo | nella ISR (blocco di 50 ms) e ricontrollo nel `loop()` | nella ISR, subito | nella ISR, subito | sì, anche lento |
 
 ### Le quattro situazioni critiche
 
@@ -68,6 +70,7 @@ Le stesse prove delle altre dispense (simulazione in pull-down, 5000 prove per c
 | 3. ISR che si disarma + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
 | 4. ISR su CHANGE + Ticker | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
 | 5. ISR su CHANGE + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
+| 6. Lockout su CHANGE + ricontrollo | lockout (`Lockout` di `urutils`) | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
 
 Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
 riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
@@ -881,6 +884,170 @@ void loop() {
 
 Su ESP32 la ISR va dichiarata `void IRAM_ATTR isrChange()`.
 
+## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
+
+È il lockout di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 6) con l'interrupt: il
+primo cambio di livello è creduto **subito**, nella ISR, e per i 50 ms successivi ogni altro
+fronte è ignorato. Pressione e rilascio arrivano senza ritardo e senza aspettare il `loop()`:
+è la scelta per i **giochi**, dove conta la prontezza e un errore raro è tollerato. Non filtra
+buchi e spike (vedi la tabella delle quattro situazioni).
+
+**Perché serve il ricontrollo nel `loop()`.** Con la sola ISR, se l'ultimo fronte di un rimbalzo
+o di un disturbo cade dentro i 50 ms di blocco, viene ignorato e **nessun altro fronte arriverà**:
+il livello creduto resta sbagliato finché non si tocca di nuovo il pulsante. Nel gioco, il
+personaggio continuerebbe a correre a pulsante rilasciato. In simulazione, senza ricontrollo il
+livello creduto è rimasto sbagliato fino a circa un secondo (cioè fino alla pressione successiva);
+con il ricontrollo, al massimo circa 50 ms. Il `loop()` chiama la stessa funzione `prova()`
+della ISR, con gli interrupt disabilitati perché non si sovrappongano: se il blocco è scaduto e
+il pin non corrisponde al livello creduto, lo corregge. È il "ritardo al fronte successivo" del
+lockout: un cambio caduto nel blocco viene recuperato appena il blocco finisce.
+
+<table>
+<tr>
+<th>Pull-down</th>
+<th>Pull-up</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+const byte LED = 13;
+volatile byte stabile = LOW; // creduto
+volatile unsigned long t0 = 0;
+// istante dell'ultimo evento
+
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // azioni immediate, per esempio
+  // il salto del personaggio.
+  // Eseguita nella ISR: breve!
+  digitalWrite(LED, HIGH);
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // azioni al rilascio.
+  // Eseguita nella ISR: breve!
+  digitalWrite(LED, LOW);
+}
+
+void prova() {
+  // cambio creduto subito, ma non
+  // nei 50 ms dopo l'ultimo evento
+  byte val = digitalRead(P1);
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+  }
+}
+
+void isrChange() {
+  prova();   // reazione al fronte
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  // ricontrollo: recupera un cambio
+  // caduto nei 50 ms di blocco
+  noInterrupts();
+  prova();
+  interrupts();
+  // qui altri compiti,
+  // anche lenti
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+const byte LED = 13;
+volatile byte stabile = HIGH; // creduto
+volatile unsigned long t0 = 0;
+// istante dell'ultimo evento
+
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // azioni immediate, per esempio
+  // il salto del personaggio.
+  // Eseguita nella ISR: breve!
+  digitalWrite(LED, HIGH);
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // azioni al rilascio.
+  // Eseguita nella ISR: breve!
+  digitalWrite(LED, LOW);
+}
+
+void prova() {
+  // cambio creduto subito, ma non
+  // nei 50 ms dopo l'ultimo evento
+  byte val = digitalRead(P1);
+  if (val != stabile &&
+      millis() - t0 > 50) {
+    stabile = val;
+    t0 = millis();
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+  }
+}
+
+void isrChange() {
+  prova();   // reazione al fronte
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  // ricontrollo: recupera un cambio
+  // caduto nei 50 ms di blocco
+  noInterrupts();
+  prova();
+  interrupts();
+  // qui altri compiti,
+  // anche lenti
+}
+```
+
+</td>
+</tr>
+</table>
+
+Le callback vengono eseguite nella ISR o nel `loop()` a interrupt disabilitati: in entrambi i
+casi devono essere brevi. Su ESP32 vanno dichiarate `IRAM_ATTR` sia `isrChange()` sia `prova()`.
+
+**Differenza con la tecnica 1.** Anche la 1 è un lockout, ma arma un fronte alla volta e non
+ricontrolla il livello: dopo un buco o uno spike produce eventi in più. La 6 reagisce a tutti e
+due i fronti e, grazie al ricontrollo, il livello creduto torna sempre giusto entro 50 ms.
+
 ## Regole per le ISR
 
 Valgono per tutte le tecniche:
@@ -927,7 +1094,7 @@ Valgono per tutte le tecniche:
   averne accettato uno. È la tecnica 1, con i suoi limiti su buchi e spike.
 - **Quando gli interrupt sul pin servono davvero:** per risvegliare il micro dal sonno, e quando
   il `loop()` è troppo lento per leggere il pulsante abbastanza spesso. In questi casi la scelta
-  più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio), meglio ancora con un
+  più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio; la 6 se serve la massima prontezza, come nei giochi), meglio ancora con un
   filtro RC seguito da un trigger di Schmitt.
 
 ## Considerazioni finali: quale tecnica scegliere

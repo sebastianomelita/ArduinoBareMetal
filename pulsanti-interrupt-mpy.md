@@ -33,12 +33,13 @@ flowchart TD
     L --> T4["4. Gestore su entrambi i fronti<br/>+ machine.Timer"]
     D --> S["Gestore registra solo i tempi,<br/>il ciclo conferma i livelli"]
     S --> T5["5. Gestore su entrambi i fronti<br/>livello stabile nel ciclo"]
+    G1 --> T6["6. Lockout su entrambi i fronti (giochi)<br/>+ ricontrollo nel ciclo"]
     R --> R1["brevi: niente sleep, print, cicli"]
     R --> R2["variabili condivise: global"]
     R --> R3["hard=True: niente allocazioni"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4,T5 tecnica
+    class T1,T2,T3,T4,T5,T6 tecnica
     class R,R1,R2,R3 regola
 ```
 
@@ -51,6 +52,7 @@ flowchart TD
 | 3. Gestore con flag + attesa bloccante | nel ciclo | nel gestore | nel ciclo | no, fermo finché il pulsante è premuto |
 | 4. Gestore su entrambi i fronti + Timer | gestore (tempi) e Timer (decisione) | nel gestore | nel Timer | sì, del tutto |
 | 5. Gestore su entrambi i fronti + livello stabile nel ciclo | gestore (tempi) e ciclo (decisione) | nel ciclo, 50 ms dopo | nel ciclo | sì, anche lento |
+| 6. Lockout su entrambi i fronti + ricontrollo | nel gestore (blocco di 50 ms) e ricontrollo nel ciclo | nel gestore, subito | nel gestore, subito | sì, anche lento |
 
 ### Le quattro situazioni critiche
 
@@ -65,6 +67,7 @@ prove per caso, passo di 1 ms; la logica è la stessa), con le quattro situazion
 | 3. Gestore con flag + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
 | 4. Gestore + Timer | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
 | 5. Gestore + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
+| 6. Lockout + ricontrollo | lockout (`Lockout` di `urutils`) | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
 
 Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
 riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
@@ -740,6 +743,148 @@ while True:
 </tr>
 </table>
 
+## 6. Lockout su entrambi i fronti: la versione pronta, per i giochi
+
+È il lockout di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 6) con
+l'interrupt: il primo cambio di livello è creduto **subito**, nel gestore, e per i 50 ms
+successivi ogni altro fronte è ignorato. Pressione e rilascio arrivano senza ritardo e senza
+aspettare il ciclo principale: è la scelta per i **giochi**, dove conta la prontezza e un errore
+raro è tollerato. Non filtra buchi e spike (vedi la tabella delle quattro situazioni).
+
+**Perché serve il ricontrollo nel ciclo.** Con il solo gestore, se l'ultimo fronte di un
+rimbalzo o di un disturbo cade dentro i 50 ms di blocco, viene ignorato e **nessun altro fronte
+arriverà**: il livello creduto resta sbagliato finché non si tocca di nuovo il pulsante. Nel
+gioco, il personaggio continuerebbe a correre a pulsante rilasciato. In simulazione, senza
+ricontrollo il livello creduto è rimasto sbagliato fino a circa un secondo; con il ricontrollo,
+al massimo circa 50 ms. Il ciclo chiama la stessa funzione `prova()` del gestore, con gli
+interrupt disabilitati perché non si sovrappongano: un cambio caduto nel blocco viene recuperato
+appena il blocco finisce.
+
+<table>
+<tr>
+<th>Pull-down</th>
+<th>Pull-up</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import machine, time
+
+P1  = Pin(12, Pin.IN)  # pull-down
+LED = Pin(13, Pin.OUT)
+stabile = 0  # livello creduto
+t0 = time.ticks_ms()  # ultimo evento
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # azioni immediate, per esempio
+    # il salto del personaggio.
+    # Eseguita nel gestore: breve!
+    LED.value(1)
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # azioni al rilascio.
+    # Eseguita nel gestore: breve!
+    LED.value(0)
+
+def prova():
+    # cambio creduto subito, ma non
+    # nei 50 ms dopo l'ultimo evento
+    global stabile, t0
+    val = P1.value()
+    if val != stabile and \
+       time.ticks_diff(time.ticks_ms(),
+                       t0) > 50:
+        stabile = val
+        t0 = time.ticks_ms()
+        if stabile == 1:
+            doOnRise()
+        else:
+            doOnFall()
+
+def isrChange(pin):
+    prova()  # reazione al fronte
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    # ricontrollo: recupera un cambio
+    # caduto nei 50 ms di blocco
+    irq = machine.disable_irq()
+    prova()
+    machine.enable_irq(irq)
+    # qui altri compiti, anche lenti
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import machine, time
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)
+LED = Pin(13, Pin.OUT)
+stabile = 1  # livello creduto
+t0 = time.ticks_ms()  # ultimo evento
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # azioni immediate, per esempio
+    # il salto del personaggio.
+    # Eseguita nel gestore: breve!
+    LED.value(1)
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # azioni al rilascio.
+    # Eseguita nel gestore: breve!
+    LED.value(0)
+
+def prova():
+    # cambio creduto subito, ma non
+    # nei 50 ms dopo l'ultimo evento
+    global stabile, t0
+    val = P1.value()
+    if val != stabile and \
+       time.ticks_diff(time.ticks_ms(),
+                       t0) > 50:
+        stabile = val
+        t0 = time.ticks_ms()
+        if stabile == 0:
+            doOnFall()
+        else:
+            doOnRise()
+
+def isrChange(pin):
+    prova()  # reazione al fronte
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    # ricontrollo: recupera un cambio
+    # caduto nei 50 ms di blocco
+    irq = machine.disable_irq()
+    prova()
+    machine.enable_irq(irq)
+    # qui altri compiti, anche lenti
+```
+
+</td>
+</tr>
+</table>
+
+**Differenza con la tecnica 1.** Anche la 1 è un lockout, ma attiva un fronte alla volta e non
+ricontrolla il livello: dopo un buco o uno spike produce eventi in più. La 6 reagisce a tutti e
+due i fronti e, grazie al ricontrollo, il livello creduto torna sempre giusto entro 50 ms.
+
 ## Regole per i gestori di interrupt
 
 - **Il gestore deve essere breve.** Niente `time.sleep_ms()`, niente `print()`, niente cicli:
@@ -777,7 +922,7 @@ while True:
   averne accettato uno. È la tecnica 1, con i suoi limiti su buchi e spike.
 - **Quando gli interrupt sul pin servono davvero:** per risvegliare il micro dal sonno, e quando
   il ciclo principale è troppo lento per leggere il pulsante abbastanza spesso. In questi casi la
-  scelta più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio), meglio ancora con
+  scelta più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio; la 6 se serve la massima prontezza, come nei giochi), meglio ancora con
   un filtro RC seguito da un trigger di Schmitt.
 
 ## Considerazioni finali: quale tecnica scegliere
