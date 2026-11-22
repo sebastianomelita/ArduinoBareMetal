@@ -13,10 +13,14 @@
 // Le indicazioni sono date per il pull-down; in pull-up si scambiano LOW e HIGH.
 // ===========================================================================
 
-// attesa evento con tempo minimo di attesa
-// Non legge pin: aspetta che c (impostata altrove, per esempio da una ISR) diventi vera,
-// controllandola ogni t ms. Non riguarda le quattro situazioni: il filtraggio, se
-// serve, va fatto da chi imposta c.
+// waitUntil(c, t): attesa BLOCCANTE di una variabile.
+// Ferma il programma finché la variabile c non diventa true, ricontrollandola ogni t ms.
+// Mentre il programma è fermo qui, c può cambiarla solo un interrupt (ISR).
+//   Esempio: una ISR sul pulsante mette premuto = true;
+//            nel loop: waitUntil(premuto, 10);  // aspetta la pressione
+// Debounce: la funzione non legge il pin, quindi da sola non filtra nessuna delle
+// quattro situazioni. Se c viene messa a true da una ISR sul pin, basta un rimbalzo
+// o uno spike per farla uscire: il filtro va fatto nella ISR o dopo l'uscita.
 inline void waitUntil(bool &c, unsigned t)
 {
     while(!c){
@@ -239,6 +243,18 @@ inline bool waitUntilInputHighNB(DiffTimer &d, int btn, unsigned t) {
 //   [2] rimbalzi al rilascio    : OK
 //   [3] buco a pulsante premuto : OK (il LOW non resta fermo t ms)
 //   [4] spike a riposo          : OK (l'HIGH non resta fermo t ms)
+// Esempio (toggle del LED al rilascio, pull-down):
+//   Debouncer deb(LOW);                  // un oggetto per pulsante; pull-up: deb(HIGH)
+//   void loop() {
+//     if (deb.changed(P1, 50)) {         // nuovo livello fermo da più di 50 ms
+//       if (deb.val00 == HIGH) {
+//         // pressione confermata
+//       } else {
+//         stato = !stato;                // rilascio confermato: toggle
+//         digitalWrite(LED, stato);
+//       }
+//     }
+//   }
 struct Debouncer {
   byte val0;
   byte val00;
@@ -273,6 +289,17 @@ struct Debouncer {
 //   [2] rimbalzi al rilascio    : OK (cadono nella finestra di blocco)
 //   [3] buco a pulsante premuto : NO (creduto come rilascio, poi pressione falsa)
 //   [4] spike a riposo          : NO (creduto come pressione, poi rilascio)
+// Esempio (tasto di un gioco: azione subito alla pressione, pull-down):
+//   Lockout lk(LOW);                     // un oggetto per pulsante; pull-up: lk(HIGH)
+//   void loop() {
+//     if (lk.changed(P1, 50)) {          // cambio creduto subito, poi 50 ms di blocco
+//       if (lk.stato == HIGH) {
+//         salta();                       // pressione: nessun ritardo
+//       } else {
+//         // rilascio
+//       }
+//     }
+//   }
 struct Lockout {
   byte stato;
   unsigned long t0;

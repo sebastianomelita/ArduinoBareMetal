@@ -12,11 +12,15 @@ import time
 
 
 def waitUntil(cond, t):
-    # attesa bloccante finché cond() non diventa vera, ricontrollando ogni t ms.
-    # In Python un bool non si passa per riferimento: si passa una funzione,
-    # ad esempio waitUntil(lambda: pronto, 10)
-    # Non riguarda le quattro situazioni: il filtraggio, se serve, va fatto da
-    # chi rende vera la condizione (una lettura ogni t ms non filtra nulla).
+    # waitUntil(cond, t): attesa BLOCCANTE di una condizione.
+    # Ferma il programma finché cond() non restituisce True, ricontrollandola ogni t ms.
+    # In Python un bool non si passa per riferimento: si passa una funzione.
+    #   Esempio: un interrupt sul pulsante mette premuto = True;
+    #            nel ciclo: waitUntil(lambda: premuto, 10)  # aspetta la pressione
+    # Debounce: se cond() legge una variabile, la funzione non filtra nessuna delle
+    # quattro situazioni (basta un rimbalzo o uno spike nell'interrupt per farla uscire).
+    # Se cond() legge il pin, per esempio lambda: P1.value() == 0, fa una lettura
+    # ogni t ms: letture discontinue, come la tecnica 1 di pulsanti-bloccanti-mpy.md.
     while not cond():
         time.sleep_ms(t)
 
@@ -222,6 +226,14 @@ class Debouncer(object):
     #   [2] rimbalzi al rilascio    : OK
     #   [3] buco a pulsante premuto : OK (il livello basso non resta fermo t ms)
     #   [4] spike a riposo          : OK (il livello alto non resta fermo t ms)
+    # Esempio (toggle del LED al rilascio, pull-down):
+    #   deb = Debouncer(0)                 # un oggetto per pulsante; pull-up: Debouncer(1)
+    #   while True:
+    #       if deb.changed(P1, 50):        # nuovo livello fermo da più di 50 ms
+    #           if deb.val00 == 1:
+    #               pass                   # pressione confermata
+    #           else:
+    #               LED.value(not LED.value())   # rilascio confermato: toggle
     def __init__(self, riposo=0):
         self.val0 = riposo
         self.val00 = riposo
@@ -252,6 +264,14 @@ class Lockout(object):
     #   [2] rimbalzi al rilascio    : OK (cadono nella finestra di blocco)
     #   [3] buco a pulsante premuto : NO (creduto come rilascio, poi pressione falsa)
     #   [4] spike a riposo          : NO (creduto come pressione, poi rilascio)
+    # Esempio (tasto di un gioco: azione subito alla pressione, pull-down):
+    #   lk = Lockout(0)                    # un oggetto per pulsante; pull-up: Lockout(1)
+    #   while True:
+    #       if lk.changed(P1, 50):         # cambio creduto subito, poi 50 ms di blocco
+    #           if lk.stato == 1:
+    #               salta()                # pressione: nessun ritardo
+    #           else:
+    #               pass                   # rilascio
     def __init__(self, riposo=0):
         self.stato = riposo
         self.t0 = time.ticks_ms()
