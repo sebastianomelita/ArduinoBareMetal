@@ -34,13 +34,15 @@ flowchart TD
     L --> T2["2. ISR su CHANGE registra i fronti<br/>rilascio controllato nel loop()"]
     L --> T3["3. ISR si disarma<br/>attesa bloccante nel loop()"]
     L --> T4["4. ISR su CHANGE + Ticker (ESP32)<br/>rilascio controllato ogni 50 ms"]
+    D --> S["ISR registra solo i tempi,<br/>il loop() conferma i livelli"]
+    S --> T5["5. ISR su CHANGE<br/>livello stabile nel loop()"]
     R --> R1["brevi: niente delay() e Serial"]
     R --> R2["variabili condivise volatile"]
     R --> R3["millis() si legge ma non avanza"]
     R --> R4["riarmo: cancellare i fronti<br/>in sospeso (EIFR su AVR)"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4 tecnica
+    class T1,T2,T3,T4,T5 tecnica
     class R,R1,R2,R3,R4 regola
 ```
 
@@ -52,6 +54,26 @@ flowchart TD
 | 2. ISR su CHANGE + rilascio nel loop() | ISR (tempi) e `loop()` (decisione) | nella ISR | nel `loop()` | sì, anche lento |
 | 3. ISR che si disarma + attesa bloccante | nel `loop()` | nella ISR | nel `loop()` | no, fermo finché il pulsante è premuto |
 | 4. ISR su CHANGE + Ticker (ESP32) | ISR (tempi) e Ticker (decisione) | nella ISR | nel Ticker | sì, del tutto |
+| 5. ISR su CHANGE + livello stabile nel loop() | ISR (tempi) e `loop()` (decisione) | nel `loop()`, 50 ms dopo | nel `loop()` | sì, anche lento |
+
+### Le quattro situazioni critiche
+
+Le stesse prove delle altre dispense (simulazione in pull-down, 5000 prove per caso, passo di
+1 ms), con le quattro situazioni critiche di [debounce-fenomeni.md](debounce-fenomeni.md):
+
+| Tecnica | A che cosa equivale | Rimbalzi (pressione e rilascio) | Buco a pulsante premuto | Spike a riposo |
+| --- | --- | --- | --- | --- |
+| 1. Fronti alternati nella ISR | lockout | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
+| 2. ISR su CHANGE + rilascio nel `loop()` | tecnica 5 bloccante, una direzione | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
+| 3. ISR che si disarma + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
+| 4. ISR su CHANGE + Ticker | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
+| 5. ISR su CHANGE + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
+
+Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
+riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
+le situazioni, anche con un `loop()` che gira solo ogni 30 ms; il prezzo è che la pressione
+arriva 50 ms dopo l'ultimo rimbalzo. La tecnica 4 non è stata simulata: ha la logica della 2,
+cambia solo chi fa il controllo.
 
 Nelle tecniche 1, 2 e 4 l'interrupt non viene mai disarmato: i rimbalzi fanno scattare la ISR
 più volte, ma ogni volta essa esegue solo poche istruzioni. Su ESP32 sono pochi microsecondi
@@ -700,6 +722,165 @@ void loop() {
 </tr>
 </table>
 
+## 5. ISR su CHANGE, livello stabile nel loop() (conferma in due direzioni)
+
+È la tecnica `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 5), con
+l'interrupt al posto delle letture continue. La ISR fa **una cosa sola**: salva in `tFronte`
+l'istante di ogni fronte, rimbalzi e disturbi compresi. Il `loop()` accetta un nuovo livello
+solo se è diverso da quello accettato (`stabile`) e da più di 50 ms non c'è stato nessun fronte.
+Una sola regola, per pressione e rilascio: un rimbalzo, un buco o uno spike producono fronti
+ravvicinati, il livello non resta fermo 50 ms e non viene accettato.
+
+- **La ISR non legge il pin e non guarda il verso del fronte.** Se un fronte si perde o arriva
+  dal verso sbagliato (succede su ESP32 con fronti lenti, vedi più sotto), conta solo che
+  `tFronte` venga aggiornato: il livello lo legge il `loop()` quando il pin è fermo.
+- **Prima la lettura, poi il controllo del tempo.** Se un fronte arriva fra le due istruzioni,
+  `tFronte` è già aggiornato e il livello letto non viene accettato; se arriva dopo, il livello
+  letto è quello di prima, fermo da 50 ms. Nell'ordine inverso un fronte caduto in mezzo
+  farebbe accettare un livello appena cambiato.
+- **Il limite.** Una pressione **intera** (pressione e rilascio) più breve di un giro del
+  `loop()` non viene vista, come in ogni tecnica che decide nel `loop()`. La tecnica 2 invece
+  la ricorda, perché la pressione la segnala la ISR.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = LOW;  // livello accettato
+volatile unsigned long tFronte = 0;
+// istante dell'ultimo fronte,
+// rimbalzi e disturbi compresi
+
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita):
+  // qui vanno le azioni alla
+  // pressione confermata.
+  // Eseguita nel loop().
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa):
+  // qui vanno le azioni al rilascio.
+  // Eseguita nel loop().
+  // Esempio: toggle del LED.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void isrChange() {
+  // resta sempre armata:
+  // registra solo l'istante
+  tFronte = millis();
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  byte val = digitalRead(P1); // prima
+  noInterrupts();   // copia
+  unsigned long t = tFronte;
+  interrupts();     // protetta
+  if (millis() - t > 50 &&    // poi
+      val != stabile) {
+    // nessun fronte da 50 ms:
+    // nuovo livello accettato
+    stabile = val;
+    if (stabile == HIGH) {
+      doOnRise();
+    } else {
+      doOnFall();
+    }
+  }
+  // qui altri compiti,
+  // anche lenti
+}
+```
+
+</td>
+<td>
+
+```cpp
+const byte P1  = 2;  // pin con interrupt
+const byte LED = 13;
+bool stato = LOW;
+byte stabile = HIGH; // livello accettato
+volatile unsigned long tFronte = 0;
+// istante dell'ultimo fronte,
+// rimbalzi e disturbi compresi
+
+
+void doOnFall() {
+  // PRESSIONE (fronte di discesa):
+  // qui vanno le azioni alla
+  // pressione confermata.
+  // Eseguita nel loop().
+}
+
+void doOnRise() {
+  // RILASCIO (fronte di salita):
+  // qui vanno le azioni al rilascio.
+  // Eseguita nel loop().
+  // Esempio: toggle del LED.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void isrChange() {
+  // resta sempre armata:
+  // registra solo l'istante
+  tFronte = millis();
+}
+
+void setup() {
+  pinMode(P1, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+  attachInterrupt(
+    digitalPinToInterrupt(P1),
+    isrChange, CHANGE);
+}
+
+void loop() {
+  byte val = digitalRead(P1); // prima
+  noInterrupts();   // copia
+  unsigned long t = tFronte;
+  interrupts();     // protetta
+  if (millis() - t > 50 &&    // poi
+      val != stabile) {
+    // nessun fronte da 50 ms:
+    // nuovo livello accettato
+    stabile = val;
+    if (stabile == LOW) {
+      doOnFall();
+    } else {
+      doOnRise();
+    }
+  }
+  // qui altri compiti,
+  // anche lenti
+}
+```
+
+</td>
+</tr>
+</table>
+
+Su ESP32 la ISR va dichiarata `void IRAM_ATTR isrChange()`.
+
 ## Regole per le ISR
 
 Valgono per tutte le tecniche:
@@ -723,6 +904,32 @@ Valgono per tutte le tecniche:
 - **Su ESP32** la ISR va dichiarata `IRAM_ATTR`, come nella tecnica 4, così resta in RAM e
   viene eseguita anche quando la memoria flash è occupata.
 
+## Cosa dice la letteratura
+
+- **Non collegare il pulsante direttamente a un interrupt.** È il consiglio di Jack Ganssle,
+  autore della guida più citata sui rimbalzi. Gli ingressi di interrupt sono sincronizzati
+  dentro il microcontrollore in modi diversi da modello a modello e poco documentati; un
+  rimbalzo di pochi nanosecondi può disturbare la logica interna; scartare i rimbalzi nella ISR
+  rende il codice disordinato e, se il micro dorme, ogni rimbalzo lo risveglia. La sua
+  alternativa è un **interrupt periodico di un timer** (per esempio ogni millisecondo) che legge
+  il pin, con un algoritmo di debounce semplice: è lo schedulatore di
+  [pulsanti-rilascio.md](pulsanti-rilascio.md) spostato in una ISR.
+- **Su ESP32 i fronti lenti generano molti interrupt.** Chi mette un condensatore sul pulsante
+  per "ammorbidire" il fronte segnala che, più il fronte è lento, più interrupt arrivano; e sono
+  segnalati gestori configurati su un solo fronte che scattano anche su quello opposto. Le
+  soluzioni proposte sono il polling o un trigger di Schmitt. Per questo, su ESP32, le tecniche
+  che non dipendono dal verso del fronte (2, 4 e 5) sono più robuste della tecnica 1, che conta
+  sull'alternanza esatta dei fronti.
+- **Sugli AVR il flag in sospeso resta.** `attachInterrupt()` non cancella il flag dell'interrupt,
+  che si imposta anche a interrupt staccato: riarmando, la ISR può scattare subito per un fronte
+  vecchio. È il motivo di `EIFR` nelle tecniche 1 e 3.
+- **Lo schema più diffuso nei corsi è il lockout:** ignorare gli interrupt per 50-100 ms dopo
+  averne accettato uno. È la tecnica 1, con i suoi limiti su buchi e spike.
+- **Quando gli interrupt sul pin servono davvero:** per risvegliare il micro dal sonno, e quando
+  il `loop()` è troppo lento per leggere il pulsante abbastanza spesso. In questi casi la scelta
+  più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio), meglio ancora con un
+  filtro RC seguito da un trigger di Schmitt.
+
 ## Considerazioni finali: quale tecnica scegliere
 
 **Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
@@ -736,7 +943,9 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 
 **Lo schedulatore (time tick)** legge il pulsante solo ogni ```TBASE```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```TBASE```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```TBASE```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
 
-**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
+**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ```loop()``` è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare. Come il polling
+veloce, filtrano solo il rilascio: contro lo spike a riposo serve la tecnica 5, che conferma il
+livello in entrambe le direzioni.
 
 ## Riferimenti
 
@@ -745,3 +954,8 @@ La condizione è che il ```loop()``` resti veloce: con ```delay()``` o funzioni 
 - [pulsanti-interrupt-semplice.md](pulsanti-interrupt-semplice.md): versione semplificata
 - [pulsanti-rilascio.md](pulsanti-rilascio.md): versioni senza interrupt
 - [Nick Gammon, Interrupts](http://www.gammon.com.au/interrupts): regole per le ISR e flag in sospeso
+- [Ganssle sugli interrupt (EE Journal)](https://eejournal.com/article/ultimate-guide-to-switch-debounce-part-7): perché non collegare un pulsante direttamente a un interrupt
+- [esp32.com, Interrupt triggering](https://esp32.com/viewtopic.php?p=21825): interrupt multipli con fronti lenti su ESP32
+- [arduino-esp32, issue 955](https://github.com/espressif/arduino-esp32/issues/955): interrupt che scatta sul fronte sbagliato
+- [Arduino, issue 510](https://github.com/arduino/Arduino/issues/510): `attachInterrupt()` non cancella il flag in sospeso
+- [debounce-fenomeni.md](debounce-fenomeni.md): le quattro situazioni critiche

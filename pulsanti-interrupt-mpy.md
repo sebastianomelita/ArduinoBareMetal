@@ -31,12 +31,14 @@ flowchart TD
     L --> T2["2. Gestore su entrambi i fronti<br/>rilascio controllato nel ciclo"]
     L --> T3["3. Gestore con flag<br/>attesa bloccante nel ciclo"]
     L --> T4["4. Gestore su entrambi i fronti<br/>+ machine.Timer"]
+    D --> S["Gestore registra solo i tempi,<br/>il ciclo conferma i livelli"]
+    S --> T5["5. Gestore su entrambi i fronti<br/>livello stabile nel ciclo"]
     R --> R1["brevi: niente sleep, print, cicli"]
     R --> R2["variabili condivise: global"]
     R --> R3["hard=True: niente allocazioni"]
     classDef tecnica fill:#e5f4e4,stroke:#4a8a46
     classDef regola fill:#f9eeda,stroke:#b07d2b
-    class T1,T2,T3,T4 tecnica
+    class T1,T2,T3,T4,T5 tecnica
     class R,R1,R2,R3 regola
 ```
 
@@ -48,6 +50,26 @@ flowchart TD
 | 2. Gestore su entrambi i fronti + ciclo | gestore (tempi) e ciclo (decisione) | nel gestore | nel ciclo | sì, anche lento |
 | 3. Gestore con flag + attesa bloccante | nel ciclo | nel gestore | nel ciclo | no, fermo finché il pulsante è premuto |
 | 4. Gestore su entrambi i fronti + Timer | gestore (tempi) e Timer (decisione) | nel gestore | nel Timer | sì, del tutto |
+| 5. Gestore su entrambi i fronti + livello stabile nel ciclo | gestore (tempi) e ciclo (decisione) | nel ciclo, 50 ms dopo | nel ciclo | sì, anche lento |
+
+### Le quattro situazioni critiche
+
+Le stesse prove delle altre dispense (simulazione della versione Arduino in pull-down, 5000
+prove per caso, passo di 1 ms; la logica è la stessa), con le quattro situazioni critiche di
+[debounce-fenomeni.md](debounce-fenomeni.md):
+
+| Tecnica | A che cosa equivale | Rimbalzi (pressione e rilascio) | Buco a pulsante premuto | Spike a riposo |
+| --- | --- | --- | --- | --- |
+| 1. Fronti alternati nel gestore | lockout | ✔ 0 | ✘ circa 4 su 5 | ✘ circa 7 su 10 |
+| 2. Gestore su entrambi i fronti + rilascio nel ciclo | tecnica 5 bloccante, una direzione | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
+| 3. Gestore con flag + attesa bloccante | tecnica 5 bloccante | ✔ 0 | ✔ 0 | ✘ 5000 su 5000 |
+| 4. Gestore + Timer | come la 2 (stessa logica) | ✔ | ✔ | ✘ |
+| 5. Gestore + livello stabile | `changed()` / `Debouncer`, due direzioni | ✔ 0 | ✔ 0 | ✔ 0 |
+
+Le tecniche 1-4 riconoscono la pressione **subito**, al primo fronte: per questo uno spike a
+riposo vale come pressione. La tecnica 5 conferma anche la pressione e filtra tutte e quattro
+le situazioni, anche con un ciclo lento; il prezzo è che la pressione arriva 50 ms dopo l'ultimo
+rimbalzo.
 
 In nessuna tecnica l'interrupt viene disattivato: i rimbalzi chiamano il gestore più volte,
 ma ogni volta esso esegue solo poche istruzioni.
@@ -580,6 +602,144 @@ while True:
 </tr>
 </table>
 
+## 5. Gestore su entrambi i fronti, livello stabile nel ciclo (conferma in due direzioni)
+
+È la tecnica `changed()` di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 5),
+con l'interrupt al posto delle letture continue. Il gestore fa **una cosa sola**: salva in
+`tFronte` l'istante di ogni fronte, rimbalzi e disturbi compresi. Il ciclo principale accetta un
+nuovo livello solo se è diverso da quello accettato (`stabile`) e da più di 50 ms non c'è stato
+nessun fronte. Una sola regola, per pressione e rilascio: un rimbalzo, un buco o uno spike
+producono fronti ravvicinati, il livello non resta fermo 50 ms e non viene accettato.
+
+- **Il gestore non legge il pin e non guarda il verso del fronte.** Se un fronte si perde o
+  arriva dal verso sbagliato (succede su ESP32 con fronti lenti, vedi più sotto), conta solo che
+  `tFronte` venga aggiornato: il livello lo legge il ciclo quando il pin è fermo.
+- **Prima la lettura, poi il controllo del tempo.** Se un fronte arriva fra le due istruzioni,
+  `tFronte` è già aggiornato e il livello letto non viene accettato; nell'ordine inverso un
+  fronte caduto in mezzo farebbe accettare un livello appena cambiato.
+- **Il limite.** Una pressione **intera** più breve di un giro del ciclo non viene vista; la
+  tecnica 2 invece la ricorda, perché la pressione la segnala il gestore.
+- `tFronte` parte da `time.ticks_ms()`: all'avvio il primo livello è accettato dopo 50 ms.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN)  # pull-down
+LED = Pin(13, Pin.OUT)
+stato = False
+stabile = 0  # livello accettato
+tFronte = time.ticks_ms()
+# istante dell'ultimo fronte,
+# rimbalzi e disturbi compresi
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # qui vanno le azioni alla
+    # pressione confermata.
+    # Eseguita nel ciclo principale.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # qui vanno le azioni al rilascio.
+    # Eseguita nel ciclo principale.
+    # Esempio: toggle del LED.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def isrChange(pin):
+    # registra solo l'istante
+    global tFronte
+    tFronte = time.ticks_ms()
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    val = P1.value()          # prima
+    if time.ticks_diff(time.ticks_ms(),
+                       tFronte) > 50 \
+       and val != stabile:    # poi
+        # nessun fronte da 50 ms:
+        # nuovo livello accettato
+        stabile = val
+        if stabile == 1:
+            doOnRise()
+        else:
+            doOnFall()
+    # qui altri compiti, anche lenti
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import time
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)
+LED = Pin(13, Pin.OUT)
+stato = False
+stabile = 1  # livello accettato
+tFronte = time.ticks_ms()
+# istante dell'ultimo fronte,
+# rimbalzi e disturbi compresi
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # qui vanno le azioni alla
+    # pressione confermata.
+    # Eseguita nel ciclo principale.
+    pass
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # qui vanno le azioni al rilascio.
+    # Eseguita nel ciclo principale.
+    # Esempio: toggle del LED.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def isrChange(pin):
+    # registra solo l'istante
+    global tFronte
+    tFronte = time.ticks_ms()
+
+P1.irq(trigger=Pin.IRQ_RISING |
+       Pin.IRQ_FALLING,
+       handler=isrChange)
+
+while True:
+    val = P1.value()          # prima
+    if time.ticks_diff(time.ticks_ms(),
+                       tFronte) > 50 \
+       and val != stabile:    # poi
+        # nessun fronte da 50 ms:
+        # nuovo livello accettato
+        stabile = val
+        if stabile == 0:
+            doOnFall()
+        else:
+            doOnRise()
+    # qui altri compiti, anche lenti
+```
+
+</td>
+</tr>
+</table>
+
 ## Regole per i gestori di interrupt
 
 - **Il gestore deve essere breve.** Niente `time.sleep_ms()`, niente `print()`, niente cicli:
@@ -598,6 +758,28 @@ while True:
   flag o con il tempo. La documentazione di `Pin.irq()` non dice in modo esplicito come
   disattivarlo, e riattivarlo può far scattare il gestore per fronti avvenuti nel frattempo.
 
+## Cosa dice la letteratura
+
+- **Non collegare il pulsante direttamente a un interrupt.** È il consiglio di Jack Ganssle,
+  autore della guida più citata sui rimbalzi. Gli ingressi di interrupt sono sincronizzati
+  dentro il microcontrollore in modi diversi da modello a modello e poco documentati; un
+  rimbalzo di pochi nanosecondi può disturbare la logica interna; scartare i rimbalzi nel
+  gestore rende il codice disordinato e, se il micro dorme, ogni rimbalzo lo risveglia. La sua
+  alternativa è un **interrupt periodico di un timer** che legge il pin, con un algoritmo di
+  debounce semplice: è lo schedulatore di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)
+  affidato a `machine.Timer`.
+- **Su ESP32 i fronti lenti generano molti interrupt.** Chi mette un condensatore sul pulsante
+  segnala che, più il fronte è lento, più interrupt arrivano, anche in MicroPython; e sono
+  segnalati gestori configurati su un solo fronte che scattano anche su quello opposto. Per
+  questo le tecniche che non dipendono dal verso del fronte (2, 4 e 5) sono più robuste della
+  tecnica 1, che conta sull'alternanza esatta dei fronti.
+- **Lo schema più diffuso nei corsi è il lockout:** ignorare gli interrupt per 50-100 ms dopo
+  averne accettato uno. È la tecnica 1, con i suoi limiti su buchi e spike.
+- **Quando gli interrupt sul pin servono davvero:** per risvegliare il micro dal sonno, e quando
+  il ciclo principale è troppo lento per leggere il pulsante abbastanza spesso. In questi casi la
+  scelta più robusta è la tecnica 5 (o la 2, se basta filtrare il rilascio), meglio ancora con
+  un filtro RC seguito da un trigger di Schmitt.
+
 ## Considerazioni finali: quale tecnica scegliere
 
 **Il limite di fondo, comune a tutte le tecniche.** Ogni antirimbalzo stabilisce un tempo minimo, ad esempio 50 msec, oltre il quale un'apertura del contatto viene considerata un rilascio vero. Un disturbo che apre il contatto per più di quel tempo non si distingue da un rilascio breve: vale per il polling, per lo schedulatore e per gli interrupt. Nel seguito si dà per scontato che questo limite sia superato scegliendo un tempo adatto alla qualità del pulsante: abbastanza lungo da coprire i suoi rimbalzi e i suoi disturbi, abbastanza corto da non perdere le pressioni rapide.
@@ -611,12 +793,18 @@ La condizione è che il ciclo principale resti veloce: con ```time.sleep_ms()```
 
 **Lo schedulatore (time tick)** legge il pulsante solo ogni ```tbase```. È immune ai rimbalzi perché tra una lettura e l'altra non li vede, e per lo stesso motivo di solito non vede nemmeno i disturbi brevi a pulsante premuto; se però una lettura cade proprio dentro un disturbo, il toggle scatta due volte (la probabilità è circa la durata del disturbo divisa per ```tbase```). Si può ridurre il rischio accettando un nuovo livello solo dopo N letture uguali consecutive: il tempo minimo di un rilascio vero diventa N × ```tbase```. È un'approssimazione, con il campionamento rado, di ciò che il polling veloce fa con il campionamento continuo.
 
-**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ciclo principale è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
+**Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ciclo principale è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare. Come il polling
+veloce, filtrano solo il rilascio: contro lo spike a riposo serve la tecnica 5, che conferma il
+livello in entrambe le direzioni.
 
 ## Riferimenti
 
 - [MicroPython, machine.Pin](https://docs.micropython.org/en/latest/library/machine.Pin.html): `Pin.irq()`, fronti e parametro `hard`
 - [MicroPython, scrivere gestori di interrupt](https://docs.micropython.org/en/latest/reference/isr_rules.html): regole per i gestori
 - [pulsanti-interrupt.md](pulsanti-interrupt.md): versione Arduino
+- [Ganssle sugli interrupt (EE Journal)](https://eejournal.com/article/ultimate-guide-to-switch-debounce-part-7): perché non collegare un pulsante direttamente a un interrupt
+- [esp32.com, Interrupt triggering](https://esp32.com/viewtopic.php?p=21825): interrupt multipli con fronti lenti su ESP32
+- [MicroPython forum, interrupt multipli su ESP32](https://forum.micropython.org/viewtopic.php?p=48972): falsi interrupt con fronti lenti
+- [debounce-fenomeni.md](debounce-fenomeni.md): le quattro situazioni critiche
 - [pulsanti-interrupt-semplice-mpy.md](pulsanti-interrupt-semplice-mpy.md): versione semplificata
 - [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md): versioni senza interrupt
