@@ -11,48 +11,6 @@ inline void waitUntil(bool &c, unsigned t)
     }
 }
 
-// ---------------------------------------------------------------------------
-// Attese BLOCCANTI a letture continue (tecnica 5 di pulsanti-bloccanti.md).
-// Escono solo dopo t ms in cui TUTTE le letture, una ogni ms, hanno dato il
-// livello atteso: ogni lettura diversa fa ripartire il conteggio. Certe se
-// rimbalzi e disturbi durano meno di t - 1 ms. delay(1) cede la CPU (ESP32).
-// ---------------------------------------------------------------------------
-
-// attende t ms di LOW continuo (rilascio in pull-down, pressione in pull-up)
-inline void waitUntilInputLow(int btn, unsigned t) {
-  unsigned long tl = millis();
-  while (millis() - tl <= t) {
-    if (digitalRead(btn) == HIGH) {
-      tl = millis();
-    }
-    delay(1);
-  }
-}
-
-// attende t ms di HIGH continuo (pressione in pull-down, rilascio in pull-up)
-inline void waitUntilInputHigh(int btn, unsigned t) {
-  unsigned long tl = millis();
-  while (millis() - tl <= t) {
-    if (digitalRead(btn) == LOW) {
-      tl = millis();
-    }
-    delay(1);
-  }
-}
-
-// attende un cambio di livello confermato: livello è il livello attuale
-// (quello accettato l'ultima volta); esce quando il pin è rimasto al livello
-// opposto per t ms di fila e restituisce il nuovo livello. Filtra in tutte e
-// due le direzioni, come la tecnica 6 e Debouncer, ma bloccando.
-inline byte waitUntilInputChange(int btn, byte livello, unsigned t) {
-  if (livello == LOW) {
-    waitUntilInputHigh(btn, t);
-    return HIGH;
-  }
-  waitUntilInputLow(btn, t);
-  return LOW;
-}
-
 struct DiffTimer
 {
 	volatile unsigned long elapsed = 0, last = 0;
