@@ -609,6 +609,34 @@ while True:
 </tr>
 </table>
 
+**La stessa logica con DiffTimer.** Come nella sezione 2 rispetto alla 1, `last` e
+`time.ticks_ms()` possono essere sostituiti da un oggetto `DiffTimer`: `debt.reset()` prende il
+posto di `last = time.ticks_ms()` e `debt.get()` quello di `time.ticks_diff(time.ticks_ms(), last)`.
+Il comportamento è identico: cambia solo la scrittura, che nasconde il calcolo del tempo dentro il
+timer. Il timer va avviato una volta all'inizio, altrimenti `get()` resta a zero e nessun livello
+verrebbe mai accettato.
+
+```python
+from urutils import DiffTimer
+debt = DiffTimer()  # tempo dall'ultima variazione
+debt.start()        # il timer conta sempre
+
+def changed():
+    global val0, val00
+    val = P1.value()
+    if val != val0:
+        # variazione: rimbalzo, disturbo
+        # o fronte vero, si riparte
+        val0 = val
+        debt.reset()   # al posto di last = time.ticks_ms()
+    elif val != val00 and debt.get() > 50:
+        val00 = val    # livello stabile
+        return True
+    return False
+```
+
+Il ciclo principale resta quello di sopra.
+
 **La stessa logica è nella libreria.** In `urutils.py` c'è la classe `Debouncer`, con gli stessi
 attributi `val0`, `val00` e `last` e lo stesso metodo `changed()`: un oggetto per pulsante, creato con
 il livello di riposo.

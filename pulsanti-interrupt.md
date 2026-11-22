@@ -149,8 +149,8 @@ void isrRel();
 
 void isrPress() {   // armata sulla pressione
   if (debt.get() > 50) {
-    doOnRise();
-    debt.reset();
+    debt.reset();  // prima l'istante
+    doOnRise();        // poi l'azione
   }
   // sempre, anche per un fronte scartato:
   // si arma il fronte opposto
@@ -165,8 +165,8 @@ void isrPress() {   // armata sulla pressione
 
 void isrRel() {     // armata sul rilascio
   if (debt.get() > 50) {
-    doOnFall();
-    debt.reset();
+    debt.reset();  // prima l'istante
+    doOnFall();        // poi l'azione
   }
   // sempre, anche per un fronte scartato:
   // si arma il fronte opposto
@@ -225,8 +225,8 @@ void isrRel();
 
 void isrPress() {   // armata sulla pressione
   if (debt.get() > 50) {
-    doOnFall();
-    debt.reset();
+    debt.reset();  // prima l'istante
+    doOnFall();        // poi l'azione
   }
   // sempre, anche per un fronte scartato:
   // si arma il fronte opposto
@@ -241,8 +241,8 @@ void isrPress() {   // armata sulla pressione
 
 void isrRel() {     // armata sul rilascio
   if (debt.get() > 50) {
-    doOnRise();
-    debt.reset();
+    debt.reset();  // prima l'istante
+    doOnRise();        // poi l'azione
   }
   // sempre, anche per un fronte scartato:
   // si arma il fronte opposto

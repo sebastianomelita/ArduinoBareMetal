@@ -674,6 +674,40 @@ void loop() {
 </tr>
 </table>
 
+**La stessa logica con DiffTimer.** Come nella sezione 2 rispetto alla 1, `last` e `millis()`
+possono essere sostituiti da un oggetto `DiffTimer`: `debt.reset()` prende il posto di
+`last = millis()` e `debt.get()` quello di `millis() - last`. Il comportamento è identico: cambia
+solo la scrittura, che nasconde il calcolo del tempo dentro il timer. Il timer va avviato una volta
+in `setup()`, altrimenti `get()` resta a zero e nessun livello verrebbe mai accettato.
+
+```cpp
+#include "urutils.h"
+DiffTimer debt;  // tempo dall'ultima variazione
+
+bool changed() {
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo
+    // o fronte vero, si riparte
+    val0 = val;
+    debt.reset();   // al posto di last = millis()
+  } else if (val != val00 &&
+             debt.get() > 50) {
+    val00 = val;    // livello stabile
+    return true;
+  }
+  return false;
+}
+
+void setup() {
+  pinMode(P1, INPUT);   // pull-up: INPUT_PULLUP, val0 e val00 = HIGH
+  pinMode(LED, OUTPUT);
+  debt.start();         // il timer conta sempre
+}
+```
+
+Il `loop()` resta quello di sopra.
+
 **La stessa logica è nella libreria.** In `urutils.h` c'è la struct `Debouncer`, con le stesse
 variabili `val0`, `val00` e `last` e lo stesso metodo `changed()`: un oggetto per pulsante, creato con
 il livello di riposo.
