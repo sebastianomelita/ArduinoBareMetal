@@ -1,4 +1,4 @@
->[Torna all'indice](indexpulsanti.md) >[Consegne](consegneEserciziPulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[Consegne](consegneEserciziPulsanti.md) >[versione in Python](soluzioniEserciziPulsanti-mpy.md)
 
 
 # Esercizi sui pulsanti - Soluzioni

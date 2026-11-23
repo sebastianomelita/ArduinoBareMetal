@@ -1,4 +1,4 @@
->[Torna all'indice](indexpulsanti.md) >[Soluzioni](soluzioniEserciziPulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[Soluzioni](soluzioniEserciziPulsanti.md) >[Soluzioni MicroPython](soluzioniEserciziPulsanti-mpy.md)
 
 
 # Esercizi sui pulsanti - Consegne
@@ -14,12 +14,12 @@ Prima di scrivere il codice, rileggere le quattro situazioni critiche in [deboun
 
 | Esercizio | Soluzione |
 | --- | --- |
-| [1. Tempo di pressione](#1-tempo-di-pressione) | [soluzione](soluzioniEserciziPulsanti.md#1-tempo-di-pressione) |
-| [2. Conteggio delle pressioni](#2-conteggio-delle-pressioni) | [soluzione](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni) |
+| [1. Tempo di pressione](#1-tempo-di-pressione) | [C++](soluzioniEserciziPulsanti.md#1-tempo-di-pressione) · [MicroPython](soluzioniEserciziPulsanti-mpy.md#1-tempo-di-pressione) |
+| [2. Conteggio delle pressioni](#2-conteggio-delle-pressioni) | [C++](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni) · [MicroPython](soluzioniEserciziPulsanti-mpy.md#2-conteggio-delle-pressioni) |
 
 ## 1. Tempo di pressione
 
-[Soluzione](soluzioniEserciziPulsanti.md#1-tempo-di-pressione)
+Soluzione: [C++](soluzioniEserciziPulsanti.md#1-tempo-di-pressione) · [MicroPython](soluzioniEserciziPulsanti-mpy.md#1-tempo-di-pressione)
 
 Un distributore di bevande dosa lo zucchero in base a **quanto a lungo** si tiene premuto un pulsante: più lunga la pressione, più zucchero. Si vuole realizzare la parte che misura la durata della pressione.
 
@@ -50,7 +50,7 @@ Prove di collaudo:
 
 ## 2. Conteggio delle pressioni
 
-[Soluzione](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni)
+Soluzione: [C++](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni) · [MicroPython](soluzioniEserciziPulsanti-mpy.md#2-conteggio-delle-pressioni)
 
 All'ingresso di una sala si vuole contare quante persone entrano: l'addetto preme un pulsante a ogni ingresso. Il conteggio deve essere **esatto**, perché serve a non superare la capienza massima.
 
@@ -80,4 +80,4 @@ Prove di collaudo:
 - [pulsanti-rilascio.md](pulsanti-rilascio.md): tecniche non bloccanti, `changed()`, lockout
 - [urutils.h](librerie/urutils.h): `DiffTimer`, `Debouncer`, `Lockout`
 
->[Torna all'indice](indexpulsanti.md) >[Soluzioni](soluzioniEserciziPulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[Soluzioni](soluzioniEserciziPulsanti.md) >[Soluzioni MicroPython](soluzioniEserciziPulsanti-mpy.md)

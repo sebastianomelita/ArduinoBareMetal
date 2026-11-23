@@ -25,8 +25,8 @@
 <li><a href="esempipulsanti.md">Esempio curva pericolosa</a></li>
 <li><a href="nastro.md">Esempio nastro trasportatore</a></li>
 <li><a href="nastro-stepper.md">Controllo del motore passo-passo del nastro trasportatore</a></li>
-<li><a href="consegneEserciziPulsanti.md">Esercizi: tempo di pressione e conteggio delle pressioni</a> (<a href="soluzioniEserciziPulsanti.md">soluzioni</a>)</li>
-<li><a href="consegneEserciziScalati.md">Esercizi a difficoltà scalata: facile, medio, difficile</a> (<a href="soluzioniEserciziScalati.md">soluzioni</a>)</li>
+<li><a href="consegneEserciziPulsanti.md">Esercizi: tempo di pressione e conteggio delle pressioni</a> (<a href="soluzioniEserciziPulsanti.md">soluzioni</a>, <a href="soluzioniEserciziPulsanti-mpy.md">soluzioni MicroPython</a>)</li>
+<li><a href="consegneEserciziScalati.md">Esercizi a difficoltà scalata: facile, medio, difficile</a> (<a href="soluzioniEserciziScalati.md">soluzioni</a>; <a href="consegneEserciziScalati-mpy.md">versione MicroPython</a>, <a href="soluzioniEserciziScalati-mpy.md">soluzioni</a>)</li>
 <li><a href="domande.md">Domande e sitografia</a></li>
 </ol>
 

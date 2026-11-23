@@ -1,4 +1,4 @@
->[Torna all'indice](indexpulsanti.md)   >[consegne](consegneEserciziScalati.md)
+>[Torna all'indice](indexpulsanti.md)   >[consegne](consegneEserciziScalati.md) >[versione in Python](soluzioniEserciziScalati-mpy.md)
 
 # Esercizi sui pulsanti a difficoltà scalata: soluzioni
 
