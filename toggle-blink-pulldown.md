@@ -290,7 +290,96 @@ ogni 30 tick:
 Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
 step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
 
-## 4. Versione non bloccante con DiffTimer
+## 4. Versione non bloccante a livello stabile con changed()
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms di livello fermo. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** toggle e contatori, start di una macchina, pulsanti su cavi lunghi o vicino a motori, sensori a 24 V che contano pezzi.
+
+Le versioni 2 e 3 accettano la **pressione** alla prima lettura "premuto" (la 3 alla prima lettura
+del tick). Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+rimasto fermo per più di 50 ms:
+- `val0` è l'ultima lettura: ogni variazione (rimbalzo, disturbo o fronte vero) la aggiorna e fa
+  ripartire il conteggio da `last`;
+- `val00` è il livello accettato: cambia solo se la lettura è diversa da lui e ferma da più di 50 ms;
+- `changed()` restituisce `true` una sola volta, nel giro in cui il nuovo livello viene accettato:
+  guardando `val00` si sa se è una pressione o un rilascio.
+
+`changed()` non aspetta: a ogni giro legge il pin una volta e ritorna subito, quindi il blink
+continua regolare anche mentre il pulsante è premuto. Così viene filtrato anche uno **spike alto a
+pulsante rilasciato**, che le versioni 2 e 3 prenderebbero per una pressione seguita da un
+rilascio. Il prezzo è che anche la pressione viene riconosciuta con 50 ms di ritardo.
+
+```cpp
+const byte P1       = 2;    // pulsante (pull-down esterno)
+const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
+const byte LEDBLINK = 12;   // task 2: LED lampeggiante
+bool stato = LOW;
+byte val0  = LOW;              // ultima lettura
+byte val00 = LOW;              // livello accettato
+unsigned long last = 0;        // ultima variazione della lettura
+unsigned long precBlink = 0;
+
+bool changed() {
+  // vero solo quando il pin ha un nuovo livello fermo da più di 50 ms
+  byte val = digitalRead(P1);
+  if (val != val0) {
+    // variazione: rimbalzo, disturbo o fronte vero, si riparte
+    val0 = val;
+    last = millis();
+  } else if (val != val00 && millis() - last > 50) {
+    val00 = val;               // livello stabile
+    return true;
+  }
+  return false;
+}
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita): qui vanno le azioni alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(LEDBLINK, OUTPUT);
+}
+
+void loop() {
+  // task 1: pulsante
+  if (changed()) {
+    if (val00 == HIGH) {
+      doOnRise();              // pressione confermata
+    } else {
+      doOnFall();              // rilascio confermato
+    }
+  }
+
+  // task 2: blink ogni 1000 ms
+  if (millis() - precBlink >= 1000) {
+    precBlink = millis();
+    blink(LEDBLINK);
+  }
+}
+```
+
+La stessa logica è nella libreria `urutils.h`, con la struct `Debouncer`: si crea un oggetto
+`Debouncer deb(LOW);` e nel task 1 si scrive `if (deb.changed(P1, 50))`, guardando poi `deb.val00`.
+
+## 5. Versione non bloccante con DiffTimer
 
 ```cpp
 #include "urutils.h"
@@ -346,7 +435,7 @@ void loop() {
 }
 ```
 
-## 5. Versione non bloccante con waitUntilNB()
+## 6. Versione non bloccante con waitUntilNB()
 
 Qui la callback della pressione viene chiamata controllando `debt.timerState` prima di
 `waitUntilNB()`, che da sola segnala solo il rilascio.
@@ -408,7 +497,7 @@ void loop() {
 }
 ```
 
-## 6. Versione con interrupt: la ISR registra i fronti, il loop() decide
+## 7. Versione con interrupt: la ISR registra i fronti, il loop() decide
 
 La ISR è armata su entrambi i fronti (`CHANGE`): salva l'istante di ogni fronte, rimbalzi
 compresi, e alza `segnale` quando il pulsante risulta premuto. Il `loop()` chiama la callback
@@ -481,7 +570,7 @@ void loop() {
 }
 ```
 
-## 7. Versione con interrupt: tutto nella ISR, fronti alternati
+## 8. Versione con interrupt: tutto nella ISR, fronti alternati
 
 La ISR è armata su un fronte alla volta: prima la pressione, poi il rilascio. Ogni fronte
 viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le callback girano
@@ -496,7 +585,7 @@ se il `loop()` è bloccato.
 - Un'interruzione breve del contatto a pulsante premuto (contatto usurato, filo che si muove, disturbo) fa scattare una callback del rilascio in più (con il toggle: un toggle in più).
 - Un fronte perso dall'hardware (rimbalzi più vicini di pochi microsecondi, arrivati mentre la ISR girava) può far sbagliare un evento.
 
-Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la versione della sezione 6, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
+Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la versione della sezione 7, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
 
 ```cpp
 const byte P1       = 2;    // pulsante (pull-down), pin con interrupt
@@ -572,7 +661,7 @@ void loop() {
 }
 ```
 
-Per il pull-up, nelle sezioni 6 e 7 oltre al `!` davanti a `digitalRead(P1)` vanno scambiati
+Per il pull-up, nelle sezioni 7 e 8 oltre al `!` davanti a `digitalRead(P1)` vanno scambiati
 `RISING` e `FALLING`.
 
 ## Considerazioni finali: quale tecnica scegliere
