@@ -13,7 +13,8 @@
 <li><a href="pulsanti-bloccanti.md">Gestione pulsanti con attese bloccanti</a></li>
 <li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling non bloccante su due fronti</a></li>  
 <li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling non bloccante su un solo fronte</a></li>  
-<li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
+<li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li> 
+<li><a href="pressioni-lunghe-conteggio.md">Pressioni lunghe e conteggi</a></li>
 <li><a href="debouncerFSM.md">Debouncer a livello stabile come macchina a stati</a></li>
 <li><a href="pulsanti-interrupt-semplice.md">Gestione pulsanti con interrupt base</a></li>  
 <li><a href="pulsanti-interrupt.md">Gestione pulsanti con interrupt avanzati</a></li>  
