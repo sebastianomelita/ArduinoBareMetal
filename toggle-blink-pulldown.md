@@ -87,6 +87,12 @@ il collegamento **pull-down** (pulsante premuto = HIGH).
 
 ## 1. Versione bloccante (waitUntilInputLow)
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms continui di livello basso, con il programma fermo nell'attesa: intanto il blink si ferma.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante (o task separati su ESP32); con più task, come qui, serve solo a mostrare il limite del codice bloccante.
+
 Mentre il pulsante è premuto `loop()` resta dentro `waitUntilInputLow()`, quindi il blink
 si ferma. Questo esempio mostra il limite del codice bloccante con più task.
 
@@ -152,6 +158,12 @@ void loop() {
 
 ## 2. Versione non bloccante con millis()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
 ```cpp
 const byte P1       = 2;    // pulsante (pull-down esterno)
 const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
@@ -205,6 +217,12 @@ void loop() {
 ```
 
 ## 3. Versione con schedulatore non bloccante
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Solo in parte:** buco e spike, filtrati solo se nessuna lettura ci cade dentro.
+>
+> Né prontezza né conferma: pressione e rilascio arrivano alla prima lettura che li vede, in media 25 ms dopo. **Sicurezza** statistica, che migliora chiedendo N letture uguali.
+>
+> **Applicazioni tipiche:** molti pulsanti o ingressi letti insieme a intervalli fissi, programmi già organizzati a tempo base come questo, dove lo stesso tick scandisce anche il blink; i videogiochi su PC e console leggono i tasti allo stesso modo, una volta per fotogramma, ma su segnali già filtrati dal firmware del controller.
 
 Un solo tempo base `TBASE` scandisce entrambi i task: il pulsante viene campionato a ogni
 tick, il blink scatta ogni `NBLINK` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
@@ -381,6 +399,12 @@ La stessa logica è nella libreria `urutils.h`, con la struct `Debouncer`: si cr
 
 ## 5. Versione non bloccante con DiffTimer
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** le stesse della versione 2 (è la stessa logica scritta con un timer della libreria): pannelli e menu, toggle con pulsanti in buono stato e cavi corti.
+
 ```cpp
 #include "urutils.h"
 
@@ -436,6 +460,12 @@ void loop() {
 ```
 
 ## 6. Versione non bloccante con waitUntilNB()
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** le stesse della versione 2 (è la stessa logica scritta con l'attesa non bloccante della libreria): pannelli e menu, toggle con pulsanti in buono stato e cavi corti.
 
 Qui la callback della pressione viene chiamata controllando `debt.timerState` prima di
 `waitUntilNB()`, che da sola segnala solo il rilascio.
@@ -498,6 +528,12 @@ void loop() {
 ```
 
 ## 7. Versione con interrupt: la ISR registra i fronti, il loop() decide
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: la ISR la riconosce al primo fronte, anche se il `loop()` è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il `loop()` lento o con compiti pesanti, quando basta filtrare il rilascio.
 
 La ISR è armata su entrambi i fronti (`CHANGE`): salva l'istante di ogni fronte, rimbalzi
 compresi, e alza `segnale` quando il pulsante risulta premuto. Il `loop()` chiama la callback
@@ -571,6 +607,12 @@ void loop() {
 ```
 
 ## 8. Versione con interrupt: tutto nella ISR, fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: la ISR li crede al primo fronte, senza ritardo e senza aspettare il `loop()`. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro la ISR e funziona anche con il `loop()` bloccato; per un uso reale è meglio la versione 7.
 
 La ISR è armata su un fronte alla volta: prima la pressione, poi il rilascio. Ogni fronte
 viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le callback girano
