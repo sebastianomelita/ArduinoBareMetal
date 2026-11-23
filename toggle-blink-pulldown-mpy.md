@@ -83,6 +83,12 @@ su GPIO 12, LED su GPIO 13 e 27.
 
 ## 1. Versione bloccante (waitUntilInputLow)
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms continui di livello basso, con il programma fermo nell'attesa: intanto il blink si ferma.
+>
+> **Applicazioni tipiche:** programmi dedicati al pulsante (o task separati su ESP32); con più task, come qui, serve solo a mostrare il limite del codice bloccante.
+
 Mentre il pulsante è premuto il ciclo resta dentro `waitUntilInputLow()`, quindi il blink
 si ferma. Questo esempio mostra il limite del codice bloccante con più task.
 
@@ -139,6 +145,12 @@ while True:
 
 ## 2. Versione non bloccante con ticks_ms()
 
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
 ```python
 from machine import Pin
 import time
@@ -183,108 +195,13 @@ while True:
         blink(LEDBLINK)
 ```
 
-## 3. Versione non bloccante con DiffTimer
+## 3. Versione con schedulatore non bloccante
 
-Serve la versione corretta di `urutils.py` (vedi la sezione 2 di
-[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer
-
-P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
-LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
-LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
-stato = False
-debt = DiffTimer()            # debounce
-t1 = DiffTimer()              # blink
-t1.start()
-
-def doOnRise():
-    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-def blink(pin):
-    pin.value(not pin.value())   # inverte il LED lampeggiante
-
-while True:
-    # task 1: pulsante
-    if P1.value():
-        if not debt.timerState:
-            debt.start()
-            doOnRise()
-        debt.reset()
-    elif debt.timerState and debt.get() > 50:
-        debt.stop()
-        debt.reset()
-        doOnFall()
-
-    # task 2: blink ogni 1000 ms
-    if t1.get() > 1000:
-        t1.reset()
-        blink(LEDBLINK)
-```
-
-## 4. Versione non bloccante con waitUntilNB()
-
-La callback della pressione viene chiamata controllando `debt.timerState` prima di
-`waitUntilNB()`, che da sola segnala solo il rilascio.
-`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
-con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
-rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer, waitUntilNB
-
-P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
-LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
-LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
-stato = False
-debt = DiffTimer()
-t1 = DiffTimer()
-t1.start()
-
-def doOnRise():
-    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-def blink(pin):
-    pin.value(not pin.value())   # inverte il LED lampeggiante
-
-while True:
-    # task 1: pulsante
-    premuto = P1.value()
-    if premuto and not debt.timerState:
-        doOnRise()                       # azione immediata alla pressione
-    if waitUntilNB(debt, not premuto, 50):
-        doOnFall()                       # azione al rilascio
-
-    # task 2: blink ogni 1000 ms
-    if t1.get() > 1000:
-        t1.reset()
-        blink(LEDBLINK)
-```
-
-## 5. Versione con schedulatore non bloccante
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Solo in parte:** buco e spike, filtrati solo se nessuna lettura ci cade dentro.
+>
+> Né prontezza né conferma: pressione e rilascio arrivano alla prima lettura che li vede, in media 25 ms dopo. **Sicurezza** statistica, che migliora chiedendo N letture uguali.
+>
+> **Applicazioni tipiche:** molti pulsanti o ingressi letti insieme a intervalli fissi, programmi già organizzati a tempo base come questo, dove lo stesso tick scandisce anche il blink; i videogiochi su PC e console leggono i tasti allo stesso modo, una volta per fotogramma, ma su segnali già filtrati dal firmware del controller.
 
 Un solo tempo base `TBASE` scandisce entrambi i task: il pulsante viene campionato a ogni
 tick, il blink scatta ogni `NBLINK` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
@@ -359,7 +276,206 @@ NSTEP  = 60    # mcm(20, 30)
 Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
 step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
 
-## 6. Versione con interrupt: il gestore registra i fronti, il ciclo decide
+## 4. Versione non bloccante a livello stabile con changed()
+
+> **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
+>
+> **Sicurezza** su pressione e rilascio, tutti e due confermati da 50 ms di livello fermo. Nessuna prontezza: ogni evento arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** toggle e contatori, start di una macchina, pulsanti su cavi lunghi o vicino a motori, sensori a 24 V che contano pezzi.
+
+Le versioni 2 e 3 accettano la **pressione** alla prima lettura "premuto" (la 3 alla prima lettura
+del tick). Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+rimasto fermo per più di 50 ms:
+- `val0` è l'ultima lettura: ogni variazione (rimbalzo, disturbo o fronte vero) la aggiorna e fa
+  ripartire il conteggio da `last`;
+- `val00` è il livello accettato: cambia solo se la lettura è diversa da lui e ferma da più di 50 ms;
+- `changed()` restituisce `True` una sola volta, nel giro in cui il nuovo livello viene accettato:
+  guardando `val00` si sa se è una pressione o un rilascio.
+
+`changed()` non aspetta: a ogni giro legge il pin una volta e ritorna subito, quindi il blink
+continua regolare anche mentre il pulsante è premuto. Così viene filtrato anche uno **spike alto a
+pulsante rilasciato**, che le versioni 2 e 3 prenderebbero per una pressione seguita da un
+rilascio. Il prezzo è che anche la pressione viene riconosciuta con 50 ms di ritardo.
+
+```python
+from machine import Pin
+import time
+
+P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
+LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
+LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
+stato = False
+val0  = 0                     # ultima lettura
+val00 = 0                     # livello accettato
+last  = 0                     # ultima variazione della lettura
+precBlink = 0
+
+def changed():
+    # vero solo quando il pin ha un nuovo livello fermo da più di 50 ms
+    global val0, val00, last
+    val = P1.value()
+    if val != val0:
+        # variazione: rimbalzo, disturbo o fronte vero, si riparte
+        val0 = val
+        last = time.ticks_ms()
+    elif val != val00 and time.ticks_diff(time.ticks_ms(), last) > 50:
+        val00 = val           # livello stabile
+        return True
+    return False
+
+def doOnRise():
+    # PRESSIONE (fronte di salita): qui vanno le azioni alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def blink(pin):
+    pin.value(not pin.value())   # inverte il LED lampeggiante
+
+while True:
+    # task 1: pulsante
+    if changed():
+        if val00 == 1:
+            doOnRise()        # pressione confermata
+        else:
+            doOnFall()        # rilascio confermato
+
+    # task 2: blink ogni 1000 ms
+    if time.ticks_diff(time.ticks_ms(), precBlink) >= 1000:
+        precBlink = time.ticks_ms()
+        blink(LEDBLINK)
+```
+
+La stessa logica è nella libreria `urutils.py`, con la classe `Debouncer`: si crea un oggetto
+`deb = Debouncer(0)` e nel task 1 si scrive `if deb.changed(P1, 50):`, guardando poi `deb.val00`.
+
+## 5. Versione non bloccante con DiffTimer
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** le stesse della versione 2 (è la stessa logica scritta con un timer della libreria): pannelli e menu, toggle con pulsanti in buono stato e cavi corti.
+
+Serve la versione corretta di `urutils.py` (vedi la sezione 2 di
+[pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer
+
+P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
+LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
+LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
+stato = False
+debt = DiffTimer()            # debounce
+t1 = DiffTimer()              # blink
+t1.start()
+
+def doOnRise():
+    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def blink(pin):
+    pin.value(not pin.value())   # inverte il LED lampeggiante
+
+while True:
+    # task 1: pulsante
+    if P1.value():
+        if not debt.timerState:
+            debt.start()
+            doOnRise()
+        debt.reset()
+    elif debt.timerState and debt.get() > 50:
+        debt.stop()
+        debt.reset()
+        doOnFall()
+
+    # task 2: blink ogni 1000 ms
+    if t1.get() > 1000:
+        t1.reset()
+        blink(LEDBLINK)
+```
+
+## 6. Versione non bloccante con waitUntilNB()
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** le stesse della versione 2 (è la stessa logica scritta con l'attesa non bloccante della libreria): pannelli e menu, toggle con pulsanti in buono stato e cavi corti.
+
+La callback della pressione viene chiamata controllando `debt.timerState` prima di
+`waitUntilNB()`, che da sola segnala solo il rilascio.
+`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
+con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
+rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer, waitUntilNB
+
+P1       = Pin(12, Pin.IN)    # pulsante (pull-down esterno)
+LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
+LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
+stato = False
+debt = DiffTimer()
+t1 = DiffTimer()
+t1.start()
+
+def doOnRise():
+    # PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+def blink(pin):
+    pin.value(not pin.value())   # inverte il LED lampeggiante
+
+while True:
+    # task 1: pulsante
+    premuto = P1.value()
+    if premuto and not debt.timerState:
+        doOnRise()                       # azione immediata alla pressione
+    if waitUntilNB(debt, not premuto, 50):
+        doOnFall()                       # azione al rilascio
+
+    # task 2: blink ogni 1000 ms
+    if t1.get() > 1000:
+        t1.reset()
+        blink(LEDBLINK)
+```
+
+## 7. Versione con interrupt: il gestore registra i fronti, il ciclo decide
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione: il gestore la riconosce al primo fronte, anche se il ciclo principale è lento. **Sicurezza** sul rilascio, confermato da 50 ms senza fronti.
+>
+> **Applicazioni tipiche:** il ciclo principale lento o con compiti pesanti, quando basta filtrare il rilascio.
 
 Il gestore è attivo su entrambi i fronti: salva l'istante di ogni fronte, rimbalzi compresi, e
 alza `segnale` quando il pulsante risulta premuto. Il ciclo principale chiama la callback della
@@ -420,7 +536,13 @@ while True:
         blink(LEDBLINK)
 ```
 
-## 7. Versione con interrupt: tutto nel gestore, fronti alternati
+## 8. Versione con interrupt: tutto nel gestore, fronti alternati
+
+> **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (due rilasci) e spike a riposo (due pressioni).
+>
+> **Prontezza** su pressione e rilascio: il gestore li crede al primo fronte, senza ritardo e senza aspettare il ciclo principale. Nessuna sicurezza: non c'è conferma.
+>
+> **Applicazioni tipiche:** didattica: mostra il lockout dentro il gestore e funziona anche con il ciclo principale bloccato; per un uso reale è meglio la versione 7.
 
 Il gestore è attivo su un fronte alla volta: prima la pressione, poi il rilascio. Ogni fronte
 viene accettato solo se dall'ultimo accettato sono passati più di 50 ms. Le callback girano nel
@@ -434,7 +556,7 @@ gestore e devono restare brevi; il ciclo principale contiene solo il blink.
 - Un'interruzione breve del contatto a pulsante premuto (contatto usurato, filo che si muove, disturbo) fa scattare una callback del rilascio in più (con il toggle: un toggle in più).
 - Un fronte perso dall'hardware (rimbalzi più vicini di pochi microsecondi, arrivati mentre il gestore girava) può far sbagliare un evento.
 
-Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la versione della sezione 6, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
+Con un pulsante in buone condizioni questi casi sono rari; se serve robustezza anche a questi, conviene la versione della sezione 7, che considera il pulsante rilasciato solo dopo 50 ms senza fronti.
 
 ```python
 from machine import Pin
@@ -493,7 +615,7 @@ while True:
         blink(LEDBLINK)
 ```
 
-Per il pull-up, nelle sezioni 6 e 7 oltre al `not` davanti a `P1.value()` (e `pin.value()`)
+Per il pull-up, nelle sezioni 7 e 8 oltre al `not` davanti a `P1.value()` (e `pin.value()`)
 vanno scambiati `Pin.IRQ_RISING` e `Pin.IRQ_FALLING`.
 
 ## Considerazioni finali: quale tecnica scegliere
