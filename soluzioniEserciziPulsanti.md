@@ -9,6 +9,8 @@ pulsante rilasciato. I risultati sono riportati con ogni soluzione.
 
 ## 1. Tempo di pressione
 
+[Consegna](consegneEserciziPulsanti.md#1-tempo-di-pressione)
+
 ### Scelta della tecnica
 
 Serve il **livello stabile in due direzioni** (`changed()`, sezione 5 di
@@ -171,6 +173,8 @@ L'unico caso sbagliato col buco è una pressione molto breve, con il buco propri
 limite discusso nell'esercizio 2, domanda 5.
 
 ## 2. Conteggio delle pressioni
+
+[Consegna](consegneEserciziPulsanti.md#2-conteggio-delle-pressioni)
 
 ### Scelta della tecnica
 

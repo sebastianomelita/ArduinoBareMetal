@@ -12,7 +12,14 @@ Per entrambi gli esercizi valgono le regole delle dispense:
 
 Prima di scrivere il codice, rileggere le quattro situazioni critiche in [debounce-fenomeni.md](debounce-fenomeni.md): rimbalzi alla pressione, rimbalzi al rilascio, buco a pulsante premuto, spike a riposo.
 
+| Esercizio | Soluzione |
+| --- | --- |
+| [1. Tempo di pressione](#1-tempo-di-pressione) | [soluzione](soluzioniEserciziPulsanti.md#1-tempo-di-pressione) |
+| [2. Conteggio delle pressioni](#2-conteggio-delle-pressioni) | [soluzione](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni) |
+
 ## 1. Tempo di pressione
+
+[Soluzione](soluzioniEserciziPulsanti.md#1-tempo-di-pressione)
 
 Un distributore di bevande dosa lo zucchero in base a **quanto a lungo** si tiene premuto un pulsante: più lunga la pressione, più zucchero. Si vuole realizzare la parte che misura la durata della pressione.
 
@@ -43,6 +50,8 @@ Prove di collaudo:
 
 ## 2. Conteggio delle pressioni
 
+[Soluzione](soluzioniEserciziPulsanti.md#2-conteggio-delle-pressioni)
+
 All'ingresso di una sala si vuole contare quante persone entrano: l'addetto preme un pulsante a ogni ingresso. Il conteggio deve essere **esatto**, perché serve a non superare la capienza massima.
 
 Specifiche:
@@ -55,7 +64,7 @@ Specifiche:
 Richieste:
 1. Spiegare perché un contatore è più esigente di un LED acceso finché il pulsante è premuto. Usare la distinzione fra logica a **livello** e logica a **fronte**: che cosa succede, nei due casi, dopo un evento falso?
 2. Scegliere la tecnica di debounce e motivare la scelta, alla luce della tabella "Situazioni reali: quale metodo" in [debounce-fenomeni.md](debounce-fenomeni.md).
-3. Scrivere il programma. La pressione lunga va distinguita da quella breve **al rilascio**, misurandone la durata come nell'esercizio 1.
+3. Scrivere il programma. La pressione lunga va distinta da quella breve **al rilascio**, misurandone la durata come nell'esercizio 1.
 4. **Confronto.** Riscrivere il conteggio con la tecnica "pressione subito, rilascio confermato" (sezione 1 di [pulsanti-rilascio.md](pulsanti-rilascio.md)). Descrivere una situazione reale in cui le due versioni danno conteggi diversi, e dire quale delle quattro situazioni critiche la provoca.
 5. **Pressioni rapide.** L'addetto preme molte volte di seguito, molto velocemente. Qual è la frequenza massima di pressioni che il programma riesce a contare con un debounce di 50 ms? Che cosa succede alle pressioni più brevi di 50 ms?
 6. **Facoltativa.** Aggiungere un secondo pulsante P2 per le **uscite**, che diminuisce il contatore senza scendere sotto zero. Usare un oggetto `Debouncer` di `urutils` per ogni pulsante e spiegare perché ogni pulsante ha bisogno del proprio oggetto.
