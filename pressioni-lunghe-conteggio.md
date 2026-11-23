@@ -1,4 +1,4 @@
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pressioni-lunghe-conteggio-mpy.md)
 
 # Pressioni brevi, pressioni lunghe e conteggio delle pressioni
 
