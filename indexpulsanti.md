@@ -14,9 +14,9 @@
 <li><a href="pulsanti-rilascio.md">Gestione pulsanti con polling non bloccante su due fronti</a></li>  
 <li><a href="pulsanti-rilascio-corte.md">Gestione pulsanti con polling non bloccante su un solo fronte</a></li>  
 <li><a href="debouncerFSM.md">Debouncer a livello stabile come macchina a stati</a></li>
+<li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
 <li><a href="pulsanti-interrupt-semplice.md">Gestione pulsanti con interrupt base</a></li>  
 <li><a href="pulsanti-interrupt.md">Gestione pulsanti con interrupt avanzati</a></li>  
-<li><a href="toggle-blink-pulldown.md">Esempi con polling di toggle + blink bloccanti e non bloccanti</a></li>   
 <li><a href="toggle.md">Dissertazione toggle e rilevatori di transito completa</a></li>
 <li><a href="encoder.md">Encoder rotativo</a></li>
 <li><a href="joistick.md">Joistick</a></li>
