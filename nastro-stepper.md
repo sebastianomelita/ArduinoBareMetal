@@ -234,9 +234,11 @@ rispettano la norma IEC 61131-2. È il collegamento consigliato.
 
 <img src="img/interfaccia-ur-do-opto.png" alt="Uscita DOx PNP del control box UR collegata ad Arduino tramite optoisolatore, pin alto quando l'uscita è attiva" width="900">
 
-- **Lato robot.** DOx → resistenza da 2,2 kΩ → anodo del LED; catodo → GND (0 V) del robot.
-  La corrente nel LED è circa (24 V − 1,2 V) / 2,2 kΩ ≈ **10 mA**, ben sotto i 50 mA massimi di un
-  PC817.
+- **Lato robot.** DOx → resistenza da 4,7 kΩ → anodo del LED; catodo → GND (0 V) del robot.
+  La corrente nel LED è circa (24 V − 1,2 V) / 4,7 kΩ ≈ **4,9 mA**: con un PC817 (rapporto di
+  trasferimento almeno 50 %) il transistor può condurre almeno 2,4 mA, molto più dei 0,5 mA che
+  servono a portare il pin a 5 V sul 10 kΩ. La resistenza dissipa circa 0,11 W: va bene una da
+  1/4 W. Con 2,2 kΩ si avrebbero 10 mA ma circa 0,24 W, al limite di una resistenza da 1/4 W.
 - **Lato Arduino.** Collettore a +5 V, **emettitore al pin**, resistenza da 10 kΩ dal pin a GND.
   Quando il LED è acceso il transistor conduce e il pin sale a circa 4,8 V; quando è spento il
   10 kΩ tiene il pin a 0 V. Il pin è quindi **alto quando il comando è attivo**, esattamente come i
@@ -256,7 +258,7 @@ flangia e chiuso verso l'uscita.
 <img src="img/interfaccia-ur-to-npn-opto.png" alt="Uscita utensile TOx in modalità NPN collegata ad Arduino tramite optoisolatore" width="900">
 
 La tensione della flangia si imposta a 0, 12 o 24 V: a 12 V la resistenza del LED scende a
-**1 kΩ** per avere ancora circa 10 mA. Se l'uscita utensile è configurata PNP, si usa lo schema
+**2,2 kΩ** per avere ancora circa 5 mA. Se l'uscita utensile è configurata PNP, si usa lo schema
 del paragrafo 6.1.
 
 ### 6.3 Moduli pronti e controlli
@@ -293,12 +295,41 @@ Invece di montare gli optoisolatori si può usare una scheda pronta. Ce ne sono 
   sul pin va aggiunto un pull-down esterno da 10 kΩ.
 - **Verificare la tensione d'ingresso del modulo.** Deve essere adatta a 24 V: i moduli pensati per
   12 V hanno una resistenza troppo piccola.
+- **Scheda da far produrre.** In alternativa ai moduli in commercio, nella cartella `pcb` ci sono i
+  file Gerber di una scheda a 4 canali con il circuito del paragrafo 6.1: morsetti IN+ e IN− per
+  canale (vanno bene sia per le uscite PNP sia per quelle NPN), 4,7 kΩ, PC817, diodo 1N4148 contro
+  l'inversione dei fili, 10 kΩ di pull-down e un connettore a 6 pin per Arduino (5V, GND,
+  OUT1 – OUT4). Le uscite sono **attive alte**, quindi il programma resta nella configurazione
+  predefinita. Distinta dei componenti e collegamenti sono nel file `LEGGIMI.txt` dentro lo zip.
+
+  <img src="img/opto4ch-anteprima.png" alt="Anteprima della scheda optoisolata a 4 canali" width="600">
 - **Programma fermo, nastro fermo.** Nel robot si può impostare che le uscite digitali si
   disattivino automaticamente quando il programma si ferma. Con i comandi a livello, il nastro si
   ferma insieme al programma del robot.
 - **Disturbi.** I cavi dei comandi passano spesso vicino a motori e azionamenti. Il debounce a
   livello stabile della struttura `Button` scarta gli spike più brevi di 50 ms: il nastro non parte
   per un disturbo.
+
+### 6.4 La scheda base per Arduino Nano
+
+Per montare tutto in modo stabile, nella cartella `pcb` ci sono anche i file Gerber della **scheda
+base** (95 × 55 mm), che porta:
+
+- l'Arduino Nano e il driver A4988 o DRV8825 su zoccoli, collegati come nel programma
+  (STEP su D3, DIR su D6, MS1 – MS3 su D9, D8, D7, ENABLE a massa, RESET e SLEEP uniti);
+- il connettore J2 a 6 pin, nello stesso ordine del connettore della scheda optoisolata: O1 arriva
+  a D4 (marcia), O2 a D5 (direzione), O3 e O4 a D10 e D11 di riserva;
+- due resistenze da 10 kΩ verso massa su D4 e D5: se il cavo verso la scheda optoisolata si stacca,
+  gli ingressi restano bassi e il nastro non parte da solo;
+- il pulsante del microstepping su D2, verso 5 V, con la sua resistenza da 10 kΩ verso massa;
+- i morsetti del motore (2B, 2A, 1A, 1B), dell'alimentazione del motore (VMOT) e del Nano (VIN,
+  7 – 12 V, in alternativa alla USB);
+- il condensatore elettrolitico da 100 µF fra VMOT e massa, vicino al driver, che Pololu raccomanda
+  per proteggere il driver dai picchi di tensione.
+
+<img src="img/nastro-nano-anteprima.png" alt="Anteprima della scheda base con Arduino Nano e driver A4988" width="900">
+
+Distinta dei componenti e istruzioni di montaggio sono nel file `LEGGIMI.txt` dentro lo zip.
 
 Il comando di marcia non è una funzione di sicurezza. L'arresto di emergenza del nastro va
 realizzato in hardware, con un pulsante di emergenza e componenti di sicurezza, e non deve passare
