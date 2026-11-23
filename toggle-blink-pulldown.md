@@ -204,125 +204,7 @@ void loop() {
 }
 ```
 
-## 3. Versione non bloccante con DiffTimer
-
-```cpp
-#include "urutils.h"
-
-const byte P1       = 2;    // pulsante (pull-down esterno)
-const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
-const byte LEDBLINK = 12;   // task 2: LED lampeggiante
-bool stato = LOW;
-DiffTimer debt, t1;            // debounce e blink
-
-void doOnRise() {
-  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
-  // Lasciatela vuota se non serve.
-}
-
-void doOnFall() {
-  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void blink(byte pin) {
-  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
-}
-
-void setup() {
-  pinMode(P1, INPUT);
-  pinMode(LED, OUTPUT);
-  pinMode(LEDBLINK, OUTPUT);
-  t1.start();
-}
-
-void loop() {
-  // task 1: pulsante
-  if (digitalRead(P1) == HIGH) {
-    if (!debt.timerState) {
-      debt.start();
-      doOnRise();
-    }
-    debt.reset();
-  } else if (debt.timerState && debt.get() > 50) {
-    debt.stop();
-    debt.reset();
-    doOnFall();
-  }
-
-  // task 2: blink ogni 1000 ms
-  if (t1.get() > 1000) {
-    t1.reset();
-    blink(LEDBLINK);
-  }
-}
-```
-
-## 4. Versione non bloccante con waitUntilNB()
-
-Qui la callback della pressione viene chiamata controllando `debt.timerState` prima di
-`waitUntilNB()`, che da sola segnala solo il rilascio.
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
-
-```cpp
-#include "urutils.h"
-
-const byte P1       = 2;    // pulsante (pull-down esterno)
-const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
-const byte LEDBLINK = 12;   // task 2: LED lampeggiante
-bool stato = LOW;
-DiffTimer debt, t1;
-
-void doOnRise() {
-  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
-  // Lasciatela vuota se non serve.
-}
-
-void doOnFall() {
-  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
-  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
-  stato = !stato;
-  digitalWrite(LED, stato);
-}
-
-void blink(byte pin) {
-  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
-}
-
-void setup() {
-  pinMode(P1, INPUT);
-  pinMode(LED, OUTPUT);
-  pinMode(LEDBLINK, OUTPUT);
-  t1.start();
-}
-
-void loop() {
-  // task 1: pulsante
-  bool premuto = digitalRead(P1);
-  if (premuto && !debt.timerState) {
-    doOnRise();                         // azione immediata alla pressione
-  }
-  if (waitUntilNB(debt, !premuto, 50)) {
-    doOnFall();                         // azione al rilascio
-  }
-  if (premuto) {
-    debt.reset();                       // conta dall'ultima lettura "premuto"
-  }
-
-  // task 2: blink ogni 1000 ms
-  if (t1.get() > 1000) {
-    t1.reset();
-    blink(LEDBLINK);
-  }
-}
-```
-
-## 5. Versione con schedulatore non bloccante
+## 3. Versione con schedulatore non bloccante
 
 Un solo tempo base `TBASE` scandisce entrambi i task: il pulsante viene campionato a ogni
 tick, il blink scatta ogni `NBLINK` tick. Il contatore `step` è circolare: va da 0 a `NSTEP - 1`
@@ -407,6 +289,124 @@ ogni 30 tick:
 
 Con un `NSTEP` che non fosse multiplo di 30, per esempio 40, il secondo task scatterebbe a
 step 0 e 30 e poi di nuovo a 0, cioè dopo soli 10 tick: il ciclo si chiuderebbe sfasando il task.
+
+## 4. Versione non bloccante con DiffTimer
+
+```cpp
+#include "urutils.h"
+
+const byte P1       = 2;    // pulsante (pull-down esterno)
+const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
+const byte LEDBLINK = 12;   // task 2: LED lampeggiante
+bool stato = LOW;
+DiffTimer debt, t1;            // debounce e blink
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(LEDBLINK, OUTPUT);
+  t1.start();
+}
+
+void loop() {
+  // task 1: pulsante
+  if (digitalRead(P1) == HIGH) {
+    if (!debt.timerState) {
+      debt.start();
+      doOnRise();
+    }
+    debt.reset();
+  } else if (debt.timerState && debt.get() > 50) {
+    debt.stop();
+    debt.reset();
+    doOnFall();
+  }
+
+  // task 2: blink ogni 1000 ms
+  if (t1.get() > 1000) {
+    t1.reset();
+    blink(LEDBLINK);
+  }
+}
+```
+
+## 5. Versione non bloccante con waitUntilNB()
+
+Qui la callback della pressione viene chiamata controllando `debt.timerState` prima di
+`waitUntilNB()`, che da sola segnala solo il rilascio.
+Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
+senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
+a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
+"premuto", come nella versione con DiffTimer.
+
+```cpp
+#include "urutils.h"
+
+const byte P1       = 2;    // pulsante (pull-down esterno)
+const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
+const byte LEDBLINK = 12;   // task 2: LED lampeggiante
+bool stato = LOW;
+DiffTimer debt, t1;
+
+void doOnRise() {
+  // PRESSIONE (fronte di salita): qui vanno le azioni immediate alla pressione.
+  // Lasciatela vuota se non serve.
+}
+
+void doOnFall() {
+  // RILASCIO (fronte di discesa): qui vanno le azioni al rilascio.
+  // Esempio: toggle, inverte lo stato del LED a ogni rilascio.
+  stato = !stato;
+  digitalWrite(LED, stato);
+}
+
+void blink(byte pin) {
+  digitalWrite(pin, !digitalRead(pin));   // inverte il LED lampeggiante
+}
+
+void setup() {
+  pinMode(P1, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(LEDBLINK, OUTPUT);
+  t1.start();
+}
+
+void loop() {
+  // task 1: pulsante
+  bool premuto = digitalRead(P1);
+  if (premuto && !debt.timerState) {
+    doOnRise();                         // azione immediata alla pressione
+  }
+  if (waitUntilNB(debt, !premuto, 50)) {
+    doOnFall();                         // azione al rilascio
+  }
+  if (premuto) {
+    debt.reset();                       // conta dall'ultima lettura "premuto"
+  }
+
+  // task 2: blink ogni 1000 ms
+  if (t1.get() > 1000) {
+    t1.reset();
+    blink(LEDBLINK);
+  }
+}
+```
 
 ## 6. Versione con interrupt: la ISR registra i fronti, il loop() decide
 
