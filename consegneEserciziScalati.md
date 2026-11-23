@@ -8,18 +8,20 @@ pulsanti senza memoria, attese bloccanti (tecniche 1, 5 e 6 di [pulsanti-bloccan
 polling non bloccante su due fronti (versioni 1 e 4 di [pulsanti-rilascio.md](pulsanti-rilascio.md)) e su un solo fronte
 (versioni 1 e 4 di [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte.md)). La prima serie non usa il toggle, la seconda sì.
 
-| Livello | Esercizio |
-| --- | --- |
-| facile | [Esercizio A (facile): Semaforo pedonale a chiamata, versione bloccante](#esercizio-a-facile-semaforo-pedonale-a-chiamata-versione-bloccante) |
-| medio | [Esercizio B (medio): Pannello con selettore di modo e prova lampade](#esercizio-b-medio-pannello-con-selettore-di-modo-e-prova-lampade) |
-| difficile | [Esercizio C (difficile): Gioco dei riflessi, polling non bloccante su due fronti](#esercizio-c-difficile-gioco-dei-riflessi-polling-non-bloccante-su-due-fronti) |
-| facile | [Esercizio D (facile): Lampada con toggle e campanello, versione bloccante](#esercizio-d-facile-lampada-con-toggle-e-campanello-versione-bloccante) |
-| medio | [Esercizio E (medio): Frecce di direzione: due toggle e un lampeggio](#esercizio-e-medio-frecce-di-direzione-due-toggle-e-un-lampeggio) |
-| difficile | [Esercizio F (difficile): Cronometro con start/stop a toggle e azzeramento](#esercizio-f-difficile-cronometro-con-startstop-a-toggle-e-azzeramento) |
+| Livello | Esercizio | Soluzione |
+| --- | --- | --- |
+| facile | [Esercizio A (facile): Semaforo pedonale a chiamata, versione bloccante](#esercizio-a-facile-semaforo-pedonale-a-chiamata-versione-bloccante) | [soluzione](soluzioniEserciziScalati.md#esercizio-a-facile-semaforo-pedonale-a-chiamata-versione-bloccante) |
+| medio | [Esercizio B (medio): Pannello con selettore di modo e prova lampade](#esercizio-b-medio-pannello-con-selettore-di-modo-e-prova-lampade) | [soluzione](soluzioniEserciziScalati.md#esercizio-b-medio-pannello-con-selettore-di-modo-e-prova-lampade) |
+| difficile | [Esercizio C (difficile): Gioco dei riflessi, polling non bloccante su due fronti](#esercizio-c-difficile-gioco-dei-riflessi-polling-non-bloccante-su-due-fronti) | [soluzione](soluzioniEserciziScalati.md#esercizio-c-difficile-gioco-dei-riflessi-polling-non-bloccante-su-due-fronti) |
+| facile | [Esercizio D (facile): Lampada con toggle e campanello, versione bloccante](#esercizio-d-facile-lampada-con-toggle-e-campanello-versione-bloccante) | [soluzione](soluzioniEserciziScalati.md#esercizio-d-facile-lampada-con-toggle-e-campanello-versione-bloccante) |
+| medio | [Esercizio E (medio): Frecce di direzione: due toggle e un lampeggio](#esercizio-e-medio-frecce-di-direzione-due-toggle-e-un-lampeggio) | [soluzione](soluzioniEserciziScalati.md#esercizio-e-medio-frecce-di-direzione-due-toggle-e-un-lampeggio) |
+| difficile | [Esercizio F (difficile): Cronometro con start/stop a toggle e azzeramento](#esercizio-f-difficile-cronometro-con-startstop-a-toggle-e-azzeramento) | [soluzione](soluzioniEserciziScalati.md#esercizio-f-difficile-cronometro-con-startstop-a-toggle-e-azzeramento) |
 
 ## Prima serie: senza toggle
 
 ### Esercizio A (facile): Semaforo pedonale a chiamata, versione bloccante
+
+[Soluzione](soluzioniEserciziScalati.md#esercizio-a-facile-semaforo-pedonale-a-chiamata-versione-bloccante)
 
 *Classe terza - Sistemi e reti*
 
@@ -83,6 +85,8 @@ Nell'editor del codice scegliete la modalità Testo.
 
 ### Esercizio B (medio): Pannello con selettore di modo e prova lampade
 
+[Soluzione](soluzioniEserciziScalati.md#esercizio-b-medio-pannello-con-selettore-di-modo-e-prova-lampade)
+
 *Classe terza - Sistemi e reti*
 
 *Argomenti: pull-up e pull-down, pulsanti senza memoria, rimbalzi e ipotesi di progetto, polling non bloccante su un solo fronte (versioni 1 e 4).*
@@ -143,6 +147,8 @@ Sullo stesso pannello convivono un pulsante SENZA memoria (prova lampade: conta 
 5. Riscrivete la gestione di P1 con la versione 1 della dispensa (millis() e variabile attivo, pull-up). Che cosa cambia nel ritardo con cui il modo avanza dopo il rilascio? Quale delle due versioni filtra il buco a pulsante premuto?
 
 ### Esercizio C (difficile): Gioco dei riflessi, polling non bloccante su due fronti
+
+[Soluzione](soluzioniEserciziScalati.md#esercizio-c-difficile-gioco-dei-riflessi-polling-non-bloccante-su-due-fronti)
 
 *Classe terza - Sistemi e reti*
 
@@ -211,6 +217,8 @@ Il gioco ha tre stati: ATTESA, VIA, FINE.
 
 ### Esercizio D (facile): Lampada con toggle e campanello, versione bloccante
 
+[Soluzione](soluzioniEserciziScalati.md#esercizio-d-facile-lampada-con-toggle-e-campanello-versione-bloccante)
+
 *Classe terza - Sistemi e reti*
 
 *Argomenti: pull-up e pull-down, rimbalzi, pulsanti senza memoria, gestione dei pulsanti con attese bloccanti (tecniche 1, 5 e 6).*
@@ -266,6 +274,8 @@ Mettere a confronto un pulsante CON memoria (il toggle della luce, che ha bisogn
 5. Uno spike di 2 ms sul pin 2, a P1 rilasciato, cambia lo stato della luce con la tecnica 5? E con la tecnica 6? Quale delle due scegliereste se il cavo del pulsante fosse lungo e disturbato?
 
 ### Esercizio E (medio): Frecce di direzione: due toggle e un lampeggio
+
+[Soluzione](soluzioniEserciziScalati.md#esercizio-e-medio-frecce-di-direzione-due-toggle-e-un-lampeggio)
 
 *Classe terza - Sistemi e reti*
 
@@ -326,6 +336,8 @@ Gestire due pulsanti toggle e un lampeggio nello stesso loop(), senza che un com
 5. Un buco di 3 ms mentre PS è premuto: con la versione 1 cambia la freccia? E con la versione 4? Spiegate con un disegno del segnale e delle letture.
 
 ### Esercizio F (difficile): Cronometro con start/stop a toggle e azzeramento
+
+[Soluzione](soluzioniEserciziScalati.md#esercizio-f-difficile-cronometro-con-startstop-a-toggle-e-azzeramento)
 
 *Classe terza - Sistemi e reti*
 
