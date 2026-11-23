@@ -329,7 +329,8 @@ base** (95 × 55 mm), che porta:
 
 <img src="img/nastro-nano-anteprima.png" alt="Anteprima della scheda base con Arduino Nano e driver A4988" width="900">
 
-Distinta dei componenti e istruzioni di montaggio sono nel file `LEGGIMI.txt` dentro lo zip.
+Componenti da comprare, ordine dei circuiti stampati, montaggio, taratura del driver e collaudo
+sono spiegati in [schede-nastro.md](schede-nastro.md).
 
 Il comando di marcia non è una funzione di sicurezza. L'arresto di emergenza del nastro va
 realizzato in hardware, con un pulsante di emergenza e componenti di sicurezza, e non deve passare
