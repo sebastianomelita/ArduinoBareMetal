@@ -150,6 +150,43 @@ al robot rimbalza come su Arduino. Sui microcontrollori valgono entrambi.
 3. cavi dei segnali lontani da quelli dei motori, intrecciati con la loro massa;
 4. per i segnali a 24 V, l'optoisolatore.
 
+### 4.1 Pull-up o pull-down: quale è più immune ai disturbi?
+
+A parità di resistenza la differenza è piccola. Conta molto di più **quanto vale** la resistenza.
+
+**Le soglie favoriscono un po' il pull-up su Arduino.** A riposo il pin deve restare dalla parte
+giusta della zona incerta (tabella della sezione 1). La distanza fra il livello di riposo e il bordo
+della zona incerta è il **margine** che un disturbo deve superare:
+
+| | Riposo | Il disturbo deve portare il pin | Margine |
+| --- | --- | --- | --- |
+| Arduino, pull-down | 0 V | sopra 1,5 V | **1,5 V** |
+| Arduino, pull-up | 5 V | sotto 3 V | **2 V** |
+| ESP32, pull-down | 0 V | sopra 0,8 V | **0,8 V** |
+| ESP32, pull-up | 3,3 V | sotto 2,5 V | **0,8 V** |
+
+Su Arduino le soglie non sono centrate (la zona incerta è più vicina a 0 V che a 5 V), e il pull-up
+ha mezzo volt di margine in più. Sull'ESP32 le soglie sono simmetriche e la differenza sparisce.
+Con la vecchia logica TTL (basso fino a 0,8 V, alto da 2 V) il vantaggio del pull-up era molto più
+grande: è uno dei motivi per cui il pull-up è diventato l'abitudine.
+
+**Il valore della resistenza conta di più, e qui il pull-up interno perde.** Un disturbo che si
+accoppia al cavo sposta tanto più la tensione del pin quanto più alta è la resistenza che lo tiene a
+riposo. Il pull-up interno di Arduino vale da 20 a 50 kΩ, quello dell'ESP32 circa 45 kΩ: un pulsante
+con `INPUT_PULLUP` è in genere **meno** immune di uno con un pull-down esterno da 10 kΩ, nonostante le
+soglie a favore. Sui cavi lunghi conviene una resistenza esterna da 1 a 4,7 kΩ, in pull-up o in
+pull-down.
+
+**Un vantaggio pratico del pull-up, che non riguarda i disturbi.** Con il pull-up il cavo verso il
+pulsante porta la massa: se si spella e tocca la carcassa metallica della macchina, non succede
+niente. Con il pull-down il cavo porta i 5 V (o i 3,3 V) fuori dalla scheda, e un corto verso massa
+mette in corto l'alimentazione.
+
+**In sintesi**, contro spike e rumore servono, in quest'ordine: un debouncer che conferma anche la
+pressione (`changed()` o `Debouncer`, l'unico che filtra lo spike a riposo), una resistenza più bassa
+sui cavi lunghi, il filtro RC, il cablaggio, e per i segnali a 24 V l'optoisolatore. La scelta fra
+pull-up e pull-down viene dopo.
+
 ## 5. Logica a livello o a fronte: quanto serve filtrare
 
 Prima di scegliere la tecnica, chiedetevi **che cosa fa il programma con il segnale**.
@@ -209,6 +246,8 @@ flowchart TD
 - [Universal Robots, Controller I/O](https://www.universal-robots.com/manuals/EN/HTML/SW10_14/Content/prod-CB5/cb_controller_i_o.htm): specifiche degli ingressi e delle uscite digitali a 24 V
 - [ESP32, scheda tecnica](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf) e [ESP-IDF, GPIO](https://docs.espressif.com/projects/esp-idf/en/v5.1.2/api-reference/peripherals/gpio.html): soglie, resistenze interne, GPIO 34–39
 - [ATmega328P, DC Characteristics](https://onlinedocs.microchip.com/oxy/GUID-173AD72D-41FE-4760-A93C-7078A02BD908-en-US-7.1.1/GUID-E52E7333-1737-41D3-BBFD-5C58AEF322C5.html): soglie e pull-up dell'Arduino UNO
+- [Forum Arduino, pull-up vs pull-down resistor](https://forum.arduino.cc/t/pull-up-vs-pull-down-resistor/19765): la soglia fra basso e alto è più vicina a 0 V, quindi il pull-up protegge un po' meglio
+- [Make, Understanding pull-up and pull-down resistors](https://makezine.com/article/technology/arduino/understanding-pullup-and-pulldown-r): con più rumore serve una resistenza più piccola
 - [pulsanti-bloccanti.md](pulsanti-bloccanti.md): tecniche bloccanti e quale è sicura su Arduino, ESP32 e UR
 - [pulsanti-rilascio.md](pulsanti-rilascio.md): tecniche non bloccanti, compresa `changed()`
 - [debouncerFSM.md](debouncerFSM.md): la macchina a stati del debouncer a livello stabile
