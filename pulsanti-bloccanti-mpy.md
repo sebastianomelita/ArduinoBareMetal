@@ -195,7 +195,7 @@ rilascio (circa 4 errori su 5 in simulazione; si salva solo se cade nei 50 ms do
 **Dove va bene.** Dove conta soprattutto la **prontezza** e un errore raro è accettabile: i
 **videogiochi** sono l'esempio tipico, perché non c'è nessun ritardo fra il gesto del giocatore e la
 risposta, e se un tasto scatta due volte il giocatore ripete il gesto. La versione non bloccante, con
-la finestra misurata da `t0` invece che da `time.sleep_ms(50)`, è nella sezione 6 di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md).
+la finestra misurata da `t0` invece che da `time.sleep_ms(50)`, è nella sezione 4 di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md).
 
 ## 1. Una lettura ogni t ms
 

@@ -31,7 +31,7 @@ caso e 2000 spike di 3 ms a pulsante rilasciato:
 | Tecnica | Buco: pressione spezzata | Spike: clic falso | Errore sulla durata |
 | --- | --- | --- | --- |
 | ticks_ms(), pressione subito e rilascio confermato ([pulsanti-rilascio-mpy.md, sez. 1](pulsanti-rilascio-mpy.md)) | mai | sempre | nessuno, se si usa `ticks_diff(t0, tPress)` |
-| livello stabile con `changed()` ([pulsanti-rilascio-mpy.md, sez. 5](pulsanti-rilascio-mpy.md)) | mai | mai | nessuno: pressione e rilascio sono ritardati tutti e due di 50 ms |
+| livello stabile con `changed()` ([pulsanti-rilascio-mpy.md, sez. 3](pulsanti-rilascio-mpy.md)) | mai | mai | nessuno: pressione e rilascio sono ritardati tutti e due di 50 ms |
 | schedulatore, una lettura ogni 50 ms | 6% (buco/TBASE) | 6% | fino a 50 ms in più o in meno |
 | lockout senza conferma | il buco diventa un rilascio anticipato | sempre | grande: una pressione lunga può diventare breve |
 
@@ -414,7 +414,7 @@ Le regole sono quelle viste:
 ## Riferimenti
 
 - [debounce-fenomeni.md](debounce-fenomeni.md): le quattro situazioni critiche e le ipotesi di progetto
-- [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md): le tecniche non bloccanti, con `changed()` nella sezione 5
+- [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md): le tecniche non bloccanti, con `changed()` nella sezione 3
 - [OneButton, file OneButton.h](https://github.com/mathertel/OneButton/blob/master/src/OneButton.h): valori predefiniti di debounce (50 ms), clic (400 ms) e pressione lunga (800 ms)
 - [OneButton, descrizione della macchina a stati](https://www.mathertel.de/Arduino/OneButtonLibrary.aspx): clic, doppio clic e pressione lunga riconosciuta mentre il pulsante è premuto
 - [Microsoft, SetDoubleClickTime](https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-setdoubleclicktime): tempo predefinito del doppio clic, 500 ms

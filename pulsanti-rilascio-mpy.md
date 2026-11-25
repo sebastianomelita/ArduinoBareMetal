@@ -135,216 +135,7 @@ while True:
 `t0` si aggiorna a ogni lettura "premuto": un rimbalzo al rilascio azzera il conteggio
 e non produce un falso fronte.
 
-## 2. Versione non bloccante con DiffTimer
-
-> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
->
-> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
->
-> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
-
-> Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
-> `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, il timer che riparte in
-> `waitUntilNB()` e le attese non bloccanti `waitUntilInputLowNB()` / `waitUntilInputHighNB()`.
-
-<p align="center">
-  <img src="img/debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
-</p>
-
-Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer
-
-P1  = Pin(12, Pin.IN)   # pull-down esterno
-LED = Pin(13, Pin.OUT)
-stato = False
-debt = DiffTimer()
-
-def doOnRise():
-    # PRESSIONE (fronte di salita):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    if P1.value():              # premuto
-        if not debt.timerState:
-            debt.start()
-            doOnRise()
-        debt.reset()
-    elif debt.timerState and debt.get() > 50:
-        debt.stop()
-        debt.reset()
-        doOnFall()
-```
-
-</td>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer
-
-P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
-LED = Pin(13, Pin.OUT)
-stato = False
-debt = DiffTimer()
-
-def doOnFall():
-    # PRESSIONE (fronte di discesa):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnRise():
-    # RILASCIO (fronte di salita):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    if not P1.value():          # premuto
-        if not debt.timerState:
-            debt.start()
-            doOnFall()
-        debt.reset()
-    elif debt.timerState and debt.get() > 50:
-        debt.stop()
-        debt.reset()
-        doOnRise()
-```
-
-</td>
-</tr>
-</table>
-
-## 3. Versione non bloccante con waitUntilNB()
-
-> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
->
-> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
->
-> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
-
-Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
-`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
-con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
-rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
-La callback della pressione si chiama controllando
-`debt.timerState` prima della chiamata: il timer non è attivo solo al primo giro di pressione.
-
-<table>
-<tr>
-<th>Pull-down: azione sul fronte di discesa</th>
-<th>Pull-up: azione sul fronte di salita</th>
-</tr>
-<tr>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer, waitUntilNB
-
-P1  = Pin(12, Pin.IN)   # pull-down esterno
-LED = Pin(13, Pin.OUT)
-stato = False
-debt = DiffTimer()
-
-def doOnRise():
-    # PRESSIONE (fronte di salita):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnFall():
-    # RILASCIO (fronte di discesa):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    premuto = P1.value()        # pull-down
-    if premuto and not debt.timerState:
-        doOnRise()
-    # c = "rilasciato"
-    if waitUntilNB(debt, not premuto, 50):
-        doOnFall()
-```
-
-</td>
-<td>
-
-```python
-from machine import Pin
-import time
-from urutils import DiffTimer, waitUntilNB
-
-P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
-LED = Pin(13, Pin.OUT)
-stato = False
-debt = DiffTimer()
-
-def doOnFall():
-    # PRESSIONE (fronte di discesa):
-    # qui vanno le azioni immediate
-    # alla pressione.
-    # Lasciatela vuota se non serve.
-    pass
-
-def doOnRise():
-    # RILASCIO (fronte di salita):
-    # qui vanno le azioni al rilascio.
-    # Esempio: toggle, inverte lo
-    # stato del LED a ogni rilascio.
-    global stato
-    stato = not stato
-    LED.value(stato)
-
-while True:
-    premuto = not P1.value()    # pull-up
-    if premuto and not debt.timerState:
-        doOnFall()
-    # c = "rilasciato"
-    if waitUntilNB(debt, not premuto, 50):
-        doOnRise()
-```
-
-</td>
-</tr>
-</table>
-
-## 4. Versione con schedulatore non bloccante
+## 2. Versione con schedulatore non bloccante
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Solo in parte:** buco e spike, filtrati solo se nessuna lettura ci cade dentro.
 >
@@ -461,7 +252,7 @@ ciclo in cui il pin risulta premuto. Con lo schedulatore invece il pin viene let
 ogni `TBASE` ms: la pressione viene riconosciuta con un ritardo fino a `TBASE`, e una
 pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 
-## 5. Versione non bloccante a livello stabile con changed()
+## 3. Versione non bloccante a livello stabile con changed()
 
 > **Rileva:** tutte e quattro le situazioni: rimbalzi alla pressione e al rilascio, buco a pulsante premuto, spike a riposo.
 >
@@ -469,8 +260,8 @@ pressione più breve di `TBASE` può cadere tra due campioni e non essere vista.
 >
 > **Applicazioni tipiche:** toggle e contatori, start di una macchina, pulsanti su cavi lunghi o vicino a motori, sensori a 24 V che contano pezzi (nei PLC il doppio conteggio si evita con due timer, uno all'attivazione e uno alla disattivazione: è lo stesso principio). Funzionano così anche il filtro dei moduli di ingresso dei PLC e del debounce predefinito (*defer*) delle tastiere con firmware QMK.
 
-Le versioni precedenti accettano la **pressione** alla prima lettura "premuto" e filtrano solo il
-**rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
+Le versioni 1 e 2 accettano la **pressione** alla prima lettura che la vede, senza confermarla.
+La 1 conferma solo il **rilascio**. Questa invece accetta un nuovo livello, in **tutte e due** le direzioni, solo quando è
 rimasto fermo per più di 50 ms. È la macchina a stati di [debouncerFSM_py.md](debouncerFSM_py.md)
 (forma "prima gli ingressi"):
 - `val0` è l'ultima lettura: ogni variazione (rimbalzo, disturbo o fronte vero) la aggiorna e fa
@@ -482,7 +273,7 @@ rimasto fermo per più di 50 ms. È la macchina a stati di [debouncerFSM_py.md](
 Le tre variabili sono globali e `changed()` le modifica, quindi le dichiara `global`.
 
 Così viene filtrato anche uno **spike alto a pulsante rilasciato**, ad esempio un disturbo sui cavi
-con il pull-down, che le versioni precedenti prenderebbero per una pressione seguita da un rilascio.
+con il pull-down, che la versione 1 prenderebbe sempre per una pressione seguita da un rilascio (la 2 solo se una lettura ci cade sopra).
 Il prezzo è che anche la pressione viene riconosciuta con 50 ms di ritardo, e una pressione più
 breve di 50 ms viene scartata come se fosse un disturbo.
 
@@ -609,7 +400,7 @@ while True:
 </tr>
 </table>
 
-**La stessa logica con DiffTimer.** Come nella sezione 2 rispetto alla 1, `last` e
+**La stessa logica con DiffTimer.** Come nella sezione 5 rispetto alla 1, `last` e
 `time.ticks_ms()` possono essere sostituiti da un oggetto `DiffTimer`: `debt.reset()` prende il
 posto di `last = time.ticks_ms()` e `debt.get()` quello di `time.ticks_diff(time.ticks_ms(), last)`.
 Il comportamento è identico: cambia solo la scrittura, che nasconde il calcolo del tempo dentro il
@@ -653,7 +444,7 @@ while True:
             doOnFall()           # rilascio confermato
 ```
 
-## 6. Senza conferma: il primo cambio è creduto subito
+## 4. Senza conferma: il primo cambio è creduto subito
 
 > **Rileva:** rimbalzi alla pressione e al rilascio. **Non rileva:** buco a pulsante premuto (rilascio e pressione falsi) e spike a riposo (pressione e rilascio falsi).
 >
@@ -661,7 +452,7 @@ while True:
 >
 > **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza e un errore raro è tollerato. Nelle tastiere con firmware QMK è la modalità *eager*: bassa latenza, ma nessuna resistenza ai disturbi.
 
-Tutte le versioni precedenti confermano almeno il rilascio. Questa non conferma **nessuna** delle due
+Le versioni 1 e 3 confermano almeno il rilascio, la 2 legge solo ogni 50 ms. Questa non conferma **nessuna** delle due
 transizioni: è la tecnica *lockout*, o "trust the first change" del
 [Makeability Lab](https://makeabilitylab.github.io/physcomp/arduino/debouncing.html). Ogni cambio di
 livello è creduto **alla prima lettura**, l'evento parte subito, e per i 50 ms successivi l'ingresso
@@ -832,11 +623,220 @@ while True:
             salta()              # pressione: nessun ritardo
 ```
 
-Per un toggle o un contatore, invece, conviene `Debouncer` (sezione 5): lì un buco o uno spike
+Per un toggle o un contatore, invece, conviene `Debouncer` (sezione 3): lì un buco o uno spike
 lascerebbero un errore permanente.
 
 La variante con `time.sleep_ms(50)` al posto di `t0`, proposta dal Makeability Lab, è **bloccante**: si trova
 nella sezione 0 di [pulsanti-bloccanti-mpy.md](pulsanti-bloccanti-mpy.md).
+## 5. Versione non bloccante con DiffTimer
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
+> Gli script usano la versione corretta di `urutils.py`: un solo `__init__` per classe,
+> `self.reset()` in `set()`, `time.ticks_diff()` per i tempi, il timer che riparte in
+> `waitUntilNB()` e le attese non bloccanti `waitUntilInputLowNB()` / `waitUntilInputHighNB()`.
+
+<p align="center">
+  <img src="img/debounce-difftimer-pulldown-mpy.gif" alt="Animazione del debounce con DiffTimer (pull-down, MicroPython)" width="900">
+</p>
+
+Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer
+
+P1  = Pin(12, Pin.IN)   # pull-down esterno
+LED = Pin(13, Pin.OUT)
+stato = False
+debt = DiffTimer()
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    if P1.value():              # premuto
+        if not debt.timerState:
+            debt.start()
+            doOnRise()
+        debt.reset()
+    elif debt.timerState and debt.get() > 50:
+        debt.stop()
+        debt.reset()
+        doOnFall()
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
+LED = Pin(13, Pin.OUT)
+stato = False
+debt = DiffTimer()
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    if not P1.value():          # premuto
+        if not debt.timerState:
+            debt.start()
+            doOnFall()
+        debt.reset()
+    elif debt.timerState and debt.get() > 50:
+        debt.stop()
+        debt.reset()
+        doOnRise()
+```
+
+</td>
+</tr>
+</table>
+
+## 6. Versione non bloccante con waitUntilNB()
+
+> **Rileva:** rimbalzi alla pressione e al rilascio, buco a pulsante premuto. **Non rileva:** spike a riposo (pressione e rilascio falsi).
+>
+> **Prontezza** sulla pressione, riconosciuta alla prima lettura alta. **Sicurezza** sul rilascio, confermato da 50 ms di livello basso: l'azione arriva 50 ms dopo l'ultimo rimbalzo.
+>
+> **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
+
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
+`waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
+con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
+rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
+La callback della pressione si chiama controllando
+`debt.timerState` prima della chiamata: il timer non è attivo solo al primo giro di pressione.
+
+<table>
+<tr>
+<th>Pull-down: azione sul fronte di discesa</th>
+<th>Pull-up: azione sul fronte di salita</th>
+</tr>
+<tr>
+<td>
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer, waitUntilNB
+
+P1  = Pin(12, Pin.IN)   # pull-down esterno
+LED = Pin(13, Pin.OUT)
+stato = False
+debt = DiffTimer()
+
+def doOnRise():
+    # PRESSIONE (fronte di salita):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnFall():
+    # RILASCIO (fronte di discesa):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    premuto = P1.value()        # pull-down
+    if premuto and not debt.timerState:
+        doOnRise()
+    # c = "rilasciato"
+    if waitUntilNB(debt, not premuto, 50):
+        doOnFall()
+```
+
+</td>
+<td>
+
+```python
+from machine import Pin
+import time
+from urutils import DiffTimer, waitUntilNB
+
+P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
+LED = Pin(13, Pin.OUT)
+stato = False
+debt = DiffTimer()
+
+def doOnFall():
+    # PRESSIONE (fronte di discesa):
+    # qui vanno le azioni immediate
+    # alla pressione.
+    # Lasciatela vuota se non serve.
+    pass
+
+def doOnRise():
+    # RILASCIO (fronte di salita):
+    # qui vanno le azioni al rilascio.
+    # Esempio: toggle, inverte lo
+    # stato del LED a ogni rilascio.
+    global stato
+    stato = not stato
+    LED.value(stato)
+
+while True:
+    premuto = not P1.value()    # pull-up
+    if premuto and not debt.timerState:
+        doOnFall()
+    # c = "rilasciato"
+    if waitUntilNB(debt, not premuto, 50):
+        doOnRise()
+```
+
+</td>
+</tr>
+</table>
+
 
 ## Considerazioni finali: quale tecnica scegliere
 
@@ -858,7 +858,7 @@ La condizione è che il ciclo principale resti veloce: con ```time.sleep_ms()```
 | ticks_ms(), DiffTimer, waitUntilNB(), interrupt, tecniche bloccanti | filtrati | filtrato | **non filtrato** |
 | Schedulatore | filtrati | filtrato solo se nessuna lettura ci cade dentro | filtrato solo se nessuna lettura ci cade dentro |
 | Livello stabile (`changed()`) | filtrati | filtrato | filtrato |
-| Senza conferma (lockout, sezione 6) | filtrati | **non filtrato** | **non filtrato** |
+| Senza conferma (lockout, sezione 4) | filtrati | **non filtrato** | **non filtrato** |
 
 **Gli interrupt su entrambi i fronti** fanno la stessa cosa del polling veloce: vedono ogni fronte, rimbalzi e disturbi compresi, e fanno ripartire il conteggio del tempo di antirimbalzo. In più funzionano anche quando il ciclo principale è lento: sono la scelta giusta quando il ciclo principale ha altro di pesante da fare.
 

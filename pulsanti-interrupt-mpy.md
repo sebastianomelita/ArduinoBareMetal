@@ -649,7 +649,7 @@ while True:
 > **Applicazioni tipiche:** il ciclo principale lento con ingressi disturbati; toggle e contatori.
 
 
-È la tecnica `changed()` di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 5),
+È la tecnica `changed()` di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 3),
 con l'interrupt al posto delle letture continue. Il gestore fa **una cosa sola**: salva in
 `tFronte` l'istante di ogni fronte, rimbalzi e disturbi compresi. Il ciclo principale accetta un
 nuovo livello solo se è diverso da quello accettato (`stabile`) e da più di 50 ms non c'è stato
@@ -794,7 +794,7 @@ while True:
 > **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza, anche con il ciclo principale lento.
 
 
-È il lockout di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 6) con
+È il lockout di [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md) (sezione 4) con
 l'interrupt: il primo cambio di livello è creduto **subito**, nel gestore, e per i 50 ms
 successivi ogni altro fronte è ignorato. Pressione e rilascio arrivano senza ritardo e senza
 aspettare il ciclo principale: è la scelta per i **giochi**, dove conta la prontezza e un errore

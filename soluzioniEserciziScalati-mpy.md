@@ -89,7 +89,7 @@ Molti pannelli di macchine hanno un tasto "prova lampade": finché è premuto tu
 **Programma**
 
 ```python
-# SOLUZIONE - P1 con schedulatore su un solo fronte (versione 4, pull-up)
+# SOLUZIONE - P1 con schedulatore su un solo fronte (versione 2, pull-up)
 #             P2 senza memoria (pull-down, nessun debounce)
 from machine import Pin
 import time
@@ -154,7 +154,7 @@ elif attivo and time.ticks_diff(time.ticks_ms(), t0) > 50:
     doOnRise()
 ```
 
-Ritardo: con la versione 4 il modo cambia alla prima lettura dopo la fine dei rimbalzi, cioè da 0 a 50 ms dopo (in media 25), con la versione 1 sempre 50 ms dopo l'ultimo rimbalzo. Buco a pulsante premuto (impulso alto breve): la versione 1 lo filtra sempre, perché servono 50 ms di livello alto continuo; la versione 4 solo se nessuna lettura ci cade dentro, altrimenti lo prende per un rilascio e il modo avanza a metà pressione.
+Ritardo: con la versione 2 il modo cambia alla prima lettura dopo la fine dei rimbalzi, cioè da 0 a 50 ms dopo (in media 25), con la versione 1 sempre 50 ms dopo l'ultimo rimbalzo. Buco a pulsante premuto (impulso alto breve): la versione 1 lo filtra sempre, perché servono 50 ms di livello alto continuo; la versione 2 solo se nessuna lettura ci cade dentro, altrimenti lo prende per un rilascio e il modo avanza a metà pressione.
 
 ### Esercizio C (difficile): Gioco dei riflessi, polling non bloccante su due fronti
 
@@ -251,7 +251,7 @@ while True:
 - in ATTESA: falsa partenza falsa, la manche è persa senza colpa;
 - in VIA: il cronometro si ferma su un tempo inventato, magari un "record" di pochi ms; in entrambi i casi 50 ms dopo il "rilascio" viene confermato e parte la manche successiva. È un problema di gioco, non di sicurezza: nessuna macchina si muove. Fa capire però perché dove l'errore è pericoloso si conferma anche la pressione.
 
-5. Versione 1: no. Un buco di 3 ms è più corto dei 50 ms richiesti per confermare il rilascio: alla lettura alta successiva t0 riparte, attivo resta True, doOnFall() non viene chiamata. Versione 4: sì, se una lettura cade nel buco. Quella lettura vale 0 e la precedente 1: è un fronte di discesa, doOnFall() fa partire la manche. Alla lettura dopo il pulsante è di nuovo 1: fronte di salita, doOnRise() in ATTESA, quindi una falsa partenza mentre il giocatore non ha fatto nulla. La probabilità è circa 3/50 = 6% per ogni buco.
+5. Versione 1: no. Un buco di 3 ms è più corto dei 50 ms richiesti per confermare il rilascio: alla lettura alta successiva t0 riparte, attivo resta True, doOnFall() non viene chiamata. Versione 2: sì, se una lettura cade nel buco. Quella lettura vale 0 e la precedente 1: è un fronte di discesa, doOnFall() fa partire la manche. Alla lettura dopo il pulsante è di nuovo 1: fronte di salita, doOnRise() in ATTESA, quindi una falsa partenza mentre il giocatore non ha fatto nulla. La probabilità è circa 3/50 = 6% per ogni buco.
 
 6. Un programma bloccante, durante time.sleep_ms(attesa), non legge il pulsante: chi preme prima del verde non viene visto. Peggio: se il pulsante è ancora premuto quando l'attesa finisce, il programma lo trova subito 1 e misura un tempo di reazione di 0 ms. Per vedere le False partenze il pulsante va letto DURANTE l'attesa, cioè nello stesso ciclo principale che controlla il tempo: serve un programma non bloccante.
 
@@ -429,11 +429,11 @@ if time.ticks_diff(time.ticks_ms(), precm) >= TBASE:
     precD = valD
 ```
 
-Ritardo: con la versione 1 la freccia cambia 50 ms dopo l'ultimo rimbalzo del rilascio; con la versione 4 alla prima lettura dopo i rimbalzi, cioè fra 0 e 50 ms dopo (in media 25).
+Ritardo: con la versione 1 la freccia cambia 50 ms dopo l'ultimo rimbalzo del rilascio; con la versione 2 alla prima lettura dopo i rimbalzi, cioè fra 0 e 50 ms dopo (in media 25).
 
 4. TBASE = 5 ms: due letture possono cadere dentro gli stessi rimbalzi del rilascio (che durano fino a circa 10 ms) e dare due fronti di discesa, cioè due toggle: la freccia non cambia. Il limite inferiore è circa 11 ms (rimbalzi + intervallo di lettura). TBASE = 300 ms: un clic rapido (pressione di 100-150 ms) può cadere tutto fra due letture e andare perso, e il cambio arriva fino a 300 ms dopo il rilascio. Il limite superiore è l'evento vero più breve, circa 100 ms.
 
-5. Versione 1: no. Il buco dura 3 ms, meno dei 50 ms di basso richiesti; alla lettura alta successiva t0 riparte e il rilascio non viene confermato. Versione 4: dipende da dove cadono le letture. Se nessuna cade nel buco non succede nulla. Se una ci cade, vale 0 dopo un 1: fronte di discesa, la freccia cambia a metà pressione; al rilascio vero c'è un altro fronte di discesa e la freccia cambia di nuovo, quindi alla fine il clic sembra non aver fatto nulla. Probabilità circa 3/50 = 6%.
+5. Versione 1: no. Il buco dura 3 ms, meno dei 50 ms di basso richiesti; alla lettura alta successiva t0 riparte e il rilascio non viene confermato. Versione 2: dipende da dove cadono le letture. Se nessuna cade nel buco non succede nulla. Se una ci cade, vale 0 dopo un 1: fronte di discesa, la freccia cambia a metà pressione; al rilascio vero c'è un altro fronte di discesa e la freccia cambia di nuovo, quindi alla fine il clic sembra non aver fatto nulla. Probabilità circa 3/50 = 6%.
 
 **Verifica in simulazione**
 

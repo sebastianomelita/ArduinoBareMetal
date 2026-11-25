@@ -13,7 +13,7 @@ pulsante rilasciato. I risultati sono riportati con ogni soluzione.
 
 ### Scelta della tecnica
 
-Serve il **livello stabile in due direzioni** (`changed()`, sezione 5 di
+Serve il **livello stabile in due direzioni** (`changed()`, sezione 3 di
 [pulsanti-rilascio.md](pulsanti-rilascio.md)), per tre motivi:
 
 - conferma pressione e rilascio con **lo stesso ritardo** di 50 ms, quindi nella differenza fra i due

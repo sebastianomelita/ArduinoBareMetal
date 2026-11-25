@@ -5,8 +5,8 @@
 Sei esercizi per una classe terza, in due serie da tre (facile, medio, difficile). Usano solo questi argomenti:
 pull-up e pull-down, rimbalzi, le quattro situazioni critiche e le ipotesi di progetto ([debounce-fenomeni.md](debounce-fenomeni.md)),
 pulsanti senza memoria, attese bloccanti (tecniche 1, 5 e 6 di [pulsanti-bloccanti.md](pulsanti-bloccanti-mpy.md)),
-polling non bloccante su due fronti (versioni 1 e 4 di [pulsanti-rilascio.md](pulsanti-rilascio-mpy.md)) e su un solo fronte
-(versioni 1 e 4 di [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte-mpy.md)). La prima serie non usa il toggle, la seconda sì.
+polling non bloccante su due fronti (versioni 1 e 2 di [pulsanti-rilascio.md](pulsanti-rilascio-mpy.md)) e su un solo fronte
+(versioni 1 e 2 di [pulsanti-rilascio-corte.md](pulsanti-rilascio-corte-mpy.md)). La prima serie non usa il toggle, la seconda sì.
 
 Le consegne sono quelle della [versione C++](consegneEserciziScalati.md), adattate a ESP32 con MicroPython e al simulatore [Wokwi](https://wokwi.com): pin dell'ESP32, alimentazione a 3,3 V, `time.ticks_ms()` al posto di `ticks_ms()`, `print()` al posto del Monitor seriale.
 
@@ -89,7 +89,7 @@ Il programma fa una cosa alla volta (aspetta il pedone, poi esegue la sequenza),
 
 *Classe terza - Sistemi e reti*
 
-*Argomenti: pull-up e pull-down, pulsanti senza memoria, rimbalzi e ipotesi di progetto, polling non bloccante su un solo fronte (versioni 1 e 4).*
+*Argomenti: pull-up e pull-down, pulsanti senza memoria, rimbalzi e ipotesi di progetto, polling non bloccante su un solo fronte (versioni 1 e 2).*
 
 Molti pannelli di macchine hanno un tasto "prova lampade": finché è premuto tutte le spie si accendono, così l'operatore vede se qualcuna è bruciata. Realizzate in Wokwi un pannello con tre spie, un tasto che sceglie il modo di funzionamento e un tasto di prova lampade.
 
@@ -118,7 +118,7 @@ Sullo stesso pannello convivono un pulsante SENZA memoria (prova lampade: conta 
 
 **Vincoli sul codice**
 
-- P1 si gestisce con la versione 4 della dispensa sul polling su un solo fronte (schedulatore non bloccante, TBASE = 50 ms, variabile precval). Attenzione: P1 è in pull-up, quindi il rilascio è un fronte di SALITA e la callback è doOnRise().
+- P1 si gestisce con la versione 2 della dispensa sul polling su un solo fronte (schedulatore non bloccante, TBASE = 50 ms, variabile precval). Attenzione: P1 è in pull-up, quindi il rilascio è un fronte di SALITA e la callback è doOnRise().
 - doOnRise() cambia solo la variabile del modo (modo, da 0 a 2).
 - P2 si legge a ogni giro del ciclo principale con P2.value(), SENZA debounce.
 - Un solo punto del codice decide quali LED accendere, in base a modo e a P2.
@@ -152,7 +152,7 @@ Sullo stesso pannello convivono un pulsante SENZA memoria (prova lampade: conta 
 
 *Classe terza - Sistemi e reti*
 
-*Argomenti: pull-down, le quattro situazioni critiche, polling non bloccante su due fronti (versioni 1 e 4), confronto fra prontezza e sicurezza.*
+*Argomenti: pull-down, le quattro situazioni critiche, polling non bloccante su due fronti (versioni 1 e 2), confronto fra prontezza e sicurezza.*
 
 Realizzate in Wokwi un gioco che misura il tempo di reazione: dopo un'attesa casuale si accende un LED verde e il giocatore deve premere il pulsante il più presto possibile. Il tempo viene stampato nella console. Chi preme prima del verde fa una falsa partenza.
 
@@ -208,9 +208,9 @@ Il gioco ha tre stati: ATTESA, VIA, FINE.
 
 1. Perché il cronometro si ferma alla pressione e non al rilascio, mentre la ripartenza avviene al rilascio? Che cosa misurereste agendo al rilascio?
 2. Con la versione 1, di quanto è in ritardo il riconoscimento della pressione rispetto al contatto vero? E il rilascio?
-3. Riscrivete la gestione del pulsante con la versione 4 (schedulatore, TBASE = 50 ms). Quale errore massimo e quale errore medio si aggiungono al tempo di reazione misurato? È accettabile per questo gioco?
+3. Riscrivete la gestione del pulsante con la versione 2 (schedulatore, TBASE = 50 ms). Quale errore massimo e quale errore medio si aggiungono al tempo di reazione misurato? È accettabile per questo gioco?
 4. Uno spike di 2 ms a pulsante rilasciato, con la versione 1: che effetto ha in ATTESA? E in VIA? È un problema di sicurezza o solo di gioco?
-5. Un buco di 3 ms del contatto mentre il giocatore tiene premuto in FINE può far partire una manche? Rispondete per la versione 1 e per la versione 4.
+5. Un buco di 3 ms del contatto mentre il giocatore tiene premuto in FINE può far partire una manche? Rispondete per la versione 1 e per la versione 2.
 6. Perché un programma bloccante (con waitUntilInputLow() e time.sleep_ms() per l'attesa casuale) non potrebbe riconoscere le false partenze?
 
 ## Seconda serie: con il toggle
@@ -279,7 +279,7 @@ Mettere a confronto un pulsante CON memoria (il toggle della luce, che ha bisogn
 
 *Classe terza - Sistemi e reti*
 
-*Argomenti: pull-down, rimbalzi e ipotesi di progetto, polling non bloccante su un solo fronte (versioni 1 e 4).*
+*Argomenti: pull-down, rimbalzi e ipotesi di progetto, polling non bloccante su un solo fronte (versioni 1 e 2).*
 
 Realizzate in Wokwi le frecce di direzione di un veicolo: un pulsante accende e spegne la freccia sinistra, un altro la destra. Le frecce lampeggiano e non possono essere accese tutte e due insieme.
 
@@ -331,9 +331,9 @@ Gestire due pulsanti toggle e un lampeggio nello stesso ciclo principale, senza 
 
 1. Perché ogni pulsante deve avere le sue variabili t0 e attivo? Cosa succederebbe usandone una sola coppia per tutti e due?
 2. Dove avete messo la regola "mai due frecce insieme": nelle callback o nel lampeggio? Perché è meglio lì?
-3. Riscrivete la gestione dei due pulsanti con la versione 4 (schedulatore, TBASE = 50 ms): bastano una sola lettura temporizzata e due variabili precval? Che cosa cambia nel ritardo fra il rilascio e il cambio della freccia?
+3. Riscrivete la gestione dei due pulsanti con la versione 2 (schedulatore, TBASE = 50 ms): bastano una sola lettura temporizzata e due variabili precval? Che cosa cambia nel ritardo fra il rilascio e il cambio della freccia?
 4. Ipotesi di progetto: perché TBASE non può essere 5 ms? E perché non può essere 300 ms?
-5. Un buco di 3 ms mentre PS è premuto: con la versione 1 cambia la freccia? E con la versione 4? Spiegate con un disegno del segnale e delle letture.
+5. Un buco di 3 ms mentre PS è premuto: con la versione 1 cambia la freccia? E con la versione 2? Spiegate con un disegno del segnale e delle letture.
 
 ### Esercizio F (difficile): Cronometro con start/stop a toggle e azzeramento
 
@@ -341,7 +341,7 @@ Gestire due pulsanti toggle e un lampeggio nello stesso ciclo principale, senza 
 
 *Classe terza - Sistemi e reti*
 
-*Argomenti: pull-down e pull-up, le quattro situazioni critiche, polling non bloccante su due fronti (versioni 1 e 4), prontezza e sicurezza.*
+*Argomenti: pull-down e pull-up, le quattro situazioni critiche, polling non bloccante su due fronti (versioni 1 e 2), prontezza e sicurezza.*
 
 Realizzate in Wokwi un cronometro da gara: un pulsante fa partire e fermare il tempo (toggle), un altro lo azzera. Il tempo si legge nella console.
 
@@ -398,6 +398,6 @@ I messaggi di print() si leggono nella console di Wokwi.
 1. Perché il toggle di start/stop sta alla pressione e l'azzeramento al rilascio? Che cosa misurerebbe il cronometro con il toggle al rilascio?
 2. Con la versione 1, il toggle alla pressione è protetto dai rimbalzi alla pressione? E da quelli al rilascio? Spiegate quale parte del codice se ne occupa.
 3. Uno spike di 2 ms sul pin 12 a P1 rilasciato: che effetto ha sul cronometro in marcia? È un rischio accettabile in una gara? Quale delle quattro situazioni critiche è?
-4. Riscrivete la gestione di P1 con la versione 4 (schedulatore, TBASE = 50 ms). Quale errore massimo si aggiunge a ogni partenza e a ogni arrivo? I due errori si annullano sempre nella differenza? Quale errore massimo può avere il tempo misurato?
-5. Proponete il valore minimo e massimo di TBASE per la versione 4, usando le ipotesi di progetto della dispensa.
+4. Riscrivete la gestione di P1 con la versione 2 (schedulatore, TBASE = 50 ms). Quale errore massimo si aggiunge a ogni partenza e a ogni arrivo? I due errori si annullano sempre nella differenza? Quale errore massimo può avere il tempo misurato?
+5. Proponete il valore minimo e massimo di TBASE per la versione 2, usando le ipotesi di progetto della dispensa.
 

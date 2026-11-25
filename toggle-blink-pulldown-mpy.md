@@ -364,7 +364,7 @@ La stessa logica è nella libreria `urutils.py`, con la classe `Debouncer`: si c
 >
 > **Applicazioni tipiche:** le stesse della versione 2 (è la stessa logica scritta con un timer della libreria): pannelli e menu, toggle con pulsanti in buono stato e cavi corti.
 
-Serve la versione corretta di `urutils.py` (vedi la sezione 2 di
+Serve la versione corretta di `urutils.py` (vedi la sezione 5 di
 [pulsanti-rilascio-mpy.md](pulsanti-rilascio-mpy.md)).
 
 ```python

@@ -768,7 +768,7 @@ void loop() {
 > **Applicazioni tipiche:** il `loop()` lento con ingressi disturbati; toggle e contatori.
 
 
-È la tecnica `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 5), con
+È la tecnica `changed()` di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 3), con
 l'interrupt al posto delle letture continue. La ISR fa **una cosa sola**: salva in `tFronte`
 l'istante di ogni fronte, rimbalzi e disturbi compresi. Il `loop()` accetta un nuovo livello
 solo se è diverso da quello accettato (`stabile`) e da più di 50 ms non c'è stato nessun fronte.
@@ -934,7 +934,7 @@ Su ESP32 la ISR va dichiarata `void IRAM_ATTR isrChange()`.
 > **Applicazioni tipiche:** giochi su microcontrollore e altri comandi dove conta la prontezza, anche con il `loop()` lento.
 
 
-È il lockout di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 6) con l'interrupt: il
+È il lockout di [pulsanti-rilascio.md](pulsanti-rilascio.md) (sezione 4) con l'interrupt: il
 primo cambio di livello è creduto **subito**, nella ISR, e per i 50 ms successivi ogni altro
 fronte è ignorato. Pressione e rilascio arrivano senza ritardo e senza aspettare il `loop()`:
 è la scelta per i **giochi**, dove conta la prontezza e un errore raro è tollerato. Non filtra
