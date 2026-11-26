@@ -88,7 +88,7 @@ const byte LED = 13;
 bool stato = LOW;
 volatile bool segnale = false; // dalla ISR
 volatile unsigned long tFronte; // ultimo fronte
-bool attivo = false;  // pressione in corso
+bool premutoRecente = false;  // pressione in corso
 
 
 void doOnRise() {
@@ -123,17 +123,17 @@ void setup() {
 }
 
 void loop() {
-  if (segnale && !attivo) {
-    attivo = true;        // pressione
+  if (segnale && !premutoRecente) {
+    premutoRecente = true;        // pressione
     doOnRise();
   }
-  if (attivo) {
+  if (premutoRecente) {
     noInterrupts();       // copia
     unsigned long t = tFronte;
     interrupts();         // protetta
     if (digitalRead(P1) == LOW &&
         millis() - t > 50) {
-      attivo = false;     // rilascio
+      premutoRecente = false;     // rilascio
       segnale = false;
       doOnFall();
     }
@@ -151,7 +151,7 @@ const byte LED = 13;
 bool stato = LOW;
 volatile bool segnale = false; // dalla ISR
 volatile unsigned long tFronte; // ultimo fronte
-bool attivo = false;  // pressione in corso
+bool premutoRecente = false;  // pressione in corso
 
 
 void doOnFall() {
@@ -186,17 +186,17 @@ void setup() {
 }
 
 void loop() {
-  if (segnale && !attivo) {
-    attivo = true;        // pressione
+  if (segnale && !premutoRecente) {
+    premutoRecente = true;        // pressione
     doOnFall();
   }
-  if (attivo) {
+  if (premutoRecente) {
     noInterrupts();       // copia
     unsigned long t = tFronte;
     interrupts();         // protetta
     if (digitalRead(P1) == HIGH &&
         millis() - t > 50) {
-      attivo = false;     // rilascio
+      premutoRecente = false;     // rilascio
       segnale = false;
       doOnRise();
     }

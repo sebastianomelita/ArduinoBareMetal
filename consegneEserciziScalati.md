@@ -144,7 +144,7 @@ Sullo stesso pannello convivono un pulsante SENZA memoria (prova lampade: conta 
 2. Perché P2 (prova lampade) non ha bisogno di debounce, mentre P1 sì? Che cosa vede l'operatore se P2 rimbalza per 5 ms? E se P1 rimbalza senza debounce?
 3. Ipotesi di progetto: TBASE deve stare fra due limiti. Quali? Che cosa succederebbe con TBASE = 5 ms? E con TBASE = 300 ms?
 4. Con lo schedulatore uno spike di 2 ms a P1 rilasciato può far avanzare il modo? Sempre, mai o solo in certi casi? Spiegate.
-5. Riscrivete la gestione di P1 con la versione 1 della dispensa (millis() e variabile attivo, pull-up). Che cosa cambia nel ritardo con cui il modo avanza dopo il rilascio? Quale delle due versioni filtra il buco a pulsante premuto?
+5. Riscrivete la gestione di P1 con la versione 1 della dispensa (millis() e variabile premutoRecente, pull-up). Che cosa cambia nel ritardo con cui il modo avanza dopo il rilascio? Quale delle due versioni filtra il buco a pulsante premuto?
 
 ### Esercizio C (difficile): Gioco dei riflessi, polling non bloccante su due fronti
 
@@ -184,7 +184,7 @@ Il gioco ha tre stati: ATTESA, VIA, FINE.
 
 **Vincoli sul codice**
 
-- Il pulsante si gestisce con la versione 1 della dispensa sul polling non bloccante su due fronti (millis(), t0, attivo): pressione riconosciuta alla prima lettura alta, rilascio confermato da 50 ms di livello basso.
+- Il pulsante si gestisce con la versione 1 della dispensa sul polling non bloccante su due fronti (millis(), t0, premutoRecente): pressione riconosciuta alla prima lettura alta, rilascio confermato da 50 ms di livello basso.
 - doOnRise() gestisce la pressione (stop del cronometro o falsa partenza), doOnFall() la ripartenza; entrambe agiscono in base allo stato del gioco.
 - Lo stato del gioco è una variabile (byte o enum) e il loop() ha due compiti separati: prima il pulsante, poi l'avanzamento del gioco.
 - Nessun delay(); tutte le differenze di tempo come millis() - t > durata, con variabili unsigned long.
@@ -309,7 +309,7 @@ Gestire due pulsanti toggle e un lampeggio nello stesso loop(), senza che un com
 
 **Vincoli sul codice**
 
-- I due pulsanti si gestiscono con la versione 1 della dispensa sul polling su un solo fronte (millis(), t0, attivo, rilascio dopo 50 ms di basso): ogni pulsante ha le sue variabili (t0S, attivoS, t0D, attivoD).
+- I due pulsanti si gestiscono con la versione 1 della dispensa sul polling su un solo fronte (millis(), t0, premutoRecente, rilascio dopo 50 ms di basso): ogni pulsante ha le sue variabili (t0S, premutoRecenteS, t0D, premutoRecenteD).
 - Le callback doOnFallS() e doOnFallD() cambiano solo le variabili bool delle frecce; è il compito del lampeggio a comandare i LED.
 - loop() con tre compiti separati: pulsante sinistro, pulsante destro, lampeggio.
 - Nessun delay(); differenze di tempo come millis() - t > durata, con variabili unsigned long.
@@ -329,7 +329,7 @@ Gestire due pulsanti toggle e un lampeggio nello stesso loop(), senza che un com
 
 **Domande**
 
-1. Perché ogni pulsante deve avere le sue variabili t0 e attivo? Cosa succederebbe usandone una sola coppia per tutti e due?
+1. Perché ogni pulsante deve avere le sue variabili t0 e premutoRecente? Cosa succederebbe usandone una sola coppia per tutti e due?
 2. Dove avete messo la regola "mai due frecce insieme": nelle callback o nel lampeggio? Perché è meglio lì?
 3. Riscrivete la gestione dei due pulsanti con la versione 2 (schedulatore, TBASE = 50 ms): bastano una sola lettura temporizzata e due variabili precval? Che cosa cambia nel ritardo fra il rilascio e il cambio della freccia?
 4. Ipotesi di progetto: perché TBASE non può essere 5 ms? E perché non può essere 300 ms?
@@ -372,7 +372,7 @@ Il Monitor seriale va aperto a 9600 baud.
 
 **Vincoli sul codice**
 
-- I due pulsanti si gestiscono con la versione 1 della dispensa sul polling non bloccante su due fronti (millis(), t0, attivo), ognuno con le sue variabili.
+- I due pulsanti si gestiscono con la versione 1 della dispensa sul polling non bloccante su due fronti (millis(), t0, premutoRecente), ognuno con le sue variabili.
 - P1: il toggle sta in doOnRise() (pressione); doOnFall() resta vuota.
 - P2 è in pull-up: la pressione è un fronte di discesa e il rilascio un fronte di salita. L'azzeramento sta nella callback del rilascio.
 - Il tempo si misura con due variabili unsigned long: l'istante di partenza e il tempo accumulato nelle marce precedenti.

@@ -97,7 +97,7 @@ TDEB   = 50                         # ms di livello basso per confermare il rila
 TLUNGA = 1000                       # soglia fra pressione breve e lunga
 LIVELLI = (40, 120, 255)            # tre luminosità (0..255)
 
-attivo = False                      # pulsante premuto, rilascio da confermare
+premutoRecente = False                      # lettura "premuto" negli ultimi 50 ms
 t0 = 0                              # ultima lettura "premuto"
 tPress = 0                          # istante della pressione
 accesa = False                      # la lampada è accesa?
@@ -126,12 +126,12 @@ def doOnFall():
 aggiornaLuce()
 while True:
     if P1.value():
-        if not attivo:                      # prima lettura alta: pressione
-            attivo = True
+        if not premutoRecente:                      # prima lettura alta: pressione
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()                # a ogni lettura alta il timer riparte
-    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
-        attivo = False                      # basso da più di 50 ms: rilascio
+    elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
+        premutoRecente = False                      # basso da più di 50 ms: rilascio
         doOnFall()
 ```
 
@@ -165,7 +165,7 @@ clic.
 Si aggiunge un **secondo compito** nel ciclo principale, che guarda la pressione in corso:
 
 ```python
-if attivo and time.ticks_diff(t0, tPress) >= TLUNGA:   # premuto da almeno TLUNGA
+if premutoRecente and time.ticks_diff(t0, tPress) >= TLUNGA:   # premuto da almeno TLUNGA
     ...
 ```
 
@@ -203,7 +203,7 @@ TPASSO = 50                         # durante la pressione lunga: un passo ogni 
 PASSO  = 5                          # quanto cambia la luminosità a ogni passo
 LUMMIN = 10                         # luminosità minima (sotto si spegnerebbe)
 
-attivo = False                      # pulsante premuto, rilascio da confermare
+premutoRecente = False                      # lettura "premuto" negli ultimi 50 ms
 t0 = 0                              # ultima lettura "premuto"
 tPress = 0                          # istante della pressione
 lunga = False                       # questa pressione è già diventata lunga?
@@ -243,16 +243,16 @@ aggiornaLuce()
 while True:
     # --- compito 1: il pulsante
     if P1.value():
-        if not attivo:
-            attivo = True
+        if not premutoRecente:
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
-        attivo = False
+    elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
+        premutoRecente = False
         doOnFall()
 
     # --- compito 2: la pressione lunga, mentre il pulsante è ancora premuto
-    if attivo and time.ticks_diff(t0, tPress) >= TLUNGA:     # premuto da almeno TLUNGA
+    if premutoRecente and time.ticks_diff(t0, tPress) >= TLUNGA:     # premuto da almeno TLUNGA
         if not lunga:                       # appena diventata lunga: una volta sola
             lunga = True
             accesa = True                   # si regola sempre una lampada accesa
@@ -290,12 +290,12 @@ Le variabili sono due:
 La fine della sequenza si controlla in un compito separato del ciclo principale:
 
 ```python
-if clic > 0 and not attivo and time.ticks_diff(time.ticks_ms(), tRil) > TCLICK:
+if clic > 0 and not premutoRecente and time.ticks_diff(time.ticks_ms(), tRil) > TCLICK:
     comando(clic)      # nessun nuovo clic da TCLICK ms: sequenza finita
     clic = 0
 ```
 
-La condizione `!attivo` serve se il pulsante è di nuovo premuto: la sequenza non è finita, anche se
+La condizione `!premutoRecente` serve se il pulsante è di nuovo premuto: la sequenza non è finita, anche se
 il rilascio precedente è lontano.
 
 **Il prezzo: il clic singolo arriva in ritardo.** Dopo un clic il programma non può sapere se ne
@@ -328,7 +328,7 @@ LED = Pin(13, Pin.OUT)
 TDEB   = 50                         # ms di livello basso per confermare il rilascio
 TCLICK = 400                        # pausa massima fra due clic della stessa sequenza
 
-attivo = False                      # pulsante premuto, rilascio da confermare
+premutoRecente = False                      # lettura "premuto" negli ultimi 50 ms
 t0 = 0                              # ultima lettura "premuto"
 clic = 0                            # clic contati nella sequenza in corso
 tRil = 0                            # istante dell'ultimo rilascio
@@ -359,16 +359,16 @@ def comando(n):
 while True:
     # --- compito 1: il pulsante
     if P1.value():
-        if not attivo:
-            attivo = True
+        if not premutoRecente:
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
-        attivo = False
+    elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > TDEB:
+        premutoRecente = False
         doOnFall()
 
     # --- compito 2: fine della sequenza di clic
-    if clic > 0 and not attivo and time.ticks_diff(time.ticks_ms(), tRil) > TCLICK:
+    if clic > 0 and not premutoRecente and time.ticks_diff(time.ticks_ms(), tRil) > TCLICK:
         comando(clic)               # nessun nuovo clic da TCLICK ms: sequenza finita
         clic = 0
 

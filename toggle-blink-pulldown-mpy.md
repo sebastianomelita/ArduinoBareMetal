@@ -160,7 +160,7 @@ LED      = Pin(13, Pin.OUT)   # task 1: LED comandato dal pulsante (toggle)
 LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
 stato = False
 t0 = 0                        # ultima lettura "premuto"
-attivo = False
+premutoRecente = False
 precBlink = 0
 
 def doOnRise():
@@ -181,12 +181,12 @@ def blink(pin):
 while True:
     # task 1: pulsante
     if P1.value():
-        if not attivo:
-            attivo = True
+        if not premutoRecente:
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > 50:
-        attivo = False
+    elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > 50:
+        premutoRecente = False
         doOnFall()
 
     # task 2: blink ogni 1000 ms
@@ -493,7 +493,7 @@ LEDBLINK = Pin(27, Pin.OUT)   # task 2: LED lampeggiante
 stato = False
 segnale = False   # pressione segnalata dal gestore
 tFronte = 0       # istante dell'ultimo fronte (anche rimbalzi)
-attivo = False    # pressione in corso
+premutoRecente = False    # pressione in corso
 precBlink = 0
 
 def doOnRise():
@@ -521,12 +521,12 @@ P1.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=isrChange)
 
 while True:
     # task 1: pulsante (eventi registrati dal gestore)
-    if segnale and not attivo:
-        attivo = True
+    if segnale and not premutoRecente:
+        premutoRecente = True
         doOnRise()
-    if attivo and not P1.value() and \
+    if premutoRecente and not P1.value() and \
        time.ticks_diff(time.ticks_ms(), tFronte) > 50:
-        attivo = False
+        premutoRecente = False
         segnale = False
         doOnFall()
 

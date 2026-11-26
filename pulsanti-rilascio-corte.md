@@ -16,7 +16,7 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 
 | Tecnica | Dove sta la memoria "era premuto" | Bool in più |
 | --- | --- | --- |
-| millis() | variabile `attivo` | sì |
+| millis() | variabile `premutoRecente` | sì |
 | DiffTimer | `timerState`, dentro la libreria | no |
 | changed() | `val00`, il livello accettato | no |
 | Schedulatore | `precval`, il campione precedente | no |
@@ -29,7 +29,8 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 >
 > **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
-Qui la variabile `attivo` serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
+Qui la variabile `premutoRecente`, vera se c'è stata una lettura "premuto" negli ultimi 50 ms
+(l'uscita di un timer TOF da 50 ms, nel linguaggio dei PLC), serve: senza, a pulsante rilasciato `millis() - t0 > 50` resterebbe
 vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
 
 <p align="center">
@@ -38,7 +39,7 @@ vera per sempre e l'azione scatterebbe a ogni giro di `loop()`.
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
-L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `attivo` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
+L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `premutoRecente` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
 
 <table>
 <tr>
@@ -53,7 +54,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool attivo = false;
+bool premutoRecente = false;
 
 void doOnFall() {
   // RILASCIO (fronte di discesa):
@@ -71,11 +72,11 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    attivo = true;
+    premutoRecente = true;
     t0 = millis();
-  } else if (attivo &&
+  } else if (premutoRecente &&
              millis() - t0 > 50) {
-    attivo = false;
+    premutoRecente = false;
     doOnFall();
   }
 }
@@ -89,7 +90,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool attivo = false;
+bool premutoRecente = false;
 
 void doOnRise() {
   // RILASCIO (fronte di salita):
@@ -107,11 +108,11 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == LOW) {
-    attivo = true;
+    premutoRecente = true;
     t0 = millis();
-  } else if (attivo &&
+  } else if (premutoRecente &&
              millis() - t0 > 50) {
-    attivo = false;
+    premutoRecente = false;
     doOnRise();
   }
 }

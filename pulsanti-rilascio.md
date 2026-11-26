@@ -32,6 +32,16 @@ al rilascio (qui, come esempio, un toggle del LED).
   <img src="img/debounce-millis-pulldown.gif" alt="Animazione del debounce con millis() (pull-down)" width="900">
 </p>
 
+Il programma usa due variabili:
+- `t0`, l'istante dell'**ultima** lettura "premuto";
+- `premutoRecente`, vera se c'è stata una lettura "premuto" **negli ultimi 50 ms**. Diventa vera alla
+  prima lettura "premuto" (ed è lì che parte la callback della pressione), resta vera finché le letture
+  "premuto" continuano ad arrivare, anche separate da rimbalzi o da buchi brevi, e torna falsa solo
+  dopo 50 ms senza letture "premuto" (ed è lì che parte la callback del rilascio). Non vuol dire
+  "premuto adesso": durante un rimbalzo o un buco il pin può leggere "rilasciato" mentre
+  `premutoRecente` è ancora vera. Chi conosce i PLC la riconosce: è l'uscita di un **timer TOF**
+  (ritardo alla disattivazione) da 50 ms con il pin come ingresso.
+
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge LOW, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
@@ -47,7 +57,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool attivo = false;
+bool premutoRecente = false;
 
 void doOnRise() {
   // PRESSIONE (fronte di salita):
@@ -72,14 +82,14 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    if (!attivo) {
-      attivo = true;
+    if (!premutoRecente) {
+      premutoRecente = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (attivo &&
+  } else if (premutoRecente &&
              millis() - t0 > 50) {
-    attivo = false;
+    premutoRecente = false;
     doOnFall();
   }
 }
@@ -93,7 +103,7 @@ const byte P1  = 2;
 const byte LED = 13;
 bool stato = LOW;
 unsigned long t0 = 0;
-bool attivo = false;
+bool premutoRecente = false;
 
 void doOnFall() {
   // PRESSIONE (fronte di discesa):
@@ -118,14 +128,14 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == LOW) {
-    if (!attivo) {
-      attivo = true;
+    if (!premutoRecente) {
+      premutoRecente = true;
       doOnFall();
     }
     t0 = millis();
-  } else if (attivo &&
+  } else if (premutoRecente &&
              millis() - t0 > 50) {
-    attivo = false;
+    premutoRecente = false;
     doOnRise();
   }
 }

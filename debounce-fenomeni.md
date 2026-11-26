@@ -290,21 +290,21 @@ Nelle tecniche che filtrano solo il rilascio, le quattro situazioni sono gestite
 diversi** del programma. Nelle tecniche a livello stabile, invece, una sola regola le tratta tutte
 allo stesso modo.
 
-**Polling con `millis()`** (una direzione). Il codice usa due variabili: `attivo`, che ricorda se la
-pressione è già stata segnalata, e `t0`, l'istante dell'ultima lettura HIGH.
+**Polling con `millis()`** (una direzione). Il codice usa due variabili: `premutoRecente`, vera se c'è stata una
+lettura HIGH negli ultimi 50 ms (quindi la pressione è già stata segnalata e il rilascio non ancora), e `t0`, l'istante dell'ultima lettura HIGH.
 
-1. *Rimbalzi alla pressione.* Al primo HIGH `attivo` è falso: parte `doOnRise()` e `attivo` diventa
-   vero. I rimbalzi successivi trovano `attivo` già vero, quindi `doOnRise()` non viene richiamata.
+1. *Rimbalzi alla pressione.* Al primo HIGH `premutoRecente` è falso: parte `doOnRise()` e `premutoRecente` diventa
+   vero. I rimbalzi successivi trovano `premutoRecente` già vero, quindi `doOnRise()` non viene richiamata.
    Il rilascio non può scattare, perché richiede più di 50 ms dall'ultimo HIGH e fra un rimbalzo e
    l'altro passano pochi millisecondi.
 2. *Rimbalzi al rilascio.* A ogni lettura HIGH si esegue `t0 = millis()`: ogni rimbalzo alto sposta in
    avanti l'istante di riferimento, e i 50 ms ricominciano a contare dall'ultimo rimbalzo.
 3. *Buco a pulsante premuto.* È un LOW breve, seguito di nuovo da letture HIGH: la prima di queste
    esegue `t0 = millis()` e il conteggio riparte, come per i rimbalzi del rilascio.
-4. *Spike a riposo.* Nessuna istruzione lo ferma: la prima lettura HIGH vale come pressione (`attivo`
+4. *Spike a riposo.* Nessuna istruzione lo ferma: la prima lettura HIGH vale come pressione (`premutoRecente`
    diventa vero, parte `doOnRise()`), e 50 ms dopo la fine dello spike arriva `doOnFall()`.
 
-**Bloccante 5** (una direzione). Qui il ruolo di `attivo` lo svolge il **punto in cui si trova il
+**Bloccante 5** (una direzione). Qui il ruolo di `premutoRecente` lo svolge il **punto in cui si trova il
 programma**: finché è dentro `waitUntilInputLow()`, il pulsante è considerato premuto.
 
 1. *Rimbalzi alla pressione.* Al primo HIGH il programma entra nell'`if`, esegue `doOnRise()` e si

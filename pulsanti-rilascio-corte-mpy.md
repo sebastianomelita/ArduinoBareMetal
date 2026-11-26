@@ -17,7 +17,7 @@ Nella maggior parte delle tecniche questa memoria c'è già, senza variabili boo
 
 | Tecnica | Dove sta la memoria "era premuto" | Bool in più |
 | --- | --- | --- |
-| ticks_ms() | variabile `attivo` | sì |
+| ticks_ms() | variabile `premutoRecente` | sì |
 | DiffTimer | `timerState`, dentro la classe | no |
 | changed() | `val00`, il livello accettato | no |
 | Schedulatore | `precval`, il campione precedente | no |
@@ -35,7 +35,8 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
 >
 > **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
-Qui la variabile `attivo` serve: senza, a pulsante rilasciato la differenza di tempo
+Qui la variabile `premutoRecente`, vera se c'è stata una lettura "premuto" negli ultimi 50 ms
+(l'uscita di un timer TOF da 50 ms, nel linguaggio dei PLC), serve: senza, a pulsante rilasciato la differenza di tempo
 resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
 <p align="center">
@@ -44,7 +45,7 @@ resterebbe maggiore di 50 per sempre e l'azione scatterebbe a ogni giro.
 
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
-L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `attivo` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
+L'animazione mostra la versione completa della dispensa principale, con `doOnRise()` e il controllo su `premutoRecente` alla pressione; qui quella parte manca, ma rimbalzi, disturbo e conferma del rilascio si comportano allo stesso modo.
 
 <table>
 <tr>
@@ -62,7 +63,7 @@ P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-attivo = False
+premutoRecente = False
 
 def doOnFall():
     # RILASCIO (fronte di discesa):
@@ -75,11 +76,11 @@ def doOnFall():
 
 while True:
     if P1.value():              # premuto
-        attivo = True
+        premutoRecente = True
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(
+    elif premutoRecente and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        attivo = False
+        premutoRecente = False
         doOnFall()
 ```
 
@@ -94,7 +95,7 @@ P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-attivo = False
+premutoRecente = False
 
 def doOnRise():
     # RILASCIO (fronte di salita):
@@ -107,11 +108,11 @@ def doOnRise():
 
 while True:
     if not P1.value():          # premuto
-        attivo = True
+        premutoRecente = True
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(
+    elif premutoRecente and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        attivo = False
+        premutoRecente = False
         doOnRise()
 ```
 

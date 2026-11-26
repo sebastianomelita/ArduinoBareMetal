@@ -85,7 +85,7 @@ LED = Pin(13, Pin.OUT)
 stato = False
 segnale = False  # dal gestore
 tFronte = 0      # ultimo fronte
-attivo = False   # pressione in corso
+premutoRecente = False   # pressione in corso
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -114,13 +114,13 @@ P1.irq(trigger=Pin.IRQ_RISING |
        handler=isrChange)
 
 while True:
-    if segnale and not attivo:
-        attivo = True     # pressione
+    if segnale and not premutoRecente:
+        premutoRecente = True     # pressione
         doOnRise()
-    if attivo and not P1.value() and \
+    if premutoRecente and not P1.value() and \
        time.ticks_diff(time.ticks_ms(),
                        tFronte) > 50:
-        attivo = False    # rilascio
+        premutoRecente = False    # rilascio
         segnale = False
         doOnFall()
     # qui altri compiti, anche lenti
@@ -138,7 +138,7 @@ LED = Pin(13, Pin.OUT)
 stato = False
 segnale = False  # dal gestore
 tFronte = 0      # ultimo fronte
-attivo = False   # pressione in corso
+premutoRecente = False   # pressione in corso
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):
@@ -167,13 +167,13 @@ P1.irq(trigger=Pin.IRQ_RISING |
        handler=isrChange)
 
 while True:
-    if segnale and not attivo:
-        attivo = True     # pressione
+    if segnale and not premutoRecente:
+        premutoRecente = True     # pressione
         doOnFall()
-    if attivo and P1.value() and \
+    if premutoRecente and P1.value() and \
        time.ticks_diff(time.ticks_ms(),
                        tFronte) > 50:
-        attivo = False    # rilascio
+        premutoRecente = False    # rilascio
         segnale = False
         doOnRise()
     # qui altri compiti, anche lenti

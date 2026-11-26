@@ -170,7 +170,7 @@ const byte LED      = 13;   // task 1: LED comandato dal pulsante (toggle)
 const byte LEDBLINK = 12;   // task 2: LED lampeggiante
 bool stato = LOW;
 unsigned long t0 = 0;          // ultima lettura "premuto"
-bool attivo = false;
+bool premutoRecente = false;
 unsigned long precBlink = 0;
 
 void doOnRise() {
@@ -198,13 +198,13 @@ void setup() {
 void loop() {
   // task 1: pulsante
   if (digitalRead(P1) == HIGH) {
-    if (!attivo) {
-      attivo = true;
+    if (!premutoRecente) {
+      premutoRecente = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (attivo && millis() - t0 > 50) {
-    attivo = false;
+  } else if (premutoRecente && millis() - t0 > 50) {
+    premutoRecente = false;
     doOnFall();
   }
 
@@ -548,7 +548,7 @@ const byte LEDBLINK = 12;   // task 2: LED lampeggiante
 bool stato = LOW;
 volatile bool segnale = false;    // pressione segnalata dalla ISR
 volatile unsigned long tFronte;   // istante dell'ultimo fronte (anche rimbalzi)
-bool attivo = false;              // pressione in corso
+bool premutoRecente = false;              // pressione in corso
 unsigned long precBlink = 0;
 
 void doOnRise() {
@@ -583,16 +583,16 @@ void setup() {
 
 void loop() {
   // task 1: pulsante (eventi registrati dalla ISR)
-  if (segnale && !attivo) {
-    attivo = true;
+  if (segnale && !premutoRecente) {
+    premutoRecente = true;
     doOnRise();
   }
-  if (attivo) {
+  if (premutoRecente) {
     noInterrupts();               // copia protetta di tFronte
     unsigned long t = tFronte;
     interrupts();
     if (digitalRead(P1) == LOW && millis() - t > 50) {
-      attivo = false;
+      premutoRecente = false;
       segnale = false;
       doOnFall();
     }

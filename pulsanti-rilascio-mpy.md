@@ -39,6 +39,16 @@ Al posto di `millis()` si usa `time.ticks_ms()`, e le differenze di tempo si cal
   <img src="img/debounce-ticks-pulldown-mpy.gif" alt="Animazione del debounce con ticks_ms() (pull-down, MicroPython)" width="900">
 </p>
 
+Il programma usa due variabili:
+- `t0`, l'istante dell'**ultima** lettura "premuto";
+- `premutoRecente`, vera se c'è stata una lettura "premuto" **negli ultimi 50 ms**. Diventa vera alla
+  prima lettura "premuto" (ed è lì che parte la callback della pressione), resta vera finché le letture
+  "premuto" continuano ad arrivare, anche separate da rimbalzi o da buchi brevi, e torna falsa solo
+  dopo 50 ms senza letture "premuto" (ed è lì che parte la callback del rilascio). Non vuol dire
+  "premuto adesso": durante un rimbalzo o un buco il pin può leggere "rilasciato" mentre
+  `premutoRecente` è ancora vera. Chi conosce i PLC la riconosce: è l'uscita di un **timer TOF**
+  (ritardo alla disattivazione) da 50 ms con il pin come ingresso.
+
 Con il pull-up il comportamento è identico con i livelli invertiti: il pulsante premuto legge 0, la pressione è un fronte di discesa e il rilascio un fronte di salita.
 
 <table>
@@ -57,7 +67,7 @@ P1  = Pin(12, Pin.IN)   # pull-down esterno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-attivo = False
+premutoRecente = False
 
 def doOnRise():
     # PRESSIONE (fronte di salita):
@@ -77,13 +87,13 @@ def doOnFall():
 
 while True:
     if P1.value():              # premuto
-        if not attivo:
-            attivo = True
+        if not premutoRecente:
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(
+    elif premutoRecente and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        attivo = False
+        premutoRecente = False
         doOnFall()
 ```
 
@@ -98,7 +108,7 @@ P1  = Pin(12, Pin.IN, Pin.PULL_UP)  # pull-up interno
 LED = Pin(13, Pin.OUT)
 stato = False
 t0 = 0
-attivo = False
+premutoRecente = False
 
 def doOnFall():
     # PRESSIONE (fronte di discesa):
@@ -118,13 +128,13 @@ def doOnRise():
 
 while True:
     if not P1.value():          # premuto
-        if not attivo:
-            attivo = True
+        if not premutoRecente:
+            premutoRecente = True
             doOnFall()
         t0 = time.ticks_ms()
-    elif attivo and time.ticks_diff(
+    elif premutoRecente and time.ticks_diff(
             time.ticks_ms(), t0) > 50:
-        attivo = False
+        premutoRecente = False
         doOnRise()
 ```
 

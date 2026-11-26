@@ -232,17 +232,17 @@ void loop() {                                              | void loop() {
 ```cpp
 int P1 = 2;
 unsigned long t0 = 0;   // ultima lettura "premuto"
-bool attivo = false;    // equivalente di deb.timerState
+bool premutoRecente = false;    // equivalente di deb.timerState
 
 void loop() {
   if (digitalRead(P1)) {
-    if (!attivo) {             // timer non attivo
-      attivo = true;           // deb.start()
+    if (!premutoRecente) {             // timer non attivo
+      premutoRecente = true;           // deb.start()
       doOnRise();
     }
     t0 = millis();             // ancora premuto: il conteggio riparte
-  } else if (attivo && millis() - t0 > 50) { // deb.get() > 50
-    attivo = false;            // deb.stop() + deb.reset()
+  } else if (premutoRecente && millis() - t0 > 50) { // deb.get() > 50
+    premutoRecente = false;            // deb.stop() + deb.reset()
     doOnFall();
     // Altre operazioni possibili
   }
@@ -254,17 +254,17 @@ void loop() {
 ```cpp
 int P1 = 2;
 unsigned long t0 = 0;   // ultima lettura "premuto"
-bool attivo = false;    // equivalente di deb.timerState
+bool premutoRecente = false;    // equivalente di deb.timerState
 
 void loop() {
   if (!digitalRead(P1)) {
-    if (!attivo) {             // timer non attivo
-      attivo = true;           // deb.start()
+    if (!premutoRecente) {             // timer non attivo
+      premutoRecente = true;           // deb.start()
       doOnFall();
     }
     t0 = millis();             // ancora premuto: il conteggio riparte
-  } else if (attivo && millis() - t0 > 50) { // deb.get() > 50
-    attivo = false;            // deb.stop() + deb.reset()
+  } else if (premutoRecente && millis() - t0 > 50) { // deb.get() > 50
+    premutoRecente = false;            // deb.stop() + deb.reset()
     doOnRise();
     // Altre operazioni possibili
   }
@@ -275,11 +275,11 @@ void loop() {
 
 | DiffTimer | millis() |
 |---|---|
-| `deb.start()` | `attivo = true;` |
+| `deb.start()` | `premutoRecente = true;` |
 | `deb.reset()` a ogni lettura "premuto" | `t0 = millis();` a ogni lettura "premuto" |
-| `deb.timerState` | `attivo` |
+| `deb.timerState` | `premutoRecente` |
 | `deb.get()` | `millis() - t0` |
-| `deb.stop(); deb.reset();` | `attivo = false;` |
+| `deb.stop(); deb.reset();` | `premutoRecente = false;` |
 
 > **Nota:** `millis() - t0` va sempre scritto come sottrazione tra `unsigned long`.
 > Così il conteggio resta corretto anche quando `millis()` riparte da zero, dopo circa 49 giorni.

@@ -92,7 +92,7 @@ const unsigned long TDEB   = 50;     // ms di livello basso per confermare il ri
 const unsigned long TLUNGA = 1000;   // soglia fra pressione breve e lunga
 const byte LIVELLI[3] = {40, 120, 255};   // tre luminosità (0..255)
 
-bool attivo = false;                 // pulsante premuto, rilascio da confermare
+bool premutoRecente = false;                 // lettura "premuto" negli ultimi 50 ms
 unsigned long t0 = 0;                // ultima lettura "premuto"
 unsigned long tPress = 0;            // istante della pressione
 bool accesa = false;                 // la lampada è accesa?
@@ -127,13 +127,13 @@ void setup() {
 
 void loop() {
   if (digitalRead(P1) == HIGH) {
-    if (!attivo) {                        // prima lettura alta: pressione
-      attivo = true;
+    if (!premutoRecente) {                        // prima lettura alta: pressione
+      premutoRecente = true;
       doOnRise();
     }
     t0 = millis();                        // a ogni lettura alta il timer riparte
-  } else if (attivo && millis() - t0 > TDEB) {
-    attivo = false;                       // basso da più di 50 ms: rilascio
+  } else if (premutoRecente && millis() - t0 > TDEB) {
+    premutoRecente = false;                       // basso da più di 50 ms: rilascio
     doOnFall();
   }
 }
@@ -171,7 +171,7 @@ clic.
 Si aggiunge un **secondo compito** nel `loop()`, che guarda la pressione in corso:
 
 ```cpp
-if (attivo && t0 - tPress >= TLUNGA) {   // premuto da almeno TLUNGA
+if (premutoRecente && t0 - tPress >= TLUNGA) {   // premuto da almeno TLUNGA
   ...
 }
 ```
@@ -207,7 +207,7 @@ const unsigned long TPASSO = 50;     // durante la pressione lunga: un passo ogn
 const int PASSO = 5;                 // quanto cambia la luminosità a ogni passo
 const int LUMMIN = 10;               // luminosità minima (sotto si spegnerebbe)
 
-bool attivo = false;                 // pulsante premuto, rilascio da confermare
+bool premutoRecente = false;                 // lettura "premuto" negli ultimi 50 ms
 unsigned long t0 = 0;                // ultima lettura "premuto"
 unsigned long tPress = 0;            // istante della pressione
 bool lunga = false;                  // questa pressione è già diventata lunga?
@@ -257,18 +257,18 @@ void setup() {
 void loop() {
   // --- compito 1: il pulsante
   if (digitalRead(P1) == HIGH) {
-    if (!attivo) {
-      attivo = true;
+    if (!premutoRecente) {
+      premutoRecente = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (attivo && millis() - t0 > TDEB) {
-    attivo = false;
+  } else if (premutoRecente && millis() - t0 > TDEB) {
+    premutoRecente = false;
     doOnFall();
   }
 
   // --- compito 2: la pressione lunga, mentre il pulsante è ancora premuto
-  if (attivo && t0 - tPress >= TLUNGA) {     // premuto da almeno TLUNGA
+  if (premutoRecente && t0 - tPress >= TLUNGA) {     // premuto da almeno TLUNGA
     if (!lunga) {                            // appena diventata lunga: una volta sola
       lunga = true;
       accesa = true;                         // si regola sempre una lampada accesa
@@ -310,13 +310,13 @@ Le variabili sono due:
 La fine della sequenza si controlla in un compito separato del `loop()`:
 
 ```cpp
-if (clic > 0 && !attivo && millis() - tRil > TCLICK) {
+if (clic > 0 && !premutoRecente && millis() - tRil > TCLICK) {
   comando(clic);       // nessun nuovo clic da TCLICK ms: sequenza finita
   clic = 0;
 }
 ```
 
-La condizione `!attivo` serve se il pulsante è di nuovo premuto: la sequenza non è finita, anche se
+La condizione `!premutoRecente` serve se il pulsante è di nuovo premuto: la sequenza non è finita, anche se
 il rilascio precedente è lontano.
 
 **Il prezzo: il clic singolo arriva in ritardo.** Dopo un clic il programma non può sapere se ne
@@ -346,7 +346,7 @@ const byte LED = 12;
 const unsigned long TDEB   = 50;     // ms di livello basso per confermare il rilascio
 const unsigned long TCLICK = 400;    // pausa massima fra due clic della stessa sequenza
 
-bool attivo = false;                 // pulsante premuto, rilascio da confermare
+bool premutoRecente = false;                 // lettura "premuto" negli ultimi 50 ms
 unsigned long t0 = 0;                // ultima lettura "premuto"
 byte clic = 0;                       // clic contati nella sequenza in corso
 unsigned long tRil = 0;              // istante dell'ultimo rilascio
@@ -385,18 +385,18 @@ void setup() {
 void loop() {
   // --- compito 1: il pulsante
   if (digitalRead(P1) == HIGH) {
-    if (!attivo) {
-      attivo = true;
+    if (!premutoRecente) {
+      premutoRecente = true;
       doOnRise();
     }
     t0 = millis();
-  } else if (attivo && millis() - t0 > TDEB) {
-    attivo = false;
+  } else if (premutoRecente && millis() - t0 > TDEB) {
+    premutoRecente = false;
     doOnFall();
   }
 
   // --- compito 2: fine della sequenza di clic
-  if (clic > 0 && !attivo && millis() - tRil > TCLICK) {
+  if (clic > 0 && !premutoRecente && millis() - tRil > TCLICK) {
     comando(clic);                   // nessun nuovo clic da TCLICK ms: sequenza finita
     clic = 0;
   }

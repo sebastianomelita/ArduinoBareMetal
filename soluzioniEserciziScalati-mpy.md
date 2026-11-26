@@ -144,13 +144,13 @@ while True:
 
 ```python
 t0 = 0
-attivo = False
+premutoRecente = False
 ...
 if P1.value() == 0:                     # premuto
-    attivo = True
+    premutoRecente = True
     t0 = time.ticks_ms()
-elif attivo and time.ticks_diff(time.ticks_ms(), t0) > 50:
-    attivo = False                      # alto da più di 50 ms: rilascio
+elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > 50:
+    premutoRecente = False                      # alto da più di 50 ms: rilascio
     doOnRise()
 ```
 
@@ -165,7 +165,7 @@ Realizzate in Wokwi un gioco che misura il tempo di reazione: dopo un'attesa cas
 **Programma**
 
 ```python
-# SOLUZIONE - versione 1 su due fronti (ticks_ms(), t0, attivo)
+# SOLUZIONE - versione 1 su due fronti (ticks_ms(), t0, premutoRecente)
 from machine import Pin
 import time, random
 
@@ -178,7 +178,7 @@ ATTESA, VIA, FINE = 0, 1, 2
 statoGioco = ATTESA
 
 t0 = 0                                  # ultima lettura alta del pulsante
-attivo = False                          # pulsante premuto (pressione riconosciuta)
+premutoRecente = False                          # lettura "premuto" negli ultimi 50 ms
 tStato = 0                              # inizio dell'ATTESA o accensione del verde
 attesa = 0                              # durata casuale dell'ATTESA (ms)
 manche = 0                              # manche valide giocate
@@ -224,12 +224,12 @@ nuovaManche()
 while True:
     # --- compito 1: il pulsante
     if P1.value():
-        if not attivo:                  # prima lettura alta: pressione
-            attivo = True
+        if not premutoRecente:                  # prima lettura alta: pressione
+            premutoRecente = True
             doOnRise()
         t0 = time.ticks_ms()            # a ogni lettura alta il timer riparte
-    elif attivo and time.ticks_diff(time.ticks_ms(), t0) > TDEBOUNCE:
-        attivo = False                  # basso da più di 50 ms: rilascio
+    elif premutoRecente and time.ticks_diff(time.ticks_ms(), t0) > TDEBOUNCE:
+        premutoRecente = False                  # basso da più di 50 ms: rilascio
         doOnFall()
 
     # --- compito 2: il gioco
@@ -251,7 +251,7 @@ while True:
 - in ATTESA: falsa partenza falsa, la manche è persa senza colpa;
 - in VIA: il cronometro si ferma su un tempo inventato, magari un "record" di pochi ms; in entrambi i casi 50 ms dopo il "rilascio" viene confermato e parte la manche successiva. È un problema di gioco, non di sicurezza: nessuna macchina si muove. Fa capire però perché dove l'errore è pericoloso si conferma anche la pressione.
 
-5. Versione 1: no. Un buco di 3 ms è più corto dei 50 ms richiesti per confermare il rilascio: alla lettura alta successiva t0 riparte, attivo resta True, doOnFall() non viene chiamata. Versione 2: sì, se una lettura cade nel buco. Quella lettura vale 0 e la precedente 1: è un fronte di discesa, doOnFall() fa partire la manche. Alla lettura dopo il pulsante è di nuovo 1: fronte di salita, doOnRise() in ATTESA, quindi una falsa partenza mentre il giocatore non ha fatto nulla. La probabilità è circa 3/50 = 6% per ogni buco.
+5. Versione 1: no. Un buco di 3 ms è più corto dei 50 ms richiesti per confermare il rilascio: alla lettura alta successiva t0 riparte, premutoRecente resta True, doOnFall() non viene chiamata. Versione 2: sì, se una lettura cade nel buco. Quella lettura vale 0 e la precedente 1: è un fronte di discesa, doOnFall() fa partire la manche. Alla lettura dopo il pulsante è di nuovo 1: fronte di salita, doOnRise() in ATTESA, quindi una falsa partenza mentre il giocatore non ha fatto nulla. La probabilità è circa 3/50 = 6% per ogni buco.
 
 6. Un programma bloccante, durante time.sleep_ms(attesa), non legge il pulsante: chi preme prima del verde non viene visto. Peggio: se il pulsante è ancora premuto quando l'attesa finisce, il programma lo trova subito 1 e misura un tempo di reazione di 0 ms. Per vedere le False partenze il pulsante va letto DURANTE l'attesa, cioè nello stesso ciclo principale che controlla il tempo: serve un programma non bloccante.
 
@@ -357,8 +357,8 @@ TBLINK = 400                            # ms accesa e ms spenta
 
 t0S = 0                                 # ultima lettura alta di PS
 t0D = 0                                 # ultima lettura alta di PD
-attivoS = False                         # PS premuto, rilascio da confermare
-attivoD = False                         # PD premuto, rilascio da confermare
+premutoRecenteS = False                         # PS premuto negli ultimi 50 ms
+premutoRecenteD = False                         # PD premuto negli ultimi 50 ms
 sx = False                              # frecce attive
 dx = False
 fase = False                            # fase del lampeggio, comune alle due frecce
@@ -381,18 +381,18 @@ def doOnFallD():
 while True:
     # --- compito 1: pulsante sinistro
     if PS.value():
-        attivoS = True
+        premutoRecenteS = True
         t0S = time.ticks_ms()           # a ogni lettura alta il timer riparte
-    elif attivoS and time.ticks_diff(time.ticks_ms(), t0S) > TDEBOUNCE:
-        attivoS = False                 # basso da più di 50 ms: rilascio
+    elif premutoRecenteS and time.ticks_diff(time.ticks_ms(), t0S) > TDEBOUNCE:
+        premutoRecenteS = False                 # basso da più di 50 ms: rilascio
         doOnFallS()
 
     # --- compito 2: pulsante destro
     if PD.value():
-        attivoD = True
+        premutoRecenteD = True
         t0D = time.ticks_ms()
-    elif attivoD and time.ticks_diff(time.ticks_ms(), t0D) > TDEBOUNCE:
-        attivoD = False
+    elif premutoRecenteD and time.ticks_diff(time.ticks_ms(), t0D) > TDEBOUNCE:
+        premutoRecenteD = False
         doOnFallD()
 
     # --- compito 3: lampeggio
@@ -405,7 +405,7 @@ while True:
 
 **Risposte alle domande**
 
-1. t0 e attivo sono la memoria del debounce di UN pulsante: "è premuto, rilascio da confermare" e "l'ultima volta che l'ho visto premuto". Con una sola coppia i due pulsanti si scambiano la memoria. Esempio, con il blocco di PS scritto prima di quello di PD: si preme PD, il suo blocco mette attivo = True e aggiorna t0; 50 ms dopo il rilascio il primo blocco a trovare "pin basso, attivo vero, 50 ms passati" è quello di PS, che chiama doOnFallS(): premendo la freccia destra si accende la sinistra. E se si premono tutti e due, il rilascio di uno resta nascosto finché l'altro è premuto.
+1. t0 e premutoRecente sono la memoria del debounce di UN pulsante: "è premuto, rilascio da confermare" e "l'ultima volta che l'ho visto premuto". Con una sola coppia i due pulsanti si scambiano la memoria. Esempio, con il blocco di PS scritto prima di quello di PD: si preme PD, il suo blocco mette attivo = True e aggiorna t0; 50 ms dopo il rilascio il primo blocco a trovare "pin basso, attivo vero, 50 ms passati" è quello di PS, che chiama doOnFallS(): premendo la freccia destra si accende la sinistra. E se si premono tutti e due, il rilascio di uno resta nascosto finché l'altro è premuto.
 
 2. Nelle callback: è il momento in cui succede l'evento ed è l'unico punto in cui le variabili sx e dx cambiano, quindi lo stato è sempre coerente (mai sx e dx vere insieme). Il lampeggio si limita a mostrare lo stato (LED = freccia attiva E fase accesa) e non deve conoscere le regole. Se la regola stesse nel lampeggio, sx e dx potrebbero essere vere insieme e bisognerebbe decidere chi vince.
 
@@ -462,8 +462,8 @@ TDEBOUNCE = 50                          # ms di livello di riposo per il rilasci
 
 t01 = 0                                 # ultima lettura "premuto" di P1
 t02 = 0                                 # ultima lettura "premuto" di P2
-attivo1 = False                         # P1 premuto, rilascio da confermare
-attivo2 = False                         # P2 premuto, rilascio da confermare
+premutoRecente1 = False                         # P1 premuto negli ultimi 50 ms
+premutoRecente2 = False                         # P2 premuto negli ultimi 50 ms
 
 marcia = False                          # cronometro in marcia
 tStart = 0                              # istante dell'ultima partenza
@@ -508,22 +508,22 @@ def doOnRise2():
 while True:
     # --- compito 1: P1 (premuto = 1)
     if P1.value():
-        if not attivo1:
-            attivo1 = True
+        if not premutoRecente1:
+            premutoRecente1 = True
             doOnRise1()                 # pressione alla prima lettura alta
         t01 = time.ticks_ms()
-    elif attivo1 and time.ticks_diff(time.ticks_ms(), t01) > TDEBOUNCE:
-        attivo1 = False
+    elif premutoRecente1 and time.ticks_diff(time.ticks_ms(), t01) > TDEBOUNCE:
+        premutoRecente1 = False
         doOnFall1()
 
     # --- compito 2: P2 (premuto = 0)
     if P2.value() == 0:
-        if not attivo2:
-            attivo2 = True
+        if not premutoRecente2:
+            premutoRecente2 = True
             doOnFall2()
         t02 = time.ticks_ms()
-    elif attivo2 and time.ticks_diff(time.ticks_ms(), t02) > TDEBOUNCE:
-        attivo2 = False                 # alto da più di 50 ms: rilascio
+    elif premutoRecente2 and time.ticks_diff(time.ticks_ms(), t02) > TDEBOUNCE:
+        premutoRecente2 = False                 # alto da più di 50 ms: rilascio
         doOnRise2()
 
     # --- compito 3: stampa
@@ -552,9 +552,9 @@ while True:
 
 1. Il cronometro deve fermarsi nell'istante in cui il giudice preme: con la versione 1 la pressione è vista alla prima lettura alta, quindi subito. Con il toggle al rilascio partenza e arrivo sarebbero spostati del tempo per cui il giudice tiene premuto (100-300 ms, ogni volta diverso) più i 50 ms di conferma: errori di decimi di secondo, e diversi alla partenza e all'arrivo. L'azzeramento invece cancella il risultato: non c'è fretta, e al rilascio si agisce solo dopo un gesto completo (pressione e rilascio confermato). È la regola "fermarsi subito, ripartire con calma": l'azione urgente alla pressione, quella che si può pentire al rilascio.
 
-2. Sì, da tutti e due. Se ne occupa la stessa parte di codice: la variabile attivo1 e il timer t01. Dopo la prima lettura alta attivo1 è True:
-- i rimbalzi della pressione sono letture basse di pochi ms; il rilascio non viene confermato perché non passano 50 ms, e doOnRise1() non viene richiamata perché attivo1 è già True;
-- i rimbalzi del rilascio sono letture alte che fanno ripartire t01: attivo1 resta True, quindi non sono prese per una nuova pressione. doOnRise1() può essere chiamata di nuovo solo dopo 50 ms di basso continuo.
+2. Sì, da tutti e due. Se ne occupa la stessa parte di codice: la variabile premutoRecente1 e il timer t01. Dopo la prima lettura alta premutoRecente1 è True:
+- i rimbalzi della pressione sono letture basse di pochi ms; il rilascio non viene confermato perché non passano 50 ms, e doOnRise1() non viene richiamata perché premutoRecente1 è già True;
+- i rimbalzi del rilascio sono letture alte che fanno ripartire t01: premutoRecente1 resta True, quindi non sono prese per una nuova pressione. doOnRise1() può essere chiamata di nuovo solo dopo 50 ms di basso continuo.
 
 3. È la situazione 4, spike a pulsante rilasciato. La versione 1 accetta la pressione alla prima lettura alta, quindi lo spike è preso per una pressione: il cronometro in marcia si FERMA (arrivo falso), quello fermo riparte. In una gara non è accettabile: il risultato è falso e non si può rifare. Servirebbe una tecnica che conferma anche la pressione (come la tecnica 6 bloccante o il livello stabile), che la ritarda di 50 ms. Per un cronometro quel ritardo è innocuo, perché è uguale alla partenza e all'arrivo e si annulla nella differenza: è un ritardo costante, non casuale.
 
