@@ -469,10 +469,10 @@ void loop() {
 
 Qui la callback della pressione viene chiamata controllando `debt.timerState` prima di
 `waitUntilNB()`, che da sola segnala solo il rilascio.
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+`waitUntilNB()` di `urutils.h` fa ripartire il timer a ogni chiamata con la condizione falsa,
+cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante rilasciato senza
+interruzioni, quindi i rimbalzi del rilascio vengono ignorati. Non serve chiamare `debt.reset()`
+nello sketch, come invece nella versione con DiffTimer: l'azzeramento è già dentro la funzione.
 
 ```cpp
 #include "urutils.h"
@@ -514,9 +514,6 @@ void loop() {
   }
   if (waitUntilNB(debt, !premutoOra, 50)) {
     doOnFall();                         // azione al rilascio
-  }
-  if (premutoOra) {
-    debt.reset();                       // conta dall'ultima lettura "premuto"
   }
 
   // task 2: blink ogni 1000 ms

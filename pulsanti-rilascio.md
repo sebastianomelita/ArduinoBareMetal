@@ -825,10 +825,10 @@ Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premutoOra`
 `premutoOra` è la lettura di questo giro, grezza: durante un rimbalzo o un buco può valere
 "rilasciato" anche se la pressione non è finita. Il ruolo di `premutoRecente` della versione 1
 (una lettura "premuto" negli ultimi 50 ms) lo svolge qui `debt.timerState`.
-Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
-senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
-a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
-"premuto", come nella versione con DiffTimer.
+`waitUntilNB()` di `urutils.h` fa ripartire il timer a ogni chiamata con la condizione falsa,
+cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante rilasciato senza
+interruzioni, quindi i rimbalzi del rilascio vengono ignorati. Non serve chiamare `debt.reset()`
+nello sketch, come invece nella versione con DiffTimer: l'azzeramento è già dentro la funzione.
 `waitUntilNB()` segnala solo il rilascio: la callback della pressione si chiama controllando
 `debt.timerState` prima della chiamata. Il timer non è attivo solo al primo giro di pressione,
 perché subito dopo lo attiva `waitUntilNB()`.
@@ -882,9 +882,6 @@ void loop() {
         !premutoOra, 50)) {
     doOnFall();
   }
-  if (premutoOra) {
-    debt.reset();
-  }
 }
 ```
 
@@ -931,9 +928,6 @@ void loop() {
   if (waitUntilNB(debt,
         !premutoOra, 50)) {
     doOnRise();
-  }
-  if (premutoOra) {
-    debt.reset();
   }
 }
 ```
