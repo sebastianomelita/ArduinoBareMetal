@@ -508,14 +508,14 @@ void setup() {
 
 void loop() {
   // task 1: pulsante
-  bool premuto = digitalRead(P1);
-  if (premuto && !debt.timerState) {
+  bool premutoOra = digitalRead(P1);
+  if (premutoOra && !debt.timerState) {
     doOnRise();                         // azione immediata alla pressione
   }
-  if (waitUntilNB(debt, !premuto, 50)) {
+  if (waitUntilNB(debt, !premutoOra, 50)) {
     doOnFall();                         // azione al rilascio
   }
-  if (premuto) {
+  if (premutoOra) {
     debt.reset();                       // conta dall'ultima lettura "premuto"
   }
 

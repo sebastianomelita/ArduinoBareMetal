@@ -457,10 +457,10 @@ def blink(pin):
 
 while True:
     # task 1: pulsante
-    premuto = P1.value()
-    if premuto and not debt.timerState:
+    premutoOra = P1.value()
+    if premutoOra and not debt.timerState:
         doOnRise()                       # azione immediata alla pressione
-    if waitUntilNB(debt, not premuto, 50):
+    if waitUntilNB(debt, not premutoOra, 50):
         doOnFall()                       # azione al rilascio
 
     # task 2: blink ogni 1000 ms

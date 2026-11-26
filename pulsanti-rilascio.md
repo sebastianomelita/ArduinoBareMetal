@@ -821,7 +821,10 @@ void loop() {
 >
 > **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
-Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premuto`.
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `!premutoOra`.
+`premutoOra` è la lettura di questo giro, grezza: durante un rimbalzo o un buco può valere
+"rilasciato" anche se la pressione non è finita. Il ruolo di `premutoRecente` della versione 1
+(una lettura "premuto" negli ultimi 50 ms) lo svolge qui `debt.timerState`.
 Da sola `waitUntilNB()` conta dalla prima lettura "premuto": al rilascio scatterebbe subito,
 senza debounce, e un rimbalzo del contatto la farebbe scattare una seconda volta. Per questo,
 a ogni lettura "premuto", si chiama `debt.reset()`: i 50 ms si contano dall'ultima lettura
@@ -869,17 +872,17 @@ void setup() {
 
 void loop() {
   // pull-down: premuto = HIGH
-  bool premuto = digitalRead(P1);
-  if (premuto &&
+  bool premutoOra = digitalRead(P1);
+  if (premutoOra &&
       !debt.timerState) {
     doOnRise();
   }
   // c = "rilasciato"
   if (waitUntilNB(debt,
-        !premuto, 50)) {
+        !premutoOra, 50)) {
     doOnFall();
   }
-  if (premuto) {
+  if (premutoOra) {
     debt.reset();
   }
 }
@@ -919,17 +922,17 @@ void setup() {
 
 void loop() {
   // pull-up: premuto = LOW
-  bool premuto = !digitalRead(P1);
-  if (premuto &&
+  bool premutoOra = !digitalRead(P1);
+  if (premutoOra &&
       !debt.timerState) {
     doOnFall();
   }
   // c = "rilasciato"
   if (waitUntilNB(debt,
-        !premuto, 50)) {
+        !premutoOra, 50)) {
     doOnRise();
   }
-  if (premuto) {
+  if (premutoOra) {
     debt.reset();
   }
 }

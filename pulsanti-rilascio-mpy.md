@@ -755,7 +755,10 @@ while True:
 >
 > **Applicazioni tipiche:** pulsanti di pannelli e menu dove serve una risposta pronta alla pressione, toggle con pulsanti in buono stato e cavi corti: è la scelta di base delle esercitazioni. Nelle tastiere con firmware QMK esiste come modalità asimmetrica: pressione subito, rilascio confermato.
 
-Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premuto`.
+Il secondo argomento è la condizione "pulsante rilasciato", cioè `not premutoOra`.
+`premutoOra` è la lettura di questo giro, grezza: durante un rimbalzo o un buco può valere
+"rilasciato" anche se la pressione non è finita. Il ruolo di `premutoRecente` della versione 1
+(una lettura "premuto" negli ultimi 50 ms) lo svolge qui `debt.timerState`.
 `waitUntilNB()` della versione corretta di `urutils.py` fa ripartire il timer a ogni chiamata
 con la condizione falsa, cioè a ogni lettura "premuto": scatta solo dopo 50 ms di pulsante
 rilasciato senza interruzioni, quindi i rimbalzi del rilascio vengono ignorati.
@@ -797,11 +800,11 @@ def doOnFall():
     LED.value(stato)
 
 while True:
-    premuto = P1.value()        # pull-down
-    if premuto and not debt.timerState:
+    premutoOra = P1.value()        # pull-down
+    if premutoOra and not debt.timerState:
         doOnRise()
     # c = "rilasciato"
-    if waitUntilNB(debt, not premuto, 50):
+    if waitUntilNB(debt, not premutoOra, 50):
         doOnFall()
 ```
 
@@ -835,11 +838,11 @@ def doOnRise():
     LED.value(stato)
 
 while True:
-    premuto = not P1.value()    # pull-up
-    if premuto and not debt.timerState:
+    premutoOra = not P1.value()    # pull-up
+    if premutoOra and not debt.timerState:
         doOnFall()
     # c = "rilasciato"
-    if waitUntilNB(debt, not premuto, 50):
+    if waitUntilNB(debt, not premutoOra, 50):
         doOnRise()
 ```
 
