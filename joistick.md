@@ -1,6 +1,6 @@
 >[Torna all'indice](indexpulsanti.md)
 
-## **JOISTICK ANALOGICO**
+## **JOYSTICK ANALOGICO**
 
 <img src="img\A85262_Joystick-Module_3.webp" alt="alt text" width="300">
 
